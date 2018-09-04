@@ -23,9 +23,9 @@ Mesh::Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecie
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	aDevice->CreateBuffer(&vbd, &initialVertexData, &VertexBuffer);
 
+	// Create the INDEX BUFFER description ------------------------------------
 	IndexCount = aIndexCount;
 
-	// Create the INDEX BUFFER description ------------------------------------
 	// - The description is created on the stack because we only need
 	//    it to create the buffer.  The description is then useless.
 	D3D11_BUFFER_DESC ibd;
@@ -44,7 +44,6 @@ Mesh::Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecie
 	// Actually create the buffer with the initial data
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	aDevice->CreateBuffer(&ibd, &initialIndexData, &IndexBuffer);
-
 }
 
 // --------------------------------------------------------
@@ -55,8 +54,8 @@ Mesh::Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecie
 Mesh::~Mesh()
 {
 	// Release the buffers
-	VertexBuffer->Release();
-	IndexBuffer->Release();
+	if (VertexBuffer)	{ VertexBuffer->Release(); }
+	if (IndexBuffer)	{ IndexBuffer->Release();  }
 }
 
 ID3D11Buffer * const Mesh::GetVertexBuffer() const

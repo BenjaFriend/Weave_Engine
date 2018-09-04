@@ -31,10 +31,6 @@ private:
 	void CreateMatrices();
 	void CreateBasicGeometry();
 
-	// Buffers to hold actual geometry data
-	ID3D11Buffer* vertexBuffer;
-	ID3D11Buffer* indexBuffer;
-
 	// The meshes to use with the Mesh class, assignment 2
 	class Mesh* TestMesh1 = nullptr;
 	class Mesh* TestMesh2 = nullptr;
