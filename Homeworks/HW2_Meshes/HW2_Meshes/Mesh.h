@@ -9,9 +9,23 @@ class Mesh
 {
 public:
 	
+	/** 
+	* @brief				Creates a mesh with the given vertecies and index paramaters
+	* 
+	* @param aDevice		The DX11 device to create the buffers
+	* @param aVerts			Vertcies to use for this mesh
+	* @param aNumVerts		Number of verticies this mesh has
+	* @param aIndecies		The index locations of this mesh
+	* @param aIndexCount	Number of indecies this msh has
+	*/
 	Mesh(ID3D11Device* aDevice, struct Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount);
 	
+	/** Destrucor to release DX11 objects */
 	~Mesh();
+
+	//////////////////////////////////////////////////////////////////
+	// Accessors 
+	//////////////////////////////////////////////////////////////////
 
 	/** Pointer to this objects Vertex buffer */
 	ID3D11Buffer* const GetVertexBuffer() const;

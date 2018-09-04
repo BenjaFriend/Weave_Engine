@@ -46,11 +46,6 @@ Mesh::Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecie
 	aDevice->CreateBuffer(&ibd, &initialIndexData, &IndexBuffer);
 }
 
-// --------------------------------------------------------
-// Destructor - Clean up anything our game has created:
-//  - Release all DirectX objects created here
-//  - Delete any objects to prevent memory leaks
-// --------------------------------------------------------
 Mesh::~Mesh()
 {
 	// Release the buffers
