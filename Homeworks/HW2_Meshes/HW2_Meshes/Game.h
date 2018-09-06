@@ -4,6 +4,9 @@
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 
+// Forward defs
+class Mesh;
+
 class Game 
 	: public DXCore
 {
@@ -32,9 +35,9 @@ private:
 	void CreateBasicGeometry();
 
 	// The meshes to use with the Mesh class, assignment 2
-	class Mesh* TestMesh1 = nullptr;
-	class Mesh* TestMesh2 = nullptr;
-	class Mesh* TestMesh3 = nullptr;
+	Mesh* TestMesh1 = nullptr;
+	Mesh* TestMesh2 = nullptr;
+	Mesh* TestMesh3 = nullptr;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
