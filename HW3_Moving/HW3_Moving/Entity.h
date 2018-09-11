@@ -40,11 +40,17 @@ public:
 	/** Set the position of this entity */
 	void SetPosition(const DirectX::XMFLOAT3 & aNewPos);
 
+	/** Set the positoin of this enetiy */
+	void SetPosition(const float aX, const float aY, const float aZ);
+
 	/** Return's this entity's current scale */
 	const DirectX::XMFLOAT3 & GetScale() const;
 
-	/** Set the position of htis entity */
+	/** Set the position of this entity */
 	void SetScale(const DirectX::XMFLOAT3 & aNewScale);
+
+	/** Set the scale of the this entity */
+	void SetScale(const float aX, const float aY, const float aZ);
 
 	/** Return's this entity's current rotation */
 	const DirectX::XMFLOAT4X4 & GetRotation() const;
@@ -63,7 +69,7 @@ private:
 	/** The current Scale of this entitiy */
 	DirectX::XMFLOAT3 Scale;
 
-	/** The current rotatoin of this entitiy */
+	/** The current rotation of this entitiy */
 	DirectX::XMFLOAT4X4 Rotation;
 
 };

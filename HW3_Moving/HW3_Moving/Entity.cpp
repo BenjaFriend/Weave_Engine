@@ -37,6 +37,13 @@ void Entity::SetPosition(const DirectX::XMFLOAT3 & aNewPos)
 	Position = aNewPos;
 }
 
+void Entity::SetPosition(const float aX, const float aY, const float aZ)
+{
+	Position.x = aX;
+	Position.y = aY;
+	Position.z = aZ;
+}
+
 const DirectX::XMFLOAT3 & Entity::GetScale() const
 {
 	return Scale;
@@ -45,6 +52,13 @@ const DirectX::XMFLOAT3 & Entity::GetScale() const
 void Entity::SetScale(const DirectX::XMFLOAT3 & aNewScale)
 {
 	Scale = aNewScale;
+}
+
+void Entity::SetScale(const float aX, const float aY, const float aZ)
+{
+	Scale.x = aX;
+	Scale.y = aY;
+	Scale.z = aZ;
 }
 
 const DirectX::XMFLOAT4X4 & Entity::GetRotation() const
