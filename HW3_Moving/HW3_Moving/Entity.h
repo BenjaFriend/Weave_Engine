@@ -22,10 +22,28 @@ public:
 	* 
 	* @param aMesh	A pointer to this entity's mesh
 	*/
-	Entity(Mesh* aMesh);
+	Entity(Mesh * aMesh);
 	
 	/** Virtual destructor for this mesh */
 	virtual ~Entity();
+
+	/**
+	* Move the entity relative to the direction it is facing 
+	*
+	* @param aX		new X value to add to this position
+	* @param aY		new Y value to add to this position
+	* @param aZ		new Z value to add to this position
+	*/
+	void MoveRelative(const float aX, const float aY, const float aZ);
+
+	/**
+	* Adds to the position NOT relative to the direction you are facing
+	*
+	* @param aX		new X value to add to this position
+	* @param aY		new Y value to add to this position
+	* @param aZ		new Z value to add to this position
+	*/
+	void MoveAbsolute(const float aX, const float aY, const float aZ);
 
 	////////////////////////////////////////////////////
 	// Accessors
@@ -71,14 +89,14 @@ public:
 	void SetScale(const float aX, const float aY, const float aZ);
 
 	/** Return's this entity's current rotation */
-	const DirectX::XMFLOAT4X4 & GetRotation() const;
+	const DirectX::XMFLOAT4 & GetRotation() const;
 
 	/** 
 	* Set the rotation of this entity 
 	* 
 	* @param aNewRot	The new rotation of this object
 	*/
-	void SetRotation(const DirectX::XMFLOAT4X4 & aNewRot);
+	void SetRotation(const DirectX::XMFLOAT4 & aNewRot);
 
 private:
 
@@ -92,7 +110,7 @@ private:
 	DirectX::XMFLOAT3 Scale;
 
 	/** The current rotation of this entitiy */
-	DirectX::XMFLOAT4X4 Rotation;
+	DirectX::XMFLOAT4 Rotation;
 
 };
 

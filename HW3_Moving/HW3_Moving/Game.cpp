@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Vertex.h"
 #include "Mesh.h"
+#include "Entity.h"
 
 // For the DirectX Math library
 using namespace DirectX;
