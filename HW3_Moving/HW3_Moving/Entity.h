@@ -22,7 +22,7 @@ public:
 	* 
 	* @param aMesh	A pointer to this entity's mesh
 	*/
-	Entity(Mesh * aMesh);
+	Entity(Mesh * aMesh);		// TOD: Make this a smart pointer at some point
 	
 	/** Virtual destructor for this mesh */
 	virtual ~Entity();
