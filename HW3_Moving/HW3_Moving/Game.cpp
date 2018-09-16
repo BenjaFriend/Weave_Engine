@@ -47,6 +47,9 @@ Game::~Game()
 	delete vertexShader;
 	delete pixelShader;
 
+	// Delete the entities
+	delete Entity1;
+
 	// Delete the mesh
 	delete TestMesh1;
 	delete TestMesh2;
@@ -178,6 +181,9 @@ void Game::CreateBasicGeometry()
 	TestMesh2 = new Mesh(device, vertices2, 3, indices, 3);
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
+	// Create an entity based on these meshes
+	Entity1 = new Entity(TestMesh1);
+
 }
 
 
@@ -207,6 +213,16 @@ void Game::Update(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
+
+	if (Entity1)
+	{
+		const float Speed = 2.f;
+
+		Entity1->MoveAbsolute(Speed * deltaTime, Speed * deltaTime, 0.f);
+		printf("Entity 1 Positoin: \tX: %f \tY: %f \t%f \n", Entity1->GetPosition().x, Entity1->GetPosition().y, Entity1->GetPosition().z);
+
+	}
+
 }
 
 // --------------------------------------------------------
@@ -239,7 +255,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	// Once you've set all of the data you care to change for
 	// the next draw call, you need to actually send it to the GPU
 	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-	vertexShader->CopyAllBufferData();
+	//vertexShader->CopyAllBufferData();
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
@@ -254,41 +270,45 @@ void Game::Draw(float deltaTime, float totalTime)
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
-	// Draw the first mesh ------------------------------------------
+	// Calculate the world matrix ------------------------------------------
+	const Mesh* EnMesh = Entity1->GetEntityMesh();
+
+	
 	ID3D11Buffer* VertBuff = TestMesh1->GetVertexBuffer();
-	context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
-	context->IASetIndexBuffer(TestMesh1->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
+	const XMFLOAT3 f3Scale = Entity1->GetScale();
+	XMMATRIX Scale = XMMatrixScaling(f3Scale.x, f3Scale.y, f3Scale.z);
+
+	// Make the sin
+	XMMATRIX Rot = XMMatrixRotationX(Entity1->GetRotation().x);
+
+	const XMFLOAT3 f3Pos = Entity1->GetPosition();
+	XMMATRIX Pos = XMMatrixTranslation(f3Pos.x, f3Pos.y, f3Pos.z);
+
+	// Calculate the world matrix
+	XMMATRIX WorldMM = Scale * Rot * Pos;
+
+	// Store this info in the actual 4x4 matrix
+	XMFLOAT4X4 World4x4;
+	XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));
+
+	vertexShader->SetMatrix4x4("world", World4x4);
+	vertexShader->SetMatrix4x4("view", viewMatrix);
+	vertexShader->SetMatrix4x4("projection", projectionMatrix);
+
+	// Draw the entity ---------------------------------------------------------
+	VertBuff = EnMesh->GetVertexBuffer();
+	context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
+	context->IASetIndexBuffer(EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
 	context->DrawIndexed(
-		TestMesh1->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
+		EnMesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
 		0);    // Offset to add to each index when looking up vertices
+	
 
-
-
-	// Draw the Second mesh ------------------------------------------
-	VertBuff = TestMesh2->GetVertexBuffer();
-	context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
-	context->IASetIndexBuffer(TestMesh2->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	context->DrawIndexed(
-		TestMesh2->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-
-
-	// Draw the third mesh ------------------------------------------
-	VertBuff = TestMesh3->GetVertexBuffer();
-	context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
-	context->IASetIndexBuffer(TestMesh3->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	context->DrawIndexed(
-		TestMesh3->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
+	// Tell the shader to send data to the GPU in one big chunk
+	vertexShader->CopyAllBufferData();
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it

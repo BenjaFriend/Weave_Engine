@@ -22,9 +22,9 @@ public:
 	* 
 	* @param aMesh	A pointer to this entity's mesh
 	*/
-	Entity(Mesh * aMesh);		// TOD: Make this a smart pointer at some point
+	Entity(Mesh * aMesh);	
 	
-	/** Virtual destructor for this mesh */
+	/** Virtual destructor for this entity */
 	virtual ~Entity();
 
 	/**
@@ -100,7 +100,8 @@ public:
 
 private:
 
-	/** This entity's mesh */
+	// TODO: Make this a smart pointer at some point
+	/** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
 	Mesh * EntityMesh = nullptr;
 
 	/** The current positoin of this entitiy */

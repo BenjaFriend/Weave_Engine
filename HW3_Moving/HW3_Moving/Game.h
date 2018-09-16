@@ -6,6 +6,7 @@
 
 // Forward defs
 class Mesh;
+class Entity;
 
 class Game 
 	: public DXCore
@@ -38,6 +39,9 @@ private:
 	Mesh* TestMesh1 = nullptr;
 	Mesh* TestMesh2 = nullptr;
 	Mesh* TestMesh3 = nullptr;
+
+	// The entit'es for our game
+	Entity* Entity1 = nullptr;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;

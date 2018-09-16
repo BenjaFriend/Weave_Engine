@@ -8,7 +8,7 @@ Entity::Entity(Mesh* aMesh)
 {
 	// Set default values for position, scale and rotatoin
 	Position	= DirectX::XMFLOAT3(0.f, 0.f, 0.f);
-	Scale		= DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+	Scale		= DirectX::XMFLOAT3(1.f, 1.f, 1.f);
 	Rotation	= DirectX::XMFLOAT4();
 }
 
