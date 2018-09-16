@@ -99,3 +99,29 @@ void Entity::SetRotation(const DirectX::XMFLOAT4 & aNewRot)
 {
 	Rotation = aNewRot;
 }
+
+XMFLOAT4X4 Entity::GetWorldMatrix()
+{
+	XMMATRIX ScaleMatrix = XMMatrixScaling(
+		Scale.x, 
+		Scale.y,
+		Scale.z);
+
+	XMMATRIX Rot = XMMatrixRotationRollPitchYaw(
+		Rotation.x,
+		Rotation.y,
+		Rotation.z);
+
+	XMMATRIX Pos = XMMatrixTranslation(
+		Position.x,
+		Position.y, 
+		Position.z);
+
+	// Calculate the world matrix
+	XMMATRIX WorldMM = ScaleMatrix * Rot * Pos;
+
+	XMFLOAT4X4 World4x4;
+	XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));	// Don't forget to transpose!
+
+	return World4x4;
+}

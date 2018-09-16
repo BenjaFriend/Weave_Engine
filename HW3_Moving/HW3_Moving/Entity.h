@@ -105,6 +105,13 @@ public:
 	*/
 	void SetRotation(const DirectX::XMFLOAT4 & aNewRot);
 
+	/**
+	* Calculate the world matrix for this entity
+	* 
+	* @return	The calculate world matrix for this entity
+	*/
+	DirectX::XMFLOAT4X4 GetWorldMatrix();
+
 private:
 
 	// TODO: Make this a smart pointer at some point

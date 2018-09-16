@@ -277,6 +277,17 @@ void Game::Update(float deltaTime, float totalTime)
 		);
 	}
 
+	// Loop through the other meshes to demonstrate rotation
+	for (size_t i = 1; i < EntityCount; ++i)
+	{
+		XMFLOAT4 NewRot = Entities[i]->GetRotation();
+		NewRot.z = totalTime;
+		Entities[i]->SetRotation(NewRot);
+	}
+
+		
+
+
 }
 
 // --------------------------------------------------------
@@ -320,45 +331,24 @@ void Game::Draw(float deltaTime, float totalTime)
 		// Calculate the world matrix ------------------------------------------
 		CurrentEntity = Entities[i];
 
-		EnMesh = CurrentEntity->GetEntityMesh();
-		VertBuff = EnMesh->GetVertexBuffer();
-
-		const XMFLOAT3 f3Scale = CurrentEntity->GetScale();
-		XMMATRIX Scale = XMMatrixScaling(f3Scale.x, f3Scale.y, f3Scale.z);
-
-		// Make the sin
-		XMMATRIX Rot = XMMatrixRotationX(CurrentEntity->GetRotation().x);
-
-		const XMFLOAT3 f3Pos = CurrentEntity->GetPosition();
-		XMMATRIX Pos = XMMatrixTranslation(f3Pos.x, f3Pos.y, f3Pos.z);
-
-		// Calculate the world matrix
-		XMMATRIX WorldMM = Scale * Rot * Pos;
-
-		// Store this info in the actual 4x4 matrix
-		XMFLOAT4X4 World4x4;
-		XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));	// Don't forget to transpose!
-
-		vertexShader->SetMatrix4x4("world", World4x4);
+		vertexShader->SetMatrix4x4("world", CurrentEntity->GetWorldMatrix());
 		vertexShader->SetMatrix4x4("view", viewMatrix);
 		vertexShader->SetMatrix4x4("projection", projectionMatrix);
 
 		// Draw the entity ---------------------------------------------------------
+		EnMesh	 = CurrentEntity->GetEntityMesh();
 		VertBuff = EnMesh->GetVertexBuffer();
+
 		context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
 		context->IASetIndexBuffer(EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
 		context->DrawIndexed(
-			EnMesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-			0,     // Offset to the first index we want to use
-			0);    // Offset to add to each index when looking up vertices
-				   // Tell the shader to send data to the GPU in one big chunk
+			EnMesh->GetIndexCount(),     
+			0,     
+			0);    
+
 		vertexShader->CopyAllBufferData();
-
 	}
-	
-
-
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
