@@ -12,6 +12,14 @@ Entity::Entity(Mesh* aMesh)
 	Rotation	= DirectX::XMFLOAT4();
 }
 
+Entity::Entity(const Entity & aOther)
+{	
+	Position	= aOther.Position;
+	Scale		= aOther.Scale;
+	Rotation	= aOther.Rotation;
+	EntityMesh	= aOther.EntityMesh;
+}
+
 // virtual destructor
 Entity::~Entity()
 {

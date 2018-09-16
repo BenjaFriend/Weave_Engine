@@ -2,6 +2,7 @@
 #include "Vertex.h"
 #include "Mesh.h"
 #include "Entity.h"
+#include "RenderManager.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -177,6 +178,13 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	UINT indices[] = { 0, 1, 2 };
 
+	RenderMan = new RenderManager();
+
+	// Create meshes in the render manager
+	RenderMan->AddMesh(device, vertices1, 3, indices, 3);
+	RenderMan->AddMesh(device, vertices2, 3, indices, 3);
+	RenderMan->AddMesh(device, vertices3, 3, indices, 3);
+
 	TestMesh1 = new Mesh(device, vertices1, 3, indices, 3);
 	TestMesh2 = new Mesh(device, vertices2, 3, indices, 3);
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
@@ -214,13 +222,42 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
 
+	XMFLOAT3 DeltaInput = XMFLOAT3(0.f, 0.f, 0.f);
+
+	if (GetAsyncKeyState('W') & 0x80000)
+	{
+		// Move forward
+		DeltaInput.y += 1.f;
+	}
+	if (GetAsyncKeyState('S') & 0x80000)
+	{
+		// Move down
+		DeltaInput.y -= 1.f;
+	}
+	if (GetAsyncKeyState('A') & 0x80000)
+	{
+		// Move left
+		DeltaInput.x -= 1.f;
+	}
+	if (GetAsyncKeyState('D') & 0x80000)
+	{
+		// Move right
+		DeltaInput.x += 1.f;
+	}
+
+
 	if (Entity1)
 	{
-		const float Speed = 2.f;
+		const float Speed = 1.2f;
+		float SinTime = (0.5f * sinf(0.5f * totalTime) + 0.8f);
 
-		Entity1->MoveAbsolute(Speed * deltaTime, Speed * deltaTime, 0.f);
-		printf("Entity 1 Positoin: \tX: %f \tY: %f \t%f \n", Entity1->GetPosition().x, Entity1->GetPosition().y, Entity1->GetPosition().z);
+		Entity1->SetScale(SinTime, SinTime , SinTime );
 
+		Entity1->MoveAbsolute(
+			DeltaInput.x * Speed * deltaTime,
+			DeltaInput.y * Speed * deltaTime,
+			DeltaInput.z * Speed * deltaTime 
+		);
 	}
 
 }
@@ -243,14 +280,10 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-	// Send data to shader variables
-	//  - Do this ONCE PER OBJECT you're drawing
-	//  - This is actually a complex process of copying data to a local buffer
-	//    and then copying that entire buffer to the GPU.  
-	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", worldMatrix);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
+
+	//vertexShader->SetMatrix4x4("world", worldMatrix);
+	//vertexShader->SetMatrix4x4("view", viewMatrix);
+	//vertexShader->SetMatrix4x4("projection", projectionMatrix);
 
 	// Once you've set all of the data you care to change for
 	// the next draw call, you need to actually send it to the GPU
@@ -273,7 +306,6 @@ void Game::Draw(float deltaTime, float totalTime)
 	// Calculate the world matrix ------------------------------------------
 	const Mesh* EnMesh = Entity1->GetEntityMesh();
 
-	
 	ID3D11Buffer* VertBuff = TestMesh1->GetVertexBuffer();
 
 	const XMFLOAT3 f3Scale = Entity1->GetScale();
@@ -290,7 +322,7 @@ void Game::Draw(float deltaTime, float totalTime)
 
 	// Store this info in the actual 4x4 matrix
 	XMFLOAT4X4 World4x4;
-	XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));
+	XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));	// Don't forget to transpose!
 
 	vertexShader->SetMatrix4x4("world", World4x4);
 	vertexShader->SetMatrix4x4("view", viewMatrix);

@@ -4,9 +4,11 @@
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 
-// Forward defs
+/////////////////////////////////////////////////
+// Forward Declarations
 class Mesh;
 class Entity;
+class RenderManager;
 
 class Game 
 	: public DXCore
@@ -42,6 +44,9 @@ private:
 
 	// The entit'es for our game
 	Entity* Entity1 = nullptr;
+
+	RenderManager* RenderMan = nullptr;
+
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;

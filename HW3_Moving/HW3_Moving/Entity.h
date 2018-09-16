@@ -24,6 +24,13 @@ public:
 	*/
 	Entity(Mesh * aMesh);	
 	
+	/** 
+	* Copy constructor
+	* 
+	* @param aOther		The other entity
+	*/
+	Entity(const Entity& aOther);
+
 	/** Virtual destructor for this entity */
 	virtual ~Entity();
 
