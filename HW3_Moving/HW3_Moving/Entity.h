@@ -57,7 +57,7 @@ public:
 	////////////////////////////////////////////////////
 
 	/** Return's this entity's mesh */
-	const Mesh * GetEntityMesh() const;
+	Mesh * GetEntityMesh() const;
 
 	/** Return's this entity's current position */
 	const DirectX::XMFLOAT3 & GetPosition() const;

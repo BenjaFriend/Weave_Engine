@@ -50,7 +50,7 @@ void Entity::MoveAbsolute(const float aX, const float aY, const float aZ)
 // Accessors
 ////////////////////////////////////////////////////
 
-const Mesh * Entity::GetEntityMesh() const
+Mesh * Entity::GetEntityMesh() const
 {
 	return EntityMesh;
 }

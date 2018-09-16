@@ -2,7 +2,6 @@
 #include "Vertex.h"
 #include "Mesh.h"
 #include "Entity.h"
-#include "RenderManager.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -25,7 +24,8 @@ Game::Game(HINSTANCE hInstance)
 {
 
 	vertexShader = 0;
-	pixelShader = 0;
+	pixelShader	 = 0;
+	EntityCount	 = 0;
 
 #if defined(DEBUG) || defined(_DEBUG)
 	// Do we want a console window?  Probably only in debug mode
@@ -42,15 +42,21 @@ Game::Game(HINSTANCE hInstance)
 // --------------------------------------------------------
 Game::~Game()
 {
-
 	// Delete our simple shader objects, which
 	// will clean up their own internal DirectX stuff
 	delete vertexShader;
 	delete pixelShader;
 
 	// Delete the entities
-	delete Entity1;
+	for (size_t i = 0; i < EntityCount; ++i)
+	{
+		Entity* CurEntity = Entities[i];
+		if (CurEntity) delete CurEntity;
+	}
 
+	Entities.clear();
+	EntityCount = 0;
+	
 	// Delete the mesh
 	delete TestMesh1;
 	delete TestMesh2;
@@ -178,19 +184,30 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	UINT indices[] = { 0, 1, 2 };
 
-	RenderMan = new RenderManager();
-
-	// Create meshes in the render manager
-	RenderMan->AddMesh(device, vertices1, 3, indices, 3);
-	RenderMan->AddMesh(device, vertices2, 3, indices, 3);
-	RenderMan->AddMesh(device, vertices3, 3, indices, 3);
 
 	TestMesh1 = new Mesh(device, vertices1, 3, indices, 3);
 	TestMesh2 = new Mesh(device, vertices2, 3, indices, 3);
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
 	// Create an entity based on these meshes
-	Entity1 = new Entity(TestMesh1);
+	Entities.push_back( new Entity(TestMesh2));
+	++EntityCount;
+
+	Entities.push_back( new Entity(TestMesh2));
+	++EntityCount;
+
+	Entities.push_back(new Entity(TestMesh1));
+	++EntityCount;
+	Entities[EntityCount - 1]->MoveAbsolute(-1.f, -1.f, 0.f);
+
+
+	Entities.push_back(new Entity(TestMesh3));
+	++EntityCount;
+	Entities[EntityCount - 1]->SetPosition(3.f, 0.f, 6.f);
+
+	Entities.push_back(new Entity(TestMesh3));
+	++EntityCount;
+	Entities[EntityCount - 1]->SetScale(0.5f, 0.5f, 0.5f);
 
 }
 
@@ -245,15 +262,15 @@ void Game::Update(float deltaTime, float totalTime)
 		DeltaInput.x += 1.f;
 	}
 
-
-	if (Entity1)
+	// Update the entity scale and position
+	if (EntityCount > 0)
 	{
 		const float Speed = 1.2f;
 		float SinTime = (0.5f * sinf(0.5f * totalTime) + 0.8f);
 
-		Entity1->SetScale(SinTime, SinTime , SinTime );
+		Entities[0]->SetScale(SinTime, SinTime , SinTime );
 
-		Entity1->MoveAbsolute(
+		Entities[0]->MoveAbsolute(
 			DeltaInput.x * Speed * deltaTime,
 			DeltaInput.y * Speed * deltaTime,
 			DeltaInput.z * Speed * deltaTime 
@@ -280,16 +297,6 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-
-	//vertexShader->SetMatrix4x4("world", worldMatrix);
-	//vertexShader->SetMatrix4x4("view", viewMatrix);
-	//vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-	// Once you've set all of the data you care to change for
-	// the next draw call, you need to actually send it to the GPU
-	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-	//vertexShader->CopyAllBufferData();
-
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
 	//  - Once you start applying different shaders to different objects,
@@ -303,44 +310,55 @@ void Game::Draw(float deltaTime, float totalTime)
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
-	// Calculate the world matrix ------------------------------------------
-	const Mesh* EnMesh = Entity1->GetEntityMesh();
+	Mesh* EnMesh			 = nullptr;
+	ID3D11Buffer* VertBuff	 = nullptr;
+	Entity* CurrentEntity	 = nullptr;
 
-	ID3D11Buffer* VertBuff = TestMesh1->GetVertexBuffer();
+	// Draw the entities
+	for (size_t i = 0; i < EntityCount; ++i)
+	{
+		// Calculate the world matrix ------------------------------------------
+		CurrentEntity = Entities[i];
 
-	const XMFLOAT3 f3Scale = Entity1->GetScale();
-	XMMATRIX Scale = XMMatrixScaling(f3Scale.x, f3Scale.y, f3Scale.z);
+		EnMesh = CurrentEntity->GetEntityMesh();
+		VertBuff = EnMesh->GetVertexBuffer();
 
-	// Make the sin
-	XMMATRIX Rot = XMMatrixRotationX(Entity1->GetRotation().x);
+		const XMFLOAT3 f3Scale = CurrentEntity->GetScale();
+		XMMATRIX Scale = XMMatrixScaling(f3Scale.x, f3Scale.y, f3Scale.z);
 
-	const XMFLOAT3 f3Pos = Entity1->GetPosition();
-	XMMATRIX Pos = XMMatrixTranslation(f3Pos.x, f3Pos.y, f3Pos.z);
+		// Make the sin
+		XMMATRIX Rot = XMMatrixRotationX(CurrentEntity->GetRotation().x);
 
-	// Calculate the world matrix
-	XMMATRIX WorldMM = Scale * Rot * Pos;
+		const XMFLOAT3 f3Pos = CurrentEntity->GetPosition();
+		XMMATRIX Pos = XMMatrixTranslation(f3Pos.x, f3Pos.y, f3Pos.z);
 
-	// Store this info in the actual 4x4 matrix
-	XMFLOAT4X4 World4x4;
-	XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));	// Don't forget to transpose!
+		// Calculate the world matrix
+		XMMATRIX WorldMM = Scale * Rot * Pos;
 
-	vertexShader->SetMatrix4x4("world", World4x4);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
+		// Store this info in the actual 4x4 matrix
+		XMFLOAT4X4 World4x4;
+		XMStoreFloat4x4(&World4x4, XMMatrixTranspose(WorldMM));	// Don't forget to transpose!
 
-	// Draw the entity ---------------------------------------------------------
-	VertBuff = EnMesh->GetVertexBuffer();
-	context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
-	context->IASetIndexBuffer(EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+		vertexShader->SetMatrix4x4("world", World4x4);
+		vertexShader->SetMatrix4x4("view", viewMatrix);
+		vertexShader->SetMatrix4x4("projection", projectionMatrix);
 
-	context->DrawIndexed(
-		EnMesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
+		// Draw the entity ---------------------------------------------------------
+		VertBuff = EnMesh->GetVertexBuffer();
+		context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
+		context->IASetIndexBuffer(EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+		context->DrawIndexed(
+			EnMesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
+			0,     // Offset to the first index we want to use
+			0);    // Offset to add to each index when looking up vertices
+				   // Tell the shader to send data to the GPU in one big chunk
+		vertexShader->CopyAllBufferData();
+
+	}
 	
 
-	// Tell the shader to send data to the GPU in one big chunk
-	vertexShader->CopyAllBufferData();
+
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it

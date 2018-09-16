@@ -3,12 +3,12 @@
 #include "DXCore.h"
 #include "SimpleShader.h"
 #include <DirectXMath.h>
+#include <vector>
 
 /////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
 class Entity;
-class RenderManager;
 
 class Game 
 	: public DXCore
@@ -42,11 +42,9 @@ private:
 	Mesh* TestMesh2 = nullptr;
 	Mesh* TestMesh3 = nullptr;
 
-	// The entit'es for our game
-	Entity* Entity1 = nullptr;
-
-	RenderManager* RenderMan = nullptr;
-
+	// Entity list
+	std::vector<Entity*> Entities;
+	size_t EntityCount = 0;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
