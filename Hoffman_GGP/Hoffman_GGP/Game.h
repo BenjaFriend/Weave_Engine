@@ -3,9 +3,13 @@
 #include "DXCore.h"
 #include "SimpleShader.h"
 #include <DirectXMath.h>
+#include <vector>
 
-// Forward defs
+/////////////////////////////////////////////////
+// Forward Declarations
 class Mesh;
+class Entity;
+class Camera;
 
 class Game 
 	: public DXCore
@@ -39,9 +43,16 @@ private:
 	Mesh* TestMesh2 = nullptr;
 	Mesh* TestMesh3 = nullptr;
 
+	// Entity list
+	std::vector<Entity*> Entities;
+	size_t EntityCount = 0;
+
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
+
+	// Flying camera for initial testing
+	Camera* FlyingCamera;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;

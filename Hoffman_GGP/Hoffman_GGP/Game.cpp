@@ -2,6 +2,7 @@
 #include "Vertex.h"
 #include "Mesh.h"
 #include "Entity.h"
+#include "Camera.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -57,6 +58,8 @@ Game::~Game()
 	Entities.clear();
 	EntityCount = 0;
 	
+	delete FlyingCamera;
+
 	// Delete the mesh
 	delete TestMesh1;
 	delete TestMesh2;
