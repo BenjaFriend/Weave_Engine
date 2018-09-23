@@ -62,8 +62,7 @@ void Camera::Update(const float aDeltaTime)
 
 void Camera::UpdateViewMatrix(const float aDeltaTime)
 {
-
-	//XMVECTOR rot = XMQuaternionRotationRollPitchYaw(RotationXAxis, RotationYAxis, 0.f);
+	// Check if we want to invert the rotation axis (southpaw) or not
 	XMVECTOR rot = 
 		UseSouthpawRotation
 			? XMQuaternionRotationRollPitchYaw(RotationXAxis, RotationYAxis, 0.f) 
@@ -72,20 +71,16 @@ void Camera::UpdateViewMatrix(const float aDeltaTime)
 	XMVECTOR forwardDir = XMVectorSet(0, 0, 1, 0);
 	XMVECTOR up = XMVectorSet(0, 1, 0, 0);
 
+
 	XMVECTOR CurrentRotation = XMVector3Rotate(forwardDir, rot);
 
-	// Edit position based on the current rotation
-	
-
-	// Add to postion and store
-	/*XMStoreFloat3(
-		&Position,
-		XMLoadFloat3(&Position) + CurrentRotation);
-	*/
+	XMVECTOR left = XMVector3Cross(CurrentRotation, up);
 	
 	// Update the view matrix whenever the camera moves (for now, every frame)
 	XMVECTOR pos = XMVectorSet(Position.x, Position.y, Position.z, 0);
 	
+	pos += CurrentRotation * RelativeInput.z;
+	pos -= left * RelativeInput.x;
 
 	XMMATRIX V = XMMatrixLookToLH(
 		pos,					// The position of the "camera"
@@ -95,6 +90,8 @@ void Camera::UpdateViewMatrix(const float aDeltaTime)
 
 	// Store the view matrix 
 	XMStoreFloat4x4(&ViewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
+	// Store our position that may have changed from input
+	XMStoreFloat3(&Position, pos);
 }
 
 void Camera::UpdateProjectionMatrix(const unsigned int aWidth, const unsigned int aHeight)
@@ -109,7 +106,7 @@ void Camera::UpdateProjectionMatrix(const unsigned int aWidth, const unsigned in
 
 void Camera::UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY)
 {
-	RotationXAxis += aDeltaMouseX * HorizontalRotSpeed;
+	RotationXAxis += aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
 	if (RotationXAxis < -90)
 	{
 		RotationXAxis = -90;
@@ -119,7 +116,7 @@ void Camera::UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY
 		RotationXAxis = -85;
 	}
 	
-	RotationYAxis += aDeltaMouseY * VerticalRotSpeed;
+	RotationYAxis += aDeltaMouseY * VerticalRotSpeed;	// VerticalRotSpeed = 0.005f
 	if (RotationYAxis < -90)
 	{
 		RotationYAxis = -90;
@@ -128,7 +125,6 @@ void Camera::UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY
 	{
 		RotationYAxis = -85;
 	}
-	printf("Rot Values:\tX: %f Y: %f\n", RotationXAxis, RotationYAxis);
 }
 
 ////////////////////////////////////////////////////

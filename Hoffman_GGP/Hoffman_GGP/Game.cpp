@@ -278,10 +278,6 @@ void Game::Draw(float deltaTime, float totalTime)
 		CurrentEntity = Entities[i];
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
-		//vertexShader->SetMatrix4x4("world", CurrentEntity->GetWorldMatrix());
-		//vertexShader->SetMatrix4x4("view", FlyingCamera->GetViewMatrix());
-		//vertexShader->SetMatrix4x4("projection", FlyingCamera->GetProjectMatrix());
-
 		// Draw the entity ---------------------------------------------------------
 		EnMesh	 = CurrentEntity->GetEntityMesh();
 		VertBuff = EnMesh->GetVertexBuffer();
@@ -293,8 +289,6 @@ void Game::Draw(float deltaTime, float totalTime)
 			EnMesh->GetIndexCount(),     
 			0,     
 			0);    
-
-		//vertexShader->CopyAllBufferData();
 	}
 
 	// Present the back buffer to the user
