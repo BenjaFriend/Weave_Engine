@@ -73,7 +73,7 @@ void Camera::UpdateViewMatrix(const float aDeltaTime)
 
 
 	XMVECTOR CurrentRotation = XMVector3Rotate(forwardDir, rot);
-
+	// Calculate the direction we should be going left and right
 	XMVECTOR left = XMVector3Cross(CurrentRotation, up);
 	
 	// Update the view matrix whenever the camera moves (for now, every frame)
