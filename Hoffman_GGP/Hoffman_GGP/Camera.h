@@ -2,6 +2,7 @@
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include "Windows.h"			// GetAsyncKeyState
+#include <stdio.h>
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -29,7 +30,7 @@ public:
 	* 
 	* @param DeltaTime		Delta Time of this frame
 	*/
-	void Update(float DeltaTime);
+	void Update(const float aDeltaTime);
 
 	/**
 	* Updates the projection matrix of the camera
@@ -37,7 +38,16 @@ public:
 	* @param aWidth		The aspect ration width
 	* @param aHeight	The aspect ration height
 	*/
-	void UpdateProjectionMatrix(unsigned int aWidth, unsigned int aHeight);
+	void UpdateProjectionMatrix(const unsigned int aWidth, const unsigned int aHeight);
+
+	/**
+	* Updates the camera's roation based on the mouse movement
+	* of the player scaled by this cameras input speed
+	*
+	* @param aDeltaMouseX		The delta mouse input in X axis
+	* @param aDeltaMouseY		The delta mouse input in Y axis
+	*/
+	void UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY);
 
 	////////////////////////////////////////////////////
 	// Accessors
@@ -61,7 +71,16 @@ public:
 	/** Returns the current projection matrix */
 	const DirectX::XMFLOAT4X4 GetProjectMatrix() const;
 
+	/** Returns the current horizontal rotation speed */
+	const float GetHorizontalRotSpeed() const;
+
+	/** Returns the current vertical rotation speed */
+	const float GetVerticalRotSpeed() const;
+
 private:
+
+	/** Update the view matrix of the camera */
+	void UpdateViewMatrix(const float aDeltaTime);
 
 	/** Current position of the camera */
 	DirectX::XMFLOAT3 Position;
@@ -80,5 +99,17 @@ private:
 
 	/** Current projection matrix of the camera. Defines how the 3D scene is mapped onto 2d Screen */
 	DirectX::XMFLOAT4X4 ProjectionMatrix;
-};
 
+	/** The horizontal rotation speed of the camera */
+	const float HorizontalRotSpeed = 0.005f;
+
+	/** The vertical rotation speed of the camera */
+	const float VerticalRotSpeed = 0.005f;
+
+	/** Wheter or not the user is using southpaw rotation */
+	bool UseSouthpawRotation = false;
+
+	/** Keyboard input from the player */
+	DirectX::XMFLOAT3 RelativeInput;
+
+};

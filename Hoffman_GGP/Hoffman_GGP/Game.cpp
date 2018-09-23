@@ -227,7 +227,7 @@ void Game::Update(float deltaTime, float totalTime)
 	{
 		XMFLOAT4 NewRot = Entities[i]->GetRotation();
 		NewRot.z = totalTime;
-		Entities[i]->SetRotation(NewRot);
+	//	Entities[i]->SetRotation(NewRot);
 	}
 }
 
@@ -338,7 +338,7 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 // --------------------------------------------------------
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
-	// Add any custom code here...
+	FlyingCamera->UpdateMouseInput(prevMousePos.x - x, prevMousePos.y - y);
 
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
