@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
+#include "Windows.h"			// GetAsyncKeyState
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -30,6 +31,14 @@ public:
 	*/
 	void Update(float DeltaTime);
 
+	/**
+	* Updates the projection matrix of the camera
+	* 
+	* @param aWidth		The aspect ration width
+	* @param aHeight	The aspect ration height
+	*/
+	void UpdateProjectionMatrix(unsigned int aWidth, unsigned int aHeight);
+
 	////////////////////////////////////////////////////
 	// Accessors
 	////////////////////////////////////////////////////
@@ -38,7 +47,7 @@ public:
 	const DirectX::XMFLOAT3 GetPosition() const;
 
 	/** Returns cameras current direction */
-	const DirectX::XMFLOAT3 GetDirection() const;
+	const DirectX::XMFLOAT3 GetForwardDirection() const;
 
 	/** Returns camera's current Rotation */
 	const float GetXAxisRotation() const;
@@ -58,18 +67,18 @@ private:
 	DirectX::XMFLOAT3 Position;
 	
 	/** Current direction of the camera */
-	DirectX::XMFLOAT3 Direction;
-
-	/** Rotation in the Y axis of this camera */
-	float RotationYAxis = 0.f;
+	DirectX::XMFLOAT3 ForwardDirection;
 
 	/** Rotation in the X axis of this camera */
 	float RotationXAxis = 0.f;
+
+	/** Rotation in the Y axis of this camera */
+	float RotationYAxis = 0.f;
 	
-	/** Current View matrix of this camera */
+	/** Current View matrix of this camera. Defines the viewer of the scene. */
 	DirectX::XMFLOAT4X4 ViewMatrix;
 
-	/** Current projection matrix of the camera */
+	/** Current projection matrix of the camera. Defines how the 3D scene is mapped onto 2d Screen */
 	DirectX::XMFLOAT4X4 ProjectionMatrix;
 };
 

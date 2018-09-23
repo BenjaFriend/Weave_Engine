@@ -27,6 +27,7 @@ Game::Game(HINSTANCE hInstance)
 	vertexShader = 0;
 	pixelShader	 = 0;
 	EntityCount	 = 0;
+	FlyingCamera = new Camera();
 
 #if defined(DEBUG) || defined(_DEBUG)
 	// Do we want a console window?  Probably only in debug mode
@@ -108,40 +109,7 @@ void Game::LoadShaders()
 // --------------------------------------------------------
 void Game::CreateMatrices()
 {
-	// Set up world matrix
-	// - In an actual game, each object will need one of these and they should
-	//    update when/if the object moves (every frame)
-	// - You'll notice a "transpose" happening below, which is redundant for
-	//    an identity matrix.  This is just to show that HLSL expects a different
-	//    matrix (column major vs row major) than the DirectX Math library
-	XMMATRIX W = XMMatrixIdentity();
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
-
-	// Create the View matrix
-	// - In an actual game, recreate this matrix every time the camera 
-	//    moves (potentially every frame)
-	// - We're using the LOOK TO function, which takes the position of the
-	//    camera and the direction vector along which to look (as well as "up")
-	// - Another option is the LOOK AT function, to look towards a specific
-	//    point in 3D space
-	XMVECTOR pos = XMVectorSet(0, 0, -5, 0);
-	XMVECTOR dir = XMVectorSet(0, 0, 1, 0);
-	XMVECTOR up = XMVectorSet(0, 1, 0, 0);
-	XMMATRIX V = XMMatrixLookToLH(
-		pos,     // The position of the "camera"
-		dir,     // Direction the camera is looking
-		up);     // "Up" direction in 3D space (prevents roll)
-	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
-
-	// Create the Projection matrix
-	// - This should match the window's aspect ratio, and also update anytime
-	//    the window resizes (which is already happening in OnResize() below)
-	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,		// Field of View Angle
-		(float)width / height,		// Aspect ratio
-		0.1f,						// Near clip plane distance
-		100.0f);					// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	FlyingCamera->UpdateProjectionMatrix(width, height);
 }
 
 
@@ -224,13 +192,7 @@ void Game::OnResize()
 	// Handle base-level DX resize stuff
 	DXCore::OnResize();
 
-	// Update our projection matrix since the window size changed
-	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,	// Field of View Angle
-		(float)width / height,	// Aspect ratio
-		0.1f,				  	// Near clip plane distance
-		100.0f);			  	// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	FlyingCamera->UpdateProjectionMatrix(width, height);
 }
 
 // --------------------------------------------------------
@@ -242,28 +204,8 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
 
-	XMFLOAT3 DeltaInput = XMFLOAT3(0.f, 0.f, 0.f);
-
-	if (GetAsyncKeyState('W') & 0x80000)
-	{
-		// Move forward
-		DeltaInput.y += 1.f;
-	}
-	if (GetAsyncKeyState('S') & 0x80000)
-	{
-		// Move down
-		DeltaInput.y -= 1.f;
-	}
-	if (GetAsyncKeyState('A') & 0x80000)
-	{
-		// Move left
-		DeltaInput.x -= 1.f;
-	}
-	if (GetAsyncKeyState('D') & 0x80000)
-	{
-		// Move right
-		DeltaInput.x += 1.f;
-	}
+	// Update the camera
+	FlyingCamera->Update(deltaTime);
 
 	// Update the entity scale and position
 	if (EntityCount > 0)
@@ -274,9 +216,9 @@ void Game::Update(float deltaTime, float totalTime)
 		Entities[0]->SetScale(SinTime, SinTime , SinTime );
 
 		Entities[0]->MoveAbsolute(
-			DeltaInput.x * Speed * deltaTime,
-			DeltaInput.y * Speed * deltaTime,
-			DeltaInput.z * Speed * deltaTime 
+			Speed * deltaTime,
+			Speed * deltaTime,
+			Speed * deltaTime 
 		);
 	}
 
@@ -287,10 +229,6 @@ void Game::Update(float deltaTime, float totalTime)
 		NewRot.z = totalTime;
 		Entities[i]->SetRotation(NewRot);
 	}
-
-		
-
-
 }
 
 // --------------------------------------------------------
@@ -335,8 +273,8 @@ void Game::Draw(float deltaTime, float totalTime)
 		CurrentEntity = Entities[i];
 
 		vertexShader->SetMatrix4x4("world", CurrentEntity->GetWorldMatrix());
-		vertexShader->SetMatrix4x4("view", viewMatrix);
-		vertexShader->SetMatrix4x4("projection", projectionMatrix);
+		vertexShader->SetMatrix4x4("view", FlyingCamera->GetViewMatrix());
+		vertexShader->SetMatrix4x4("projection", FlyingCamera->GetProjectMatrix());
 
 		// Draw the entity ---------------------------------------------------------
 		EnMesh	 = CurrentEntity->GetEntityMesh();
