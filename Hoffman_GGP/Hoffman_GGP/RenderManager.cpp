@@ -43,7 +43,7 @@ void RenderManager::AddEntity(Mesh * EntityMesh)
 {
 	if (EntityMesh)
 	{
-		Entities.push_back(new Entity(EntityMesh));
+		//Entities.push_back(new Entity(EntityMesh));
 		++EntityCount;
 	}
 }

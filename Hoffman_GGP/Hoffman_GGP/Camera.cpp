@@ -88,9 +88,9 @@ void Camera::UpdateViewMatrix(const float aDeltaTime)
 	
 
 	XMMATRIX V = XMMatrixLookToLH(
-		pos,     // The position of the "camera"
-		CurrentRotation,     // Direction the camera is looking
-		up// "Up" direction in 3D space (prevents roll)
+		pos,					// The position of the "camera"
+		CurrentRotation,		// Direction the camera is looking
+		up						// "Up" direction in 3D space (prevents roll)
 	);
 
 	// Store the view matrix 

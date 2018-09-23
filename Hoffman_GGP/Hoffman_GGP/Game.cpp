@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
+#include "Material.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -59,6 +60,8 @@ Game::~Game()
 	Entities.clear();
 	EntityCount = 0;
 	
+	if (BasicMaterial) delete BasicMaterial;
+
 	delete FlyingCamera;
 
 	// Delete the mesh
@@ -160,23 +163,25 @@ void Game::CreateBasicGeometry()
 	TestMesh2 = new Mesh(device, vertices2, 3, indices, 3);
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
+	BasicMaterial = new Material(vertexShader, pixelShader);
+
 	// Create an entity based on these meshes
-	Entities.push_back( new Entity(TestMesh2));
+	Entities.push_back( new Entity(TestMesh2, BasicMaterial));
 	++EntityCount;
 
-	Entities.push_back( new Entity(TestMesh2));
+	Entities.push_back( new Entity(TestMesh2, BasicMaterial));
 	++EntityCount;
 
-	Entities.push_back(new Entity(TestMesh1));
+	Entities.push_back(new Entity(TestMesh1, BasicMaterial));
 	++EntityCount;
 	Entities[EntityCount - 1]->MoveAbsolute(-1.f, -1.f, 0.f);
 
 
-	Entities.push_back(new Entity(TestMesh3));
+	Entities.push_back(new Entity(TestMesh3, BasicMaterial));
 	++EntityCount;
 	Entities[EntityCount - 1]->SetPosition(3.f, 0.f, 6.f);
 
-	Entities.push_back(new Entity(TestMesh3));
+	Entities.push_back(new Entity(TestMesh3, BasicMaterial));
 	++EntityCount;
 	Entities[EntityCount - 1]->SetScale(0.5f, 0.5f, 0.5f);
 
@@ -253,8 +258,8 @@ void Game::Draw(float deltaTime, float totalTime)
 	//  - These don't technically need to be set every frame...YET
 	//  - Once you start applying different shaders to different objects,
 	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader();
-	pixelShader->SetShader();
+	//vertexShader->SetShader();
+	//pixelShader->SetShader();
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might
@@ -271,10 +276,11 @@ void Game::Draw(float deltaTime, float totalTime)
 	{
 		// Calculate the world matrix ------------------------------------------
 		CurrentEntity = Entities[i];
+		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
-		vertexShader->SetMatrix4x4("world", CurrentEntity->GetWorldMatrix());
-		vertexShader->SetMatrix4x4("view", FlyingCamera->GetViewMatrix());
-		vertexShader->SetMatrix4x4("projection", FlyingCamera->GetProjectMatrix());
+		//vertexShader->SetMatrix4x4("world", CurrentEntity->GetWorldMatrix());
+		//vertexShader->SetMatrix4x4("view", FlyingCamera->GetViewMatrix());
+		//vertexShader->SetMatrix4x4("projection", FlyingCamera->GetProjectMatrix());
 
 		// Draw the entity ---------------------------------------------------------
 		EnMesh	 = CurrentEntity->GetEntityMesh();
@@ -288,7 +294,7 @@ void Game::Draw(float deltaTime, float totalTime)
 			0,     
 			0);    
 
-		vertexShader->CopyAllBufferData();
+		//vertexShader->CopyAllBufferData();
 	}
 
 	// Present the back buffer to the user

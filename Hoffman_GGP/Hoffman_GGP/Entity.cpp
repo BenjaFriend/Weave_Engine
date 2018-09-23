@@ -1,10 +1,12 @@
 #include "Entity.h"
 #include "Mesh.h"
+#include "Material.h"
+#include "SimpleShader.h"
 
 using namespace DirectX;
 
-Entity::Entity(Mesh* aMesh)
-	: EntityMesh (aMesh)
+Entity::Entity(Mesh* aMesh, Material* aMat)
+	: EntityMesh (aMesh), EntityMaterial (aMat)
 {
 	// Set default values for position, scale and rotatoin
 	Position	= DirectX::XMFLOAT3(0.f, 0.f, 0.f);
@@ -24,6 +26,7 @@ Entity::Entity(const Entity & aOther)
 Entity::~Entity()
 {
 	EntityMesh = nullptr;
+	EntityMaterial = nullptr;
 }
 
 void Entity::MoveRelative(const float aX, const float aY, const float aZ)
@@ -46,6 +49,24 @@ void Entity::MoveAbsolute(const float aX, const float aY, const float aZ)
 	Position.z += aZ;
 }
 
+void Entity::PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection)
+{
+	SimpleVertexShader* VertShader = EntityMaterial->GetVertexShader();
+	SimplePixelShader* PixelShader = EntityMaterial->GetPixelShader();
+
+	VertShader->SetMatrix4x4("world", GetWorldMatrix());
+	VertShader->SetMatrix4x4("view", aView);
+	VertShader->SetMatrix4x4("projection", aProjection);
+
+
+	VertShader->SetShader();
+	VertShader->CopyAllBufferData();
+
+	PixelShader->SetShader();
+	PixelShader->CopyAllBufferData();
+}
+
+
 ////////////////////////////////////////////////////
 // Accessors
 ////////////////////////////////////////////////////
@@ -53,6 +74,11 @@ void Entity::MoveAbsolute(const float aX, const float aY, const float aZ)
 Mesh * Entity::GetEntityMesh() const
 {
 	return EntityMesh;
+}
+
+const Material* Entity::GetMaterial() const
+{
+	return EntityMaterial;
 }
 
 const DirectX::XMFLOAT3 & Entity::GetPosition() const
@@ -125,3 +151,4 @@ XMFLOAT4X4 Entity::GetWorldMatrix()
 
 	return World4x4;
 }
+

@@ -10,6 +10,7 @@
 class Mesh;
 class Entity;
 class Camera;
+class Material;
 
 class Game 
 	: public DXCore
@@ -52,7 +53,9 @@ private:
 	SimplePixelShader* pixelShader;
 
 	// Flying camera for initial testing
-	Camera* FlyingCamera;
+	Camera* FlyingCamera = nullptr;
+
+	Material* BasicMaterial = nullptr;
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.

@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
+class Material;
 
 /**
 * @brief Represents a game entity and their transofrmations.
@@ -21,8 +22,9 @@ public:
 	* 
 	* 
 	* @param aMesh	A pointer to this entity's mesh
+	* @param aMat	A material for this entity to use
 	*/
-	Entity(Mesh * aMesh);	
+	Entity(Mesh * aMesh, Material* aMat);
 	
 	/** 
 	* Copy constructor
@@ -58,6 +60,9 @@ public:
 
 	/** Return's this entity's mesh */
 	Mesh * GetEntityMesh() const;
+
+	/** Return's this entity's material */
+	const Material* GetMaterial() const;
 
 	/** Return's this entity's current position */
 	const DirectX::XMFLOAT3 & GetPosition() const;
@@ -112,11 +117,17 @@ public:
 	*/
 	DirectX::XMFLOAT4X4 GetWorldMatrix();
 
+	/** Sets the material's shader data and activates the shaders */
+	void PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection);
+
 private:
 
 	// TODO: Make this a smart pointer at some point
 	/** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
-	Mesh * EntityMesh = nullptr;
+	Mesh* EntityMesh = nullptr;
+
+	/** This entity's material */
+	Material* EntityMaterial = nullptr;
 
 	/** The current positoin of this entitiy */
 	DirectX::XMFLOAT3 Position;
