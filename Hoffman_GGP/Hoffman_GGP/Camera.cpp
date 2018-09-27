@@ -23,19 +23,22 @@ void Camera::Update(const float aDeltaTime)
 	RelativeInput.z = 0.f;
 	RelativeInput.y = 0.f;
 
-	if (GetAsyncKeyState('W') & 0x80000)
-	{
-		RelativeInput.z += 1.f;
-	}
-	if (GetAsyncKeyState('S') & 0x80000)
+    InputManager* input = InputManager::GetInstance();
+
+
+    if ( input->IsAsyncKeyDown( 'W' ) )
+    {
+        RelativeInput.z += 1.f;
+    }
+	if ( input->IsAsyncKeyDown( 'S' ))
 	{
 		RelativeInput.z -= 1.f;
 	}
-	if (GetAsyncKeyState('A') & 0x80000)
+	if ( input->IsAsyncKeyDown( 'A' ) )
 	{
 		RelativeInput.x -= 1.f;
 	}
-	if (GetAsyncKeyState('D') & 0x80000)
+	if ( input->IsAsyncKeyDown( 'D' ) )
 	{
 		RelativeInput.x += 1.f;
 	}

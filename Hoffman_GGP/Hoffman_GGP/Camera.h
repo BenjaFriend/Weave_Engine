@@ -1,8 +1,8 @@
 #pragma once
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
-#include "Windows.h"			// GetAsyncKeyState
 #include <stdio.h>
+#include "InputManager.h"   // Input
 
 /////////////////////////////////////////////////
 // Forward Declarations

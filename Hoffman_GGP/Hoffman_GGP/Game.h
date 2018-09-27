@@ -4,6 +4,7 @@
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 #include <vector>
+#include "InputManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
