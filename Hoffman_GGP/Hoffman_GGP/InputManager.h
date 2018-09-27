@@ -39,4 +39,7 @@ private:
     /** The instance of the InputManager */
     static InputManager* Instance;
 
+    // TODO: The ProcessMessage function from windows in DXCore already
+    // which is where I would wanna put function pointers and stuff
+
 };
