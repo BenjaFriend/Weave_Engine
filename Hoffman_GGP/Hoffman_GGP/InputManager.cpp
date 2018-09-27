@@ -1,5 +1,8 @@
 #include "InputManager.h"
 
+// Singleton requirement
+InputManager* InputManager::Instance;
+
 InputManager::InputManager()
 {
     printf( "Input Manager ctor\n" );
