@@ -6,27 +6,25 @@
 // Forward Declarations
 struct Vertex;	
 
-/**
-* @breif  Generic class for handling the vertex and index buffers of meshes
-*
-* @author Ben Hoffman
-*/
+/// <summary>
+/// Generic class for handling the vertex and index buffers of meshes
+/// </summary>
+/// <author>Ben Hoffman</author>
 class Mesh
 {
 public:
 	
-	/** 
-	* @brief				Creates a mesh with the given vertecies and index paramaters
-	* 
-	* @param aDevice		The DX11 device to create the buffers
-	* @param aVerts			Vertcies to use for this mesh
-	* @param aNumVerts		Number of verticies this mesh has
-	* @param aIndecies		The index locations of this mesh
-	* @param aIndexCount	Number of indecies this msh has
-	*/
+    /// <summary>
+    /// Creates a mesh with the given vertecies and index parameters
+    /// </summary>
+    /// <param name="aDevice">The DX11 device to create the buffers</param>
+    /// <param name="aVerts">Vertcies to use for this mesh</param>
+    /// <param name="aNumVerts">Number of verticies this mesh has</param>
+    /// <param name="aIndecies">The index locations of this mesh</param>
+    /// <param name="aIndexCount">Number of indecies this msh has</param>
 	Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount);
 	
-	/** Destrucor to release DX11 objects */
+	/** Destructor to release DX11 objects */
 	~Mesh();
 
 	//////////////////////////////////////////////////////////////////
@@ -37,7 +35,7 @@ public:
 	ID3D11Buffer* const GetVertexBuffer() const;
 	/** Pointer to this object's index buffer */
 	ID3D11Buffer* const GetIndexBuffer() const;
-	/** Number of indecies are in the index buffer */
+	/** Number of indicies are in the index buffer */
 	const UINT GetIndexCount() const;
 
 
@@ -48,7 +46,7 @@ private:
 
 	/**
 	* The index buffer -- Integers which specify the order
-	* the GPU should use the verticies
+	* the GPU should use the vertices's
 	*/
 	ID3D11Buffer* IndexBuffer = nullptr;
 
