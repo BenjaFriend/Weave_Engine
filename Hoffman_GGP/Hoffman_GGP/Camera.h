@@ -7,14 +7,12 @@
 /////////////////////////////////////////////////
 // Forward Declarations
 
-
-/**
-* Camera class capable of rendering entities, 
-* determining the view and projection matrices,
-* as well as some player input.
-* 
-* @author Ben Hoffman
-*/
+/// <summary>
+/// Camera class capable of rendering entities, 
+/// determining the view and projection matrices,
+/// as well as some player input.
+/// </summary>
+/// <author>Ben Hoffman</author>
 class Camera
 {
 public:
@@ -25,28 +23,25 @@ public:
 	/** Destructor for camera class */
 	~Camera();
 
-	/**
-	* Update camera matricies appropriately. 
-	* 
-	* @param DeltaTime		Delta Time of this frame
-	*/
+    /// <summary>
+    /// Update camera matrices appropriately. 
+    /// </summary>
+    /// <param name="aDeltaTime">Delta Time of this frame</param>
 	void Update(const float aDeltaTime);
 
-	/**
-	* Updates the projection matrix of the camera
-	* 
-	* @param aWidth		The aspect ration width
-	* @param aHeight	The aspect ration height
-	*/
+    /// <summary>
+    /// Updates the projection matrix of the camera
+    /// </summary>
+    /// <param name="aWidth">The aspect ration width</param>
+    /// <param name="aHeight">The aspect ration height</param>
 	void UpdateProjectionMatrix(const unsigned int aWidth, const unsigned int aHeight);
 
-	/**
-	* Updates the camera's roation based on the mouse movement
-	* of the player scaled by this cameras input speed
-	*
-	* @param aDeltaMouseX		The delta mouse input in X axis
-	* @param aDeltaMouseY		The delta mouse input in Y axis
-	*/
+    /// <summary>
+    /// Updates the camera's rotation based on the mouse movement
+    /// of the player scaled by this cameras input speed
+    /// </summary>
+    /// <param name="aDeltaMouseX">The delta mouse input in X axis</param>
+    /// <param name="aDeltaMouseY">The delta mouse input in Y axis</param>
 	void UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY);
 
 	////////////////////////////////////////////////////
@@ -106,7 +101,7 @@ private:
 	/** The vertical rotation speed of the camera */
 	const float VerticalRotSpeed = 0.005f;
 
-	/** Wheter or not the user is using southpaw rotation */
+	/** Whether or not the user is using southpaw rotation */
 	bool UseSouthpawRotation = false;
 
 	/** Keyboard input from the player */
