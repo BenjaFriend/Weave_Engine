@@ -4,7 +4,6 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Material.h"
-#include "Lights.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -286,6 +285,13 @@ void Game::Draw(float deltaTime, float totalTime)
 	{
 		// Calculate the world matrix ------------------------------------------
 		CurrentEntity = Entities[i];
+
+        // Set the pixel shader before we draw each entity
+        pixelShader->SetData(
+            "light",
+            &DirectLight,
+            sizeof( DirectionalLight ) );
+
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
 		// Draw the entity ---------------------------------------------------------

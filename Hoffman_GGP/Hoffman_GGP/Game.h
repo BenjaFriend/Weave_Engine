@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include <vector>
 #include "InputManager.h"
+#include "Lights.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -12,7 +13,6 @@ class Mesh;
 class Entity;
 class Camera;
 class Material;
-struct DirectionalLight;
 
 class Game 
 	: public DXCore
