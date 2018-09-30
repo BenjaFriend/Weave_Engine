@@ -40,6 +40,7 @@ private:
 	void LoadShaders(); 
 	void CreateMatrices();
 	void CreateBasicGeometry();
+    void InitLights();
 
 	// The meshes to use with the Mesh class, assignment 2
 	Mesh* TestMesh1 = nullptr;
@@ -59,7 +60,10 @@ private:
 
 	Material* BasicMaterial = nullptr;
 
+    // Lights
     DirectionalLight DirectLight;
+    DirectionalLight DirectLight_Two;
+
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.

@@ -82,10 +82,7 @@ void Game::Init()
 	LoadShaders();
 	CreateMatrices();
 	CreateBasicGeometry();
-
-    DirectLight.AmbientColor = XMFLOAT4( 0.1, 0.1, 0.1, 1.0 );
-    DirectLight.DiffuseColor = XMFLOAT4( 0.0, 0.0, 1.0, 1.0 );
-    DirectLight.Direction = XMFLOAT3( 1.0, -1.0, 0.0 );
+    InitLights();
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -108,7 +105,16 @@ void Game::LoadShaders()
 	pixelShader->LoadShaderFile(L"PixelShader.cso");
 }
 
+void Game::InitLights()
+{
+    DirectLight.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );  // Ambient color is the color when we are in shadow
+    DirectLight.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.5f, 1.0f );
+    DirectLight.Direction    = XMFLOAT3( 1.0f, -1.0f, 0.0f );
 
+    DirectLight_Two.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
+    DirectLight_Two.DiffuseColor = XMFLOAT4( 1.0f, 0.1f, 0.1f, 1.0f );
+    DirectLight_Two.Direction    = XMFLOAT3( 1.0f, -1.0f, 0.5f );
+}
 
 // --------------------------------------------------------
 // Initializes the matrices necessary to represent our geometry's 
@@ -169,7 +175,7 @@ void Game::CreateBasicGeometry()
     //TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
     TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
 
-	TestMesh2 = new Mesh(device, vertices2, 3, indices, 3);
+	TestMesh2 = new Mesh( device, "Assets/Models/torus.obj" );
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
 	BasicMaterial = new Material(vertexShader, pixelShader);
@@ -286,11 +292,18 @@ void Game::Draw(float deltaTime, float totalTime)
 		// Calculate the world matrix ------------------------------------------
 		CurrentEntity = Entities[i];
 
+        pixelShader->SetData(
+            "light_green",
+            &DirectLight_Two,
+            sizeof( DirectionalLight ) 
+        );
+
         // Set the pixel shader before we draw each entity
         pixelShader->SetData(
             "light",
             &DirectLight,
-            sizeof( DirectionalLight ) );
+            sizeof( DirectionalLight )
+        );
 
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
