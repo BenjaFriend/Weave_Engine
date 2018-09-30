@@ -12,6 +12,7 @@ class Mesh;
 class Entity;
 class Camera;
 class Material;
+struct DirectionalLight;
 
 class Game 
 	: public DXCore
@@ -57,6 +58,8 @@ private:
 	Camera* FlyingCamera = nullptr;
 
 	Material* BasicMaterial = nullptr;
+
+    DirectionalLight DirectLight;
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.

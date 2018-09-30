@@ -7,23 +7,20 @@
 class Mesh;
 class Material;
 
-/**
-* @brief Represents a game entity and their transofrmations.
-* 
-* @author Ben Hoffman
-*/
+/// <summary>
+///  Represents a game entity and their transformations.
+/// </summary>
+/// <author>Ben Hoffman</author>
 class Entity
 {
 
 public:
 
-	/** 
-	* Constructor for this entity
-	* 
-	* 
-	* @param aMesh	A pointer to this entity's mesh
-	* @param aMat	A material for this entity to use
-	*/
+    /// <summary>
+    /// Constructor for this entity
+    /// </summary>
+    /// <param name="aMesh">A pointer to this entity's mesh</param>
+    /// <param name="aMat">A material for this entity to use</param>
 	Entity(Mesh * aMesh, Material* aMat);
 	
 	/** 
@@ -36,35 +33,40 @@ public:
 	/** Virtual destructor for this entity */
 	virtual ~Entity();
 
-	/**
-	* Move the entity relative to the direction it is facing 
-	*
-	* @param aX		new X value to add to this position
-	* @param aY		new Y value to add to this position
-	* @param aZ		new Z value to add to this position
-	*/
+    /// <summary>
+    /// Move the entity relative to the direction it is facing 
+    /// </summary>
+    /// <param name="aX">new X value to add to this position</param>
+    /// <param name="aY">new Y value to add to this position</param>
+    /// <param name="aZ">new Z value to add to this position</param>
 	void MoveRelative(const float aX, const float aY, const float aZ);
 
-	/**
-	* Adds to the position NOT relative to the direction you are facing
-	*
-	* @param aX		new X value to add to this position
-	* @param aY		new Y value to add to this position
-	* @param aZ		new Z value to add to this position
-	*/
+    /// <summary>
+    /// Adds to the position NOT relative to the direction you are facing
+    /// </summary>
+    /// <param name="aX">new X value to add to this position</param>
+    /// <param name="aY">new Y value to add to this position</param>
+    /// <param name="aZ">new Z value to add to this position</param>
 	void MoveAbsolute(const float aX, const float aY, const float aZ);
+
+    /// <summary>
+    /// Sets the material's shader data and activates the shaders
+    /// </summary>
+    /// <param name="aView">View matrix</param>
+    /// <param name="aProjection">Project matrix</param>
+    void PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection );
 
 	////////////////////////////////////////////////////
 	// Accessors
 	////////////////////////////////////////////////////
 
-	/** Return's this entity's mesh */
+	/** Returns this entity's mesh */
 	Mesh * GetEntityMesh() const;
 
-	/** Return's this entity's material */
+	/** Returns this entity's material */
 	const Material* GetMaterial() const;
 
-	/** Return's this entity's current position */
+	/** Returns this entity's current position */
 	const DirectX::XMFLOAT3 & GetPosition() const;
 
 	/** Set the position of this entity
@@ -73,41 +75,38 @@ public:
 	*/
 	void SetPosition(const DirectX::XMFLOAT3 & aNewPos);
 
-	/** Set the position of this enetiy 
-	*
-	* @param aX		new X value of the position
-	* @param aY		new Y value of the position
-	* @param aZ		new Z value of the position
-	*/
+    /// <summary>
+    /// Set the position of this entity 
+    /// </summary>
+    /// <param name="aX">new X value of the position</param>
+    /// <param name="aY">new Y value of the position</param>
+    /// <param name="aZ">new Z value of the position</param>
 	void SetPosition(const float aX, const float aY, const float aZ);
 
-	/** Return's this entity's current scale */
+	/** Returns this entity's current scale */
 	const DirectX::XMFLOAT3 & GetScale() const;
 
-	/**
-	* Set the position of this entity 
-	* 
-	* @param aNewScale	The new scale of this object
-	*/
+    /// <summary>
+    /// Set the position of this entity 
+    /// </summary>
+    /// <param name="aNewScale">The new scale of this object</param>
 	void SetScale(const DirectX::XMFLOAT3 & aNewScale);
 
-	/** 
-	* Set the scale of the this entity 
-	*
-	* @param aX		new X value of the scale
-	* @param aY		new Y value of the scale
-	* @param aZ		new Z value of the scale
-	*/
+    /// <summary>
+    /// Set the scale of the this entity 
+    /// </summary>
+    /// <param name="aX">new X value of the scale</param>
+    /// <param name="aY">new Y value of the scale</param>
+    /// <param name="aZ">new Z value of the scale</param>
 	void SetScale(const float aX, const float aY, const float aZ);
 
-	/** Return's this entity's current rotation */
+	/** Returns this entity's current rotation */
 	const DirectX::XMFLOAT4 & GetRotation() const;
 
-	/** 
-	* Set the rotation of this entity 
-	* 
-	* @param aNewRot	The new rotation of this object
-	*/
+    /// <summary>
+    /// Set the rotation of this entity 
+    /// </summary>
+    /// <param name="aNewRot">The new rotation of this object</param>
 	void SetRotation(const DirectX::XMFLOAT4 & aNewRot);
 
 	/**
@@ -117,8 +116,6 @@ public:
 	*/
 	DirectX::XMFLOAT4X4 GetWorldMatrix();
 
-	/** Sets the material's shader data and activates the shaders */
-	void PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection);
 
 private:
 
@@ -129,13 +126,13 @@ private:
 	/** This entity's material */
 	Material* EntityMaterial = nullptr;
 
-	/** The current positoin of this entitiy */
+	/** The current position of this entity */
 	DirectX::XMFLOAT3 Position;
 
-	/** The current Scale of this entitiy */
+	/** The current Scale of this entity */
 	DirectX::XMFLOAT3 Scale;
 
-	/** The current rotation of this entitiy */
+	/** The current rotation of this entity */
 	DirectX::XMFLOAT4 Rotation;
 
 };

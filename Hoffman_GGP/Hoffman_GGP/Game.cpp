@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Material.h"
+#include "Lights.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -82,6 +83,10 @@ void Game::Init()
 	LoadShaders();
 	CreateMatrices();
 	CreateBasicGeometry();
+
+    DirectLight.AmbientColor = XMFLOAT4( 0.1, 0.1, 0.1, 1.0 );
+    DirectLight.DiffuseColor = XMFLOAT4( 0.0, 0.0, 1.0, 1.0 );
+    DirectLight.Direction = XMFLOAT3( 1.0, -1.0, 0.0 );
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
