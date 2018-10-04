@@ -72,22 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(ProjectDir)Output\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,7 +96,7 @@
       <SDLCheck>false</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)Assets\ $(OutDir)</Command>
+      <Command>xcopy /E $(SolutionDir)Assets $(OutDir)Assets\</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -107,7 +107,7 @@
       <SDLCheck>false</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)Assets\ $(OutDir)</Command>
+      <Command>xcopy /E $(SolutionDir)Assets $(OutDir)Assets\</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -125,7 +125,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy the assets of the game to the output directory</Message>
-      <Command>xcopy $(SolutionDir)Assets\ $(OutDir)</Command>
+      <Command>xcopy /E $(SolutionDir)Assets $(OutDir)Assets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,7 +142,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy the assets of the game to the output directory</Message>
-      <Command>xcopy $(SolutionDir)Assets\ $(OutDir)</Command>
+      <Command>xcopy /E $(SolutionDir)Assets $(OutDir)Assets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
