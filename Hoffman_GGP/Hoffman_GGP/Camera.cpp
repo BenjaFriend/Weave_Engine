@@ -107,7 +107,7 @@ void Camera::UpdateProjectionMatrix(const unsigned int aWidth, const unsigned in
 	XMStoreFloat4x4(&ProjectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
 }
 
-void Camera::UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY)
+void Camera::UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY)
 {
 	RotationXAxis += aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
 	if (RotationXAxis < -90)
