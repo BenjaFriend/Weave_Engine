@@ -22,6 +22,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 */bin/
+*/Intermediate
+*/Output
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -51,7 +53,7 @@ artifacts/
 *_i.h
 *.ilk
 *.meta
-*.obj
+# *.obj
 *.pch
 *.pdb
 *.pgc

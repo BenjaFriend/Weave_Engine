@@ -42,7 +42,7 @@ public:
     /// </summary>
     /// <param name="aDeltaMouseX">The delta mouse input in X axis</param>
     /// <param name="aDeltaMouseY">The delta mouse input in Y axis</param>
-	void UpdateMouseInput(const float aDeltaMouseX, const float aDeltaMouseY);
+	void UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY);
 
 	////////////////////////////////////////////////////
 	// Accessors
