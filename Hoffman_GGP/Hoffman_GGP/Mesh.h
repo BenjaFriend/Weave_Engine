@@ -1,5 +1,7 @@
 #pragma once
 
+#include "DebugSettings.h"
+
 #include "d3d11.h"	// ID3D11Buffer
 #include <vector>   // std::vector
 #include <iostream> // std::ifstream

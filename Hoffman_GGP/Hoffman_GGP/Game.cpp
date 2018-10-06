@@ -68,6 +68,9 @@ Game::~Game()
 	delete TestMesh1;
 	delete TestMesh2;
 	delete TestMesh3;
+
+    InputManager::Release();
+
 }
 
 // --------------------------------------------------------

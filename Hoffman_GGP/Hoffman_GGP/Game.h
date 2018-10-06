@@ -1,12 +1,15 @@
 #pragma once
 
+#include "DebugSettings.h"
+
+
 #include "DXCore.h"
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 #include <vector>
 #include "InputManager.h"
 #include "Lights.h"
-#include "WICTextureLoader.h"
+//#include "WICTextureLoader.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

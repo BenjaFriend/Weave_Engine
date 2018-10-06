@@ -1,5 +1,8 @@
 #pragma once
 
+#include "DebugSettings.h"
+
+
 /////////////////////////////////////////////////
 // Forward Declarations
 

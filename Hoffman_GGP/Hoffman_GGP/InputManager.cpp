@@ -24,6 +24,14 @@ InputManager * InputManager::GetInstance()
     return Instance;
 }
 
+void InputManager::Release()
+{
+    if ( Instance )
+    {
+        delete Instance;
+    }
+}
+
 bool InputManager::IsAsyncKeyDown( int vKey )
 {
     // TODO: Replace with 

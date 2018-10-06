@@ -1,4 +1,5 @@
 #pragma once
+#include "DebugSettings.h"
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 

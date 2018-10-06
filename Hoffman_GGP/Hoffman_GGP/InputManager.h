@@ -18,6 +18,12 @@ public:
     static InputManager* GetInstance();
 
     /// <summary>
+    ///  Release the instance of the input manager
+    /// </summary>
+    static void Release();
+
+
+    /// <summary>
     /// Check if the asynchronous key is down at this moment
     /// </summary>
     /// <param name="vKey">The key to check</param>
