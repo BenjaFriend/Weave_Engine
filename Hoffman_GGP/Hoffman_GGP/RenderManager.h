@@ -9,11 +9,10 @@ class Entity;
 class Mesh;
 struct Vertex;
 
-/**
-* Controls the rendering of meshes and entites 
-* 
-* @author Ben Hoffman
-*/
+/// <summary>
+/// Controls the rendering of meshes and entities 
+/// </summary>
+/// <author>Ben Hoffman</author>
 class RenderManager
 {
 public:
@@ -23,33 +22,30 @@ public:
 	/** Clean up entities and meshes */
 	~RenderManager();
 
-	/** 
-	* Update all current entities
-	* @param	DeltaTime
-	*/
-	void Update(float DeltaTime);
+    /// <summary>
+    /// all current entities
+    /// </summary>
+    /// <param name="DeltaTime">Time between frames</param>
+	void Update(const float DeltaTime);
 
 	/** Draw all entities in the scene */
 	void DrawEntites();
 
-	/** 
-	* Add an entity to our rendermanager
-	* 
-	* @param EntityMesh		The mesh to use for this entity
-	*/
+    /// <summary>
+    /// Add an entity to our render manager
+    /// </summary>
+    /// <param name="EntityMesh">The mesh to use for this entity</param>
 	void AddEntity(Mesh* EntityMesh);
 
-	/**
-	* @brief				Creates a mesh and add it to our mesh vector
-	* 
-	* @param aDevice		The DX11 device to create the buffers
-	* @param aVerts			Vertcies to use for this mesh
-	* @param aNumVerts		Number of verticies this mesh has
-	* @param aIndecies		The index locations of this mesh
-	* @param aIndexCount	Number of indecies this msh has
-	*/
+    /// <summary>
+    /// Creates a mesh and add it to our mesh vector
+    /// </summary>
+    /// <param name="aDevice">The DX11 device to create the buffers</param>
+    /// <param name="aVerts">Vertcies to use for this mesh</param>
+    /// <param name="aNumVerts">Number of verticies this mesh has</param>
+    /// <param name="aIndecies">The index locations of this mesh</param>
+    /// <param name="aIndexCount">Number of indecies this msh has</param>
 	void AddMesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount);
-
 
 
 private:
@@ -57,7 +53,7 @@ private:
 	/** Creation of meshes here */
 	void InitalizeMeshes();
 
-	/** Creation of entites here */
+	/** Creation of entities here */
 	void InitalizeEntities();
 
 	/** The current entity count */
