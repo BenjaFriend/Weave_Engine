@@ -169,10 +169,6 @@ void Game::CreateBasicGeometry()
 	UINT indices[] = { 0, 1, 2 };
 
 
-	//TestMesh1 = new Mesh(device, vertices1, 3, indices, 3);
-
-    // If we are in the EXE ... 
-    //TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
     TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
 
 	TestMesh2 = new Mesh( device, "Assets/Models/torus.obj" );

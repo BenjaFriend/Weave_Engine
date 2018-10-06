@@ -6,6 +6,7 @@
 #include <vector>
 #include "InputManager.h"
 #include "Lights.h"
+#include "WICTextureLoader.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
