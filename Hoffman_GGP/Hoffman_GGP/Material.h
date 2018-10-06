@@ -1,27 +1,24 @@
 #pragma once
 
-
 /////////////////////////////////////////////////
 // Forward Declarations
+
 class SimpleVertexShader;
 class SimplePixelShader;
 
-/**
-* @breif Material class to define how the surface of a mesh looks
-* when drawn
-*
-* @author Ben Hoffman
-*/
+/// <summary>
+///  Material class to define how the surface of a mesh looks when drawn
+/// </summary>
+/// <author>Ben Hoffman</author>
 class Material
 {
 public:
 
-	/**
-	* Constructor for this material
-	* 
-	* @param aVertShader	Pointer to the vertex shader for this material
-	* @param aPixShader 	Pointer to the pixel shader for this material
-	*/
+    /// <summary>
+    /// Constructor for this material
+    /// </summary>
+    /// <param name="aVertShader">Pointer to the vertex shader for this material</param>
+    /// <param name="aPixShader">Pointer to the pixel shader for this material</param>
 	Material(SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader);
 
 	/** Destructor of the material */
