@@ -63,6 +63,16 @@ void Camera::Update(const float aDeltaTime)
 	UpdateViewMatrix(aDeltaTime);
 }
 
+void Camera::SetDoRotation( bool aDoRot )
+{
+    DoRotation = aDoRot;
+}
+
+const bool Camera::GetDoRotation() const
+{
+    return DoRotation;
+}
+
 void Camera::UpdateViewMatrix(const float aDeltaTime)
 {
 	// Check if we want to invert the rotation axis (southpaw) or not
@@ -109,6 +119,8 @@ void Camera::UpdateProjectionMatrix(const unsigned int aWidth, const unsigned in
 
 void Camera::UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY)
 {
+    if ( !DoRotation ) return;
+
 	RotationXAxis += aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
 	if (RotationXAxis < -90)
 	{

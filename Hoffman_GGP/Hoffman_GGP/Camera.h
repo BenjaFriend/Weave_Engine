@@ -72,6 +72,15 @@ public:
 	/** Returns the current vertical rotation speed */
 	const float GetVerticalRotSpeed() const;
 
+    /// <summary>
+    /// Set if the camera should be rotating
+    /// </summary>
+    /// <param name="aDoRot">Should rotate</param>
+    void SetDoRotation( bool aDoRot );
+
+    /** Returns if the camera is doing rotation */
+    const bool GetDoRotation() const;
+
 private:
 
 	/** Update the view matrix of the camera */
@@ -106,5 +115,8 @@ private:
 
 	/** Keyboard input from the player */
 	DirectX::XMFLOAT3 RelativeInput;
+
+    /** If true than the camera will rotate */
+    bool DoRotation = false;
 
 };

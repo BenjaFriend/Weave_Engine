@@ -145,12 +145,12 @@ void Game::LoadShaders()
 void Game::InitLights()
 {
     DirectLight.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
-    DirectLight.DiffuseColor = XMFLOAT4( 0.8f, 0.8f, 0.8f, 1.0f );
+    DirectLight.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
     DirectLight.Direction    = XMFLOAT3( 1.0f, 0.0f, 0.0f );
 
     DirectLight_Two.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
-    DirectLight_Two.DiffuseColor = XMFLOAT4( 1.0f, 0.1f, 0.1f, 1.0f );
-    DirectLight_Two.Direction    = XMFLOAT3( 1.0f, -1.0f, 0.5f );
+    DirectLight_Two.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
+    DirectLight_Two.Direction    = XMFLOAT3( -1.0f, 0.0f, 0.5f );
 }
 
 // --------------------------------------------------------
@@ -269,7 +269,7 @@ void Game::Draw(float deltaTime, float totalTime)
 		CurrentEntity = Entities[i];
 
         pixelShader->SetData(
-            "light_green",
+            "light_two",
             &DirectLight_Two,
             sizeof( DirectionalLight ) 
         );
@@ -322,6 +322,7 @@ void Game::Draw(float deltaTime, float totalTime)
 void Game::OnMouseDown(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
+    FlyingCamera->SetDoRotation( true );
 
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
@@ -339,6 +340,8 @@ void Game::OnMouseDown(WPARAM buttonState, int x, int y)
 void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
+    // Reverse the camera direction
+    FlyingCamera->SetDoRotation( false );
 
 	// We don't care about the tracking the cursor outside
 	// the window anymore (we're not dragging if the mouse is up)

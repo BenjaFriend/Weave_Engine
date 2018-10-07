@@ -38,11 +38,11 @@ struct VertexToPixel
 
 float4 CalculateLight( float3 norm, DirectionalLight aLight )
 {
-    float3 lightNormDir = normalize( -light.Direction );
+    float3 lightNormDir = normalize( -aLight.Direction );
 
     float NdotL = saturate( dot( norm, lightNormDir ) );
 
-    return light.AmbientColor + light.DiffuseColor * NdotL;
+    return aLight.AmbientColor + aLight.DiffuseColor * NdotL;
 }
 
 // --------------------------------------------------------
@@ -70,15 +70,14 @@ float4 main(VertexToPixel input) : SV_TARGET
 
     input.normal = normalize( mul( normalFromMap, TBN ) );
 
-    float dirLightAmount = saturate( dot( input.normal, -normalize( light.Direction ) ) );
+    //float dirLightAmount = saturate( dot( input.normal, -normalize( light.Direction ) ) );
 
-    float4 lightColor = CalculateLight( input.normal, light );
-
+    float4 lightColor = CalculateLight( input.normal, light ) + CalculateLight( input.normal, light_two );
+    
     // Texture Sample
-    // Something is wrong when I return this
     float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
 
-    return float4 ( light.DiffuseColor * dirLightAmount * textureColor.rgb , 1 );
+    return float4 ( lightColor * textureColor.rgb , 1 );
+    //return float4 ( light.DiffuseColor * dirLightAmount * textureColor.rgb , 1 );
 
-    //return float4( textureColor.rgb * lightColor, 1 );
 }
