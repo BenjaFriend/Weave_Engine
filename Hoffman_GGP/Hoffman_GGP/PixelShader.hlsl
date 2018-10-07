@@ -35,7 +35,6 @@ struct VertexToPixel
 };
 
 
-
 float4 CalculateLight( float3 norm, DirectionalLight aLight )
 {
     float3 lightNormDir = normalize( -aLight.Direction );

@@ -126,7 +126,7 @@ void Camera::UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY)
 	{
 		RotationXAxis = -90;
 	}
-	else if (RotationXAxis > -85)
+	else if (RotationXAxis > -80)
 	{
 		RotationXAxis = -85;
 	}
@@ -136,7 +136,7 @@ void Camera::UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY)
 	{
 		RotationYAxis = -90;
 	}
-	else if (RotationYAxis > -85)
+	else if (RotationYAxis > -80)
 	{
 		RotationYAxis = -85;
 	}
