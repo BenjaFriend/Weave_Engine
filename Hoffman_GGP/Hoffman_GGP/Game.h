@@ -48,7 +48,6 @@ private:
 
 	// The meshes to use with the Mesh class, assignment 2
 	Mesh* TestMesh1 = nullptr;
-	Mesh* TestMesh2 = nullptr;
 
 	// Entity list
 	std::vector<Entity*> Entities;

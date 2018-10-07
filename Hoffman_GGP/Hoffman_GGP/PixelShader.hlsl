@@ -10,6 +10,9 @@ cbuffer externalData : register( b0 )
 {
     DirectionalLight light;
     DirectionalLight light_two;
+
+
+    float3 CameraPosition; // Needed for specular (reflection) calculation
 };
 
 // Define globals for the texture samples
@@ -24,14 +27,10 @@ SamplerState BasicSampler : register( s0 );
 // - Each variable must have a semantic, which defines its usage
 struct VertexToPixel
 {
-    // Data type
-    //  |
-    //  |   Name          Semantic
-    //  |    |                |
-    //  v    v                v
     float4 position		: SV_POSITION;	// XYZW position (System Value Position)
     float2 uv           : TEXCOORD;
     float3 normal       : NORMAL;
+    float3 tangent		: TANGENT;
     float3 worldPos		: POSITION; // The world position of this vertex
 };
 
@@ -57,21 +56,29 @@ float4 CalculateLight( float3 norm, DirectionalLight aLight )
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
+    // Re-normalize interpolated data
     input.normal = normalize( input.normal );
-    
-    //float3 dirToCamera = normalize( CameraPosition - input.worldPos );
-
-
-    float4 lightColor = 
-        CalculateLight( input.normal, light ) +
-        CalculateLight( input.normal, light_two );
+    input.tangent = normalize( input.tangent );
 
     float3 normalFromMap = NormalTexture.Sample( BasicSampler, input.uv ).rgb * 2 - 1;
 
+    // Create my TBN matrix to convert from tangent-space to world-space
+    float3 N = input.normal;
+    float3 T = normalize( input.tangent - N * dot( input.tangent, N ) ); // Ensure tangent is 90 degrees from normal
+    float3 B = cross( T, N );
+    float3x3 TBN = float3x3( T, B, N );
+
+    input.normal = normalize( mul( normalFromMap, TBN ) );
+
+    float dirLightAmount = saturate( dot( input.normal, -normalize( light.Direction ) ) );
+
+    float4 lightColor = CalculateLight( input.normal, light );
 
     // Texture Sample
     // Something is wrong when I return this
     float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
 
-    return float4( textureColor.rgb * lightColor, 1 );
+    return float4 ( light.DiffuseColor * dirLightAmount * textureColor.rgb , 1 );
+
+    //return float4( textureColor.rgb * lightColor, 1 );
 }

@@ -19,14 +19,10 @@ cbuffer externalData : register(b0)
 // - Each variable must have a semantic, which defines its usage
 struct VertexShaderInput
 { 
-	// Data type
-	//  |
-	//  |   Name          Semantic
-	//  |    |                |
-	//  v    v                v
 	float3 position		: POSITION;     // XYZ position
     float2 uv           : TEXCOORD;
     float3 normal       : NORMAL;
+    float3 tangent		: TANGENT;
 };
 
 // Struct representing the data we're sending down the pipeline
@@ -44,6 +40,7 @@ struct VertexToPixel
 	float4 position		: SV_POSITION;	// XYZW position (System Value Position)
     float2 uv           : TEXCOORD;
     float3 normal       : NORMAL;
+    float3 tangent		: TANGENT;
     float3 worldPos		: POSITION; // The world position of this vertex
 };
 
@@ -67,6 +64,10 @@ VertexToPixel main( VertexShaderInput input )
 
     output.normal = mul( input.normal, ( float3x3 )world );
     output.normal = normalize( output.normal ); // Make sure it's length is 1
+
+    // Make sure the tangent is also in WORLD space
+    output.tangent = mul( input.tangent, ( float3x3 )world );
+    output.tangent = normalize( output.tangent );
 
     // Copy the UV coordinates over to the pixel shader
     output.uv = input.uv;

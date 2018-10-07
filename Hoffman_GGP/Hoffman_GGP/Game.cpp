@@ -71,7 +71,6 @@ Game::~Game()
 
 	// Delete the mesh
 	delete TestMesh1;
-	delete TestMesh2;
 
     InputManager::Release();
 
@@ -145,9 +144,9 @@ void Game::LoadShaders()
 
 void Game::InitLights()
 {
-    DirectLight.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );  // Ambient color is the color when we are in shadow
-    DirectLight.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.5f, 1.0f );
-    DirectLight.Direction    = XMFLOAT3( 1.0f, -1.0f, 0.0f );
+    DirectLight.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
+    DirectLight.DiffuseColor = XMFLOAT4( 0.8f, 0.8f, 0.8f, 1.0f );
+    DirectLight.Direction    = XMFLOAT3( 1.0f, 0.0f, 0.0f );
 
     DirectLight_Two.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
     DirectLight_Two.DiffuseColor = XMFLOAT4( 1.0f, 0.1f, 0.1f, 1.0f );
@@ -184,17 +183,9 @@ void Game::CreateBasicGeometry()
 	UINT indices[] = { 0, 1, 2 };
 
 
-    TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
-	TestMesh2 = new Mesh( device, "Assets/Models/torus.obj" );
+    TestMesh1 = new Mesh( device, "Assets/Models/sphere.obj" );
 
 	BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV,PebblesNormalSRV, Sampler );
-
-	// Create an entity based on these meshes
-	Entities.push_back( new Entity(TestMesh2, BasicMaterial));
-	++EntityCount;
-
-	Entities.push_back( new Entity(TestMesh2, BasicMaterial));
-	++EntityCount;
 
 	Entities.push_back(new Entity(TestMesh1, BasicMaterial));
 	++EntityCount;
@@ -293,9 +284,10 @@ void Game::Draw(float deltaTime, float totalTime)
         // I have to do this here and get read access violations when I 
         // try and do it in the Entity PrepareMaterial function
         // why? Did I miss something?
+        pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
+
         pixelShader->SetShaderResourceView( "DiffuseTexture", PebblesSRV );
         pixelShader->SetShaderResourceView( "NormalTexture", PebblesNormalSRV );
-
         pixelShader->SetSamplerState( "BasicSampler", Sampler );
 
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
