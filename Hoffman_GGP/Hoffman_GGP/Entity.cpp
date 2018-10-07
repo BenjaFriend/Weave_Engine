@@ -3,6 +3,9 @@
 #include "Material.h"
 #include "SimpleShader.h"
 
+struct ID3D11SamplerState;
+struct ID3D11ShaderResourceView;
+
 using namespace DirectX;
 
 Entity::Entity(Mesh* aMesh, Material* aMat)
@@ -58,12 +61,17 @@ void Entity::PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::X
 	VertShader->SetMatrix4x4("view", aView);
 	VertShader->SetMatrix4x4("projection", aProjection);
 
-    // Tell the pixel shader about the texture stuff
-    PixelShader->SetSamplerState( "sample_state", EntityMaterial->GetSamplerState() );
-    PixelShader->SetShaderResourceView( "srv", EntityMaterial->GetSRV() );
+    VertShader->SetShader();
+    VertShader->CopyAllBufferData();
 
-	VertShader->SetShader();
-	VertShader->CopyAllBufferData();
+
+
+    // Tell the pixel shader about the texture stuff
+    // This doesn't work, but I am really unsure why ???? 
+    // I have to do it in the Game.cpp with the exact same code
+    // Wat is going on here, I get a read access violation? 
+    //PixelShader->SetShaderResourceView( "DiffuseTexture", EntityMaterial->GetSRV() );
+    //PixelShader->SetSamplerState( "BasicSampler", EntityMaterial->GetSamplerState() );
 
 	PixelShader->SetShader();
 	PixelShader->CopyAllBufferData();

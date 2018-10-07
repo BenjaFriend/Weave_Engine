@@ -49,7 +49,6 @@ private:
 	// The meshes to use with the Mesh class, assignment 2
 	Mesh* TestMesh1 = nullptr;
 	Mesh* TestMesh2 = nullptr;
-	Mesh* TestMesh3 = nullptr;
 
 	// Entity list
 	std::vector<Entity*> Entities;
@@ -69,8 +68,9 @@ private:
     DirectionalLight DirectLight_Two;
 
     // Texture stuff
-    ID3D11ShaderResourceView* PebblesSRV;
-    ID3D11SamplerState* Sampler;
+    ID3D11ShaderResourceView* PebblesSRV = nullptr;
+    ID3D11ShaderResourceView* PebblesNormalSRV = nullptr;
+    ID3D11SamplerState* Sampler = nullptr;
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.

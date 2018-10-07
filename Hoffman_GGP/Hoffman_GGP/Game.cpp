@@ -67,12 +67,11 @@ Game::~Game()
     // Cleanup DX Resources
     if ( PebblesSRV ) PebblesSRV->Release();
     if ( Sampler ) Sampler->Release();
-
+    if ( PebblesNormalSRV ) PebblesNormalSRV->Release();
 
 	// Delete the mesh
 	delete TestMesh1;
 	delete TestMesh2;
-	delete TestMesh3;
 
     InputManager::Release();
 
@@ -102,14 +101,22 @@ void Game::Init()
         0,
         &PebblesSRV
     );
+    // Load the normal in 
+    CreateWICTextureFromFile(
+        device,
+        context,
+        L"Assets/Textures/BeachPebbles_1024_normal.tif",
+        0,
+        &PebblesNormalSRV
+    );
 
     // Manually create a sampler state
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-    samplerDesc.MaxAnisotropy = 16;
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    //samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     device->CreateSamplerState( &samplerDesc, &Sampler );
@@ -168,29 +175,6 @@ void Game::CreateBasicGeometry()
 	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	// Set up the vertices of the triangle we would like to draw
-	// - We're going to copy this array, exactly as it exists in memory
-	//    over to a DirectX-controlled data structure (the vertex buffer)
-	Vertex vertices1[] =
-	{
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), XMFLOAT3(0,0,-1), XMFLOAT2(0,0) },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-	};
-
-	Vertex vertices2[] =
-	{
-		{ XMFLOAT3(+1.0f, +2.0f, +1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-		{ XMFLOAT3(+2.5f, +0.0f, +1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-		{ XMFLOAT3(-0.5f, +0.0f, +1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-	};
-
-	Vertex vertices3[] =
-	{
-		{ XMFLOAT3(-1.0f, +0.0f, -1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-		{ XMFLOAT3(+0.5f, -2.0f, -1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-		{ XMFLOAT3(-2.5f, -2.0f, -1.0f), XMFLOAT3( 0,0,-1 ), XMFLOAT2( 0,0 ) },
-	};
 
 	// Set up the indices, which tell us which vertices to use and in which order
 	// - This is somewhat redundant for just 3 vertices (it's a simple example)
@@ -201,11 +185,9 @@ void Game::CreateBasicGeometry()
 
 
     TestMesh1 = new Mesh( device, "Assets/Models/helix.obj" );
-
 	TestMesh2 = new Mesh( device, "Assets/Models/torus.obj" );
-	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
-	BasicMaterial = new Material(vertexShader, pixelShader, PebblesSRV, Sampler);
+	BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV,PebblesNormalSRV, Sampler );
 
 	// Create an entity based on these meshes
 	Entities.push_back( new Entity(TestMesh2, BasicMaterial));
@@ -217,15 +199,6 @@ void Game::CreateBasicGeometry()
 	Entities.push_back(new Entity(TestMesh1, BasicMaterial));
 	++EntityCount;
 	Entities[EntityCount - 1]->MoveAbsolute(-1.f, -1.f, 0.f);
-
-
-	Entities.push_back(new Entity(TestMesh3, BasicMaterial));
-	++EntityCount;
-	Entities[EntityCount - 1]->SetPosition(3.f, 0.f, 6.f);
-
-	Entities.push_back(new Entity(TestMesh3, BasicMaterial));
-	++EntityCount;
-	Entities[EntityCount - 1]->SetScale(0.5f, 0.5f, 0.5f);
 
 }
 
@@ -253,21 +226,6 @@ void Game::Update(float deltaTime, float totalTime)
 
 	// Update the camera
 	FlyingCamera->Update(deltaTime);
-
-	// Update the entity scale and position
-	if (EntityCount > 0)
-	{
-		const float Speed = 1.2f;
-		float SinTime = (0.5f * sinf(0.5f * totalTime) + 0.8f);
-
-		Entities[0]->SetScale(SinTime, SinTime , SinTime );
-
-		Entities[0]->MoveAbsolute(
-			Speed * deltaTime,
-			Speed * deltaTime,
-			Speed * deltaTime 
-		);
-	}
 
 	// Loop through the other meshes to demonstrate rotation
 	for (size_t i = 1; i < EntityCount; ++i)
@@ -331,6 +289,14 @@ void Game::Draw(float deltaTime, float totalTime)
             &DirectLight,
             sizeof( DirectionalLight )
         );
+
+        // I have to do this here and get read access violations when I 
+        // try and do it in the Entity PrepareMaterial function
+        // why? Did I miss something?
+        pixelShader->SetShaderResourceView( "DiffuseTexture", PebblesSRV );
+        pixelShader->SetShaderResourceView( "NormalTexture", PebblesNormalSRV );
+
+        pixelShader->SetSamplerState( "BasicSampler", Sampler );
 
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
