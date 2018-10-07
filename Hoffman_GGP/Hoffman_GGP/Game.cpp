@@ -64,6 +64,11 @@ Game::~Game()
 
 	delete FlyingCamera;
 
+    // Cleanup DX Resources
+    if ( PebblesSRV ) PebblesSRV->Release();
+    if ( Sampler ) Sampler->Release();
+
+
 	// Delete the mesh
 	delete TestMesh1;
 	delete TestMesh2;
@@ -71,6 +76,7 @@ Game::~Game()
 
     InputManager::Release();
 
+   
 }
 
 // --------------------------------------------------------
@@ -86,6 +92,28 @@ void Game::Init()
 	CreateMatrices();
 	CreateBasicGeometry();
     InitLights();
+
+
+
+    CreateWICTextureFromFile(
+        device,
+        context,
+        L"Assets/Textures/BeachPebbles_1024_albedo.tif",
+        0,
+        &PebblesSRV
+    );
+
+    // Manually create a sampler state
+    D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+    samplerDesc.MaxAnisotropy = 16;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+    device->CreateSamplerState( &samplerDesc, &Sampler );
+
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -177,7 +205,7 @@ void Game::CreateBasicGeometry()
 	TestMesh2 = new Mesh( device, "Assets/Models/torus.obj" );
 	TestMesh3 = new Mesh(device, vertices3, 3, indices, 3);
 
-	BasicMaterial = new Material(vertexShader, pixelShader);
+	BasicMaterial = new Material(vertexShader, pixelShader, PebblesSRV, Sampler);
 
 	// Create an entity based on these meshes
 	Entities.push_back( new Entity(TestMesh2, BasicMaterial));

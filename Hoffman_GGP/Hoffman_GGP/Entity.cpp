@@ -58,6 +58,9 @@ void Entity::PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::X
 	VertShader->SetMatrix4x4("view", aView);
 	VertShader->SetMatrix4x4("projection", aProjection);
 
+    // Tell the pixel shader about the texture stuff
+    PixelShader->SetSamplerState( "sample_state", EntityMaterial->GetSamplerState() );
+    PixelShader->SetShaderResourceView( "srv", EntityMaterial->GetSRV() );
 
 	VertShader->SetShader();
 	VertShader->CopyAllBufferData();

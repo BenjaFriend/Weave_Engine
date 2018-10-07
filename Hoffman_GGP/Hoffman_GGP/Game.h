@@ -9,7 +9,7 @@
 #include <vector>
 #include "InputManager.h"
 #include "Lights.h"
-//#include "WICTextureLoader.h"
+#include "WICTextureLoader.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -68,6 +68,9 @@ private:
     DirectionalLight DirectLight;
     DirectionalLight DirectLight_Two;
 
+    // Texture stuff
+    ID3D11ShaderResourceView* PebblesSRV;
+    ID3D11SamplerState* Sampler;
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.

@@ -8,6 +8,8 @@
 
 class SimpleVertexShader;
 class SimplePixelShader;
+struct ID3D11SamplerState;
+struct ID3D11ShaderResourceView;
 
 /// <summary>
 ///  Material class to define how the surface of a mesh looks when drawn
@@ -22,7 +24,7 @@ public:
     /// </summary>
     /// <param name="aVertShader">Pointer to the vertex shader for this material</param>
     /// <param name="aPixShader">Pointer to the pixel shader for this material</param>
-	Material(SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader);
+	Material(SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader, ID3D11ShaderResourceView * aSRV, ID3D11SamplerState* aSampler );
 
 	/** Destructor of the material */
 	~Material();
@@ -38,6 +40,12 @@ public:
 	/** Returns the pixel shader of this material */
 	SimplePixelShader* GetPixelShader() const;
 
+    /** Returns this material's SRV */
+    ID3D11ShaderResourceView* GetSRV() const;
+
+    /** Return this material's sampler state */
+    ID3D11SamplerState* GetSamplerState() const;
+
 private: 
 
 	/** Vertex shader of this material */
@@ -46,5 +54,10 @@ private:
 	/** Pixel shader of this material */
 	SimplePixelShader* PixelShader = nullptr;
 
+    /** Shader Resource view of this Material. */
+    ID3D11ShaderResourceView* SRV = nullptr;
+
+    /** The sampler for this material's texture */
+    ID3D11SamplerState* Sampler = nullptr;
 };
 
