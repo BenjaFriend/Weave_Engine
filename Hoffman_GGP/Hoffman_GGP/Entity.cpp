@@ -64,14 +64,9 @@ void Entity::PrepareMaterial(const DirectX::XMFLOAT4X4 & aView, const DirectX::X
     VertShader->SetShader();
     VertShader->CopyAllBufferData();
 
-
-
-    // Tell the pixel shader about the texture stuff
-    // This doesn't work, but I am really unsure why ???? 
-    // I have to do it in the Game.cpp with the exact same code
-    // Wat is going on here, I get a read access violation? 
-    //PixelShader->SetShaderResourceView( "DiffuseTexture", EntityMaterial->GetSRV() );
-    //PixelShader->SetSamplerState( "BasicSampler", EntityMaterial->GetSamplerState() );
+    PixelShader->SetShaderResourceView( "DiffuseTexture", EntityMaterial->GetDiffuseSRV() );
+    PixelShader->SetShaderResourceView( "NormalTexture", EntityMaterial->GetNormalSRV() );
+    PixelShader->SetSamplerState( "BasicSampler", EntityMaterial->GetSamplerState() );
 
 	PixelShader->SetShader();
 	PixelShader->CopyAllBufferData();

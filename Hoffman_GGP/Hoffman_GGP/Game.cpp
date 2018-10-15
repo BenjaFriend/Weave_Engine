@@ -93,21 +93,7 @@ void Game::Init()
 
 
 
-    CreateWICTextureFromFile(
-        device,
-        context,
-        L"Assets/Textures/BeachPebbles_1024_albedo.tif",
-        0,
-        &PebblesSRV
-    );
-    // Load the normal in 
-    CreateWICTextureFromFile(
-        device,
-        context,
-        L"Assets/Textures/BeachPebbles_1024_normal.tif",
-        0,
-        &PebblesNormalSRV
-    );
+
 
     // Manually create a sampler state
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -182,10 +168,25 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	UINT indices[] = { 0, 1, 2 };
 
+    CreateWICTextureFromFile(
+        device,
+        context,
+        L"Assets/Textures/BeachPebbles_1024_albedo.tif",
+        0,
+        &PebblesSRV
+    );
+    // Load the normal in 
+    CreateWICTextureFromFile(
+        device,
+        context,
+        L"Assets/Textures/BeachPebbles_1024_normal.tif",
+        0,
+        &PebblesNormalSRV
+    );
 
     TestMesh1 = new Mesh( device, "Assets/Models/sphere.obj" );
 
-	BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV,PebblesNormalSRV, Sampler );
+	BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV, PebblesNormalSRV, Sampler );
 
 	Entities.push_back(new Entity(TestMesh1, BasicMaterial));
 	++EntityCount;
@@ -285,10 +286,6 @@ void Game::Draw(float deltaTime, float totalTime)
         // try and do it in the Entity PrepareMaterial function
         // why? Did I miss something?
         pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
-
-        pixelShader->SetShaderResourceView( "DiffuseTexture", PebblesSRV );
-        pixelShader->SetShaderResourceView( "NormalTexture", PebblesNormalSRV );
-        pixelShader->SetSamplerState( "BasicSampler", Sampler );
 
 		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
 
