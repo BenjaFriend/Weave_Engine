@@ -83,17 +83,6 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	// Helper methods for loading shaders, creating some basic
-	// geometry to draw and some simple camera matrices.
-	//  - You'll be expanding and/or replacing these later
-	LoadShaders();
-	CreateMatrices();
-	CreateBasicGeometry();
-    InitLights();
-
-
-
-
 
     // Manually create a sampler state
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -105,6 +94,14 @@ void Game::Init()
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     device->CreateSamplerState( &samplerDesc, &Sampler );
+
+	// Helper methods for loading shaders, creating some basic
+	// geometry to draw and some simple camera matrices.
+	//  - You'll be expanding and/or replacing these later
+	LoadShaders();
+	CreateMatrices();
+	CreateBasicGeometry();
+    InitLights();
 
 
 	// Tell the input assembler stage of the pipeline what kind of
