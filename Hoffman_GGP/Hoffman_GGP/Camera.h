@@ -17,24 +17,24 @@ class Camera
 {
 public:
 
-	/** Constructor; initalize matricies */
-	Camera();
-	
-	/** Destructor for camera class */
-	~Camera();
+    /** Constructor; initalize matricies */
+    Camera();
+
+    /** Destructor for camera class */
+    ~Camera();
 
     /// <summary>
     /// Update camera matrices appropriately. 
     /// </summary>
     /// <param name="aDeltaTime">Delta Time of this frame</param>
-	void Update(const float aDeltaTime);
+    void Update( const float aDeltaTime );
 
     /// <summary>
     /// Updates the projection matrix of the camera
     /// </summary>
     /// <param name="aWidth">The aspect ration width</param>
     /// <param name="aHeight">The aspect ration height</param>
-	void UpdateProjectionMatrix(const unsigned int aWidth, const unsigned int aHeight);
+    void UpdateProjectionMatrix( const unsigned int aWidth, const unsigned int aHeight );
 
     /// <summary>
     /// Updates the camera's rotation based on the mouse movement
@@ -42,35 +42,35 @@ public:
     /// </summary>
     /// <param name="aDeltaMouseX">The delta mouse input in X axis</param>
     /// <param name="aDeltaMouseY">The delta mouse input in Y axis</param>
-	void UpdateMouseInput(const long aDeltaMouseX, const long aDeltaMouseY);
+    void UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY );
 
-	////////////////////////////////////////////////////
-	// Accessors
-	////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    // Accessors
+    ////////////////////////////////////////////////////
 
-	/** Returns camera's current position */
-	const DirectX::XMFLOAT3 GetPosition() const;
+    /** Returns camera's current position */
+    const DirectX::XMFLOAT3 GetPosition() const;
 
-	/** Returns cameras current direction */
-	const DirectX::XMFLOAT3 GetForwardDirection() const;
+    /** Returns cameras current direction */
+    const DirectX::XMFLOAT3 GetForwardDirection() const;
 
-	/** Returns camera's current Rotation */
-	const float GetXAxisRotation() const;
-	
-	/** Returns the cameras current rotation in the Y Axis */
-	const float GetYAxisRotation() const;
+    /** Returns camera's current Rotation */
+    const float GetXAxisRotation() const;
 
-	/** Returns the cameras current view matrix */
-	const DirectX::XMFLOAT4X4 GetViewMatrix() const;
+    /** Returns the cameras current rotation in the Y Axis */
+    const float GetYAxisRotation() const;
 
-	/** Returns the current projection matrix */
-	const DirectX::XMFLOAT4X4 GetProjectMatrix() const;
+    /** Returns the cameras current view matrix */
+    const DirectX::XMFLOAT4X4 GetViewMatrix() const;
 
-	/** Returns the current horizontal rotation speed */
-	const float GetHorizontalRotSpeed() const;
+    /** Returns the current projection matrix */
+    const DirectX::XMFLOAT4X4 GetProjectMatrix() const;
 
-	/** Returns the current vertical rotation speed */
-	const float GetVerticalRotSpeed() const;
+    /** Returns the current horizontal rotation speed */
+    const float GetHorizontalRotSpeed() const;
+
+    /** Returns the current vertical rotation speed */
+    const float GetVerticalRotSpeed() const;
 
     /// <summary>
     /// Set if the camera should be rotating
@@ -83,38 +83,38 @@ public:
 
 private:
 
-	/** Update the view matrix of the camera */
-	void UpdateViewMatrix(const float aDeltaTime);
+    /** Update the view matrix of the camera */
+    void UpdateViewMatrix( const float aDeltaTime );
 
-	/** Current position of the camera */
-	DirectX::XMFLOAT3 Position;
-	
-	/** Current direction of the camera */
-	DirectX::XMFLOAT3 ForwardDirection;
+    /** Current position of the camera */
+    DirectX::XMFLOAT3 Position;
 
-	/** Rotation in the X axis of this camera */
-	float RotationXAxis = 0.f;
+    /** Current direction of the camera */
+    DirectX::XMFLOAT3 ForwardDirection;
 
-	/** Rotation in the Y axis of this camera */
-	float RotationYAxis = 0.f;
-	
-	/** Current View matrix of this camera. Defines the viewer of the scene. */
-	DirectX::XMFLOAT4X4 ViewMatrix;
+    /** Rotation in the X axis of this camera */
+    float RotationXAxis = 0.f;
 
-	/** Current projection matrix of the camera. Defines how the 3D scene is mapped onto 2d Screen */
-	DirectX::XMFLOAT4X4 ProjectionMatrix;
+    /** Rotation in the Y axis of this camera */
+    float RotationYAxis = 0.f;
 
-	/** The horizontal rotation speed of the camera */
-	const float HorizontalRotSpeed = 0.005f;
+    /** Current View matrix of this camera. Defines the viewer of the scene. */
+    DirectX::XMFLOAT4X4 ViewMatrix;
 
-	/** The vertical rotation speed of the camera */
-	const float VerticalRotSpeed = 0.005f;
+    /** Current projection matrix of the camera. Defines how the 3D scene is mapped onto 2d Screen */
+    DirectX::XMFLOAT4X4 ProjectionMatrix;
 
-	/** Whether or not the user is using southpaw rotation */
-	bool UseSouthpawRotation = false;
+    /** The horizontal rotation speed of the camera */
+    const float HorizontalRotSpeed = 0.005f;
 
-	/** Keyboard input from the player */
-	DirectX::XMFLOAT3 RelativeInput;
+    /** The vertical rotation speed of the camera */
+    const float VerticalRotSpeed = 0.005f;
+
+    /** Whether or not the user is using southpaw rotation */
+    bool UseSouthpawRotation = false;
+
+    /** Keyboard input from the player */
+    DirectX::XMFLOAT3 RelativeInput;
 
     /** If true than the camera will rotate */
     bool DoRotation = false;

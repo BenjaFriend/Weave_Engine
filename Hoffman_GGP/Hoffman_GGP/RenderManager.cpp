@@ -4,29 +4,29 @@
 
 RenderManager::RenderManager()
 {
-	InitalizeMeshes();
-	InitalizeEntities();
+    InitalizeMeshes();
+    InitalizeEntities();
 }
 
 RenderManager::~RenderManager()
 {
-	for (size_t i = 0; i < EntityCount; ++i)
-	{
-		Entity* CurrentEntity = Entities[i];
-		if(CurrentEntity) delete CurrentEntity;
-	}
+    for ( size_t i = 0; i < EntityCount; ++i )
+    {
+        Entity* CurrentEntity = Entities[ i ];
+        if ( CurrentEntity ) delete CurrentEntity;
+    }
 
-	Entities.clear();
-	EntityCount = 0;
+    Entities.clear();
+    EntityCount = 0;
 
-	for (size_t i = 0; i < MeshCount; ++i)
-	{
-		Mesh* CurrentMesh = Meshes[i];
-		if (CurrentMesh) delete CurrentMesh;
-	}
+    for ( size_t i = 0; i < MeshCount; ++i )
+    {
+        Mesh* CurrentMesh = Meshes[ i ];
+        if ( CurrentMesh ) delete CurrentMesh;
+    }
 
-	Meshes.clear();
-	MeshCount = 0;
+    Meshes.clear();
+    MeshCount = 0;
 }
 
 void RenderManager::InitalizeMeshes()
@@ -39,23 +39,23 @@ void RenderManager::InitalizeEntities()
 
 }
 
-void RenderManager::AddEntity(Mesh * EntityMesh)
+void RenderManager::AddEntity( Mesh * EntityMesh )
 {
-	if (EntityMesh)
-	{
-		//Entities.push_back(new Entity(EntityMesh));
-		++EntityCount;
-	}
+    if ( EntityMesh )
+    {
+        //Entities.push_back(new Entity(EntityMesh));
+        ++EntityCount;
+    }
 }
 
-void RenderManager::AddMesh(ID3D11Device * aDevice, Vertex * aVerts, UINT aNumVerts, UINT * aIndecies, UINT aIndexCount)
+void RenderManager::AddMesh( ID3D11Device * aDevice, Vertex * aVerts, UINT aNumVerts, UINT * aIndecies, UINT aIndexCount )
 {
-	Mesh* CurrentMesh = new Mesh(aDevice, aVerts, aNumVerts, aIndecies, aIndexCount);
-	Meshes.push_back(CurrentMesh);
-	++MeshCount;
+    Mesh* CurrentMesh = new Mesh( aDevice, aVerts, aNumVerts, aIndecies, aIndexCount );
+    Meshes.push_back( CurrentMesh );
+    ++MeshCount;
 }
 
-void RenderManager::Update(float DeltaTime)
+void RenderManager::Update( float DeltaTime )
 {
 
 }

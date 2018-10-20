@@ -10,6 +10,7 @@
 #include "InputManager.h"
 #include "Lights.h"
 #include "WICTextureLoader.h"
+#include "EntityManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -18,49 +19,49 @@ class Entity;
 class Camera;
 class Material;
 
-class Game 
-	: public DXCore
+class Game
+    : public DXCore
 {
 
 public:
-	Game(HINSTANCE hInstance);
-	~Game();
+    Game( HINSTANCE hInstance );
+    ~Game();
 
-	// Overridden setup and game loop methods, which
-	// will be called automatically
-	void Init();
-	void OnResize();
-	void Update(float deltaTime, float totalTime);
-	void Draw(float deltaTime, float totalTime);
+    // Overridden setup and game loop methods, which
+    // will be called automatically
+    void Init();
+    void OnResize();
+    void Update( float deltaTime, float totalTime );
+    void Draw( float deltaTime, float totalTime );
 
-	// Overridden mouse input helper methods
-	void OnMouseDown (WPARAM buttonState, int x, int y);
-	void OnMouseUp	 (WPARAM buttonState, int x, int y);
-	void OnMouseMove (WPARAM buttonState, int x, int y);
-	void OnMouseWheel(float wheelDelta,   int x, int y);
+    // Overridden mouse input helper methods
+    void OnMouseDown( WPARAM buttonState, int x, int y );
+    void OnMouseUp( WPARAM buttonState, int x, int y );
+    void OnMouseMove( WPARAM buttonState, int x, int y );
+    void OnMouseWheel( float wheelDelta, int x, int y );
 private:
 
-	// Initialization helper methods - feel free to customize, combine, etc.
-	void LoadShaders(); 
-	void CreateMatrices();
-	void CreateBasicGeometry();
+    // Initialization helper methods - feel free to customize, combine, etc.
+    void LoadShaders();
+    void CreateMatrices();
+    void CreateBasicGeometry();
     void InitLights();
 
-	// The meshes to use with the Mesh class, assignment 2
-	Mesh* TestMesh1 = nullptr;
+    // The meshes to use with the Mesh class, assignment 2
+    Mesh* TestMesh1 = nullptr;
 
-	// Entity list
-	std::vector<Entity*> Entities;
-	size_t EntityCount = 0;
+    // Entity list
+    std::vector<Entity*> Entities;
+    size_t EntityCount = 0;
 
-	// Wrappers for DirectX shaders to provide simplified functionality
-	SimpleVertexShader* vertexShader;
-	SimplePixelShader* pixelShader;
+    // Wrappers for DirectX shaders to provide simplified functionality
+    SimpleVertexShader* vertexShader;
+    SimplePixelShader* pixelShader;
 
-	// Flying camera for initial testing
-	Camera* FlyingCamera = nullptr;
+    // Flying camera for initial testing
+    Camera* FlyingCamera = nullptr;
 
-	Material* BasicMaterial = nullptr;
+    Material* BasicMaterial = nullptr;
 
     // Lights
     DirectionalLight DirectLight;
@@ -71,8 +72,8 @@ private:
     ID3D11ShaderResourceView* PebblesNormalSRV = nullptr;
     ID3D11SamplerState* Sampler = nullptr;
 
-	// Keeps track of the old mouse position.  Useful for 
-	// determining how far the mouse moved in a single frame.
-	POINT prevMousePos;
+    // Keeps track of the old mouse position.  Useful for 
+    // determining how far the mouse moved in a single frame.
+    POINT prevMousePos;
 };
 

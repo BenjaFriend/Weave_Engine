@@ -16,26 +16,26 @@ using namespace DirectX;
 //
 // hInstance - the application's OS-level handle (unique ID)
 // --------------------------------------------------------
-Game::Game(HINSTANCE hInstance)
-	: DXCore(
-		hInstance,		   // The application's handle
-		"DirectX Game",	   // Text for the window's title bar
-		1280,			   // Width of the window's client area
-		720,			   // Height of the window's client area
-		true)			   // Show extra stats (fps) in title bar?
+Game::Game( HINSTANCE hInstance )
+    : DXCore(
+        hInstance,		   // The application's handle
+        "DirectX Game",	   // Text for the window's title bar
+        1280,			   // Width of the window's client area
+        720,			   // Height of the window's client area
+        true )			   // Show extra stats (fps) in title bar?
 {
 
-	vertexShader = 0;
-	pixelShader	 = 0;
-	EntityCount	 = 0;
-	FlyingCamera = new Camera();
+    vertexShader = 0;
+    pixelShader = 0;
+    EntityCount = 0;
+    FlyingCamera = new Camera();
 
 #if defined(DEBUG) || defined(_DEBUG)
-	// Do we want a console window?  Probably only in debug mode
-	CreateConsoleWindow(500, 120, 32, 120);
-	printf("Console window created successfully.  Feel free to printf() here.");
+    // Do we want a console window?  Probably only in debug mode
+    CreateConsoleWindow( 500, 120, 32, 120 );
+    printf( "Console window created successfully.  Feel free to printf() here." );
 #endif
-	
+
 }
 
 // --------------------------------------------------------
@@ -45,36 +45,36 @@ Game::Game(HINSTANCE hInstance)
 // --------------------------------------------------------
 Game::~Game()
 {
-	// Delete our simple shader objects, which
-	// will clean up their own internal DirectX stuff
-	delete vertexShader;
-	delete pixelShader;
+    // Delete our simple shader objects, which
+    // will clean up their own internal DirectX stuff
+    delete vertexShader;
+    delete pixelShader;
 
-	// Delete the entities
-	for (size_t i = 0; i < EntityCount; ++i)
-	{
-		Entity* CurEntity = Entities[i];
-		if (CurEntity) delete CurEntity;
-	}
+    // Delete the entities
+    for ( size_t i = 0; i < EntityCount; ++i )
+    {
+        Entity* CurEntity = Entities[ i ];
+        if ( CurEntity ) delete CurEntity;
+    }
 
-	Entities.clear();
-	EntityCount = 0;
-	
-	if (BasicMaterial) delete BasicMaterial;
+    Entities.clear();
+    EntityCount = 0;
 
-	delete FlyingCamera;
+    if ( BasicMaterial ) delete BasicMaterial;
+
+    delete FlyingCamera;
 
     // Cleanup DX Resources
     if ( PebblesSRV ) PebblesSRV->Release();
     if ( Sampler ) Sampler->Release();
     if ( PebblesNormalSRV ) PebblesNormalSRV->Release();
 
-	// Delete the mesh
-	delete TestMesh1;
+    // Delete the mesh
+    delete TestMesh1;
 
     InputManager::Release();
 
-   
+
 }
 
 // --------------------------------------------------------
@@ -95,19 +95,19 @@ void Game::Init()
 
     device->CreateSamplerState( &samplerDesc, &Sampler );
 
-	// Helper methods for loading shaders, creating some basic
-	// geometry to draw and some simple camera matrices.
-	//  - You'll be expanding and/or replacing these later
-	LoadShaders();
-	CreateMatrices();
-	CreateBasicGeometry();
+    // Helper methods for loading shaders, creating some basic
+    // geometry to draw and some simple camera matrices.
+    //  - You'll be expanding and/or replacing these later
+    LoadShaders();
+    CreateMatrices();
+    CreateBasicGeometry();
     InitLights();
 
 
-	// Tell the input assembler stage of the pipeline what kind of
-	// geometric primitives (points, lines or triangles) we want to draw.  
-	// Essentially: "What kind of shape should the GPU draw with our data?"
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    // Tell the input assembler stage of the pipeline what kind of
+    // geometric primitives (points, lines or triangles) we want to draw.  
+    // Essentially: "What kind of shape should the GPU draw with our data?"
+    context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 }
 
 // --------------------------------------------------------
@@ -118,22 +118,22 @@ void Game::Init()
 // --------------------------------------------------------
 void Game::LoadShaders()
 {
-	vertexShader = new SimpleVertexShader(device, context);
-	vertexShader->LoadShaderFile(L"VertexShader.cso");
+    vertexShader = new SimpleVertexShader( device, context );
+    vertexShader->LoadShaderFile( L"VertexShader.cso" );
 
-	pixelShader = new SimplePixelShader(device, context);
-	pixelShader->LoadShaderFile(L"PixelShader.cso");
+    pixelShader = new SimplePixelShader( device, context );
+    pixelShader->LoadShaderFile( L"PixelShader.cso" );
 }
 
 void Game::InitLights()
 {
     DirectLight.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
     DirectLight.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
-    DirectLight.Direction    = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    DirectLight.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
 
     DirectLight_Two.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
     DirectLight_Two.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
-    DirectLight_Two.Direction    = XMFLOAT3( -1.0f, 0.0f, 0.5f );
+    DirectLight_Two.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
 }
 
 // --------------------------------------------------------
@@ -142,7 +142,7 @@ void Game::InitLights()
 // --------------------------------------------------------
 void Game::CreateMatrices()
 {
-	FlyingCamera->UpdateProjectionMatrix(width, height);
+    FlyingCamera->UpdateProjectionMatrix( width, height );
 }
 
 
@@ -151,19 +151,19 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-	// Create some temporary variables to represent colors
-	// - Not necessary, just makes things more readable
-	XMFLOAT4 red = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+    // Create some temporary variables to represent colors
+    // - Not necessary, just makes things more readable
+    XMFLOAT4 red = XMFLOAT4( 1.0f, 0.0f, 0.0f, 1.0f );
+    XMFLOAT4 green = XMFLOAT4( 0.0f, 1.0f, 0.0f, 1.0f );
+    XMFLOAT4 blue = XMFLOAT4( 0.0f, 0.0f, 1.0f, 1.0f );
 
 
-	// Set up the indices, which tell us which vertices to use and in which order
-	// - This is somewhat redundant for just 3 vertices (it's a simple example)
-	// - Indices are technically not required if the vertices are in the buffer 
-	//    in the correct order and each one will be used exactly once
-	// - But just to see how it's done...
-	UINT indices[] = { 0, 1, 2 };
+    // Set up the indices, which tell us which vertices to use and in which order
+    // - This is somewhat redundant for just 3 vertices (it's a simple example)
+    // - Indices are technically not required if the vertices are in the buffer 
+    //    in the correct order and each one will be used exactly once
+    // - But just to see how it's done...
+    UINT indices[] = { 0, 1, 2 };
 
     CreateWICTextureFromFile(
         device,
@@ -183,11 +183,11 @@ void Game::CreateBasicGeometry()
 
     TestMesh1 = new Mesh( device, "Assets/Models/sphere.obj" );
 
-	BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV, PebblesNormalSRV, Sampler );
+    BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV, PebblesNormalSRV, Sampler );
 
-	Entities.push_back(new Entity(TestMesh1, BasicMaterial));
-	++EntityCount;
-	Entities[EntityCount - 1]->MoveAbsolute(-1.f, -1.f, 0.f);
+    Entities.push_back( new Entity( TestMesh1, BasicMaterial ) );
+    ++EntityCount;
+    Entities[ EntityCount - 1 ]->MoveAbsolute( -1.f, -1.f, 0.f );
 
 }
 
@@ -198,78 +198,71 @@ void Game::CreateBasicGeometry()
 // --------------------------------------------------------
 void Game::OnResize()
 {
-	// Handle base-level DX resize stuff
-	DXCore::OnResize();
+    // Handle base-level DX resize stuff
+    DXCore::OnResize();
 
-	FlyingCamera->UpdateProjectionMatrix(width, height);
+    FlyingCamera->UpdateProjectionMatrix( width, height );
 }
 
 // --------------------------------------------------------
 // Update your game here - user input, move objects, AI, etc.
 // --------------------------------------------------------
-void Game::Update(float deltaTime, float totalTime)
+void Game::Update( float deltaTime, float totalTime )
 {
-	// Quit if the escape key is pressed
-	if (GetAsyncKeyState(VK_ESCAPE))
-		Quit();
+    // Quit if the escape key is pressed
+    if ( GetAsyncKeyState( VK_ESCAPE ) )
+        Quit();
 
-	// Update the camera
-	FlyingCamera->Update(deltaTime);
+    // Update the camera
+    FlyingCamera->Update( deltaTime );
 
-	// Loop through the other meshes to demonstrate rotation
-	for (size_t i = 1; i < EntityCount; ++i)
-	{
-		XMFLOAT4 NewRot = Entities[i]->GetRotation();
-		NewRot.z = totalTime;
-	//	Entities[i]->SetRotation(NewRot);
-	}
+    // Loop through the other meshes to demonstrate rotation
+    for ( size_t i = 1; i < EntityCount; ++i )
+    {
+        XMFLOAT4 NewRot = Entities[ i ]->GetRotation();
+        NewRot.z = totalTime;
+        //	Entities[i]->SetRotation(NewRot);
+    }
 }
 
 // --------------------------------------------------------
 // Clear the screen, redraw everything, present to the user
 // --------------------------------------------------------
-void Game::Draw(float deltaTime, float totalTime)
+void Game::Draw( float deltaTime, float totalTime )
 {
-	// Background color (Cornflower Blue in this case) for clearing
-	const float color[4] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    // Background color (Cornflower Blue in this case) for clearing
+    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
 
-	// Clear the render target and depth buffer (erases what's on the screen)
-	//  - Do this ONCE PER FRAME
-	//  - At the beginning of Draw (before drawing *anything*)
-	context->ClearRenderTargetView(backBufferRTV, color);
-	context->ClearDepthStencilView(
-		depthStencilView,
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
-		1.0f,
-		0);
+    // Clear the render target and depth buffer (erases what's on the screen)
+    //  - Do this ONCE PER FRAME
+    //  - At the beginning of Draw (before drawing *anything*)
+    context->ClearRenderTargetView( backBufferRTV, color );
+    context->ClearDepthStencilView(
+        depthStencilView,
+        D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
+        1.0f,
+        0 );
 
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	//vertexShader->SetShader();
-	//pixelShader->SetShader();
+    // Set buffers in the input assembler
+    //  - Do this ONCE PER OBJECT you're drawing, since each object might
+    //    have different geometry.
+    UINT stride = sizeof( Vertex );
+    UINT offset = 0;
 
-	// Set buffers in the input assembler
-	//  - Do this ONCE PER OBJECT you're drawing, since each object might
-	//    have different geometry.
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
+    Mesh* EnMesh = nullptr;
+    ID3D11Buffer* VertBuff = nullptr;
+    Entity* CurrentEntity = nullptr;
 
-	Mesh* EnMesh			 = nullptr;
-	ID3D11Buffer* VertBuff	 = nullptr;
-	Entity* CurrentEntity	 = nullptr;
-
-	// Draw the entities
-	for (size_t i = 0; i < EntityCount; ++i)
-	{
-		// Calculate the world matrix ------------------------------------------
-		CurrentEntity = Entities[i];
+    // Draw the entities
+    for ( size_t i = 0; i < EntityCount; ++i )
+    {
+        // Calculate the world matrix ------------------------------------------
+        CurrentEntity = Entities[ i ];
 
         pixelShader->SetData(
             "light_two",
             &DirectLight_Two,
-            sizeof( DirectionalLight ) 
+            sizeof( DirectionalLight )
         );
 
         // Set the pixel shader before we draw each entity
@@ -284,25 +277,25 @@ void Game::Draw(float deltaTime, float totalTime)
         // why? Did I miss something?
         pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
 
-		CurrentEntity->PrepareMaterial(FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix());
+        CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
-		// Draw the entity ---------------------------------------------------------
-		EnMesh	 = CurrentEntity->GetEntityMesh();
-		VertBuff = EnMesh->GetVertexBuffer();
+        // Draw the entity ---------------------------------------------------------
+        EnMesh = CurrentEntity->GetEntityMesh();
+        VertBuff = EnMesh->GetVertexBuffer();
 
-		context->IASetVertexBuffers(0, 1, &VertBuff, &stride, &offset);
-		context->IASetIndexBuffer(EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+        context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
+        context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
 
-		context->DrawIndexed(
-			EnMesh->GetIndexCount(),     
-			0,     
-			0);    
-	}
+        context->DrawIndexed(
+            EnMesh->GetIndexCount(),
+            0,
+            0 );
+    }
 
-	// Present the back buffer to the user
-	//  - Puts the final frame we're drawing into the window so the user can see it
-	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
-	swapChain->Present(0, 0);
+    // Present the back buffer to the user
+    //  - Puts the final frame we're drawing into the window so the user can see it
+    //  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
+    swapChain->Present( 0, 0 );
 }
 
 
@@ -313,33 +306,33 @@ void Game::Draw(float deltaTime, float totalTime)
 // from the OS-level messages anyway, so these helpers have
 // been created to provide basic mouse input if you want it.
 // --------------------------------------------------------
-void Game::OnMouseDown(WPARAM buttonState, int x, int y)
+void Game::OnMouseDown( WPARAM buttonState, int x, int y )
 {
-	// Add any custom code here...
+    // Add any custom code here...
     FlyingCamera->SetDoRotation( true );
 
-	// Save the previous mouse position, so we have it for the future
-	prevMousePos.x = x;
-	prevMousePos.y = y;
+    // Save the previous mouse position, so we have it for the future
+    prevMousePos.x = x;
+    prevMousePos.y = y;
 
-	// Caputure the mouse so we keep getting mouse move
-	// events even if the mouse leaves the window.  we'll be
-	// releasing the capture once a mouse button is released
-	SetCapture(hWnd);
+    // Caputure the mouse so we keep getting mouse move
+    // events even if the mouse leaves the window.  we'll be
+    // releasing the capture once a mouse button is released
+    SetCapture( hWnd );
 }
 
 // --------------------------------------------------------
 // Helper method for mouse release
 // --------------------------------------------------------
-void Game::OnMouseUp(WPARAM buttonState, int x, int y)
+void Game::OnMouseUp( WPARAM buttonState, int x, int y )
 {
-	// Add any custom code here...
+    // Add any custom code here...
     // Reverse the camera direction
     FlyingCamera->SetDoRotation( false );
 
-	// We don't care about the tracking the cursor outside
-	// the window anymore (we're not dragging if the mouse is up)
-	ReleaseCapture();
+    // We don't care about the tracking the cursor outside
+    // the window anymore (we're not dragging if the mouse is up)
+    ReleaseCapture();
 }
 
 // --------------------------------------------------------
@@ -347,13 +340,13 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 // if the mouse is currently over the window, or if we're 
 // currently capturing the mouse.
 // --------------------------------------------------------
-void Game::OnMouseMove(WPARAM buttonState, int x, int y)
+void Game::OnMouseMove( WPARAM buttonState, int x, int y )
 {
-	FlyingCamera->UpdateMouseInput(prevMousePos.x - x, prevMousePos.y - y);
+    FlyingCamera->UpdateMouseInput( prevMousePos.x - x, prevMousePos.y - y );
 
-	// Save the previous mouse position, so we have it for the future
-	prevMousePos.x = x;
-	prevMousePos.y = y;
+    // Save the previous mouse position, so we have it for the future
+    prevMousePos.x = x;
+    prevMousePos.y = y;
 }
 
 // --------------------------------------------------------
@@ -361,8 +354,8 @@ void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 // WheelDelta may be positive or negative, depending 
 // on the direction of the scroll
 // --------------------------------------------------------
-void Game::OnMouseWheel(float wheelDelta, int x, int y)
+void Game::OnMouseWheel( float wheelDelta, int x, int y )
 {
-	// Add any custom code here...
+    // Add any custom code here...
 }
 #pragma endregion

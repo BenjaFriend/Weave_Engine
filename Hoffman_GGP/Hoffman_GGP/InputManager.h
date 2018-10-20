@@ -28,7 +28,7 @@ public:
     /// </summary>
     /// <param name="vKey">The key to check</param>
     /// <returns>True if the asynchronous key is down</returns>
-    bool IsAsyncKeyDown(int vKey);
+    bool IsAsyncKeyDown( int vKey );
 
 private:
 

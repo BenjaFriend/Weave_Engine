@@ -24,26 +24,26 @@ public:
     /// </summary>
     /// <param name="aVertShader">Pointer to the vertex shader for this material</param>
     /// <param name="aPixShader">Pointer to the pixel shader for this material</param>
-	Material(
+    Material(
         SimpleVertexShader* aVertShader,
         SimplePixelShader* aPixShader,
         ID3D11ShaderResourceView* aDiffuseSRV,
         ID3D11ShaderResourceView* aNormalSRV,
         ID3D11SamplerState* aSampler );
 
-	/** Destructor of the material */
-	~Material();
+    /** Destructor of the material */
+    ~Material();
 
 
-	////////////////////////////////////////////////////
-	// Accessors
-	////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    // Accessors
+    ////////////////////////////////////////////////////
 
-	/** Returns the vertex shader of this material */
-	SimpleVertexShader* GetVertexShader() const;
-	
-	/** Returns the pixel shader of this material */
-	SimplePixelShader* GetPixelShader() const;
+    /** Returns the vertex shader of this material */
+    SimpleVertexShader* GetVertexShader() const;
+
+    /** Returns the pixel shader of this material */
+    SimplePixelShader* GetPixelShader() const;
 
     /** Returns this material's diffuse texture SRV */
     ID3D11ShaderResourceView* GetDiffuseSRV() const;
@@ -54,13 +54,13 @@ public:
     /** Return this material's sampler state */
     ID3D11SamplerState* GetSamplerState() const;
 
-private: 
+private:
 
-	/** Vertex shader of this material */
-	SimpleVertexShader* VertexShader = nullptr;
+    /** Vertex shader of this material */
+    SimpleVertexShader * VertexShader = nullptr;
 
-	/** Pixel shader of this material */
-	SimplePixelShader* PixelShader = nullptr;
+    /** Pixel shader of this material */
+    SimplePixelShader* PixelShader = nullptr;
 
     /** Shader Resource view of this Material. */
     ID3D11ShaderResourceView* DiffuseSRV = nullptr;

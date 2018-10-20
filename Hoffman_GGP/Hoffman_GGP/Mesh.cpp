@@ -3,7 +3,7 @@
 
 using namespace DirectX;
 
-Mesh::Mesh(ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount)
+Mesh::Mesh( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount )
 {
     CreateBuffers( aDevice, aVerts, aNumVerts, aIndecies, aIndexCount );
 }
@@ -184,9 +184,9 @@ Mesh::Mesh( ID3D11Device* aDevice, char * objFile )
 
 Mesh::~Mesh()
 {
-	// Release the buffers
-	if (VertexBuffer)	{ VertexBuffer->Release(); }
-	if (IndexBuffer)	{ IndexBuffer->Release();  }
+    // Release the buffers
+    if ( VertexBuffer ) { VertexBuffer->Release(); }
+    if ( IndexBuffer ) { IndexBuffer->Release(); }
 }
 
 void Mesh::CreateBuffers( ID3D11Device * aDevice, Vertex * aVerts, UINT aNumVerts, UINT * aIndecies, UINT aIndexCount )
@@ -239,16 +239,16 @@ void Mesh::CreateBuffers( ID3D11Device * aDevice, Vertex * aVerts, UINT aNumVert
 
 ID3D11Buffer * const Mesh::GetVertexBuffer() const
 {
-	return VertexBuffer;
+    return VertexBuffer;
 }
 
 ID3D11Buffer * const Mesh::GetIndexBuffer() const
 {
-	return IndexBuffer;
+    return IndexBuffer;
 }
 
 const UINT Mesh::GetIndexCount() const
 {
-	return IndexCount;
+    return IndexCount;
 }
 
