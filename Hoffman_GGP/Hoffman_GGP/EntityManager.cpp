@@ -3,7 +3,7 @@
 #include "Mesh.h"
 
 // Singleton requirement
-static EntityManager* Instance = nullptr;
+EntityManager* EntityManager::Instance = nullptr;
 
 
 EntityManager* EntityManager::GetInstance()

@@ -11,18 +11,10 @@ using namespace DirectX;
 Entity::Entity( Mesh* aMesh, Material* aMat )
     : EntityMesh( aMesh ), EntityMaterial( aMat )
 {
-    // Set default values for position, scale and rotatoin
+    // Set default values for position, scale and rotation
     Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
     Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
     Rotation = DirectX::XMFLOAT4();
-}
-
-Entity::Entity( const Entity & aOther )
-{
-    Position = aOther.Position;
-    Scale = aOther.Scale;
-    Rotation = aOther.Rotation;
-    EntityMesh = aOther.EntityMesh;
 }
 
 // virtual destructor
@@ -156,5 +148,15 @@ XMFLOAT4X4 Entity::GetWorldMatrix()
     XMStoreFloat4x4( &World4x4, XMMatrixTranspose( WorldMM ) );	// Don't forget to transpose!
 
     return World4x4;
+}
+
+void Entity::SetIsActive( const bool aStatus )
+{
+    IsActive = aStatus;
+}
+
+const bool Entity::GetIsActive() const
+{
+    return IsActive;
 }
 

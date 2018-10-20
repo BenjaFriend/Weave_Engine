@@ -11,7 +11,6 @@
 class Mesh;
 class Material;
 
-
 /// <summary>
 /// A singleton class that will  be in charge of creating and 
 /// destroying entities 
@@ -57,6 +56,10 @@ public:
     //////////////////////////////////////////////////////////////////
     // Accessors 
 
+    /// <summary>
+    /// Get the current count of entities
+    /// </summary>
+    /// <returns>number of entities in the scene</returns>
     inline const size_t GetEntityCount() const;
 
     // We don't want anything making copies of this class so delete these operators

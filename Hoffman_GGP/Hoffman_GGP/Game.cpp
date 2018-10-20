@@ -27,7 +27,7 @@ Game::Game( HINSTANCE hInstance )
 
     vertexShader = 0;
     pixelShader = 0;
-    EntityCount = 0;
+    //EntityCount = 0;
     FlyingCamera = new Camera();
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -51,14 +51,15 @@ Game::~Game()
     delete pixelShader;
 
     // Delete the entities
-    for ( size_t i = 0; i < EntityCount; ++i )
+    /*for ( size_t i = 0; i < EntityCount; ++i )
     {
         Entity* CurEntity = Entities[ i ];
         if ( CurEntity ) delete CurEntity;
     }
 
     Entities.clear();
-    EntityCount = 0;
+    EntityCount = 0;*/
+    EntityManager::ReleaseInstance();
 
     if ( BasicMaterial ) delete BasicMaterial;
 
@@ -94,6 +95,8 @@ void Game::Init()
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     device->CreateSamplerState( &samplerDesc, &Sampler );
+
+    EntityManager::GetInstance();
 
     // Helper methods for loading shaders, creating some basic
     // geometry to draw and some simple camera matrices.
@@ -185,9 +188,7 @@ void Game::CreateBasicGeometry()
 
     BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV, PebblesNormalSRV, Sampler );
 
-    Entities.push_back( new Entity( TestMesh1, BasicMaterial ) );
-    ++EntityCount;
-    Entities[ EntityCount - 1 ]->MoveAbsolute( -1.f, -1.f, 0.f );
+    EntityManager::GetInstance()->AddEntity( TestMesh1, BasicMaterial );
 
 }
 
@@ -217,12 +218,12 @@ void Game::Update( float deltaTime, float totalTime )
     FlyingCamera->Update( deltaTime );
 
     // Loop through the other meshes to demonstrate rotation
-    for ( size_t i = 1; i < EntityCount; ++i )
+    /*for ( size_t i = 1; i < EntityCount; ++i )
     {
         XMFLOAT4 NewRot = Entities[ i ]->GetRotation();
         NewRot.z = totalTime;
         //	Entities[i]->SetRotation(NewRot);
-    }
+    }*/
 }
 
 // --------------------------------------------------------
@@ -251,46 +252,43 @@ void Game::Draw( float deltaTime, float totalTime )
 
     Mesh* EnMesh = nullptr;
     ID3D11Buffer* VertBuff = nullptr;
-    Entity* CurrentEntity = nullptr;
+    Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity(0);
+
+
 
     // Draw the entities
-    for ( size_t i = 0; i < EntityCount; ++i )
-    {
-        // Calculate the world matrix ------------------------------------------
-        CurrentEntity = Entities[ i ];
 
-        pixelShader->SetData(
-            "light_two",
-            &DirectLight_Two,
-            sizeof( DirectionalLight )
-        );
+    // Calculate the world matrix ------------------------------------------
+    pixelShader->SetData(
+        "light_two",
+        &DirectLight_Two,
+        sizeof( DirectionalLight )
+    );
 
-        // Set the pixel shader before we draw each entity
-        pixelShader->SetData(
-            "light",
-            &DirectLight,
-            sizeof( DirectionalLight )
-        );
+    // Set the pixel shader before we draw each entity
+    pixelShader->SetData(
+        "light",
+        &DirectLight,
+        sizeof( DirectionalLight )
+    );
 
-        // I have to do this here and get read access violations when I 
-        // try and do it in the Entity PrepareMaterial function
-        // why? Did I miss something?
-        pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
 
-        CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
+    pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
 
-        // Draw the entity ---------------------------------------------------------
-        EnMesh = CurrentEntity->GetEntityMesh();
-        VertBuff = EnMesh->GetVertexBuffer();
+    CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
-        context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
-        context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
+    // Draw the entity ---------------------------------------------------------
+    EnMesh = CurrentEntity->GetEntityMesh();
+    VertBuff = EnMesh->GetVertexBuffer();
 
-        context->DrawIndexed(
-            EnMesh->GetIndexCount(),
-            0,
-            0 );
-    }
+    context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
+    context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
+
+    context->DrawIndexed(
+        EnMesh->GetIndexCount(),
+        0,
+        0 );
+    
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it

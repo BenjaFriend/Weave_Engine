@@ -23,16 +23,9 @@ public:
     /// <param name="aMesh">A pointer to this entity's mesh</param>
     /// <param name="aMat">A material for this entity to use</param>
     Entity( Mesh * aMesh, Material* aMat );
-
-    /**
-    * Copy constructor
-    *
-    * @param aOther		The other entity
-    */
-    Entity( const Entity& aOther );
-
+    
     /** Virtual destructor for this entity */
-    virtual ~Entity();
+    ~Entity();
 
     /// <summary>
     /// Move the entity relative to the direction it is facing 
@@ -117,6 +110,17 @@ public:
     */
     DirectX::XMFLOAT4X4 GetWorldMatrix();
 
+    /// <summary>
+    /// Sets if this entity is active or not
+    /// </summary>
+    /// <param name="aStatus">True if active, false if in-active</param>
+    void SetIsActive( const bool aStatus );
+
+    /// <summary>
+    /// Get if this entity is active or not
+    /// </summary>
+    /// <returns>True if active, false if in-active</returns>
+    const bool GetIsActive() const;
 
 private:
 
@@ -135,6 +139,9 @@ private:
 
     /** The current rotation of this entity */
     DirectX::XMFLOAT4 Rotation;
+
+    /** Flag for if this entity is active or not */
+    bool IsActive;
 
 };
 

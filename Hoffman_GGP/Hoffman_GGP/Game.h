@@ -39,6 +39,7 @@ public:
     void OnMouseUp( WPARAM buttonState, int x, int y );
     void OnMouseMove( WPARAM buttonState, int x, int y );
     void OnMouseWheel( float wheelDelta, int x, int y );
+
 private:
 
     // Initialization helper methods - feel free to customize, combine, etc.
@@ -49,10 +50,6 @@ private:
 
     // The meshes to use with the Mesh class, assignment 2
     Mesh* TestMesh1 = nullptr;
-
-    // Entity list
-    std::vector<Entity*> Entities;
-    size_t EntityCount = 0;
 
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader;
