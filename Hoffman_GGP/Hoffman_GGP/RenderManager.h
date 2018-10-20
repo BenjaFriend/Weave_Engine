@@ -6,7 +6,6 @@
 
 /////////////////////////////////////////////////
 // Forward Declarations
-class Entity;
 class Mesh;
 struct Vertex;
 
@@ -17,26 +16,20 @@ struct Vertex;
 class RenderManager
 {
 public:
-    /** Default constructor for the render manager */
-    RenderManager();
-
-    /** Clean up entities and meshes */
-    ~RenderManager();
 
     /// <summary>
-    /// all current entities
+    /// Get an instance of the render manager, 
     /// </summary>
-    /// <param name="DeltaTime">Time between frames</param>
-    void Update( const float DeltaTime );
+    /// <returns>Static instance of a render manager</returns>
+    static RenderManager* GetInstance();
+
+    /// <summary>
+    /// Release the current instance of the render manager
+    /// </summary>
+    static void ReleaseInstance();
 
     /** Draw all entities in the scene */
     void DrawEntites();
-
-    /// <summary>
-    /// Add an entity to our render manager
-    /// </summary>
-    /// <param name="EntityMesh">The mesh to use for this entity</param>
-    void AddEntity( Mesh* EntityMesh );
 
     /// <summary>
     /// Creates a mesh and add it to our mesh vector
@@ -48,27 +41,26 @@ public:
     /// <param name="aIndexCount">Number of indecies this msh has</param>
     void AddMesh( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount );
 
+    // We don't want anything making copies of this class so delete these operators
+    RenderManager( RenderManager const& ) = delete;
+    void operator=( RenderManager const& ) = delete;
 
 private:
 
-    /** Creation of meshes here */
-    void InitalizeMeshes();
+    /** Default constructor for the render manager */
+    RenderManager();
 
-    /** Creation of entities here */
-    void InitalizeEntities();
+    /** Clean up entities and meshes */
+    ~RenderManager();
 
-    /** The current entity count */
-    size_t EntityCount = 0;
+
+    static RenderManager* Instance;
 
     /** The current Mesh count */
     size_t MeshCount = 0;
 
     /** Vector of meshes so we can easily keep track of them */
     std::vector<Mesh*> Meshes;
-
-    /** Collection of all entities */
-    std::vector<Entity*> Entities;
-
 
 };
 
