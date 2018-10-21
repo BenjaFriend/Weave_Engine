@@ -102,13 +102,18 @@ void Game::LoadShaders()
 
 void Game::InitLights()
 {
-    DirectLight.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
-    DirectLight.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
-    DirectLight.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    DirectionalLight Light1 = {};
+    Light1.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
+    Light1.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
+    Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    DirectionalLights.emplace_back( Light1 );
 
-    DirectLight_Two.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
-    DirectLight_Two.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
-    DirectLight_Two.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
+    DirectionalLight Light2 = {};
+    Light2.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
+    Light2.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
+    Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
+    DirectionalLights.emplace_back( Light2 );
+
 }
 
 // --------------------------------------------------------
@@ -145,7 +150,7 @@ void Game::CreateBasicGeometry()
 
     UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, samplerID );
 
-    EntityManager::GetInstance()->AddEntity( 
+    EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
 
     resources = nullptr;
@@ -185,8 +190,8 @@ void Game::Update( float deltaTime, float totalTime )
 void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
-    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
-    const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    //const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
@@ -208,27 +213,13 @@ void Game::Draw( float deltaTime, float totalTime )
     ID3D11Buffer* VertBuff = nullptr;
     Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
+    // Send lighting info ---------------------------------------------------------
+    int LightCount = static_cast<int>( DirectionalLights.size() );
+    pixelShader->SetData( "DirLights", (void*) ( &DirectionalLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+    pixelShader->SetInt( "LightCount", LightCount );
 
-
-    // Draw the entities
-
-    // Calculate the world matrix ------------------------------------------
-    pixelShader->SetData(
-        "light_two",
-        &DirectLight_Two,
-        sizeof( DirectionalLight )
-    );
-
-    // Set the pixel shader before we draw each entity
-    pixelShader->SetData(
-        "light",
-        &DirectLight,
-        sizeof( DirectionalLight )
-    );
-
-
+    // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
-
     CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
     // Draw the entity ---------------------------------------------------------

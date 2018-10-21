@@ -1,16 +1,14 @@
 
-struct DirectionalLight
-{
-    float4 AmbientColor;
-    float4 DiffuseColor;
-    float3 Direction;
-};
+//#include "Lighting/LightShaderDefs.h"
+
+#include "Lighting.hlsli"
+
 
 cbuffer externalData : register( b0 )
-{
-    DirectionalLight light;
-    DirectionalLight light_two;
-
+{    
+    // Array of dir light data
+    DirectionalLight DirLights[ MAX_DIR_LIGHTS ];
+    int LightCount;
 
     float3 CameraPosition; // Needed for specular (reflection) calculation
 };
@@ -20,11 +18,7 @@ Texture2D DiffuseTexture : register( t0 );
 Texture2D NormalTexture : register( t1 );
 SamplerState BasicSampler : register( s0 );
 
-// Struct representing the data we expect to receive from earlier pipeline stages
-// - Should match the output of our corresponding vertex shader
-// - The name of the struct itself is unimportant
-// - The variable names don't have to match other shaders (just the semantics)
-// - Each variable must have a semantic, which defines its usage
+
 struct VertexToPixel
 {
     float4 position		: SV_POSITION;	// XYZW position (System Value Position)
@@ -33,16 +27,6 @@ struct VertexToPixel
     float3 tangent		: TANGENT;
     float3 worldPos		: POSITION; // The world position of this vertex
 };
-
-
-float4 CalculateLight( float3 norm, DirectionalLight aLight )
-{
-    float3 lightNormDir = normalize( -aLight.Direction );
-
-    float NdotL = saturate( dot( norm, lightNormDir ) );
-
-    return aLight.AmbientColor + aLight.DiffuseColor * NdotL;
-}
 
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
@@ -68,15 +52,16 @@ float4 main(VertexToPixel input) : SV_TARGET
     float3x3 TBN = float3x3( T, B, N );
 
     input.normal = normalize( mul( normalFromMap, TBN ) );
-
-    //float dirLightAmount = saturate( dot( input.normal, -normalize( light.Direction ) ) );
-
-    float4 lightColor = CalculateLight( input.normal, light ) + CalculateLight( input.normal, light_two );
     
+    // Total color for this pixel
+    float4 totalColor = float4( 0, 0, 0, 0 );
+    for ( int i = 0; i < LightCount; i++ )
+    {
+        totalColor += CalculateDirLight( input.normal, DirLights[ i ] );
+    }
+
     // Texture Sample
     float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
 
-    return float4 ( lightColor * textureColor.rgb , 1 );
-    //return float4 ( light.DiffuseColor * dirLightAmount * textureColor.rgb , 1 );
-
+    return float4 ( totalColor.rgb * textureColor.rgb , 1 );
 }

@@ -7,9 +7,10 @@
 #include <DirectXMath.h>
 #include <vector>
 #include "InputManager.h"
-#include "../Entity/Lights.h"
+#include "../Lighting/Lights.h"
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
+#include "../Lighting/LightShaderDefs.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -55,8 +56,10 @@ private:
     Camera* FlyingCamera = nullptr;
 
     // Lights
-    DirectionalLight DirectLight;
-    DirectionalLight DirectLight_Two;
+    //DirectionalLight DirectLight;
+    //DirectionalLight DirectLight_Two;
+
+    std::vector<DirectionalLight> DirectionalLights;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.

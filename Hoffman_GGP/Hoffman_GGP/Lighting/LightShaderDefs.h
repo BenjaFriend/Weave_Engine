@@ -1,0 +1,6 @@
+#ifndef LIGHT_SHADER_DEFS
+#define LIGHT_SHADER_DEFS
+
+#define MAX_DIR_LIGHTS 64
+
+#endif // LIGHT_SHADER_DEFS

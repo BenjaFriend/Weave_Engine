@@ -24,7 +24,6 @@ public:
     /// <param name="aMat">A material for this entity to use</param>
     Entity( Mesh * aMesh, Material* aMat );
 
-    /** Virtual destructor for this entity */
     ~Entity();
 
     /// <summary>
