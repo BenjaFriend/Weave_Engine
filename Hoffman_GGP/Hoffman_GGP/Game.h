@@ -11,6 +11,7 @@
 #include "WICTextureLoader.h"
 #include "EntityManager.h"
 #include "RenderManager.h"
+#include "ResourceManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -48,9 +49,6 @@ private:
     void CreateBasicGeometry();
     void InitLights();
 
-    // The meshes to use with the Mesh class, assignment 2
-    Mesh* TestMesh1 = nullptr;
-
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader;
     SimplePixelShader* pixelShader;
@@ -65,8 +63,6 @@ private:
     DirectionalLight DirectLight_Two;
 
     // Texture stuff
-    ID3D11ShaderResourceView* PebblesSRV = nullptr;
-    ID3D11ShaderResourceView* PebblesNormalSRV = nullptr;
     ID3D11SamplerState* Sampler = nullptr;
 
     // Keeps track of the old mouse position.  Useful for 

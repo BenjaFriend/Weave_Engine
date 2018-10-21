@@ -52,19 +52,17 @@ Game::~Game()
 
     EntityManager::ReleaseInstance();
 
-    RenderManager::ReleaseInstance();
+    ResourceManager::ReleaseInstance();
+
 
     if ( BasicMaterial ) delete BasicMaterial;
 
     delete FlyingCamera;
 
     // Cleanup DX Resources
-    if ( PebblesSRV ) PebblesSRV->Release();
+    //if ( PebblesSRV ) PebblesSRV->Release();
     if ( Sampler ) Sampler->Release();
-    if ( PebblesNormalSRV ) PebblesNormalSRV->Release();
-
-    // Delete the mesh
-    delete TestMesh1;
+    //if ( PebblesNormalSRV ) PebblesNormalSRV->Release();
 
     InputManager::Release();
 
@@ -84,12 +82,14 @@ void Game::Init()
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    //samplerDesc.MaxAnisotropy = 16;
+    samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     device->CreateSamplerState( &samplerDesc, &Sampler );
 
     EntityManager::GetInstance();
+
+    ResourceManager::Initalize( device );
 
     // Helper methods for loading shaders, creating some basic
     // geometry to draw and some simple camera matrices.
@@ -147,41 +147,25 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-    // Create some temporary variables to represent colors
-    // - Not necessary, just makes things more readable
-    XMFLOAT4 red = XMFLOAT4( 1.0f, 0.0f, 0.0f, 1.0f );
-    XMFLOAT4 green = XMFLOAT4( 0.0f, 1.0f, 0.0f, 1.0f );
-    XMFLOAT4 blue = XMFLOAT4( 0.0f, 0.0f, 1.0f, 1.0f );
 
+    // Load in the meshes
+    ResourceManager* resources = ResourceManager::GetInstance();
+    UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
-    // Set up the indices, which tell us which vertices to use and in which order
-    // - This is somewhat redundant for just 3 vertices (it's a simple example)
-    // - Indices are technically not required if the vertices are in the buffer 
-    //    in the correct order and each one will be used exactly once
-    // - But just to see how it's done...
-    UINT indices[] = { 0, 1, 2 };
+    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_albedo.tif" );
+    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_normal.tif" );
 
-    CreateWICTextureFromFile(
-        device,
-        context,
-        L"Assets/Textures/BeachPebbles_1024_albedo.tif",
-        0,
-        &PebblesSRV
-    );
-    // Load the normal in 
-    CreateWICTextureFromFile(
-        device,
-        context,
-        L"Assets/Textures/BeachPebbles_1024_normal.tif",
-        0,
-        &PebblesNormalSRV
+    BasicMaterial = new Material( 
+        vertexShader,
+        pixelShader,
+        resources->GetSRV( diffSRV ),
+        resources->GetSRV( normSRV ),
+        Sampler
     );
 
-    TestMesh1 = new Mesh( device, "Assets/Models/sphere.obj" );
+    EntityManager::GetInstance()->AddEntity( resources->GetMesh( meshID ), BasicMaterial );
 
-    BasicMaterial = new Material( vertexShader, pixelShader, PebblesSRV, PebblesNormalSRV, Sampler );
-
-    EntityManager::GetInstance()->AddEntity( TestMesh1, BasicMaterial );
+    resources = nullptr;
 
 }
 
@@ -245,7 +229,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
     Mesh* EnMesh = nullptr;
     ID3D11Buffer* VertBuff = nullptr;
-    Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity(0);
+    Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
 
 
@@ -281,7 +265,7 @@ void Game::Draw( float deltaTime, float totalTime )
         EnMesh->GetIndexCount(),
         0,
         0 );
-    
+
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
