@@ -150,35 +150,35 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DXCore.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="RenderManager.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="SimpleShader.cpp" />
+    <ClCompile Include="Core\DXCore.cpp" />
+    <ClCompile Include="Core\Game.cpp" />
+    <ClCompile Include="Core\InputManager.cpp" />
+    <ClCompile Include="Core\Main.cpp" />
+    <ClCompile Include="Entity\Camera.cpp" />
+    <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Entity\EntityManager.cpp" />
+    <ClCompile Include="Resources\Material.cpp" />
+    <ClCompile Include="Resources\Mesh.cpp" />
+    <ClCompile Include="Resources\RenderManager.cpp" />
+    <ClCompile Include="Resources\ResourceManager.cpp" />
+    <ClCompile Include="Resources\SimpleShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="DebugSettings.h" />
-    <ClInclude Include="Definitions.h" />
-    <ClInclude Include="DXCore.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Lights.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="SimpleShader.h" />
-    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="Core\DebugSettings.h" />
+    <ClInclude Include="Core\Definitions.h" />
+    <ClInclude Include="Core\DXCore.h" />
+    <ClInclude Include="Core\Game.h" />
+    <ClInclude Include="Core\InputManager.h" />
+    <ClInclude Include="Entity\Camera.h" />
+    <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Entity\EntityManager.h" />
+    <ClInclude Include="Entity\Lights.h" />
+    <ClInclude Include="Resources\Material.h" />
+    <ClInclude Include="Resources\Mesh.h" />
+    <ClInclude Include="Resources\RenderManager.h" />
+    <ClInclude Include="Resources\ResourceManager.h" />
+    <ClInclude Include="Resources\SimpleShader.h" />
+    <ClInclude Include="Resources\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

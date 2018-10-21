@@ -1,5 +1,5 @@
 #include "RenderManager.h"
-#include "Entity.h"
+#include "../Entity/Entity.h"
 #include "Mesh.h"
 
 // Singleton requirement

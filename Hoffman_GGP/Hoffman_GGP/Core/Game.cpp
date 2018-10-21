@@ -1,9 +1,9 @@
 #include "Game.h"
-#include "Vertex.h"
-#include "Mesh.h"
-#include "Entity.h"
-#include "Camera.h"
-#include "Material.h"
+#include "../Resources/Vertex.h"
+#include "../Resources/Mesh.h"
+#include "../Entity/Entity.h"
+#include "../Entity/Camera.h"
+#include "../Resources/Material.h"
 
 // For the DirectX Math library
 using namespace DirectX;

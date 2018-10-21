@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include <stdio.h>
-#include "InputManager.h"   // Input
+#include "../Core/InputManager.h"   // Input
 
 /////////////////////////////////////////////////
 // Forward Declarations

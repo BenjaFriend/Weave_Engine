@@ -1,7 +1,7 @@
 #include "Entity.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "SimpleShader.h"
+#include "../Resources/Mesh.h"
+#include "../Resources/Material.h"
+#include "../Resources/SimpleShader.h"
 
 struct ID3D11SamplerState;
 struct ID3D11ShaderResourceView;

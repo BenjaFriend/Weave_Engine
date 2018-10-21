@@ -1,6 +1,6 @@
 #include "EntityManager.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "../Resources/Material.h"
+#include "../Resources/Mesh.h"
 
 // Singleton requirement
 EntityManager* EntityManager::Instance = nullptr;

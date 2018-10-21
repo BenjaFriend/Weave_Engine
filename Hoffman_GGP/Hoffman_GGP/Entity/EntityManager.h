@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "Entity.h"
-#include "DebugSettings.h"
-#include "Definitions.h"
+#include "../Core/DebugSettings.h"
+#include "../Core/Definitions.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

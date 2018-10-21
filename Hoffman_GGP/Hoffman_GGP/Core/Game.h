@@ -3,13 +3,13 @@
 #include "DebugSettings.h"
 
 #include "DXCore.h"
-#include "SimpleShader.h"
+#include "../Resources/SimpleShader.h"
 #include <DirectXMath.h>
 #include <vector>
 #include "InputManager.h"
-#include "Lights.h"
-#include "EntityManager.h"
-#include "ResourceManager.h"
+#include "../Entity/Lights.h"
+#include "../Entity/EntityManager.h"
+#include "../Resources/ResourceManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

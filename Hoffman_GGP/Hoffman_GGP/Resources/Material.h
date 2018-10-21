@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DebugSettings.h"
+#include "../Core/DebugSettings.h"
 
 
 /////////////////////////////////////////////////

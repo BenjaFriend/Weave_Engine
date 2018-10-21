@@ -1,101 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{f9e8d06b-dd7b-438c-8366-5dabd553fb21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{f1e760dd-f150-4e5a-bb30-9e412470ad35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{d24c0910-37e0-49db-92d7-3bb40d235d2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{b77b57c2-28e1-4264-a38c-ac648e66751d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DXCore.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\DXCore.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\Game.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\InputManager.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleShader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\Main.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Entity\Camera.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Entity\Entity.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="RenderManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Entity\EntityManager.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Resources\Material.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Resources\Mesh.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Resources\RenderManager.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Resources\ResourceManager.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Resources\SimpleShader.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXCore.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\DebugSettings.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Definitions.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleShader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\DXCore.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Game.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\InputManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Entity\Camera.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="RenderManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Entity\Entity.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Entity\EntityManager.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Entity\Lights.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\Material.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Lights.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\Mesh.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="DebugSettings.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\RenderManager.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\ResourceManager.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Definitions.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\SimpleShader.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Resources\Vertex.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

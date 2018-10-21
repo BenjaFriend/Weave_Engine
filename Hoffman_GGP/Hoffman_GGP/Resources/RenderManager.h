@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DebugSettings.h"
+#include "../Core/DebugSettings.h"
 
 #include <vector>
 #include "d3d11.h"	// ID3D11Buffer
