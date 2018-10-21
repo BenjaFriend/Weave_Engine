@@ -147,7 +147,6 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
     UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );

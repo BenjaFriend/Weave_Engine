@@ -51,6 +51,14 @@ const UINT EntityManager::AddEntity( Mesh* aMesh, Material* aMat )
     return static_cast<UINT>( EntityArray.size() - 1 );
 }
 
+const UINT EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos )
+{
+    Entity* tempEnt = new Entity( aMesh, aMat );
+    tempEnt->SetPosition( aPos );
+    EntityArray.push_back( tempEnt );
+    return static_cast<UINT>( EntityArray.size() - 1 );
+}
+
 void EntityManager::DeleteEntity( const UINT aEntityID )
 {
     if ( aEntityID >= 0 && aEntityID < EntityArray.size() )
@@ -65,6 +73,8 @@ void EntityManager::DeleteEntity( const UINT aEntityID )
 
 Entity * EntityManager::GetEntity( const UINT aEntityID ) const
 {
+    assert( aEntityID >= 0 && aEntityID < EntityArray.size() );
+
     return EntityArray[ aEntityID ];
 }
 

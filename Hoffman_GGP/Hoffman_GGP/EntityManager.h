@@ -42,6 +42,16 @@ public:
     const UINT AddEntity( Mesh* aMesh, Material* aMat );
 
     /// <summary>
+    /// Adds an entity to the game with the given 
+    /// </summary>
+    /// <param name="aMesh">Mesh for this entity</param>
+    /// <param name="aMat">Material of this entity</param>
+    /// <param name="aPos">The starting position of the entity</param>
+    /// <returns></returns>
+    const UINT AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos );
+
+
+    /// <summary>
     /// Deletes entity with the given ID
     /// </summary>
     /// <param name="aEntityID">ID of the entity to delete</param>

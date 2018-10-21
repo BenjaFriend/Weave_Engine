@@ -23,7 +23,7 @@ public:
     /// <param name="aMesh">A pointer to this entity's mesh</param>
     /// <param name="aMat">A material for this entity to use</param>
     Entity( Mesh * aMesh, Material* aMat );
-    
+
     /** Virtual destructor for this entity */
     ~Entity();
 
@@ -63,10 +63,10 @@ public:
     /** Returns this entity's current position */
     const DirectX::XMFLOAT3 & GetPosition() const;
 
-    /** Set the position of this entity
-    *
-    * @param aNewPos	The new position of this object
-    */
+    /// <summary>
+    /// Set the position of this entity
+    /// </summary>
+    /// <param name="aNewPos">The new position of this object</param>
     void SetPosition( const DirectX::XMFLOAT3 & aNewPos );
 
     /// <summary>

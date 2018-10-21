@@ -8,9 +8,7 @@
 #include <vector>
 #include "InputManager.h"
 #include "Lights.h"
-#include "WICTextureLoader.h"
 #include "EntityManager.h"
-#include "RenderManager.h"
 #include "ResourceManager.h"
 
 /////////////////////////////////////////////////
