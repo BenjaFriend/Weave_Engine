@@ -22,10 +22,10 @@ class ResourceManager
 public:
 
     /// <summary>
-    /// Initialize the 
+    /// Initialize the resource manager with any DX11 resources necessary
     /// </summary>
-    /// <returns></returns>
-    static ResourceManager* Initalize();
+    /// <returns>Static instance of the resource manager</returns>
+    static ResourceManager* Initalize( ID3D11Device* aDevice );
 
     /// <summary>
     /// Gets a reference to the current resource manager
@@ -42,13 +42,14 @@ public:
     /// Loads in a mesh with the given file name
     /// </summary>
     /// <param name="aFileName"></param>
-    /// <returns>Pointer to the mesh instance</returns>
-    static Mesh* LoadMesh( const char* aFileName );
+    /// <returns>An ID for the current mesh file to be used elsewhere</returns>
+    const UINT LoadMesh( char* aFileName );
+
 
 
 private:
 
-    ResourceManager();
+    ResourceManager( ID3D11Device* aDevice );
 
     ~ResourceManager();
 
@@ -58,11 +59,11 @@ private:
 
     static ResourceManager* Instance;
 
-    static std::vector<Mesh*> Meshes;
+    std::vector<Mesh*> Meshes;
 
-    static std::vector<Material*> Materials;
+    std::vector<Material*> Materials;
 
-    
+    ID3D11Device* currentDevice;
 
 };
 

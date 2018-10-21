@@ -48,7 +48,7 @@ void EntityManager::UnloadAllEntities()
 const UINT EntityManager::AddEntity( Mesh* aMesh, Material* aMat )
 {
     EntityArray.push_back( new Entity( aMesh, aMat ) );
-    return static_cast<UINT>( EntityArray.size() );
+    return static_cast<UINT>( EntityArray.size() - 1 );
 }
 
 void EntityManager::DeleteEntity( const UINT aEntityID )
