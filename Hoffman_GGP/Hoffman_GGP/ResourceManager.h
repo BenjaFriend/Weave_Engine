@@ -11,6 +11,8 @@
 // Forward Declarations
 class Mesh;
 class Material;
+class SimpleVertexShader;
+class SimplePixelShader;
 
 /// <summary>
 /// Loading and unloading all graphics resources like SRV's, meshes, and 
@@ -67,6 +69,44 @@ public:
     /// <returns></returns>
     ID3D11ShaderResourceView* GetSRV( const UINT aSrvID );
 
+    /// <summary>
+    /// Adds a new sampler with the given device to the current target device
+    /// </summary>
+    /// <param name="samplerDesc">Options for the given sampler desc</param>
+    /// <returns>ID of the sampler that was created</returns>
+    const UINT AddSampler( D3D11_SAMPLER_DESC & samplerDesc );
+
+    /// <summary>
+    /// Gets a pointer to the sampler state with the given ID
+    /// </summary>
+    /// <param name="aID">ID of the sampler you wish to access</param>
+    /// <returns>pointer to the sampler state with the given ID</returns>
+    ID3D11SamplerState* GetSampler( const UINT aID );
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="aVertexShader"></param>
+    /// <param name="aPixelShader"></param>
+    /// <param name="aDiffSrvID"></param>
+    /// <param name="aNormSrvID"></param>
+    /// <param name="aSamplerID"></param>
+    /// <returns></returns>
+    const UINT LoadMaterial( SimpleVertexShader* aVertexShader, SimplePixelShader* aPixelShader, const UINT aDiffSrvID, const UINT aNormSrvID, const UINT aSamplerID );
+
+    /// <summary>
+    /// Get a pointer to the given material with this ID
+    /// </summary>
+    /// <param name="aID">ID of the mesh you are trying to access</param>
+    /// <returns>Pointer to hte given mesh</returns>
+    Material* GetMaterial( const UINT aID );
+
+    /// <summary>
+    /// Gets a pointer to the current target device
+    /// </summary>
+    /// <returns>Pointer to the current device</returns>
+    inline const ID3D11Device* GetCurrentDevice() const;
+
 private:
 
     ResourceManager( ID3D11Device* aDevice );
@@ -99,6 +139,14 @@ private:
     /// </summary>
     std::vector<ID3D11ShaderResourceView*> SRViews;
 
+    /// <summary>
+    /// Currently loaded samplers to use
+    /// </summary>
+    std::vector<ID3D11SamplerState*> Samplers;
+
+    /// <summary>
+    /// The current graphics target device
+    /// </summary>
     ID3D11Device* currentDevice;
 
 };

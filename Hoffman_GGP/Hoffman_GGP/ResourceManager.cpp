@@ -65,7 +65,7 @@ const UINT ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aF
 
         return static_cast<UINT> ( SRViews.size() - 1 );
     }
-    else 
+    else
     {
         DEBUG_PRINT( "SRV LOADING FAILURE!" );
 
@@ -78,6 +78,51 @@ ID3D11ShaderResourceView * ResourceManager::GetSRV( const UINT aSrvID )
     assert( aSrvID >= 0 && aSrvID < SRViews.size() );
 
     return SRViews[ aSrvID ];
+}
+
+const UINT ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
+{
+    ID3D11SamplerState* NewSamplerState = nullptr;
+    HRESULT iResult = currentDevice->CreateSamplerState( &aSamplerDesc, &NewSamplerState );
+
+    if ( iResult == S_OK )
+    {
+        Samplers.push_back( NewSamplerState );
+        return static_cast<UINT>( Samplers.size() - 1 );
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+ID3D11SamplerState * ResourceManager::GetSampler( const UINT aID )
+{
+    assert( aID >= 0 && aID < Samplers.size() );
+
+    return Samplers[ aID ];
+}
+
+const UINT ResourceManager::LoadMaterial( SimpleVertexShader* aVertexShader, SimplePixelShader* aPixelShader, const UINT aDiffSrvID, const UINT aNormSrvID, const UINT aSamplerID )
+{
+    Material* newMat = new Material(
+        aVertexShader,
+        aPixelShader,
+        SRViews[ aDiffSrvID ],
+        SRViews[ aNormSrvID ],
+        Samplers[ aSamplerID ]
+    );
+
+    Materials.push_back( newMat );
+
+    return static_cast<UINT>( Materials.size() - 1 );
+}
+
+Material* ResourceManager::GetMaterial( const UINT aID )
+{
+    assert( aID >= 0 && aID < Materials.size() );
+
+    return Materials[ aID ];
 }
 
 // Private constructor
@@ -136,4 +181,19 @@ void ResourceManager::UnloadSRVs()
 
     SRViews.clear();
     DEBUG_PRINT( "Unloaded SRVs!" );
+
+    // Release each DX11 resource that was loaded here
+    for ( auto it = Samplers.begin(); it != Samplers.end(); ++it )
+    {
+        ( *it )->Release();
+    }
+
+    Samplers.clear();
+    DEBUG_PRINT( "Unloaded Samplers!" );
+
+}
+
+inline const ID3D11Device * ResourceManager::GetCurrentDevice() const
+{
+    return currentDevice;
 }

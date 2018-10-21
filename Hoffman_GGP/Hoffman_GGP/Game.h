@@ -54,14 +54,9 @@ private:
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
 
-    Material* BasicMaterial = nullptr;
-
     // Lights
     DirectionalLight DirectLight;
     DirectionalLight DirectLight_Two;
-
-    // Texture stuff
-    ID3D11SamplerState* Sampler = nullptr;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.

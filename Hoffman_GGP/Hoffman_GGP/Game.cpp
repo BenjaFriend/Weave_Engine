@@ -54,18 +54,9 @@ Game::~Game()
 
     ResourceManager::ReleaseInstance();
 
-
-    if ( BasicMaterial ) delete BasicMaterial;
-
     delete FlyingCamera;
 
-    // Cleanup DX Resources
-    //if ( PebblesSRV ) PebblesSRV->Release();
-    if ( Sampler ) Sampler->Release();
-    //if ( PebblesNormalSRV ) PebblesNormalSRV->Release();
-
     InputManager::Release();
-
 
 }
 
@@ -75,18 +66,6 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-
-    // Manually create a sampler state
-    D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    samplerDesc.MaxAnisotropy = 16;
-    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    device->CreateSamplerState( &samplerDesc, &Sampler );
-
     EntityManager::GetInstance();
 
     ResourceManager::Initalize( device );
@@ -154,15 +133,20 @@ void Game::CreateBasicGeometry()
     UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_albedo.tif" );
     UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_normal.tif" );
 
-    BasicMaterial = new Material( 
-        vertexShader,
-        pixelShader,
-        resources->GetSRV( diffSRV ),
-        resources->GetSRV( normSRV ),
-        Sampler
-    );
+    D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    samplerDesc.MaxAnisotropy = 16;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-    EntityManager::GetInstance()->AddEntity( resources->GetMesh( meshID ), BasicMaterial );
+    UINT samplerID = resources->AddSampler( samplerDesc );
+
+    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, samplerID );
+
+    EntityManager::GetInstance()->AddEntity( 
+        resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
 
     resources = nullptr;
 
@@ -193,13 +177,6 @@ void Game::Update( float deltaTime, float totalTime )
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
-    // Loop through the other meshes to demonstrate rotation
-    /*for ( size_t i = 1; i < EntityCount; ++i )
-    {
-        XMFLOAT4 NewRot = Entities[ i ]->GetRotation();
-        NewRot.z = totalTime;
-        //	Entities[i]->SetRotation(NewRot);
-    }*/
 }
 
 // --------------------------------------------------------
@@ -208,7 +185,8 @@ void Game::Update( float deltaTime, float totalTime )
 void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
-    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
