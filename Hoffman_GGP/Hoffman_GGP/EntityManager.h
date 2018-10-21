@@ -38,6 +38,7 @@ public:
     /// </summary>
     /// <param name="aMesh">Mesh for this entity</param>
     /// <param name="aMat">Material of this entity</param>
+    /// <returns>The ID of that entity</returns>
     const UINT AddEntity( Mesh* aMesh, Material* aMat );
 
     /// <summary>
@@ -72,9 +73,15 @@ private:
 
     ~EntityManager();
 
+    /// <summary>
+    /// Removes all currently loaded entities from the array 
+    /// and deletes them
+    /// </summary>
+    void UnloadAllEntities();
 
     static EntityManager* Instance;
 
+    /** Keep track of all entities in the scene */
     std::vector<Entity*> EntityArray;
 
 };

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "DebugSettings.h"
 
 #include <vector>
@@ -10,7 +11,8 @@ class Mesh;
 struct Vertex;
 
 /// <summary>
-/// Controls the rendering of meshes and entities 
+/// In charge of the creation of any SRV's, materials, or meshes
+/// that need to be loaded in.
 /// </summary>
 /// <author>Ben Hoffman</author>
 class RenderManager
@@ -27,9 +29,6 @@ public:
     /// Release the current instance of the render manager
     /// </summary>
     static void ReleaseInstance();
-
-    /** Draw all entities in the scene */
-    void DrawEntites();
 
     /// <summary>
     /// Creates a mesh and add it to our mesh vector
@@ -53,14 +52,9 @@ private:
     /** Clean up entities and meshes */
     ~RenderManager();
 
-
     static RenderManager* Instance;
-
-    /** The current Mesh count */
-    size_t MeshCount = 0;
 
     /** Vector of meshes so we can easily keep track of them */
     std::vector<Mesh*> Meshes;
 
 };
-

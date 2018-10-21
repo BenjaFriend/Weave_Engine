@@ -31,6 +31,11 @@ EntityManager::EntityManager()
 
 EntityManager::~EntityManager()
 {
+    UnloadAllEntities();
+}
+
+void EntityManager::UnloadAllEntities()
+{
     // Delete each entity that has been added
     for ( auto it = EntityArray.begin(); it != EntityArray.end(); ++it )
     {

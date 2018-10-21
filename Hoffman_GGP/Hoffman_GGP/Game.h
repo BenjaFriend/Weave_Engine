@@ -2,7 +2,6 @@
 
 #include "DebugSettings.h"
 
-
 #include "DXCore.h"
 #include "SimpleShader.h"
 #include <DirectXMath.h>
@@ -11,6 +10,7 @@
 #include "Lights.h"
 #include "WICTextureLoader.h"
 #include "EntityManager.h"
+#include "RenderManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

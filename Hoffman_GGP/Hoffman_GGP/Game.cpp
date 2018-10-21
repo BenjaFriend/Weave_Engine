@@ -50,16 +50,9 @@ Game::~Game()
     delete vertexShader;
     delete pixelShader;
 
-    // Delete the entities
-    /*for ( size_t i = 0; i < EntityCount; ++i )
-    {
-        Entity* CurEntity = Entities[ i ];
-        if ( CurEntity ) delete CurEntity;
-    }
-
-    Entities.clear();
-    EntityCount = 0;*/
     EntityManager::ReleaseInstance();
+
+    RenderManager::ReleaseInstance();
 
     if ( BasicMaterial ) delete BasicMaterial;
 
