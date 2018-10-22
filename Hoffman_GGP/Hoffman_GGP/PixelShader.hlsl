@@ -54,12 +54,14 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Calculate lighting --------------------------------
     float3 lightColor = float3( 0, 0, 0 );
 
+    // Not working, just stays at 0 for it all
     for ( int i = 0; i < LightCount; ++i )
     {
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
     }
 
-    lightColor = CalculateDirLight( input.normal, DirLightTest );
+    // See this will work
+    //lightColor = CalculateDirLight( input.normal, DirLightTest );
 
 
     return float4 ( lightColor.rgb * textureColor.rgb, 1 );
