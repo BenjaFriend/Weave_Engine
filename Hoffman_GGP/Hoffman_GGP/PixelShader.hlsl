@@ -60,9 +60,5 @@ float4 main(VertexToPixel input) : SV_TARGET
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
     }
 
-    // See this will work
-    //lightColor = CalculateDirLight( input.normal, DirLightTest );
-
-
     return float4 ( lightColor.rgb * textureColor.rgb, 1 );
 }

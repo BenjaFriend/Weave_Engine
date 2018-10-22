@@ -9,6 +9,8 @@ struct DirectionalLight
     float4 AmbientColor;
     float4 DiffuseColor;
     float3 Direction;
+    float Padding;      // This has to be here because of the way that
+                        // Simple Shader works
 };
 
 float3 CalculateDirLight( float3 norm, DirectionalLight aLight )

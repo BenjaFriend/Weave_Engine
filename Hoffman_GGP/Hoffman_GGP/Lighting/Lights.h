@@ -11,4 +11,6 @@ struct DirectionalLight
     DirectX::XMFLOAT4 AmbientColor;
     DirectX::XMFLOAT4 DiffuseColor;
     DirectX::XMFLOAT3 Direction;
+    float Padding;      // We have to add this here because of the
+                        // way that SimpleShader works
 };
