@@ -1,6 +1,4 @@
 
-//#include "Lighting/LightShaderDefs.h"
-
 #include "Lighting.hlsli"
 
 
@@ -10,14 +8,10 @@ cbuffer externalData : register( b0 )
     DirectionalLight DirLights[ MAX_DIR_LIGHTS ];
     int LightCount;
 
+    DirectionalLight DirLightTest;  // A test field right now to see how I am passing in data
+
     float3 CameraPosition; // Needed for specular (reflection) calculation
 };
-
-// Define globals for the texture samples
-Texture2D DiffuseTexture : register( t0 );
-Texture2D NormalTexture : register( t1 );
-SamplerState BasicSampler : register( s0 );
-
 
 struct VertexToPixel
 {
@@ -28,22 +22,26 @@ struct VertexToPixel
     float3 worldPos		: POSITION; // The world position of this vertex
 };
 
-// --------------------------------------------------------
-// The entry point (main method) for our pixel shader
-// 
-// - Input is the data coming down the pipeline (defined by the struct)
-// - Output is a single color (float4)
-// - Has a special semantic (SV_TARGET), which means 
-//    "put the output of this into the current render target"
-// - Named "main" because that's the default the shader compiler looks for
-// --------------------------------------------------------
+// Define globals for the texture samples
+Texture2D DiffuseTexture : register( t0 );
+Texture2D NormalTexture : register( t1 );
+SamplerState BasicSampler : register( s0 );
+
+// Entry point for this pixel shader
 float4 main(VertexToPixel input) : SV_TARGET
 {
     // Re-normalize interpolated data
     input.normal = normalize( input.normal );
+    
+    // Something could be wrong with this, it is all black
     input.tangent = normalize( input.tangent );
-
+    //return float4( input.tangent.rgb, 1 );        
+    
+    // Sample normal map
     float3 normalFromMap = NormalTexture.Sample( BasicSampler, input.uv ).rgb * 2 - 1;
+
+    // Sample diffuse texture
+    float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
 
     // Create my TBN matrix to convert from tangent-space to world-space
     float3 N = input.normal;
@@ -52,16 +50,17 @@ float4 main(VertexToPixel input) : SV_TARGET
     float3x3 TBN = float3x3( T, B, N );
 
     input.normal = normalize( mul( normalFromMap, TBN ) );
-    
-    // Total color for this pixel
-    float4 totalColor = float4( 0, 0, 0, 0 );
-    for ( int i = 0; i < LightCount; i++ )
+
+    // Calculate lighting --------------------------------
+    float3 lightColor = float3( 0, 0, 0 );
+
+    for ( int i = 0; i < LightCount; ++i )
     {
-        totalColor += CalculateDirLight( input.normal, DirLights[ i ] );
+        lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
     }
 
-    // Texture Sample
-    float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
+    lightColor = CalculateDirLight( input.normal, DirLightTest );
 
-    return float4 ( totalColor.rgb * textureColor.rgb , 1 );
+
+    return float4 ( lightColor.rgb * textureColor.rgb, 1 );
 }

@@ -106,14 +106,13 @@ void Game::InitLights()
     Light1.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
     Light1.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    DirectionalLights.emplace_back( Light1 );
+    DirLights.emplace_back( Light1 );
 
     DirectionalLight Light2 = {};
     Light2.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
     Light2.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
-    DirectionalLights.emplace_back( Light2 );
-
+    DirLights.emplace_back( Light2 );
 }
 
 // --------------------------------------------------------
@@ -214,9 +213,13 @@ void Game::Draw( float deltaTime, float totalTime )
     Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
     // Send lighting info ---------------------------------------------------------
-    int LightCount = static_cast<int>( DirectionalLights.size() );
-    pixelShader->SetData( "DirLights", (void*) ( &DirectionalLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
-    pixelShader->SetInt( "LightCount", LightCount );
+    // This is what is failing and does not seem to be working at all
+    pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+    // I know that size is being passed in correctly
+    pixelShader->SetInt( "LightCount", DirLights.size() );
+
+    // This works fine, which confuses me. 
+    pixelShader->SetData( "DirLightTest", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) );
 
     // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );

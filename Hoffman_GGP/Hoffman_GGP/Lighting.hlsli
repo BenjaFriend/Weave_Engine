@@ -11,13 +11,13 @@ struct DirectionalLight
     float3 Direction;
 };
 
-float4 CalculateDirLight( float3 norm, DirectionalLight aLight )
+float3 CalculateDirLight( float3 norm, DirectionalLight aLight )
 {
-    float3 lightNormDir = normalize( -aLight.Direction );
+    float3 lightNormDir = normalize( -aLight.Direction.rgb );
 
     float NdotL = saturate( dot( norm, lightNormDir ) );
 
-    return aLight.AmbientColor + aLight.DiffuseColor * NdotL;
+    return float3( aLight.AmbientColor.rgb + aLight.DiffuseColor.rgb * NdotL );
 }
 
 #endif  // _LIGHTING_HLSL

@@ -56,10 +56,7 @@ private:
     Camera* FlyingCamera = nullptr;
 
     // Lights
-    //DirectionalLight DirectLight;
-    //DirectionalLight DirectLight_Two;
-
-    std::vector<DirectionalLight> DirectionalLights;
+    std::vector<DirectionalLight> DirLights;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.
