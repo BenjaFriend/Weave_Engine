@@ -17,6 +17,8 @@ public:
         SimplePixelShader* aPixShader,
         ID3D11ShaderResourceView* aDiffuseSRV,
         ID3D11ShaderResourceView* aNormalSRV,
+        ID3D11ShaderResourceView * aRoughnessSRV,
+        ID3D11ShaderResourceView * aMetalSRV,
         ID3D11SamplerState* aSampler );
 
     virtual ~PBRMaterial() override;
@@ -57,9 +59,9 @@ private:
     /// </summary>
     float Shininiess = 0.5f;
 
-    ID3D11ShaderResourceView * RoughnessSRV;
+    ID3D11ShaderResourceView * RoughnessSRV = nullptr;
 
-    ID3D11ShaderResourceView* MetalSRV;
+    ID3D11ShaderResourceView* MetalSRV = nullptr;
 
 };
 

@@ -2,8 +2,16 @@
 
 
 
-PBRMaterial::PBRMaterial( SimpleVertexShader * aVertShader, SimplePixelShader * aPixShader, ID3D11ShaderResourceView * aDiffuseSRV, ID3D11ShaderResourceView * aNormalSRV, ID3D11SamplerState * aSampler )
+PBRMaterial::PBRMaterial( 
+    SimpleVertexShader * aVertShader,
+    SimplePixelShader * aPixShader,
+    ID3D11ShaderResourceView * aDiffuseSRV,
+    ID3D11ShaderResourceView * aNormalSRV,
+    ID3D11ShaderResourceView * aRoughnessSRV,
+    ID3D11ShaderResourceView * aMetalSRV,
+    ID3D11SamplerState * aSampler )
     : Material( aVertShader, aPixShader, aDiffuseSRV, aNormalSRV, aSampler )
+    , RoughnessSRV(aRoughnessSRV), MetalSRV(aMetalSRV)
 {
     DEBUG_PRINT( "PBR Mat CTOR BOIII" );
 
