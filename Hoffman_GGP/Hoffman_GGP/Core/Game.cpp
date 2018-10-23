@@ -131,7 +131,7 @@ void Game::InitLights()
     pLight2.Color = Blue;
     pLight2.Position = XMFLOAT3( -3.0f, -3.0f, -0.5f );
     pLight2.Intensity = 20.f;
-    pLight2.Range = 20.f;
+    pLight2.Range = 5.f;
     PointLights.emplace_back( pLight2 );
 
 }
@@ -206,6 +206,8 @@ void Game::Update( float deltaTime, float totalTime )
     const float speed = 1.f;
     const float target = 10.0f;
         
+    
+
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
@@ -213,7 +215,7 @@ void Game::Update( float deltaTime, float totalTime )
         
         newPos.y += speed * deltaTime;
         
-        lerp( newPos.y, target, speed * deltaTime );
+        //lerp( newPos.y, target, speed * deltaTime );
 
         PointLights[ i ].Position = newPos;
     }
@@ -273,6 +275,8 @@ void Game::Draw( float deltaTime, float totalTime )
         0 );
 
 
+    DrawLightSources();
+
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
     //  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
@@ -282,8 +286,56 @@ void Game::Draw( float deltaTime, float totalTime )
 
 void Game::DrawLightSources()
 {
+    Mesh* lightMesh = ResourceManager::GetInstance()->GetMesh( PointLightMesh_ID );
+    ID3D11Buffer * vb = lightMesh->GetVertexBuffer();
+    ID3D11Buffer * ib = lightMesh->GetIndexBuffer();
+    unsigned int indexCount = lightMesh->GetIndexCount();
 
+    // Turn on these shaders
+    vertexShader->SetShader();
+    UnlitPixelShader->SetShader();
 
+    // Set up vertex shader
+    vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+    vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+
+    for ( size_t i = 0; i < PointLights.size(); ++i )
+    {
+        PointLight light = PointLights[ i ];
+        // Set buffers in the input assembler
+        UINT stride = sizeof( Vertex );
+        UINT offset = 0;
+        context->IASetVertexBuffers( 0, 1, &vb, &stride, &offset );
+        context->IASetIndexBuffer( ib, DXGI_FORMAT_R32_UINT, 0 );
+
+        float scale = light.Range / 10.0f;
+
+        XMMATRIX rotMat = XMMatrixIdentity();
+        XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );
+        XMMATRIX transMat = XMMatrixTranslation( light.Position.x, light.Position.y, light.Position.z );
+
+        // Make the transform for this light
+        XMFLOAT4X4 world;
+        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+
+        // Set up the world matrix for this light
+        vertexShader->SetMatrix4x4( "world", world );
+
+        // Set up the pixel shader data
+        XMFLOAT3 finalColor = light.Color;
+        finalColor.x *= light.Intensity;
+        finalColor.y *= light.Intensity;
+        finalColor.z *= light.Intensity;
+        UnlitPixelShader->SetFloat3( "Color", finalColor );
+
+        // Copy data
+        vertexShader->CopyAllBufferData();
+        UnlitPixelShader->CopyAllBufferData();
+
+        // Draw
+        context->DrawIndexed( indexCount, 0, 0 );
+
+    }
 
 }
 
