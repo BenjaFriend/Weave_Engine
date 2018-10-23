@@ -26,32 +26,14 @@ void Camera::Update( const float aDeltaTime )
     InputManager* input = InputManager::GetInstance();
 
 
-    if ( input->IsAsyncKeyDown( 'W' ) )
-    {
-        RelativeInput.z += 1.f;
-    }
-    if ( input->IsAsyncKeyDown( 'S' ) )
-    {
-        RelativeInput.z -= 1.f;
-    }
-    if ( input->IsAsyncKeyDown( 'A' ) )
-    {
-        RelativeInput.x -= 1.f;
-    }
-    if ( input->IsAsyncKeyDown( 'D' ) )
-    {
-        RelativeInput.x += 1.f;
-    }
+    if ( input->IsAsyncKeyDown( 'W' ) ) { RelativeInput.z += 1.f; }
+    if ( input->IsAsyncKeyDown( 'S' ) ) { RelativeInput.z -= 1.f; }
+    if ( input->IsAsyncKeyDown( 'A' ) ) { RelativeInput.x -= 1.f; }
+    if ( input->IsAsyncKeyDown( 'D' ) ) { RelativeInput.x += 1.f; }
 
     // Moving up and down (Absolute)
-    if ( GetAsyncKeyState( 'X' ) & 0x80000 )
-    {
-        RelativeInput.y -= 1.f;
-    }
-    if ( GetAsyncKeyState( VK_SPACE ) & 0x80000 )
-    {
-        RelativeInput.y += 1.f;
-    }
+    if ( GetAsyncKeyState( 'X' ) & 0x80000 ) { RelativeInput.y -= 1.f; }
+    if ( GetAsyncKeyState( VK_SPACE ) & 0x80000 ) { RelativeInput.y += 1.f; }
 
     // Scale keyboard input by delta time
     RelativeInput.x *= aDeltaTime;
@@ -121,7 +103,7 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 {
     if ( !DoRotation ) return;
 
-    RotationXAxis += aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
+    RotationXAxis += -aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
     if ( RotationXAxis < -90 )
     {
         RotationXAxis = -90;
