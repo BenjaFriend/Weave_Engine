@@ -3,7 +3,7 @@
 #include "../Resources/Mesh.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
-#include "../Resources/Material.h"
+#include "../Resources/Materials/Material.h"
 
 // For the DirectX Math library
 using namespace DirectX;

@@ -1,6 +1,6 @@
 #include "Entity.h"
 #include "../Resources/Mesh.h"
-#include "../Resources/Material.h"
+#include "../Resources/Materials/Material.h"
 #include "../Resources/SimpleShader.h"
 
 struct ID3D11SamplerState;

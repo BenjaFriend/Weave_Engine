@@ -1,5 +1,5 @@
 #include "EntityManager.h"
-#include "../Resources/Material.h"
+#include "../Resources/Materials/Material.h"
 #include "../Resources/Mesh.h"
 
 // Singleton requirement

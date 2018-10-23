@@ -1,5 +1,5 @@
 #include "Material.h"
-#include "SimpleShader.h"
+#include "../SimpleShader.h"
 
 Material::Material( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader, ID3D11ShaderResourceView * aDiffuseSRV, ID3D11ShaderResourceView* aNormalSRV, ID3D11SamplerState* aSampler )
     : VertexShader( aVertShader ), PixelShader( aPixShader ), DiffuseSRV( aDiffuseSRV ), NormalSRV( aNormalSRV ), Sampler( aSampler )

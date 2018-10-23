@@ -19,6 +19,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{6531483a-37d5-476c-ad29-af567469ca05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Materials">
+      <UniqueIdentifier>{409103a1-562f-4da8-b80b-669e6ebea96f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -42,9 +45,6 @@
     <ClCompile Include="Entity\EntityManager.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Material.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Resources\Mesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -59,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Utils\MathHelper.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Materials\Material.cpp">
+      <Filter>Resources\Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,9 +89,6 @@
     <ClInclude Include="Entity\EntityManager.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Material.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Resources\Mesh.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -112,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Utils\MathHelper.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Materials\Material.h">
+      <Filter>Resources\Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

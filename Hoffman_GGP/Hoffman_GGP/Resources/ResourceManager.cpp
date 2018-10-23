@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 #include "Mesh.h"
-#include "Material.h"
+#include "Materials/Material.h"
 
 // Singleton definitions
 ResourceManager* ResourceManager::Instance = nullptr;
