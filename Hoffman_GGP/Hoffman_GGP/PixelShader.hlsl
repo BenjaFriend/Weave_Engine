@@ -34,8 +34,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 {
     // Re-normalize interpolated data
     input.normal = normalize( input.normal );
-    
-    // Something could be wrong with this, it is all black
     input.tangent = normalize( input.tangent );
     
     // Sample normal map
@@ -58,6 +56,11 @@ float4 main(VertexToPixel input) : SV_TARGET
     for ( int i = 0; i < DirLightCount; ++i )
     {
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
+    }
+
+    for ( int j = 0; j < PointLightCount; ++j )
+    {
+        lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, 0.5, 0.5, textureColor.rgb );
     }
 
     return float4 ( lightColor.rgb * textureColor.rgb, 1 );

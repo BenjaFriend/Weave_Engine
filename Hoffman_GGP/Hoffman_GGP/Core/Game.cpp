@@ -98,31 +98,38 @@ void Game::LoadShaders()
 
     pixelShader = new SimplePixelShader( device, context );
     pixelShader->LoadShaderFile( L"PixelShader.cso" );
+
+    UnlitPixelShader = new SimplePixelShader( device, context );
+    UnlitPixelShader->LoadShaderFile( L"PixelShader_Unlit.cso" );
+
 }
 
 void Game::InitLights()
 {
     DirectionalLight Light1 = {};
-    Light1.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
-    Light1.DiffuseColor = XMFLOAT4( 0.9f, 0.1f, 0.1f, 1.0f );
+    Light1.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );  // Ambient color is the color when we are in shadow
+    Light1.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     DirLights.emplace_back( Light1 );
 
     DirectionalLight Light2 = {};
     Light2.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
-    Light2.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
+    Light2.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 0.1f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
     DirLights.emplace_back( Light2 );
 
+    XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
+
     PointLight pLight1 = {};
-    pLight1.Color = XMFLOAT3( 1.0f, 0.0f, 0.5f );
+    pLight1.Color = Red;
     pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
     pLight1.Intensity = 10.f;
     pLight1.Range = 10.f;
     PointLights.emplace_back( pLight1 );
 
     PointLight pLight2 = {};
-    pLight2.Color = XMFLOAT3( 0.0f, 1.0f, 0.0f );
+    pLight2.Color = Blue;
     pLight2.Position = XMFLOAT3( -3.0f, -3.0f, -0.5f );
     pLight2.Intensity = 20.f;
     pLight2.Range = 20.f;
@@ -147,7 +154,8 @@ void Game::CreateBasicGeometry()
 {
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
-    UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
+    UINT meshID = resources->LoadMesh( "Assets/Models/torus.obj" );
+    PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
     UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_albedo.tif" );
     UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_normal.tif" );
@@ -195,6 +203,21 @@ void Game::Update( float deltaTime, float totalTime )
 
     // Update the camera
     FlyingCamera->Update( deltaTime );
+
+    const float speed = 1.f;
+    const float target = 10.0f;
+        
+
+    for ( size_t i = 0; i < PointLights.size(); ++i )
+    {
+        XMFLOAT3 newPos = PointLights[ i ].Position;
+        
+        newPos.y += speed * deltaTime;
+        
+        lerp( newPos.y, target, speed * deltaTime );
+
+        PointLights[ i ].Position = newPos;
+    }
 
 }
 
@@ -257,6 +280,13 @@ void Game::Draw( float deltaTime, float totalTime )
     swapChain->Present( 0, 0 );
 }
 
+
+void Game::DrawLightSources()
+{
+
+
+
+}
 
 #pragma region Mouse Input
 

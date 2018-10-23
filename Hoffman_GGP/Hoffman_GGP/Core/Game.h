@@ -48,9 +48,14 @@ private:
     void CreateBasicGeometry();
     void InitLights();
 
+    void DrawLightSources();
+
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader;
     SimplePixelShader* pixelShader;
+    SimplePixelShader* UnlitPixelShader;
+
+
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
@@ -58,10 +63,16 @@ private:
     // Lights
     std::vector<DirectionalLight> DirLights;
     std::vector<PointLight> PointLights;
-
+    UINT PointLightMesh_ID = 0;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.
     POINT prevMousePos;
+
+
+    float lerp( float a, float b, float f )
+    {
+        return a + f * ( b - a );
+    }
 };
 

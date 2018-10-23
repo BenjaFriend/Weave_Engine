@@ -1,11 +1,10 @@
-// Include guard
+// Include guard, the shader compiler doesn't support #pragma once
 #ifndef _LIGHTING_HLSL
 #define _LIGHTING_HLSL
 
 #include "Lighting/LightShaderDefs.h"
 
-//#define MAX_DIR_LIGHTS 64
-
+// Light Structs -----------------------------------------------
 struct DirectionalLight
 {
     float4 AmbientColor;
@@ -15,7 +14,6 @@ struct DirectionalLight
                         // Simple Shader works
 };
 
-
 struct PointLight
 {
     float3 Color;           // 12 bytes
@@ -24,6 +22,8 @@ struct PointLight
     float3 Position;        // 28 bytes
     float Intensity;        // 32 bytes
 };
+
+// Basic lighting calculations -----------------------------------------------
 
 // Range-based attenuation function // From Chris Cascioli
 float Attenuate( PointLight light, float3 worldPos )
@@ -47,7 +47,7 @@ float SpecularBlinnPhong( float3 normal, float3 dirToLight, float3 toCamera, flo
     return shininess == 0 ? 0.0f : pow( max( dot( halfwayVector, normal ), 0 ), shininess );
 }
 
-
+// Light Calculations -----------------------------------------------
 
 float3 CalculateDirLight( float3 norm, DirectionalLight aLight )
 {
@@ -71,7 +71,7 @@ float3 CalculatePointLight( PointLight light, float3 normal, float3 worldPos, fl
     float spec = SpecularBlinnPhong( normal, toLight, toCam, shininess ) * ( 1.0f - roughness );
 
     // Combine
-    return ( diff * surfaceColor + spec ) * atten * light.Intensity * light.Color;
+    return ( diff * surfaceColor /*+ spec */) * atten * light.Intensity * light.Color;
 }
 
 #endif  // _LIGHTING_HLSL
