@@ -205,9 +205,6 @@ void Game::Update( float deltaTime, float totalTime )
 
     const float speed = 1.f;
     const float target = 10.0f;
-        
-    
-
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
