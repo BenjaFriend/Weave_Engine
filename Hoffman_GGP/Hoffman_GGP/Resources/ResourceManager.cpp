@@ -103,13 +103,23 @@ ID3D11SamplerState * ResourceManager::GetSampler( const UINT aID )
     return Samplers[ aID ];
 }
 
-const UINT ResourceManager::LoadMaterial( SimpleVertexShader* aVertexShader, SimplePixelShader* aPixelShader, const UINT aDiffSrvID, const UINT aNormSrvID, const UINT aSamplerID )
+const UINT ResourceManager::LoadMaterial( 
+    SimpleVertexShader* aVertexShader, 
+    SimplePixelShader* aPixelShader, 
+    const UINT aDiffSrvID, 
+    const UINT aNormSrvID, 
+    const UINT aRoughnessSrvID, 
+    const UINT aMetalSrvID,
+    const UINT aSamplerID 
+)
 {
     Material* newMat = new Material(
         aVertexShader,
         aPixelShader,
         SRViews[ aDiffSrvID ],
         SRViews[ aNormSrvID ],
+        SRViews[ aRoughnessSrvID ],
+        SRViews[ aMetalSrvID ],
         Samplers[ aSamplerID ]
     );
 

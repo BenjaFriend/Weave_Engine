@@ -93,7 +93,15 @@ public:
     /// <param name="aNormSrvID"></param>
     /// <param name="aSamplerID"></param>
     /// <returns></returns>
-    const UINT LoadMaterial( SimpleVertexShader* aVertexShader, SimplePixelShader* aPixelShader, const UINT aDiffSrvID, const UINT aNormSrvID, const UINT aSamplerID );
+    const UINT LoadMaterial( 
+        SimpleVertexShader* aVertexShader,
+        SimplePixelShader* aPixelShader,
+        const UINT aDiffSrvID, 
+        const UINT aNormSrvID, 
+        const UINT aRoughnessSrvID,
+        const UINT aMetalSrvID,
+        const UINT aSamplerID 
+    );
 
     /// <summary>
     /// Get a pointer to the given material with this ID

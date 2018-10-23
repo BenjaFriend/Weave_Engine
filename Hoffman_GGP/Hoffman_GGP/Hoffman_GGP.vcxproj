@@ -158,7 +158,6 @@
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\EntityManager.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
-    <ClCompile Include="Resources\Materials\PBRMaterial.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\RenderManager.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="Lighting\Lights.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
-    <ClInclude Include="Resources\Materials\PBRMaterial.h" />
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\RenderManager.h" />
     <ClInclude Include="Resources\ResourceManager.h" />

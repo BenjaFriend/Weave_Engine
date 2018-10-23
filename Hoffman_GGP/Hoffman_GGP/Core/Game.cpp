@@ -169,15 +169,13 @@ void Game::CreateBasicGeometry()
 
     UINT samplerID = resources->AddSampler( samplerDesc );
 
-    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, samplerID );
+    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, 0, 0, samplerID );
 
     EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
 
     resources = nullptr;
-
 }
-
 
 // --------------------------------------------------------
 // Handle resizing DirectX "stuff" to match the new window size.
