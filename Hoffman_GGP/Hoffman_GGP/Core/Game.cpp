@@ -203,7 +203,7 @@ void Game::Update( float deltaTime, float totalTime )
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
-    const float speed = 1.f;
+   /* const float speed = 1.f;
     const float target = 10.0f;
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
@@ -212,10 +212,8 @@ void Game::Update( float deltaTime, float totalTime )
         
         newPos.y += speed * deltaTime;
         
-        //lerp( newPos.y, target, speed * deltaTime );
-
         PointLights[ i ].Position = newPos;
-    }
+    }*/
 
 }
 
@@ -271,8 +269,11 @@ void Game::Draw( float deltaTime, float totalTime )
         0,
         0 );
 
+#ifdef _DEBUG
 
     DrawLightSources();
+
+#endif // _DEBUG
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it

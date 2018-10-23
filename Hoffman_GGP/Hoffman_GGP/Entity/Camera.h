@@ -81,6 +81,12 @@ public:
     /** Returns if the camera is doing rotation */
     const bool GetDoRotation() const;
 
+    /** Returns the camera's current movements speed */
+    const float GetMovementSpeed() const;
+
+    /** Set the movement speed of this camera. Default is 4 */
+    void SetMovementSpeed(float aNewVal);
+
 private:
 
     /** Update the view matrix of the camera */
@@ -97,6 +103,9 @@ private:
 
     /** Rotation in the Y axis of this camera */
     float RotationYAxis = 0.f;
+
+    /** Movement speed of the camera */
+    float MovementSpeed = 4.0f;
 
     /** Current View matrix of this camera. Defines the viewer of the scene. */
     DirectX::XMFLOAT4X4 ViewMatrix;

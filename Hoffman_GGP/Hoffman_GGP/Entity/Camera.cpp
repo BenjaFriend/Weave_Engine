@@ -36,9 +36,9 @@ void Camera::Update( const float aDeltaTime )
     if ( GetAsyncKeyState( VK_SPACE ) & 0x80000 ) { RelativeInput.y += 1.f; }
 
     // Scale keyboard input by delta time
-    RelativeInput.x *= aDeltaTime;
-    RelativeInput.y *= aDeltaTime;
-    RelativeInput.z *= aDeltaTime;
+    RelativeInput.x *= aDeltaTime * MovementSpeed;
+    RelativeInput.y *= aDeltaTime * MovementSpeed;
+    RelativeInput.z *= aDeltaTime * MovementSpeed;
 
     Position.y += RelativeInput.y;
 
@@ -53,6 +53,16 @@ void Camera::SetDoRotation( bool aDoRot )
 const bool Camera::GetDoRotation() const
 {
     return DoRotation;
+}
+
+const float Camera::GetMovementSpeed() const
+{
+    return MovementSpeed;
+}
+
+void Camera::SetMovementSpeed( float aNewVal )
+{
+    MovementSpeed = aNewVal;
 }
 
 void Camera::UpdateViewMatrix( const float aDeltaTime )

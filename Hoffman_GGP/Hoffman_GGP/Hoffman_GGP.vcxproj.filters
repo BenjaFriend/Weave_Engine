@@ -16,6 +16,9 @@
     <Filter Include="Lighting">
       <UniqueIdentifier>{28d24c1d-e7ad-4799-bd5f-5787fdb70818}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{6531483a-37d5-476c-ad29-af567469ca05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="Resources\SimpleShader.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\MathHelper.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Lighting\LightShaderDefs.h">
       <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MathHelper.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

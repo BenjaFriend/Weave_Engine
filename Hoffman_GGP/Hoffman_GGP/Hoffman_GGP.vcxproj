@@ -162,6 +162,7 @@
     <ClCompile Include="Resources\RenderManager.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
+    <ClCompile Include="Utils\MathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DebugSettings.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />
+    <ClInclude Include="Utils\MathHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
