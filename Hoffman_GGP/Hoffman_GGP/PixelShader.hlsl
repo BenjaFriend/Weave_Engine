@@ -6,7 +6,11 @@ cbuffer externalData : register( b0 )
 {    
     // Array of dir light data
     DirectionalLight DirLights[ MAX_DIR_LIGHTS ];
-    int LightCount;
+    int DirLightCount;
+
+    // Array of dir light data
+    PointLight PointLights[ MAX_POINT_LIGHTS ];
+    int PointLightCount;
 
     float3 CameraPosition; // Needed for specular (reflection) calculation
 };
@@ -51,7 +55,7 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Calculate lighting --------------------------------
     float3 lightColor = float3( 0, 0, 0 );
 
-    for ( int i = 0; i < LightCount; ++i )
+    for ( int i = 0; i < DirLightCount; ++i )
     {
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
     }

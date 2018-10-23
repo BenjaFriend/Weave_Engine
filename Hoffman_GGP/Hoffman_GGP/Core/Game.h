@@ -57,6 +57,8 @@ private:
 
     // Lights
     std::vector<DirectionalLight> DirLights;
+    std::vector<PointLight> PointLights;
+
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.

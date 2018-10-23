@@ -113,6 +113,21 @@ void Game::InitLights()
     Light2.DiffuseColor = XMFLOAT4( 0.0f, 1.0f, 0.1f, 1.0f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
     DirLights.emplace_back( Light2 );
+
+    PointLight pLight1 = {};
+    pLight1.Color = XMFLOAT3( 1.0f, 0.0f, 0.5f );
+    pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
+    pLight1.Intensity = 10.f;
+    pLight1.Range = 10.f;
+    PointLights.emplace_back( pLight1 );
+
+    PointLight pLight2 = {};
+    pLight2.Color = XMFLOAT3( 0.0f, 1.0f, 0.0f );
+    pLight2.Position = XMFLOAT3( -3.0f, -3.0f, -0.5f );
+    pLight2.Intensity = 20.f;
+    pLight2.Range = 20.f;
+    PointLights.emplace_back( pLight2 );
+
 }
 
 // --------------------------------------------------------
@@ -213,10 +228,11 @@ void Game::Draw( float deltaTime, float totalTime )
     Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
     // Send lighting info ---------------------------------------------------------
-    // This is what is failing and does not seem to be working at all
     pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
-    // I know that size is being passed in correctly
-    pixelShader->SetInt( "LightCount", static_cast<int>( DirLights.size() ) );
+    pixelShader->SetInt( "DirLightCount", static_cast<int>( DirLights.size() ) );
+
+    pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+    pixelShader->SetInt( "PointLightCount", static_cast<int>( PointLights.size() ) );
 
     // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
