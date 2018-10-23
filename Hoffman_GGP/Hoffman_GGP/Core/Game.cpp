@@ -216,7 +216,7 @@ void Game::Draw( float deltaTime, float totalTime )
     // This is what is failing and does not seem to be working at all
     pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
     // I know that size is being passed in correctly
-    pixelShader->SetInt( "LightCount", DirLights.size() );
+    pixelShader->SetInt( "LightCount", static_cast<int>( DirLights.size() ) );
 
     // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
