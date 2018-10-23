@@ -6,6 +6,7 @@
 #include <vector>
 #include "d3d11.h"	// ID3D11Buffer
 #include "WICTextureLoader.h"
+#include "DDSTextureLoader.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
