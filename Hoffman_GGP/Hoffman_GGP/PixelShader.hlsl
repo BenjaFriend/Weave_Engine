@@ -8,8 +8,6 @@ cbuffer externalData : register( b0 )
     DirectionalLight DirLights[ MAX_DIR_LIGHTS ];
     int LightCount;
 
-    DirectionalLight DirLightTest;  // A test field right now to see how I am passing in data
-
     float3 CameraPosition; // Needed for specular (reflection) calculation
 };
 
@@ -35,7 +33,6 @@ float4 main(VertexToPixel input) : SV_TARGET
     
     // Something could be wrong with this, it is all black
     input.tangent = normalize( input.tangent );
-    //return float4( input.tangent.rgb, 1 );        
     
     // Sample normal map
     float3 normalFromMap = NormalTexture.Sample( BasicSampler, input.uv ).rgb * 2 - 1;
@@ -54,7 +51,6 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Calculate lighting --------------------------------
     float3 lightColor = float3( 0, 0, 0 );
 
-    // Not working, just stays at 0 for it all
     for ( int i = 0; i < LightCount; ++i )
     {
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );

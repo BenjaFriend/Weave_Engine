@@ -189,8 +189,8 @@ void Game::Update( float deltaTime, float totalTime )
 void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
-    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
-    //const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
@@ -217,9 +217,6 @@ void Game::Draw( float deltaTime, float totalTime )
     pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
     // I know that size is being passed in correctly
     pixelShader->SetInt( "LightCount", DirLights.size() );
-
-    // This works fine, which confuses me. 
-    pixelShader->SetData( "DirLightTest", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) );
 
     // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
