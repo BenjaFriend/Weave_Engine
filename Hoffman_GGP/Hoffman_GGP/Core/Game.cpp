@@ -45,10 +45,9 @@ Game::Game( HINSTANCE hInstance )
 // --------------------------------------------------------
 Game::~Game()
 {
-    // Delete our simple shader objects, which
-    // will clean up their own internal DirectX stuff
     delete vertexShader;
     delete pixelShader;
+    delete UnlitPixelShader;
 
     EntityManager::ReleaseInstance();
 
@@ -154,7 +153,7 @@ void Game::CreateBasicGeometry()
 {
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
-    UINT meshID = resources->LoadMesh( "Assets/Models/torus.obj" );
+    UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
     PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
     UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_albedo.tif" );
