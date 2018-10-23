@@ -2,6 +2,7 @@
 
 #define _CRTDBG_MAP_ALLOC  
 #include <stdlib.h>  
+#include <stdio.h>
 #include <crtdbg.h>  
 #include <assert.h>
 // Replace the new keyword with the debug new 

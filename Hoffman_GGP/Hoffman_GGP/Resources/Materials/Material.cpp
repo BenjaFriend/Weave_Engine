@@ -17,6 +17,7 @@ Material::~Material()
     DiffuseSRV = nullptr;
     NormalSRV = nullptr;
     Sampler = nullptr;
+    DEBUG_PRINT( "Material class dtor!" );
 }
 
 ////////////////////////////////////////////////////

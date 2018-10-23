@@ -32,7 +32,7 @@ public:
         ID3D11SamplerState* aSampler );
 
     /** Destructor of the material */
-    ~Material();
+    virtual ~Material();
 
 
     ////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public:
     /** Return this material's sampler state */
     ID3D11SamplerState* GetSamplerState() const;
 
-private:
+protected:
 
     /** Vertex shader of this material */
     SimpleVertexShader * VertexShader = nullptr;
