@@ -7,7 +7,6 @@
 #include <DirectXMath.h>
 #include <vector>
 #include "InputManager.h"
-#include "../Lighting/Lights.h"
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"

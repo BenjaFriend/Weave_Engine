@@ -4,26 +4,6 @@
 
 #include "Lighting/LightShaderDefs.h"
 
-// Light Structs -----------------------------------------------
-struct DirectionalLight
-{
-    float4 AmbientColor;
-    float4 DiffuseColor;
-    float3 Direction;
-    float Intensity;      // This has to be here because of the way that
-                        // Simple Shader works
-};
-
-struct PointLight
-{
-    float3 Color;           // 12 bytes
-    float Range;            // 16 bytes
-
-    float3 Position;        // 28 bytes
-    float Intensity;        // 32 bytes
-};
-
-
 // PBR Constants -----------------------------------------------
 
 // The fresnel value for non-metals (dielectrics)
@@ -152,7 +132,7 @@ float3 CalculatePointLight( PointLight light, float3 normal, float3 worldPos, fl
     return ( balancedDiff * surfaceColor + spec ) * atten * light.Intensity * light.Color;
 }
 
-
+// From chris
 float3 DirLightPBR( DirectionalLight light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
 {
     // Get normalize direction to the light
@@ -169,7 +149,7 @@ float3 DirLightPBR( DirectionalLight light, float3 normal, float3 worldPos, floa
 
 
     // Combine amount with 
-    return ( balancedDiff * surfaceColor + spec ) * light.Intensity * light.DiffuseColor;
+    return float3( balancedDiff.rgb * surfaceColor.rgb + spec.rgb ) * light.Intensity * light.DiffuseColor.rgb;
 }
 
 #endif  // _LIGHTING_HLSL

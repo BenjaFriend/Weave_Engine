@@ -104,9 +104,6 @@
     <ClInclude Include="Resources\Vertex.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Lighting\Lights.h">
-      <Filter>Lighting</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting\LightShaderDefs.h">
       <Filter>Lighting</Filter>
     </ClInclude>
@@ -138,5 +135,6 @@
     <None Include="Lighting.hlsli">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

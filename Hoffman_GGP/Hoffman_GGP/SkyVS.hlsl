@@ -40,8 +40,8 @@ VertexToPixel main( VertexShaderInput input )
     // Push the vertex out to the far cliip plane (z of 1)
     output.position.z = output.position.w;  // Z gets divided by W automatically, so it's 1
 
-    // rip
-    output.sampleDir = input.position;
+    // rip, lost track of the demo here
+    output.sampleDir = float2( 1, 1 );
 
 
     return output;
