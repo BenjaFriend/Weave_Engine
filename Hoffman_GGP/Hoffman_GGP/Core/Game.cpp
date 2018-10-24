@@ -124,7 +124,7 @@ void Game::InitLights()
     PointLight pLight1 = {};
     pLight1.Color = White;
     pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
-    pLight1.Intensity = 15.f;
+    pLight1.Intensity = 3.f;
     pLight1.Range = 15.f;
     PointLights.emplace_back( pLight1 );
 

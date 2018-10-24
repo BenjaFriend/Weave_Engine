@@ -74,7 +74,7 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Point Lights
     for ( int j = 0; j < PointLightCount; ++j )
     {
-        lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, 0.5, 0.5, surfaceColor.rgb );
+        lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, roughness, metal, surfaceColor.rgb, specColor );
     }
 
     return float4 ( lightColor.rgb * surfaceColor.rgb, 1 );
