@@ -48,9 +48,6 @@
     <ClCompile Include="Resources\Mesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\RenderManager.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Resources\ResourceManager.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -90,9 +87,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Mesh.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources\RenderManager.h">
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resources\ResourceManager.h">

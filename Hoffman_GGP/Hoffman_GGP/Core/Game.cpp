@@ -109,7 +109,7 @@ void Game::InitLights()
     Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    Light1.Intensity = 3.0f;
+    Light1.Intensity = 0.5f;
     DirLights.emplace_back( Light1 );
 
     /*DirectionalLight Light2 = {};
@@ -127,9 +127,15 @@ void Game::InitLights()
     pLight1.Color = Red;
     pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
     pLight1.Intensity = 5.f;
-    pLight1.Range = 15.f;
+    pLight1.Range = 5.f;
     PointLights.emplace_back( pLight1 );
 
+    PointLight pLight2 = {};
+    pLight2.Color = Blue;
+    pLight2.Position = XMFLOAT3( -3.0f, -1.0f, 0.5f );
+    pLight2.Intensity = 5.f;
+    pLight2.Range = 5.f;
+    PointLights.emplace_back( pLight2 );
 
 }
 
@@ -151,7 +157,10 @@ void Game::CreateBasicGeometry()
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
     UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
-    PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
+    PointLightMesh_ID = meshID;
+
+    UINT floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" );
+
 
     UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
     UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
@@ -180,12 +189,24 @@ void Game::CreateBasicGeometry()
     UINT woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
     UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, samplerID );
 
-    XMFLOAT3 newPos = XMFLOAT3( -5.f, 0.f, 0.f );
+    XMFLOAT3 newPos = XMFLOAT3( -2.f, 0.f, 0.f );
     UINT EntID = EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( woodMatID ), newPos );
 
     //EntityManager::GetInstance()->GetEntity( EntID )->SetPosition( newPos );
 
+
+    UINT floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
+    UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
+    UINT floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
+    UINT floorMetalMap = resources->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
+    UINT floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, samplerID );
+
+    XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
+    UINT floorID = EntityManager::GetInstance()->AddEntity(
+        resources->GetMesh( floorMeshID ), resources->GetMaterial( floorMatID ), floorPos );
+
+    EntityManager::GetInstance()->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
 
 
     resources = nullptr;
@@ -226,6 +247,8 @@ void Game::Update( float deltaTime, float totalTime )
 
          PointLights[ i ].Position = newPos;
      }*/
+
+
 
 }
 
