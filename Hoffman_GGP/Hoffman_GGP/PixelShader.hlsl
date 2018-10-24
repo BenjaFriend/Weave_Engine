@@ -27,6 +27,8 @@ struct VertexToPixel
 // Define globals for the texture samples
 Texture2D DiffuseTexture : register( t0 );
 Texture2D NormalTexture : register( t1 );
+Texture2D RoughnessTexture : register( t2 );
+Texture2D MetalTexture : register( t3 );
 SamplerState BasicSampler : register( s0 );
 
 // Entry point for this pixel shader

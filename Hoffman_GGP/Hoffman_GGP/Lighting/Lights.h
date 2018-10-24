@@ -2,6 +2,8 @@
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 
+#define DRAW_LIGHTS
+
 /// <summary>
 /// Directional light with ambient and diffuse color
 /// </summary>

@@ -106,8 +106,8 @@ void Game::LoadShaders()
 void Game::InitLights()
 {
     DirectionalLight Light1 = {};
-    Light1.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );  // Ambient color is the color when we are in shadow
-    Light1.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
+    Light1.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
+    Light1.DiffuseColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     DirLights.emplace_back( Light1 );
 
@@ -119,20 +119,15 @@ void Game::InitLights()
 
     XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
+    XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
     PointLight pLight1 = {};
-    pLight1.Color = Red;
+    pLight1.Color = White;
     pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
-    pLight1.Intensity = 10.f;
-    pLight1.Range = 10.f;
+    pLight1.Intensity = 15.f;
+    pLight1.Range = 15.f;
     PointLights.emplace_back( pLight1 );
 
-    PointLight pLight2 = {};
-    pLight2.Color = Blue;
-    pLight2.Position = XMFLOAT3( -3.0f, -3.0f, -0.5f );
-    pLight2.Intensity = 20.f;
-    pLight2.Range = 5.f;
-    PointLights.emplace_back( pLight2 );
 
 }
 
@@ -156,8 +151,12 @@ void Game::CreateBasicGeometry()
     UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
     PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
-    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_albedo.tif" );
-    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/BeachPebbles_1024_normal.tif" );
+    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
+    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
+    UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
+    UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
+
+
 
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -169,7 +168,7 @@ void Game::CreateBasicGeometry()
 
     UINT samplerID = resources->AddSampler( samplerDesc );
 
-    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, 0, 0, samplerID );
+    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, samplerID );
 
     EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
@@ -267,7 +266,7 @@ void Game::Draw( float deltaTime, float totalTime )
         0,
         0 );
 
-#ifdef _DEBUG
+#ifdef _DEBUG || DRAW_LIGHTS
 
     DrawLightSources();
 

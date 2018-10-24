@@ -58,6 +58,9 @@ void Entity::PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::
 
     PixelShader->SetShaderResourceView( "DiffuseTexture", EntityMaterial->GetDiffuseSRV() );
     PixelShader->SetShaderResourceView( "NormalTexture", EntityMaterial->GetNormalSRV() );
+    PixelShader->SetShaderResourceView( "RoughnessTexture", EntityMaterial->GetRoughnessSRV() );
+    PixelShader->SetShaderResourceView( "MetalTexture", EntityMaterial->GetMetalSRV() );
+
     PixelShader->SetSamplerState( "BasicSampler", EntityMaterial->GetSamplerState() );
 
     PixelShader->SetShader();
