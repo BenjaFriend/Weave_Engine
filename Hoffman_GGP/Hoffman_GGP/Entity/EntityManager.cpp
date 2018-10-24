@@ -81,7 +81,7 @@ Entity * EntityManager::GetEntity( const UINT aEntityID ) const
 //////////////////////////////////////////////////////////////////
 // Accessors 
 
-inline const size_t EntityManager::GetEntityCount() const
+const size_t EntityManager::GetEntityCount() const
 {
     return EntityArray.size();
 }

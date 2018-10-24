@@ -158,7 +158,6 @@ void Game::CreateBasicGeometry()
     UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
     UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
 
-
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -173,6 +172,21 @@ void Game::CreateBasicGeometry()
 
     EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
+
+
+    UINT woodDif = resources->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
+    UINT woodNormSRV = resources->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
+    UINT woodRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
+    UINT woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
+    UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, samplerID );
+
+    XMFLOAT3 newPos = XMFLOAT3( -5.f, 0.f, 0.f );
+    UINT EntID = EntityManager::GetInstance()->AddEntity(
+        resources->GetMesh( meshID ), resources->GetMaterial( woodMatID ), newPos );
+
+    //EntityManager::GetInstance()->GetEntity( EntID )->SetPosition( newPos );
+
+
 
     resources = nullptr;
 }
@@ -243,37 +257,47 @@ void Game::Draw( float deltaTime, float totalTime )
 
     Mesh* EnMesh = nullptr;
     ID3D11Buffer* VertBuff = nullptr;
+
     Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
-    // Send lighting info ---------------------------------------------------------
-    if ( DirLights.size() > 0 )
+    EntityManager* manager = EntityManager::GetInstance();
+
+    for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
     {
-        pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+        CurrentEntity = manager->GetEntity( i );
+
+        // Send lighting info ---------------------------------------------------------
+        if ( DirLights.size() > 0 )
+        {
+            pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+        }
+        pixelShader->SetInt( "DirLightCount", static_cast<int>( DirLights.size() ) );
+
+        if ( PointLights.size() > 0 )
+        {
+            pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+        }
+        pixelShader->SetInt( "PointLightCount", static_cast<int>( PointLights.size() ) );
+
+
+        // Send camera info ---------------------------------------------------------
+        pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
+        CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
+
+        // Draw the entity ---------------------------------------------------------
+        EnMesh = CurrentEntity->GetEntityMesh();
+        VertBuff = EnMesh->GetVertexBuffer();
+
+        context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
+        context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
+
+        context->DrawIndexed(
+            EnMesh->GetIndexCount(),
+            0,
+            0 );
     }
-    pixelShader->SetInt( "DirLightCount", static_cast<int>( DirLights.size() ) );
 
-    if ( PointLights.size() > 0 ) 
-    {
-        pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
-    }
-    pixelShader->SetInt( "PointLightCount", static_cast<int>( PointLights.size() ) );
-
-
-    // Send camera info ---------------------------------------------------------
-    pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
-    CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
-
-    // Draw the entity ---------------------------------------------------------
-    EnMesh = CurrentEntity->GetEntityMesh();
-    VertBuff = EnMesh->GetVertexBuffer();
-
-    context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
-    context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
-
-    context->DrawIndexed(
-        EnMesh->GetIndexCount(),
-        0,
-        0 );
+    manager = nullptr;
 
 #if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
@@ -312,7 +336,7 @@ void Game::DrawLightSources()
         context->IASetVertexBuffers( 0, 1, &vb, &stride, &offset );
         context->IASetIndexBuffer( ib, DXGI_FORMAT_R32_UINT, 0 );
 
-        float scale = light.Range / 10.0f;
+        float scale = light.Range / 13.0f;
 
         XMMATRIX rotMat = XMMatrixIdentity();
         XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );

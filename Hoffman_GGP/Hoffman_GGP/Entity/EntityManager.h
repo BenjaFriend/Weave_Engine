@@ -50,7 +50,6 @@ public:
     /// <returns></returns>
     const UINT AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos );
 
-
     /// <summary>
     /// Deletes entity with the given ID
     /// </summary>
@@ -71,7 +70,7 @@ public:
     /// Get the current count of entities
     /// </summary>
     /// <returns>number of entities in the scene</returns>
-    inline const size_t GetEntityCount() const;
+    const size_t GetEntityCount() const;
 
     // We don't want anything making copies of this class so delete these operators
     EntityManager( EntityManager const& ) = delete;
