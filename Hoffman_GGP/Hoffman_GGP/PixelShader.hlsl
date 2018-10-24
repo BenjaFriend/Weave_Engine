@@ -68,7 +68,8 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Dir Lights
     for ( int i = 0; i < DirLightCount; ++i )
     {
-        lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
+        //lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
+        lightColor += DirLightPBR( DirLights[ i ], input.normal, input.worldPos, CameraPosition, roughness, metal, surfaceColor.rgb, specColor );
     }
 
     // Point Lights
@@ -76,6 +77,9 @@ float4 main(VertexToPixel input) : SV_TARGET
     {
         lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, roughness, metal, surfaceColor.rgb, specColor );
     }
+
+    float3 gammaCorrect = pow( lightColor * surfaceColor, 1.0 / 2.2 );
+    return float4( gammaCorrect, 1 );
 
     return float4 ( lightColor.rgb * surfaceColor.rgb, 1 );
 }

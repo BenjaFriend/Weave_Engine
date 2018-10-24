@@ -10,7 +10,7 @@ struct DirectionalLight
     float4 AmbientColor;
     float4 DiffuseColor;
     float3 Direction;
-    float Padding;      // This has to be here because of the way that
+    float Intensity;      // This has to be here because of the way that
                         // Simple Shader works
 };
 
@@ -152,5 +152,24 @@ float3 CalculatePointLight( PointLight light, float3 normal, float3 worldPos, fl
     return ( balancedDiff * surfaceColor + spec ) * atten * light.Intensity * light.Color;
 }
 
+
+float3 DirLightPBR( DirectionalLight light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
+{
+    // Get normalize direction to the light
+    float3 toLight = normalize( -light.Direction );
+    float3 toCam = normalize( camPos - worldPos );
+
+    // Calculate the light amounts
+    float diff = saturate( dot( normal, toLight ) );
+    float3 spec = MicrofacetBRDF( normal, toLight, toCam, roughness, metalness, specularColor );
+
+    // Calculate diffuse with energy conservation
+    // (Reflected light doesn't get diffused)
+    float3 balancedDiff = diff * ( ( 1 - saturate( spec ) ) * ( 1 - metalness ) );
+
+
+    // Combine amount with 
+    return ( balancedDiff * surfaceColor + spec ) * light.Intensity * light.DiffuseColor;
+}
 
 #endif  // _LIGHTING_HLSL

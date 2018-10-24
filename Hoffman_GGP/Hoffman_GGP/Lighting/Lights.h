@@ -14,8 +14,7 @@ struct DirectionalLight
     DirectX::XMFLOAT4 AmbientColor;
     DirectX::XMFLOAT4 DiffuseColor;
     DirectX::XMFLOAT3 Direction;
-    float Padding;      // We have to add this here because of the
-                        // way that SimpleShader works
+    float Intensity;      
 };
 
 /// <summary>
@@ -24,7 +23,7 @@ struct DirectionalLight
 /// <author>Ben Hoffman</autor>
 struct PointLight
 {
-    DirectX::XMFLOAT3 Color; // 12 bytes
+    DirectX::XMFLOAT3 Color;        // 12 bytes
     float Range;                    // 16 bytes
 
     DirectX::XMFLOAT3 Position;     // 28 bytes

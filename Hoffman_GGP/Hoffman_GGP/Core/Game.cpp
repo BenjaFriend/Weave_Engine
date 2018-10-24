@@ -106,25 +106,27 @@ void Game::LoadShaders()
 void Game::InitLights()
 {
     DirectionalLight Light1 = {};
-    Light1.AmbientColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );  // Ambient color is the color when we are in shadow
-    Light1.DiffuseColor = XMFLOAT4( 0.2f, 0.2f, 0.2f, 1.0f );
+    Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
+    Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    Light1.Intensity = 3.0f;
     DirLights.emplace_back( Light1 );
 
-    DirectionalLight Light2 = {};
-    Light2.AmbientColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.0f );
-    Light2.DiffuseColor = XMFLOAT4( 0.1f, 0.1f, 0.1f, 0.1f );
+    /*DirectionalLight Light2 = {};
+    Light2.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
+    Light2.DiffuseColor = XMFLOAT4( 0.5f, 1.f, 1.f, 0.1f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
-    DirLights.emplace_back( Light2 );
+    Light2.Intensity = 1.0f;
+    DirLights.emplace_back( Light2 );*/
 
     XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
     XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
     PointLight pLight1 = {};
-    pLight1.Color = White;
+    pLight1.Color = Red;
     pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
-    pLight1.Intensity = 3.f;
+    pLight1.Intensity = 5.f;
     pLight1.Range = 15.f;
     PointLights.emplace_back( pLight1 );
 
@@ -155,7 +157,6 @@ void Game::CreateBasicGeometry()
     UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
     UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
     UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
-
 
 
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -220,6 +221,7 @@ void Game::Update( float deltaTime, float totalTime )
 void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
+
     //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
     const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -244,11 +246,18 @@ void Game::Draw( float deltaTime, float totalTime )
     Entity* CurrentEntity = EntityManager::GetInstance()->GetEntity( 0 );
 
     // Send lighting info ---------------------------------------------------------
-    pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+    if ( DirLights.size() > 0 )
+    {
+        pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+    }
     pixelShader->SetInt( "DirLightCount", static_cast<int>( DirLights.size() ) );
 
-    pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+    if ( PointLights.size() > 0 ) 
+    {
+        pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+    }
     pixelShader->SetInt( "PointLightCount", static_cast<int>( PointLights.size() ) );
+
 
     // Send camera info ---------------------------------------------------------
     pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
@@ -266,7 +275,7 @@ void Game::Draw( float deltaTime, float totalTime )
         0,
         0 );
 
-#if defined( _DEBUG ) && defined( DRAW_LIGHTS )
+#if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
     DrawLightSources();
 
