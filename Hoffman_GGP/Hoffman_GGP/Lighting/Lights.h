@@ -2,6 +2,7 @@
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 
+// Comment this out to stop drawing lights
 #define DRAW_LIGHTS
 
 /// <summary>

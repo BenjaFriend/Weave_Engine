@@ -200,17 +200,17 @@ void Game::Update( float deltaTime, float totalTime )
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
-   /* const float speed = 1.f;
-    const float target = 10.0f;
+    /* const float speed = 1.f;
+     const float target = 10.0f;
 
-    for ( size_t i = 0; i < PointLights.size(); ++i )
-    {
-        XMFLOAT3 newPos = PointLights[ i ].Position;
-        
-        newPos.y += speed * deltaTime;
-        
-        PointLights[ i ].Position = newPos;
-    }*/
+     for ( size_t i = 0; i < PointLights.size(); ++i )
+     {
+         XMFLOAT3 newPos = PointLights[ i ].Position;
+
+         newPos.y += speed * deltaTime;
+
+         PointLights[ i ].Position = newPos;
+     }*/
 
 }
 
@@ -266,7 +266,7 @@ void Game::Draw( float deltaTime, float totalTime )
         0,
         0 );
 
-#ifdef _DEBUG || DRAW_LIGHTS
+#if defined( _DEBUG ) && defined( DRAW_LIGHTS )
 
     DrawLightSources();
 
