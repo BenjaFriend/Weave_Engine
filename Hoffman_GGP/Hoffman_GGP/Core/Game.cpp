@@ -109,7 +109,7 @@ void Game::InitLights()
     Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    Light1.Intensity = 0.5f;
+    Light1.Intensity = 0.1f;
     DirLights.emplace_back( Light1 );
 
     /*DirectionalLight Light2 = {};
@@ -125,16 +125,16 @@ void Game::InitLights()
 
     PointLight pLight1 = {};
     pLight1.Color = Red;
-    pLight1.Position = XMFLOAT3( 3.0f, 3.0f, 0.5f );
-    pLight1.Intensity = 5.f;
+    pLight1.Position = XMFLOAT3( 0.f, 2.0f, 0.0f );
+    pLight1.Intensity = 2.f;
     pLight1.Range = 5.f;
     PointLights.emplace_back( pLight1 );
 
     PointLight pLight2 = {};
     pLight2.Color = Blue;
-    pLight2.Position = XMFLOAT3( -3.0f, -1.0f, 0.5f );
+    pLight2.Position = XMFLOAT3( 0.f, -1.0f, 0.0f );
     pLight2.Intensity = 5.f;
-    pLight2.Range = 5.f;
+    pLight2.Range = 2.f;
     PointLights.emplace_back( pLight2 );
 
 }
@@ -180,7 +180,7 @@ void Game::CreateBasicGeometry()
     UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, samplerID );
 
     EntityManager::GetInstance()->AddEntity(
-        resources->GetMesh( meshID ), resources->GetMaterial( matID ) );
+        resources->GetMesh( meshID ), resources->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
 
 
     UINT woodDif = resources->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
@@ -189,12 +189,9 @@ void Game::CreateBasicGeometry()
     UINT woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
     UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, samplerID );
 
-    XMFLOAT3 newPos = XMFLOAT3( -2.f, 0.f, 0.f );
+    XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     UINT EntID = EntityManager::GetInstance()->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( woodMatID ), newPos );
-
-    //EntityManager::GetInstance()->GetEntity( EntID )->SetPosition( newPos );
-
 
     UINT floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
@@ -208,6 +205,15 @@ void Game::CreateBasicGeometry()
 
     EntityManager::GetInstance()->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
 
+
+    UINT bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
+    UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
+    UINT bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
+    UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
+    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, samplerID );
+
+    EntityManager::GetInstance()->AddEntity(
+        resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f) );
 
     resources = nullptr;
 }
@@ -233,22 +239,41 @@ void Game::Update( float deltaTime, float totalTime )
     if ( GetAsyncKeyState( VK_ESCAPE ) )
         Quit();
 
+    if ( InputManager::GetInstance()->IsAsyncKeyDown( 'L' ) )
+    {
+        UseDirLights = !UseDirLights;
+    }
+
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
-    /* const float speed = 1.f;
-     const float target = 10.0f;
+    static float speed = 1.f;
+    static float amountMoved = 0.f;
+    const float target = 10.0f;
 
-     for ( size_t i = 0; i < PointLights.size(); ++i )
-     {
-         XMFLOAT3 newPos = PointLights[ i ].Position;
+    for ( size_t i = 0; i < PointLights.size(); ++i )
+    {
+        XMFLOAT3 newPos = PointLights[ i ].Position;
 
-         newPos.y += speed * deltaTime;
+        if ( i % 2 == 0 )
+        {
+            newPos.x += speed * deltaTime;
+        }
+        else
+        {
+            newPos.x -= speed * deltaTime;
+        }
 
-         PointLights[ i ].Position = newPos;
-     }*/
+        amountMoved += speed * deltaTime;
 
+        if ( amountMoved > 5.f || amountMoved < -5.f )
+        {
+            amountMoved = 0.f;
+            speed *= -1.f;
+        }
 
+        PointLights[ i ].Position = newPos;
+    }
 
 }
 
@@ -294,7 +319,7 @@ void Game::Draw( float deltaTime, float totalTime )
         {
             pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
         }
-        pixelShader->SetInt( "DirLightCount", static_cast<int>( DirLights.size() ) );
+        pixelShader->SetInt( "DirLightCount", ( UseDirLights ? static_cast<int>( DirLights.size() ) : 0 ) );
 
         if ( PointLights.size() > 0 )
         {

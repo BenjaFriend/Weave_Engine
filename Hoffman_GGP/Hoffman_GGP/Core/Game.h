@@ -54,7 +54,7 @@ private:
     SimplePixelShader* pixelShader;
     SimplePixelShader* UnlitPixelShader;
 
-
+    bool UseDirLights = true;
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
