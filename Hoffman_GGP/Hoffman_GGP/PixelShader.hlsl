@@ -25,11 +25,11 @@ struct VertexToPixel
 };
 
 // Define globals for the texture samples
-Texture2D DiffuseTexture : register( t0 );
-Texture2D NormalTexture : register( t1 );
-Texture2D RoughnessTexture : register( t2 );
-Texture2D MetalTexture : register( t3 );
-SamplerState BasicSampler : register( s0 );
+Texture2D DiffuseTexture    : register( t0 );
+Texture2D NormalTexture     : register( t1 );
+Texture2D RoughnessTexture  : register( t2 );
+Texture2D MetalTexture      : register( t3 );
+SamplerState BasicSampler   : register( s0 );
 
 // Entry point for this pixel shader
 float4 main(VertexToPixel input) : SV_TARGET
@@ -41,8 +41,18 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Sample normal map
     float3 normalFromMap = NormalTexture.Sample( BasicSampler, input.uv ).rgb * 2 - 1;
 
-    // Sample diffuse texture
-    float4 textureColor = DiffuseTexture.Sample( BasicSampler, input.uv );
+    // Sample the roughness map
+    float roughness = RoughnessTexture.Sample( BasicSampler, input.uv ).r;
+
+    // Sample the metal texture
+    float metal = MetalTexture.Sample( BasicSampler, input.uv ).r;
+
+    // Sample Albedo texture
+    float4 surfaceColor = DiffuseTexture.Sample( BasicSampler, input.uv );
+
+    // Specular color - Assuming albedo texture is actually holding specular color if metal == 1
+    float3 specColor = lerp( F0_NON_METAL.rrr, surfaceColor.rgb, metal );
+
 
     // Create my TBN matrix to convert from tangent-space to world-space
     float3 N = input.normal;
@@ -55,15 +65,17 @@ float4 main(VertexToPixel input) : SV_TARGET
     // Calculate lighting --------------------------------
     float3 lightColor = float3( 0, 0, 0 );
 
+    // Dir Lights
     for ( int i = 0; i < DirLightCount; ++i )
     {
         lightColor += CalculateDirLight( input.normal, DirLights[ i ] );
     }
 
+    // Point Lights
     for ( int j = 0; j < PointLightCount; ++j )
     {
-        lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, 0.5, 0.5, textureColor.rgb );
+        lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, 0.5, 0.5, surfaceColor.rgb );
     }
 
-    return float4 ( lightColor.rgb * textureColor.rgb, 1 );
+    return float4 ( lightColor.rgb * surfaceColor.rgb, 1 );
 }
