@@ -63,6 +63,8 @@ public:
     /// <returns>ID of the SRV to use for any later use</returns>
     const UINT LoadSRV( ID3D11DeviceContext* aContext, wchar_t* aFileName );
 
+    const UINT LoadSRV_DDS( ID3D11DeviceContext* aContext, wchar_t* aFileName );
+
     /// <summary>
     /// Gets an SRV bsaed on the given ID
     /// </summary>

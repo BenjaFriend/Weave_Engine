@@ -48,6 +48,11 @@ Game::~Game()
     delete vertexShader;
     delete pixelShader;
     delete UnlitPixelShader;
+    delete SkyBoxVS;
+    delete SkyBoxPS;
+
+    skyRastState->Release();
+    skyDepthState->Release();
 
     EntityManager::ReleaseInstance();
 
@@ -68,6 +73,19 @@ void Game::Init()
     EntityManager::GetInstance();
 
     ResourceManager::Initalize( device );
+
+    // Rasterizer state for drawing the inside of my sky box geometry
+    D3D11_RASTERIZER_DESC rs = {};
+    rs.FillMode = D3D11_FILL_SOLID;
+    rs.CullMode = D3D11_CULL_FRONT;
+    rs.DepthClipEnable = true;
+    device->CreateRasterizerState( &rs, &skyRastState );
+
+    D3D11_DEPTH_STENCIL_DESC ds = {};
+    ds.DepthEnable = true;
+    ds.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    ds.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    device->CreateDepthStencilState( &ds, &skyDepthState );
 
     // Helper methods for loading shaders, creating some basic
     // geometry to draw and some simple camera matrices.
@@ -100,6 +118,12 @@ void Game::LoadShaders()
 
     UnlitPixelShader = new SimplePixelShader( device, context );
     UnlitPixelShader->LoadShaderFile( L"PixelShader_Unlit.cso" );
+
+    SkyBoxVS = new SimpleVertexShader( device, context );
+    SkyBoxVS->LoadShaderFile( L"SkyVS.cso" );
+
+    SkyBoxPS = new SimplePixelShader( device, context );
+    SkyBoxPS->LoadShaderFile( L"SkyPS.cso" );
 
 }
 
@@ -176,9 +200,9 @@ void Game::CreateBasicGeometry()
     samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-    UINT samplerID = resources->AddSampler( samplerDesc );
+    SamplerID = resources->AddSampler( samplerDesc );
 
-    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, samplerID );
+    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
@@ -188,7 +212,7 @@ void Game::CreateBasicGeometry()
     UINT woodNormSRV = resources->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
     UINT woodRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
     UINT woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
-    UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, samplerID );
+    UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
 
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     UINT woodEntID = enMan->AddEntity(
@@ -200,7 +224,7 @@ void Game::CreateBasicGeometry()
     UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     UINT floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
     UINT floorMetalMap = resources->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
-    UINT floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, samplerID );
+    UINT floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     UINT floorID = enMan->AddEntity(
@@ -213,11 +237,14 @@ void Game::CreateBasicGeometry()
     UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
     UINT bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
     UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
-    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, samplerID );
+    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
 
     UINT bronzeEntID = enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
     enMan->GetEntity( bronzeEntID )->SetMass( 10.f );
+
+    // Load in the skybox SRV
+    SkyboxSrvID = resources->LoadSRV_DDS(context, L"Assets/Textures/SunnyCubeMap.dds" );
 
     resources = nullptr;
     enMan = nullptr;
@@ -387,6 +414,42 @@ void Game::Draw( float deltaTime, float totalTime )
             EnMesh->GetIndexCount(),
             0,
             0 );
+
+        // Draw the Sky box -------------------------------------
+
+        // Set up sky render states
+        context->RSSetState( skyRastState );
+        context->OMSetDepthStencilState( skyDepthState, 0 );
+
+        // After drawing all of our regular (solid) objects, draw the sky!
+        ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
+        ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
+
+        // Set the buffers
+        context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
+        context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
+
+        SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+        SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+
+        SkyBoxVS->CopyAllBufferData();
+        SkyBoxVS->SetShader();
+
+        // Send texture-related stuff
+        SkyBoxPS->SetShaderResourceView( "SkyTexture", ResourceManager::GetInstance()->GetSRV( SkyboxSrvID ) );
+        SkyBoxPS->SetSamplerState( "BasicSampler", ResourceManager::GetInstance()->GetSampler( SamplerID ) );
+
+        SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
+        SkyBoxPS->SetShader();
+
+        // Finally do the actual drawing
+        context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
+
+        // Reset any changed render states!
+        context->RSSetState( 0 );
+        context->OMSetDepthStencilState( 0, 0 );
+
+
     }
 
     manager = nullptr;

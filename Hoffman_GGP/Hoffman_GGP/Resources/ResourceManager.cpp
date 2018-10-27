@@ -73,6 +73,35 @@ const UINT ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aF
     }
 }
 
+const UINT ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar_t * aFileName )
+{
+    assert( aContext != nullptr );
+
+    ID3D11ShaderResourceView* tempSRV = nullptr;
+
+    HRESULT iResult = CreateDDSTextureFromFile(
+        currentDevice,
+        aContext,
+        aFileName,
+        0,
+        &tempSRV
+    );
+
+    // if success
+    if ( iResult == S_OK )
+    {
+        SRViews.push_back( tempSRV );
+
+        return static_cast<UINT> ( SRViews.size() - 1 );
+    }
+    else
+    {
+        DEBUG_PRINT( "DDS SRV LOADING FAILURE!" );
+
+        return -1;
+    }
+}
+
 ID3D11ShaderResourceView * ResourceManager::GetSRV( const UINT aSrvID )
 {
     assert( aSrvID >= 0 && aSrvID < SRViews.size() );

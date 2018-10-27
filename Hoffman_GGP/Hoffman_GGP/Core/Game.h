@@ -55,6 +55,15 @@ private:
     SimplePixelShader* pixelShader = nullptr;
     SimplePixelShader* UnlitPixelShader = nullptr;
 
+    UINT SamplerID = 0;
+
+    // Skybox resources
+    SimpleVertexShader* SkyBoxVS = nullptr;
+    SimplePixelShader* SkyBoxPS = nullptr;
+    UINT SkyboxSrvID = 0;
+    ID3D11RasterizerState* skyRastState = nullptr;
+    ID3D11DepthStencilState* skyDepthState = nullptr;
+
     bool UseDirLights = true;
     bool DrawPhysicsCollider = true;
 

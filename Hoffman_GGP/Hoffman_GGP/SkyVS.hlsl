@@ -16,18 +16,17 @@ struct VertexShaderInput
 
 struct VertexToPixel
 {
-    float4 position		: SV_POSITION;	// XYZW position (System Value Position)
-    float2 sampleDir    : TEXCOORD;
+    float4 position		: SV_POSITION;
+    float3 sampleDir	: TEXCOORD;
 };
 
 
 VertexToPixel main( VertexShaderInput input )
 {
-    // Set up output struct
+    // Set up output
     VertexToPixel output;
 
-    
-    //  Adjust the view matrix to assume it has no tranlsation
+    // Adjust the view matrix to assume it has no translation
     matrix viewNoTranslation = view;
     viewNoTranslation._41 = 0;
     viewNoTranslation._42 = 0;
@@ -37,12 +36,13 @@ VertexToPixel main( VertexShaderInput input )
     matrix viewProj = mul( viewNoTranslation, projection );
     output.position = mul( float4( input.position, 1.0f ), viewProj );
 
-    // Push the vertex out to the far cliip plane (z of 1)
-    output.position.z = output.position.w;  // Z gets divided by W automatically, so it's 1
+    // Push the vertex out to the far clip plane (Z of 1)
+    output.position.z = output.position.w; // Z gets divided by W automatically
 
-    // rip, lost track of the demo here
-    output.sampleDir = float2( 1, 1 );
-
+                                           // Need to send the direction of the vertex down
+                                           // to the pixel shader so we know which direction
+                                           // to sample the cube map from
+    output.sampleDir = input.position;
 
     return output;
 }
