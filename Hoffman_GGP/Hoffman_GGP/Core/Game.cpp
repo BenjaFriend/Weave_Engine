@@ -302,6 +302,18 @@ void Game::Update( float deltaTime, float totalTime )
         forceToApply.z *= deltaTime;
 
         entityA->ApplyForce( forceToApply );
+        
+        if ( entityA->GetPosition().y < -2.f )
+        {
+            XMFLOAT3 opposingVel = entityA->GetVelocity();
+            opposingVel.x *= -1.f;
+            opposingVel.y *= -1.f;
+            opposingVel.z *= -1.f;
+            entityA->ApplyForce( opposingVel );
+        }
+        
+        
+        
         entityA->ApplyAcceleration();
     }
 

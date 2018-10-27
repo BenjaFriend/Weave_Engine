@@ -142,13 +142,15 @@ public:
 
     const EPhysicsLayer GetPhysicsLayer() const;
 
-    void SetPhysicsLayer( EPhysicsLayer aLayer );
+    void SetPhysicsLayer( const EPhysicsLayer aLayer );
 
     void SetVelocity( const DirectX::XMFLOAT3& aVel );
 
+    const DirectX::XMFLOAT3 GetVelocity() const;
+
     const float GetMass() const;
 
-    void SetMass( float aMass );
+    void SetMass( const float aMass );
 
 private:
 

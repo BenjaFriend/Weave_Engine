@@ -211,6 +211,11 @@ void Entity::SetVelocity( const DirectX::XMFLOAT3 & aVel )
     Velocity = aVel;
 }
 
+const DirectX::XMFLOAT3 Entity::GetVelocity() const
+{
+    return Velocity;
+}
+
 const float Entity::GetMass() const
 {
     return Mass;
