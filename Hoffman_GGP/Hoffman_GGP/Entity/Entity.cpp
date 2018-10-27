@@ -15,6 +15,10 @@ Entity::Entity( Mesh* aMesh, Material* aMat )
     Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
     Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
     Rotation = DirectX::XMFLOAT4();
+
+    Acceleration = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
+    Velocity = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
+
 }
 
 // virtual destructor
@@ -86,6 +90,35 @@ const DirectX::XMFLOAT3 & Entity::GetPosition() const
 {
     // TODO: insert return statement here
     return Position;
+}
+
+void Entity::ApplyForce( const DirectX::XMFLOAT3 aForce )
+{
+    XMVECTOR force = XMLoadFloat3( &aForce );
+    // Scale the vector by the mass
+    force /= Mass;    
+
+    // Add to position and store
+    XMStoreFloat3(
+        &Acceleration,
+        XMLoadFloat3( &Acceleration ) + force );
+}
+
+void Entity::ApplyAcceleration()
+{
+    XMVECTOR curAcceleration = XMLoadFloat3( &Acceleration );
+
+    // Apply the acceleration to the velocity
+    XMStoreFloat3(
+        &Velocity,
+        XMLoadFloat3( &Velocity ) + curAcceleration );
+
+    // Add to position and store
+    XMStoreFloat3(
+        &Position,
+        XMLoadFloat3( &Position ) + XMLoadFloat3( &Velocity ) );
+
+    XMStoreFloat3( &Acceleration, curAcceleration * 0.f );
 }
 
 void Entity::SetPosition( const DirectX::XMFLOAT3 & aNewPos )
@@ -163,3 +196,27 @@ const bool Entity::GetIsActive() const
     return IsActive;
 }
 
+const EPhysicsLayer Entity::GetPhysicsLayer() const
+{
+    return PhysicsLayer;
+}
+
+void Entity::SetPhysicsLayer( EPhysicsLayer aLayer )
+{
+    PhysicsLayer = aLayer;
+}
+
+void Entity::SetVelocity( const DirectX::XMFLOAT3 & aVel )
+{
+    Velocity = aVel;
+}
+
+const float Entity::GetMass() const
+{
+    return Mass;
+}
+
+void Entity::SetMass( float aMass )
+{
+    Mass = aMass;
+}

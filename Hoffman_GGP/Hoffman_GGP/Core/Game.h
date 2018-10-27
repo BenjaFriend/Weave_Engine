@@ -49,12 +49,16 @@ private:
 
     void DrawLightSources();
 
+    
     // Wrappers for DirectX shaders to provide simplified functionality
-    SimpleVertexShader* vertexShader;
-    SimplePixelShader* pixelShader;
-    SimplePixelShader* UnlitPixelShader;
+    SimpleVertexShader* vertexShader = nullptr;
+    SimplePixelShader* pixelShader = nullptr;
+    SimplePixelShader* UnlitPixelShader = nullptr;
 
     bool UseDirLights = true;
+    bool DrawPhysicsCollider = true;
+
+    const float Gravity = -0.001f;
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;

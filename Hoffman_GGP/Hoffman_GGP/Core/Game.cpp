@@ -156,6 +156,7 @@ void Game::CreateBasicGeometry()
 {
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
+    EntityManager* enMan = EntityManager::GetInstance();
     UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
     PointLightMesh_ID = meshID;
 
@@ -179,7 +180,7 @@ void Game::CreateBasicGeometry()
 
     UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, samplerID );
 
-    EntityManager::GetInstance()->AddEntity(
+    enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
 
 
@@ -190,8 +191,10 @@ void Game::CreateBasicGeometry()
     UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, samplerID );
 
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
-    UINT EntID = EntityManager::GetInstance()->AddEntity(
+    UINT woodEntID = enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( woodMatID ), newPos );
+    
+    enMan->GetEntity( woodEntID )->SetMass( 0.5f );
 
     UINT floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
@@ -200,11 +203,11 @@ void Game::CreateBasicGeometry()
     UINT floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, samplerID );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
-    UINT floorID = EntityManager::GetInstance()->AddEntity(
+    UINT floorID = enMan->AddEntity(
         resources->GetMesh( floorMeshID ), resources->GetMaterial( floorMatID ), floorPos );
 
-    EntityManager::GetInstance()->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
-
+    enMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
+    enMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
 
     UINT bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
     UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
@@ -212,10 +215,12 @@ void Game::CreateBasicGeometry()
     UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
     UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, samplerID );
 
-    EntityManager::GetInstance()->AddEntity(
-        resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f) );
+    UINT bronzeEntID = enMan->AddEntity(
+        resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
+    enMan->GetEntity( bronzeEntID )->SetMass( 10.f );
 
     resources = nullptr;
+    enMan = nullptr;
 }
 
 // --------------------------------------------------------
@@ -254,6 +259,8 @@ void Game::Update( float deltaTime, float totalTime )
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
         XMFLOAT3 newPos = PointLights[ i ].Position;
+        XMFLOAT3 acceleration = {};
+
 
         if ( i % 2 == 0 )
         {
@@ -273,6 +280,29 @@ void Game::Update( float deltaTime, float totalTime )
         }
 
         PointLights[ i ].Position = newPos;
+    }
+
+    EntityManager* manager = EntityManager::GetInstance();
+    Entity* entityA = nullptr;
+    Entity* entityB = nullptr;
+
+    for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
+    {
+        entityA = manager->GetEntity( i );
+        // This introduces branching, remove it in the future and have a better solution
+        // probably with just putting the different entities in different "buckets" at 
+        // some point
+        if ( entityA->GetPhysicsLayer() == EPhysicsLayer::STATIC ) continue;
+
+        XMFLOAT3 forceToApply = XMFLOAT3( 0.f, 0.f, 0.f );
+        forceToApply.y += Gravity;
+
+        forceToApply.x *= deltaTime;
+        forceToApply.y *= deltaTime;
+        forceToApply.z *= deltaTime;
+
+        entityA->ApplyForce( forceToApply );
+        entityA->ApplyAcceleration();
     }
 
 }
@@ -313,6 +343,8 @@ void Game::Draw( float deltaTime, float totalTime )
     for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
     {
         CurrentEntity = manager->GetEntity( i );
+
+        if ( !CurrentEntity->GetIsActive() ) continue;
 
         // Send lighting info ---------------------------------------------------------
         if ( DirLights.size() > 0 )
@@ -414,6 +446,8 @@ void Game::DrawLightSources()
     }
 
 }
+
+
 
 #pragma region Mouse Input
 

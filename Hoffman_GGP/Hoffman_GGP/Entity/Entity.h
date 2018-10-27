@@ -8,6 +8,12 @@
 class Mesh;
 class Material;
 
+enum EPhysicsLayer
+{
+    MOVEABLE,
+    STATIC
+};
+
 /// <summary>
 ///  Represents a game entity and their transformations.
 /// </summary>
@@ -48,6 +54,17 @@ public:
     /// <param name="aView">View matrix</param>
     /// <param name="aProjection">Project matrix</param>
     void PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection );
+
+    /// <summary>
+    /// Apply a force to this entity
+    /// </summary>
+    /// <param name="aForce">The force to apply</param>
+    void ApplyForce( const DirectX::XMFLOAT3 aForce );
+
+    /// <summary>
+    /// Apply the current acceleration to the velocity and set acceleration to 0
+    /// </summary>
+    void ApplyAcceleration();
 
     ////////////////////////////////////////////////////
     // Accessors
@@ -121,6 +138,18 @@ public:
     /// <returns>True if active, false if in-active</returns>
     const bool GetIsActive() const;
 
+    // Physics Stuff -------------------------------
+
+    const EPhysicsLayer GetPhysicsLayer() const;
+
+    void SetPhysicsLayer( EPhysicsLayer aLayer );
+
+    void SetVelocity( const DirectX::XMFLOAT3& aVel );
+
+    const float GetMass() const;
+
+    void SetMass( float aMass );
+
 private:
 
     // TODO: Make this a smart pointer at some point
@@ -141,6 +170,16 @@ private:
 
     /** Flag for if this entity is active or not */
     bool IsActive;
+
+    /** The current physics layer of this entity */
+    EPhysicsLayer PhysicsLayer = EPhysicsLayer::MOVEABLE;
+
+    /** The mass of this object */
+    float Mass = 1.0f;
+
+    DirectX::XMFLOAT3 Velocity;
+
+    DirectX::XMFLOAT3 Acceleration;
 
 };
 
