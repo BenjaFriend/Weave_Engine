@@ -71,32 +71,11 @@ void Entity::PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::
     PixelShader->CopyAllBufferData();
 }
 
-
-////////////////////////////////////////////////////
-// Accessors
-////////////////////////////////////////////////////
-
-Mesh * Entity::GetEntityMesh() const
-{
-    return EntityMesh;
-}
-
-const Material* Entity::GetMaterial() const
-{
-    return EntityMaterial;
-}
-
-const DirectX::XMFLOAT3 & Entity::GetPosition() const
-{
-    // TODO: insert return statement here
-    return Position;
-}
-
 void Entity::ApplyForce( const DirectX::XMFLOAT3 aForce )
 {
     XMVECTOR force = XMLoadFloat3( &aForce );
     // Scale the vector by the mass
-    force /= Mass;    
+    force /= Mass;
 
     // Add to position and store
     XMStoreFloat3(
@@ -119,6 +98,26 @@ void Entity::ApplyAcceleration()
         XMLoadFloat3( &Position ) + XMLoadFloat3( &Velocity ) );
 
     XMStoreFloat3( &Acceleration, curAcceleration * 0.f );
+}
+
+////////////////////////////////////////////////////
+// Accessors
+////////////////////////////////////////////////////
+
+Mesh * Entity::GetEntityMesh() const
+{
+    return EntityMesh;
+}
+
+const Material* Entity::GetMaterial() const
+{
+    return EntityMaterial;
+}
+
+const DirectX::XMFLOAT3 & Entity::GetPosition() const
+{
+    // TODO: insert return statement here
+    return Position;
 }
 
 void Entity::SetPosition( const DirectX::XMFLOAT3 & aNewPos )
