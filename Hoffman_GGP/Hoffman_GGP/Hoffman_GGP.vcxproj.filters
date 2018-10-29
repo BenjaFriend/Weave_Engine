@@ -22,6 +22,12 @@
     <Filter Include="Resources\Materials">
       <UniqueIdentifier>{409103a1-562f-4da8-b80b-669e6ebea96f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity\Components">
+      <UniqueIdentifier>{7dedb583-90ae-4949-8476-957afd902dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{6eaed29b-00f6-4ccf-bc4f-4412a8896e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -59,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="Resources\Materials\Material.cpp">
       <Filter>Resources\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Collisions.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Resources\Materials\Material.h">
       <Filter>Resources\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Collisions.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
