@@ -1,0 +1,3 @@
+[submodule "Hoffman_GGP/imgui"]
+	path = Hoffman_GGP/imgui
+	url = git@github.com:ocornut/imgui.git
