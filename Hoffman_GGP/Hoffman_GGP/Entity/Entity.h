@@ -2,6 +2,7 @@
 #include "../Core/DebugSettings.h"
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
+#include "../Physics/Collisions.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -152,6 +153,8 @@ public:
 
     void SetMass( const float aMass );
 
+    const Physics::BoxCollider & GetCollider() const;
+
 private:
 
     // TODO: Make this a smart pointer at some point
@@ -182,6 +185,8 @@ private:
     DirectX::XMFLOAT3 Velocity;
 
     DirectX::XMFLOAT3 Acceleration;
+
+    Physics::BoxCollider Collider;
 
 };
 

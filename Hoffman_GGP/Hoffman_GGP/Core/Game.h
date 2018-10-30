@@ -10,6 +10,7 @@
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
+#include "../Physics/Collisions.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

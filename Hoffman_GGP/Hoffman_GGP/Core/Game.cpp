@@ -316,12 +316,26 @@ void Game::Update( float deltaTime, float totalTime )
     for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
     {
         entityA = manager->GetEntity( i );
-        // This introduces branching, remove it in the future and have a better solution
-        // probably with just putting the different entities in different "buckets" at 
-        // some point
+
         if ( entityA->GetPhysicsLayer() == EPhysicsLayer::STATIC ) continue;
 
         XMFLOAT3 forceToApply = XMFLOAT3( 0.f, 0.f, 0.f );
+
+        for ( size_t j = 0; j < manager->GetEntityCount(); ++j )
+        {
+            entityB = manager->GetEntity( j );
+
+            if ( Physics::Collisions::Intersects( entityA->GetCollider(), entityB->GetCollider() ) )
+            {
+                DEBUG_PRINT(" There is an entity collision! ");
+            }
+        }
+
+
+        // This introduces branching, remove it in the future and have a better solution
+        // probably with just putting the different entities in different "buckets" at 
+        // some point
+
         forceToApply.y += Gravity;
 
         forceToApply.x *= deltaTime;

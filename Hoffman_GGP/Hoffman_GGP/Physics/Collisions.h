@@ -9,14 +9,17 @@ namespace Physics
     /// </summary>
     struct BoxCollider
     {
-        float MinX;
-        float MaxX;
+        float MinX; // 4 
+        float MaxX; // 8
 
-        float MinY;
-        float MaxY;
+        float MinY; // 12
+        float MaxY; // 16
 
-        float MinZ;
-        float MaxZ;
+        float MinZ; // 20
+        float MaxZ; // 24
+
+        DirectX::XMFLOAT3 Center; // 36
+
     };
 
     /// <summary>
@@ -33,7 +36,7 @@ namespace Physics
     /// physics definitions
     /// </summary>
     /// <author>Ben Hoffman</author>
-    static class Collisions
+    class Collisions
     {
     public:
 
