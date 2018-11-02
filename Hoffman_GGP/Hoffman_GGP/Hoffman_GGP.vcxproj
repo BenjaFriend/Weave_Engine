@@ -175,6 +175,7 @@
     <ClInclude Include="Entity\EntityManager.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
     <ClInclude Include="Physics\Collisions.h" />
+    <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\ResourceManager.h" />

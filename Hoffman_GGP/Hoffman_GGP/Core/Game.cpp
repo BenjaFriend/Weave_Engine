@@ -327,7 +327,7 @@ void Game::Update( float deltaTime, float totalTime )
 
             if ( Physics::Collisions::Intersects( entityA->GetCollider(), entityB->GetCollider() ) )
             {
-                DEBUG_PRINT(" There is an entity collision! ");
+                //DEBUG_PRINT(" There is an entity collision! ");
             }
         }
 

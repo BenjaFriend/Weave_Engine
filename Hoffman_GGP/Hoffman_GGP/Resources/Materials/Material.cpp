@@ -36,6 +36,14 @@ Material::~Material()
     DEBUG_PRINT( "Material class dtor!" );
 }
 
+void Material::SaveObject( std::ofstream * aOutFile )
+{
+    // Out the file names of any shaders that we have
+    DEBUG_PRINT( "Material class save!!" );
+
+    
+}
+
 ////////////////////////////////////////////////////
 // Accessors
 ////////////////////////////////////////////////////

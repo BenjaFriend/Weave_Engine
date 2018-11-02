@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Core/DebugSettings.h"
-
+#include "../ISaveable.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -16,6 +16,7 @@ struct ID3D11ShaderResourceView;
 /// </summary>
 /// <author>Ben Hoffman</author>
 class Material
+    : public ISaveable
 {
 public:
 
@@ -36,11 +37,16 @@ public:
     /** Destructor of the material */
     virtual ~Material();
 
+    /// <summary>
+    /// Save this material to the given asset file 
+    /// </summary>
+    /// <param name="aOutFile">File to send material data to</param>
+    void SaveObject( std::ofstream* aOutFile ) override;
+
 
     ////////////////////////////////////////////////////
     // Accessors
     ////////////////////////////////////////////////////
-
 
     /// <summary>
     /// Set the shininess of this material

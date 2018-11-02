@@ -119,6 +119,9 @@
     <ClInclude Include="Physics\Collisions.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Resources\ISaveable.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
