@@ -95,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
@@ -107,6 +108,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
@@ -121,6 +123,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +142,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -162,6 +166,11 @@
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
+    <ClCompile Include="Utils\imgui\imgui.cpp" />
+    <ClCompile Include="Utils\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Utils\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Utils\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Utils\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Utils\MathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +190,14 @@
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />
+    <ClInclude Include="Utils\imgui\imconfig.h" />
+    <ClInclude Include="Utils\imgui\imgui.h" />
+    <ClInclude Include="Utils\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="Utils\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="Utils\imgui\imgui_internal.h" />
+    <ClInclude Include="Utils\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Utils\imgui\imstb_textedit.h" />
+    <ClInclude Include="Utils\imgui\imstb_truetype.h" />
     <ClInclude Include="Utils\MathHelper.h" />
   </ItemGroup>
   <ItemGroup>

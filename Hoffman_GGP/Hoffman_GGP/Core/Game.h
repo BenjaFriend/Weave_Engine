@@ -1,5 +1,15 @@
 #pragma once
 
+//#define ENABLE_UI
+
+#if defined(_DEBUG)  && defined(ENABLE_UI)
+
+#include "../Utils/imgui/imgui.h"
+#include "../Utils/imgui/imgui_impl_win32.h"
+#include "../Utils/imgui/imgui_impl_dx11.h"
+
+#endif
+
 #include "DebugSettings.h"
 
 #include "DXCore.h"
@@ -11,6 +21,8 @@
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
+
+
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -47,8 +59,10 @@ private:
     void CreateMatrices();
     void CreateBasicGeometry();
     void InitLights();
+    void CreatUI();
 
     void DrawLightSources();
+    void DrawUI();
 
     
     // Wrappers for DirectX shaders to provide simplified functionality

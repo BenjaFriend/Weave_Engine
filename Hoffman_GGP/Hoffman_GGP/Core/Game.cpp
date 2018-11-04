@@ -94,7 +94,7 @@ void Game::Init()
     CreateMatrices();
     CreateBasicGeometry();
     InitLights();
-
+    //CreatUI();
 
     // Tell the input assembler stage of the pipeline what kind of
     // geometric primitives (points, lines or triangles) we want to draw.  
@@ -161,6 +161,19 @@ void Game::InitLights()
     pLight2.Range = 2.f;
     PointLights.emplace_back( pLight2 );
 
+}
+
+void Game::CreatUI()
+{
+#if defined(_DEBUG)  && defined(ENABLE_UI)
+    // Setup IMgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO & io = ImGui::GetIO();
+    ImGui_ImplWin32_Init( hWnd );
+    ImGui_ImplDX11_Init( device, context );
+    ImGui::StyleColorsDark();
+#endif
 }
 
 // --------------------------------------------------------
@@ -367,8 +380,8 @@ void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
 
-    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
-    const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    //const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
@@ -474,10 +487,13 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #endif // _DEBUG
 
+    //DrawUI();
+
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
     //  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
     swapChain->Present( 0, 0 );
+
 }
 
 
@@ -534,6 +550,25 @@ void Game::DrawLightSources()
 
     }
 
+}
+
+void Game::DrawUI()
+{
+#if defined(_DEBUG)  && defined(ENABLE_UI)
+    // Create a new IMGui frame
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    // Create a window named test
+    ImGui::Begin( "Test" );
+    
+    
+    ImGui::End();
+    //
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+#endif
 }
 
 
