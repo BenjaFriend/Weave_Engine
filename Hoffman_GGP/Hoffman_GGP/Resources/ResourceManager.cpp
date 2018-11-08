@@ -31,20 +31,20 @@ void ResourceManager::ReleaseInstance()
     }
 }
 
-const UINT ResourceManager::LoadMesh( char * aFileName )
+const Mesh_ID ResourceManager::LoadMesh( char * aFileName )
 {
     Meshes.push_back( new Mesh( currentDevice, aFileName ) );
-    return static_cast<UINT>( Meshes.size() - 1 );
+    return Meshes.size() - 1;
 }
 
-Mesh * ResourceManager::GetMesh( const UINT aMeshID )
+Mesh * ResourceManager::GetMesh( const Mesh_ID aMeshID )
 {
     assert( aMeshID >= 0 && aMeshID < Meshes.size() );
 
     return Meshes[ aMeshID ];
 }
 
-const UINT ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aFileName )
+const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aFileName )
 {
     assert( aContext != nullptr );
 
@@ -63,17 +63,18 @@ const UINT ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aF
     {
         SRViews.push_back( tempSRV );
 
-        return static_cast<UINT> ( SRViews.size() - 1 );
+        return static_cast<size_t> ( SRViews.size() - 1 );
     }
     else
     {
         DEBUG_PRINT( "SRV LOADING FAILURE!" );
-
+        // #RemoveWhenDoneDebugging
+        throw "SRV LOADING FAILURE!";
         return -1;
     }
 }
 
-const UINT ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar_t * aFileName )
+const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar_t * aFileName )
 {
     assert( aContext != nullptr );
 
@@ -92,24 +93,26 @@ const UINT ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar_t
     {
         SRViews.push_back( tempSRV );
 
-        return static_cast<UINT> ( SRViews.size() - 1 );
+        return SRViews.size() - 1;
     }
     else
     {
         DEBUG_PRINT( "DDS SRV LOADING FAILURE!" );
+        // #RemoveWhenDoneDebugging
+        throw "DDS SRV LOADING FAILURE!";
 
         return -1;
     }
 }
 
-ID3D11ShaderResourceView * ResourceManager::GetSRV( const UINT aSrvID )
+ID3D11ShaderResourceView * ResourceManager::GetSRV( const SRV_ID aSrvID )
 {
     assert( aSrvID >= 0 && aSrvID < SRViews.size() );
 
     return SRViews[ aSrvID ];
 }
 
-const UINT ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
+const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
 {
     ID3D11SamplerState* NewSamplerState = nullptr;
     HRESULT iResult = currentDevice->CreateSamplerState( &aSamplerDesc, &NewSamplerState );
@@ -117,7 +120,7 @@ const UINT ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
     if ( iResult == S_OK )
     {
         Samplers.push_back( NewSamplerState );
-        return static_cast<UINT>( Samplers.size() - 1 );
+        return Samplers.size() - 1 ;
     }
     else
     {
@@ -125,21 +128,21 @@ const UINT ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
     }
 }
 
-ID3D11SamplerState * ResourceManager::GetSampler( const UINT aID )
+ID3D11SamplerState * ResourceManager::GetSampler( const size_t aID )
 {
     assert( aID >= 0 && aID < Samplers.size() );
 
     return Samplers[ aID ];
 }
 
-const UINT ResourceManager::LoadMaterial( 
+const Material_ID ResourceManager::LoadMaterial(
     SimpleVertexShader* aVertexShader, 
     SimplePixelShader* aPixelShader, 
-    const UINT aDiffSrvID, 
-    const UINT aNormSrvID, 
-    const UINT aRoughnessSrvID, 
-    const UINT aMetalSrvID,
-    const UINT aSamplerID 
+    const SRV_ID aDiffSrvID,
+    const SRV_ID aNormSrvID, 
+    const SRV_ID aRoughnessSrvID, 
+    const SRV_ID aMetalSrvID,
+    const Sampler_ID aSamplerID 
 )
 {
     Material* newMat = new Material(
@@ -154,10 +157,10 @@ const UINT ResourceManager::LoadMaterial(
 
     Materials.push_back( newMat );
 
-    return static_cast<UINT>( Materials.size() - 1 );
+    return Materials.size() - 1;
 }
 
-Material* ResourceManager::GetMaterial( const UINT aID )
+Material* ResourceManager::GetMaterial( const Material_ID aID )
 {
     assert( aID >= 0 && aID < Materials.size() );
 

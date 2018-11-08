@@ -30,11 +30,11 @@ Game::Game( HINSTANCE hInstance )
     //EntityCount = 0;
     FlyingCamera = new Camera();
 
-#if defined(DEBUG) || defined(_DEBUG)
+//#if defined(DEBUG) || defined(_DEBUG)
     // Do we want a console window?  Probably only in debug mode
     CreateConsoleWindow( 500, 120, 32, 120 );
-    printf( "Console window created successfully.  Feel free to printf() here." );
-#endif
+    printf( "Console window created successfully.  Feel free to printf() here.\n" );
+//#endif
 
 }
 
@@ -112,18 +112,23 @@ void Game::LoadShaders()
 {
     vertexShader = new SimpleVertexShader( device, context );
     vertexShader->LoadShaderFile( L"VertexShader.cso" );
+    printf( "\nVert Shader Val:          %p\n", vertexShader );
 
     pixelShader = new SimplePixelShader( device, context );
     pixelShader->LoadShaderFile( L"PixelShader.cso" );
+    printf( "pixelShader Shader Val:     %p\n", pixelShader );
 
     UnlitPixelShader = new SimplePixelShader( device, context );
     UnlitPixelShader->LoadShaderFile( L"PixelShader_Unlit.cso" );
+    printf( "UnlitPixelShader Shader Val: %p\n", UnlitPixelShader );
 
     SkyBoxVS = new SimpleVertexShader( device, context );
     SkyBoxVS->LoadShaderFile( L"SkyVS.cso" );
+    printf( "SkyBoxVS Shader Val:        %p\n", SkyBoxVS );
 
     SkyBoxPS = new SimplePixelShader( device, context );
     SkyBoxPS->LoadShaderFile( L"SkyPS.cso" );
+    printf( "SkyBoxPS Shader Val:        %p\n", SkyBoxPS );
 
 }
 
@@ -195,7 +200,7 @@ void Game::CreateBasicGeometry()
     EntityManager* enMan = EntityManager::GetInstance();
     PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
-    UINT meshID = PointLightMesh_ID;
+    size_t meshID = PointLightMesh_ID;
 
     // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -209,22 +214,22 @@ void Game::CreateBasicGeometry()
     SamplerID = resources->AddSampler( samplerDesc );
 
     // Create the stone sphere --------------------------------------------------
-    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
-    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
-    UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
-    UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
+    size_t diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
+    size_t normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
+    size_t roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
+    size_t metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
 
-    UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
+    size_t matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
 
     // Load Wood ball --------------------------------------------------------
-    UINT woodDif = resources->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
-    UINT woodNormSRV = resources->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
-    UINT woodRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
-    UINT woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
-    UINT woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
+    size_t woodDif = resources->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
+    size_t woodNormSRV = resources->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
+    size_t woodRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
+    size_t woodMetalMap = resources->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
+    size_t woodMatID = resources->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
 
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     UINT woodEntID = enMan->AddEntity(
@@ -232,11 +237,11 @@ void Game::CreateBasicGeometry()
     enMan->GetEntity( woodEntID )->SetMass( 0.5f );
 
     // load Bronze ball --------------------------------------------------------
-    UINT bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
-    UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
-    UINT bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
-    UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
-    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
+    size_t bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
+    size_t bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
+    size_t bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
+    size_t bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
+    size_t bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
 
     UINT bronzeEntID = enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
@@ -244,12 +249,12 @@ void Game::CreateBasicGeometry()
 
 
     // Load floor --------------------------------------------------------
-    UINT floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" ); 
-    UINT floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
-    UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
-    UINT floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
-    UINT floorMetalMap = resources->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
-    UINT floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
+    size_t floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" ); 
+    size_t floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
+    size_t floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
+    size_t floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
+    size_t floorMetalMap = resources->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
+    size_t floorMatID = resources->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     UINT floorID = enMan->AddEntity(

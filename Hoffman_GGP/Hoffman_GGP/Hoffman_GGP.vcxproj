@@ -101,6 +101,14 @@
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreLinkEvent>
+      <Message>
+      </Message>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -114,6 +122,14 @@
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreLinkEvent>
+      <Message>
+      </Message>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -133,6 +149,14 @@
       <Message>Copy the assets of the game to the output directory</Message>
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreLinkEvent>
+      <Message>
+      </Message>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,6 +176,14 @@
       <Message>Copy the assets of the game to the output directory</Message>
       <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreLinkEvent>
+      <Message>
+      </Message>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp" />

@@ -16,6 +16,8 @@
 #include "../Resources/SimpleShader.h"
 #include <DirectXMath.h>
 #include <vector>
+#include <thread>
+#include <chrono>
 #include "InputManager.h"
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
@@ -68,8 +70,8 @@ private:
     SimplePixelShader* pixelShader = nullptr;
     SimplePixelShader* UnlitPixelShader = nullptr;
 
-    UINT SamplerID;
-    UINT SkyboxSrvID;
+    Sampler_ID SamplerID;
+    SRV_ID SkyboxSrvID;
 
     // Skybox resources
     SimpleVertexShader* SkyBoxVS = nullptr;
@@ -88,7 +90,7 @@ private:
     // Lights
     std::vector<DirectionalLight> DirLights;
     std::vector<PointLight> PointLights;
-    UINT PointLightMesh_ID = 0;
+    Mesh_ID PointLightMesh_ID = 0;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.
