@@ -210,22 +210,22 @@ void Game::CreateBasicGeometry()
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
     // Create the stone sphere --------------------------------------------------
-    size_t diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
-    size_t normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
-    size_t roughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
-    size_t metalMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
+    SRV_ID diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
+    SRV_ID normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
+    SRV_ID roughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
+    SRV_ID metalMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
 
-    size_t matID = resourceMan->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
+    Material_ID matID = resourceMan->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     entityMan->AddEntity(
         resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
 
     // Load Wood ball --------------------------------------------------------
-    size_t woodDif = resourceMan->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
-    size_t woodNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
-    size_t woodRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
-    size_t woodMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
-    size_t woodMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
+    SRV_ID woodDif = resourceMan->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
+    SRV_ID woodNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
+    SRV_ID woodRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
+    SRV_ID woodMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
+    Material_ID woodMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
 
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     Entity_ID woodEntID = entityMan->AddEntity(
@@ -233,11 +233,11 @@ void Game::CreateBasicGeometry()
     entityMan->GetEntity( woodEntID )->SetMass( 0.5f );
 
     // load Bronze ball --------------------------------------------------------
-    size_t bronzeDif = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
-    size_t bronzeNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
-    size_t bronzeRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
-    size_t bronzeMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
-    size_t bronzeMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
+    SRV_ID bronzeDif = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
+    SRV_ID bronzeNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
+    SRV_ID bronzeRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
+    SRV_ID bronzeMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
+    Material_ID bronzeMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
 
     Entity_ID bronzeEntID = entityMan->AddEntity(
         resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
@@ -246,11 +246,11 @@ void Game::CreateBasicGeometry()
 
     // Load floor --------------------------------------------------------
     CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" ); 
-    size_t floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
-    size_t floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
-    size_t floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
-    size_t floorMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
-    size_t floorMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
+    SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
+    SRV_ID floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
+    SRV_ID floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
+    SRV_ID floorMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
+    Material_ID floorMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(

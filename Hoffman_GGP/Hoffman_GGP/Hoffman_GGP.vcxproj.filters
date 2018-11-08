@@ -164,6 +164,7 @@
     <ClInclude Include="Utils\imgui\imstb_truetype.h">
       <Filter>Utils\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
