@@ -88,6 +88,10 @@ private:
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
 
+    // managers
+    ResourceManager* resourceMan = nullptr;
+    EntityManager* entityMan = nullptr;
+
     // Lights
     std::vector<DirectionalLight> DirLights;
     std::vector<PointLight> PointLights;

@@ -11,6 +11,8 @@
 class Mesh;
 class Material;
 
+using Entity_ID = size_t;
+
 /// <summary>
 /// A singleton class that will  be in charge of creating and 
 /// destroying entities 
@@ -39,7 +41,7 @@ public:
     /// <param name="aMesh">Mesh for this entity</param>
     /// <param name="aMat">Material of this entity</param>
     /// <returns>The ID of that entity</returns>
-    const UINT AddEntity( Mesh* aMesh, Material* aMat );
+    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat );
 
     /// <summary>
     /// Adds an entity to the game with the given 
@@ -48,20 +50,20 @@ public:
     /// <param name="aMat">Material of this entity</param>
     /// <param name="aPos">The starting position of the entity</param>
     /// <returns></returns>
-    const UINT AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos );
+    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos );
 
     /// <summary>
     /// Deletes entity with the given ID
     /// </summary>
     /// <param name="aEntityID">ID of the entity to delete</param>
-    void DeleteEntity( const UINT aEntityID );
+    void DeleteEntity( const Entity_ID aEntityID );
 
     /// <summary>
     /// Gets a pointer to an entity with this ID number
     /// </summary>
     /// <param name="aEntityID">Entity ID to find</param>
     /// <returns>pointer to the entity with this ID</returns>
-    Entity* GetEntity( const UINT aEntityID ) const;
+    Entity* GetEntity( const Entity_ID aEntityID ) const;
 
     //////////////////////////////////////////////////////////////////
     // Accessors 
