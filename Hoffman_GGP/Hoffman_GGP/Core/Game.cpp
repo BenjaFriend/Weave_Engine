@@ -482,7 +482,11 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #endif // _DEBUG
 
-    //DrawUI();
+#if defined(_DEBUG)  && defined(ENABLE_UI)
+
+    DrawUI();
+
+#endif
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
