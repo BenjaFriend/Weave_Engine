@@ -78,6 +78,7 @@
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
@@ -88,6 +89,7 @@
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
