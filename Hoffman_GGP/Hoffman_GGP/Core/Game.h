@@ -22,8 +22,6 @@
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
 
-
-
 /////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
@@ -70,12 +68,12 @@ private:
     SimplePixelShader* pixelShader = nullptr;
     SimplePixelShader* UnlitPixelShader = nullptr;
 
-    UINT SamplerID = 0;
+    UINT SamplerID;
+    UINT SkyboxSrvID;
 
     // Skybox resources
     SimpleVertexShader* SkyBoxVS = nullptr;
     SimplePixelShader* SkyBoxPS = nullptr;
-    UINT SkyboxSrvID = 0;
     ID3D11RasterizerState* skyRastState = nullptr;
     ID3D11DepthStencilState* skyDepthState = nullptr;
 

@@ -160,7 +160,6 @@ void Game::InitLights()
     pLight2.Intensity = 5.f;
     pLight2.Range = 2.f;
     PointLights.emplace_back( pLight2 );
-
 }
 
 void Game::CreatUI()
@@ -295,7 +294,7 @@ void Game::Update( float deltaTime, float totalTime )
     static float speed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
-
+    
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
         XMFLOAT3 newPos = PointLights[ i ].Position;
@@ -321,7 +320,7 @@ void Game::Update( float deltaTime, float totalTime )
 
         PointLights[ i ].Position = newPos;
     }
-
+    /*
     EntityManager* manager = EntityManager::GetInstance();
     Entity* entityA = nullptr;
     Entity* entityB = nullptr;
@@ -365,12 +364,10 @@ void Game::Update( float deltaTime, float totalTime )
             opposingVel.z *= -1.f;
             entityA->ApplyForce( opposingVel );
         }
-        
-        
-        
+               
         entityA->ApplyAcceleration();
     }
-
+    */
 }
 
 // --------------------------------------------------------
@@ -406,7 +403,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
     EntityManager* manager = EntityManager::GetInstance();
 
-    for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
+    for ( UINT i = 0; i < manager->GetEntityCount(); ++i )
     {
         CurrentEntity = manager->GetEntity( i );
 
@@ -475,7 +472,7 @@ void Game::Draw( float deltaTime, float totalTime )
         // Reset any changed render states!
         context->RSSetState( 0 );
         context->OMSetDepthStencilState( 0, 0 );
-
+        
 
     }
 
