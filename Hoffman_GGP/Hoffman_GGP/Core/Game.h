@@ -72,6 +72,7 @@ private:
 
     Sampler_ID SamplerID;
     SRV_ID SkyboxSrvID;
+    Mesh_ID CubeMeshID;
 
     // Skybox resources
     SimpleVertexShader* SkyBoxVS = nullptr;

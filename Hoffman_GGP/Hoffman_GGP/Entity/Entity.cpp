@@ -25,6 +25,7 @@ Entity::Entity( Mesh* aMesh, Material* aMat )
     Collider.MaxY = +0.5f;                     
     Collider.MinZ = -0.5f;
     Collider.MaxZ = +0.5f;
+    IsActive = true;
 }
 
 // virtual destructor
@@ -56,6 +57,7 @@ void Entity::MoveAbsolute( const float aX, const float aY, const float aZ )
 
 void Entity::PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection )
 {
+    assert( EntityMaterial != nullptr );
     SimpleVertexShader* VertShader = EntityMaterial->GetVertexShader();
     SimplePixelShader* PixelShader = EntityMaterial->GetPixelShader();
 

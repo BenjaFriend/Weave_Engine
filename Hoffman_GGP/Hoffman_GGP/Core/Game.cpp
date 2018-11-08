@@ -249,7 +249,7 @@ void Game::CreateBasicGeometry()
 
 
     // Load floor --------------------------------------------------------
-    size_t floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" ); 
+    CubeMeshID = resources->LoadMesh( "Assets/Models/cube.obj" ); 
     size_t floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     size_t floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     size_t floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
@@ -258,7 +258,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     UINT floorID = enMan->AddEntity(
-        resources->GetMesh( floorMeshID ), resources->GetMaterial( floorMatID ), floorPos );
+        resources->GetMesh( CubeMeshID ), resources->GetMaterial( floorMatID ), floorPos );
 
     enMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     enMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
@@ -412,7 +412,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
     EntityManager* manager = EntityManager::GetInstance();
 
-    for ( UINT i = 0; i < manager->GetEntityCount(); ++i )
+    for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
     {
         CurrentEntity = manager->GetEntity( i );
 
@@ -442,50 +442,47 @@ void Game::Draw( float deltaTime, float totalTime )
 
         context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
         context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
-
-        context->DrawIndexed(
-            EnMesh->GetIndexCount(),
-            0,
-            0 );
-
-        // Draw the Sky box -------------------------------------
-
-        // Set up sky render states
-        context->RSSetState( skyRastState );
-        context->OMSetDepthStencilState( skyDepthState, 0 );
-
-        // After drawing all of our regular (solid) objects, draw the sky!
-        ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
-        ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
-
-        // Set the buffers
-        context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
-        context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
-
-        SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
-        SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
-
-        SkyBoxVS->CopyAllBufferData();
-        SkyBoxVS->SetShader();
-
-        // Send texture-related stuff
-        SkyBoxPS->SetShaderResourceView( "SkyTexture", ResourceManager::GetInstance()->GetSRV( SkyboxSrvID ) );
-        SkyBoxPS->SetSamplerState( "BasicSampler", ResourceManager::GetInstance()->GetSampler( SamplerID ) );
-
-        SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
-        SkyBoxPS->SetShader();
-
+      
         // Finally do the actual drawing
         context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
-
-        // Reset any changed render states!
-        context->RSSetState( 0 );
-        context->OMSetDepthStencilState( 0, 0 );
-
-
     }
 
     manager = nullptr;
+
+    // Draw the Sky box -------------------------------------
+
+    // Set up sky render states
+    context->RSSetState( skyRastState );
+    context->OMSetDepthStencilState( skyDepthState, 0 );
+
+    // After drawing all of our regular (solid) objects, draw the sky!
+    ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
+    ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
+
+    // Set the buffers
+    context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
+    context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
+
+    SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+    SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+
+    SkyBoxVS->CopyAllBufferData();
+    SkyBoxVS->SetShader();
+
+    // Send texture-related stuff
+    SkyBoxPS->SetShaderResourceView( "SkyTexture", ResourceManager::GetInstance()->GetSRV( SkyboxSrvID ) );
+    SkyBoxPS->SetSamplerState( "BasicSampler", ResourceManager::GetInstance()->GetSampler( SamplerID ) );
+
+    SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
+    SkyBoxPS->SetShader();
+
+    // Reset any changed render states!
+    context->RSSetState( skyRastState );
+    context->OMSetDepthStencilState( skyDepthState, 0 );
+
+    // Draw the skybox "mesh"
+    context->DrawIndexed( ResourceManager::GetInstance()->GetMesh(CubeMeshID)->GetIndexCount(), 0, 0 );
+
 
 #if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
