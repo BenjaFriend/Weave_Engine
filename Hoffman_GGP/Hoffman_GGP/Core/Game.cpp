@@ -94,7 +94,7 @@ void Game::Init()
     CreateMatrices();
     CreateBasicGeometry();
     InitLights();
-    //CreatUI();
+    CreatUI();
 
     // Tell the input assembler stage of the pipeline what kind of
     // geometric primitives (points, lines or triangles) we want to draw.  
@@ -136,12 +136,12 @@ void Game::InitLights()
     Light1.Intensity = 0.1f;
     DirLights.emplace_back( Light1 );
 
-    /*DirectionalLight Light2 = {};
+    DirectionalLight Light2 = {};
     Light2.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light2.DiffuseColor = XMFLOAT4( 0.5f, 1.f, 1.f, 0.1f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
     Light2.Intensity = 1.0f;
-    DirLights.emplace_back( Light2 );*/
+    DirLights.emplace_back( Light2 );
 
     XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
@@ -193,17 +193,11 @@ void Game::CreateBasicGeometry()
     // Load in the meshes
     ResourceManager* resources = ResourceManager::GetInstance();
     EntityManager* enMan = EntityManager::GetInstance();
-    UINT meshID = resources->LoadMesh( "Assets/Models/sphere.obj" );
-    PointLightMesh_ID = meshID;
+    PointLightMesh_ID = resources->LoadMesh( "Assets/Models/sphere.obj" );
 
-    UINT floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" );
+    UINT meshID = PointLightMesh_ID;
 
-
-    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
-    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
-    UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
-    UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
-
+    // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -214,12 +208,18 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resources->AddSampler( samplerDesc );
 
+    // Create the stone sphere --------------------------------------------------
+    UINT diffSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
+    UINT normSRV = resources->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
+    UINT roughnessMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
+    UINT metalMap = resources->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
+
     UINT matID = resources->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
 
-
+    // Load Wood ball --------------------------------------------------------
     UINT woodDif = resources->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
     UINT woodNormSRV = resources->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
     UINT woodRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
@@ -229,9 +229,22 @@ void Game::CreateBasicGeometry()
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     UINT woodEntID = enMan->AddEntity(
         resources->GetMesh( meshID ), resources->GetMaterial( woodMatID ), newPos );
-    
     enMan->GetEntity( woodEntID )->SetMass( 0.5f );
 
+    // load Bronze ball --------------------------------------------------------
+    UINT bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
+    UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
+    UINT bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
+    UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
+    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
+
+    UINT bronzeEntID = enMan->AddEntity(
+        resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
+    enMan->GetEntity( bronzeEntID )->SetMass( 10.f );
+
+
+    // Load floor --------------------------------------------------------
+    UINT floorMeshID = resources->LoadMesh( "Assets/Models/cube.obj" ); 
     UINT floorDif = resources->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     UINT floorNormSRV = resources->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     UINT floorRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
@@ -245,18 +258,9 @@ void Game::CreateBasicGeometry()
     enMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     enMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
 
-    UINT bronzeDif = resources->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
-    UINT bronzeNormSRV = resources->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
-    UINT bronzeRoughnessMap = resources->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
-    UINT bronzeMetalMap = resources->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
-    UINT bronzeMatID = resources->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
 
-    UINT bronzeEntID = enMan->AddEntity(
-        resources->GetMesh( meshID ), resources->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
-    enMan->GetEntity( bronzeEntID )->SetMass( 10.f );
-
-    // Load in the skybox SRV
-    SkyboxSrvID = resources->LoadSRV_DDS(context, L"Assets/Textures/SunnyCubeMap.dds" );
+    // Load in the skybox SRV --------------------------------------------------------
+    SkyboxSrvID = resources->LoadSRV_DDS( context, L"Assets/Textures/SunnyCubeMap.dds" );
 
     resources = nullptr;
     enMan = nullptr;
@@ -294,7 +298,7 @@ void Game::Update( float deltaTime, float totalTime )
     static float speed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
-    
+
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
         XMFLOAT3 newPos = PointLights[ i ].Position;
@@ -345,7 +349,7 @@ void Game::Update( float deltaTime, float totalTime )
 
 
         // This introduces branching, remove it in the future and have a better solution
-        // probably with just putting the different entities in different "buckets" at 
+        // probably with just putting the different entities in different "buckets" at
         // some point
 
         forceToApply.y += Gravity;
@@ -355,7 +359,7 @@ void Game::Update( float deltaTime, float totalTime )
         forceToApply.z *= deltaTime;
 
         entityA->ApplyForce( forceToApply );
-        
+
         if ( entityA->GetPosition().y < -2.f )
         {
             XMFLOAT3 opposingVel = entityA->GetVelocity();
@@ -364,7 +368,7 @@ void Game::Update( float deltaTime, float totalTime )
             opposingVel.z *= -1.f;
             entityA->ApplyForce( opposingVel );
         }
-               
+
         entityA->ApplyAcceleration();
     }
     */
@@ -412,15 +416,15 @@ void Game::Draw( float deltaTime, float totalTime )
         // Send lighting info ---------------------------------------------------------
         if ( DirLights.size() > 0 )
         {
-            pixelShader->SetData( "DirLights", (void*) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
+            pixelShader->SetData( "DirLights", ( void* ) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
         }
-        pixelShader->SetInt( "DirLightCount", ( UseDirLights ? static_cast<int>( DirLights.size() ) : 0 ) );
+        pixelShader->SetInt( "DirLightCount", ( UseDirLights ? static_cast< int >( DirLights.size() ) : 0 ) );
 
         if ( PointLights.size() > 0 )
         {
-            pixelShader->SetData( "PointLights", (void*) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+            pixelShader->SetData( "PointLights", ( void* ) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
         }
-        pixelShader->SetInt( "PointLightCount", static_cast<int>( PointLights.size() ) );
+        pixelShader->SetInt( "PointLightCount", static_cast< int >( PointLights.size() ) );
 
 
         // Send camera info ---------------------------------------------------------
@@ -472,7 +476,7 @@ void Game::Draw( float deltaTime, float totalTime )
         // Reset any changed render states!
         context->RSSetState( 0 );
         context->OMSetDepthStencilState( 0, 0 );
-        
+
 
     }
 
@@ -559,8 +563,8 @@ void Game::DrawUI()
 
     // Create a window named test
     ImGui::Begin( "Test" );
-    
-    
+
+
     ImGui::End();
     //
     ImGui::Render();
