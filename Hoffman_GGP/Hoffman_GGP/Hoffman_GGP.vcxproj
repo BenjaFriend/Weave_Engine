@@ -207,6 +207,7 @@
     <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\EntityManager.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Physics\Collisions.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\EntityManager.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Physics\Collisions.h" />
     <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />

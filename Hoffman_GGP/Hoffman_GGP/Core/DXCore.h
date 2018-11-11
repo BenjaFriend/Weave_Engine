@@ -1,8 +1,13 @@
 #pragma once
 
-#include "../stdafx.h"
+//#ifndef _DEBUG
 
-//#define ENABLE_UI
+#define  ENABLE_UI
+
+//#endif
+
+
+#include "../stdafx.h"
 
 #if defined(ENABLE_UI)
 

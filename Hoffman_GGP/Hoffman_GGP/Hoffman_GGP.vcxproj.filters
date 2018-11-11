@@ -87,6 +87,7 @@
     <ClCompile Include="Utils\imgui\imgui_widgets.cpp">
       <Filter>Utils\ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -163,6 +164,7 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Core\DebugSettings.h" />
+    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

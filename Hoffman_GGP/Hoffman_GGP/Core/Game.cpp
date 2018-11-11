@@ -93,7 +93,6 @@ void Game::Init()
     CreateMatrices();
     CreateBasicGeometry();
     InitLights();
-    CreatUI();
 
     // Tell the input assembler stage of the pipeline what kind of
     // geometric primitives (points, lines or triangles) we want to draw.  
@@ -164,19 +163,6 @@ void Game::InitLights()
     pLight2.Intensity = 5.f;
     pLight2.Range = 2.f;
     PointLights.emplace_back( pLight2 );
-}
-
-void Game::CreatUI()
-{
-#if defined(ENABLE_UI)
-    // Setup IMgui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO & io = ImGui::GetIO();
-    ImGui_ImplWin32_Init( hWnd );
-    ImGui_ImplDX11_Init( device, context );
-    ImGui::StyleColorsDark();
-#endif
 }
 
 // --------------------------------------------------------

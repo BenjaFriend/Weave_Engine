@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <iostream>
 
 #include <stdlib.h>
@@ -11,13 +10,15 @@
 #include <stdio.h>
 #include <crtdbg.h>  
 #include <assert.h>
+
+
 // Replace the new keyword with the debug new 
-#ifdef _DEBUG
+/*#if defined(_DEBUG)
 
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
 
-#endif
+#endif*/
 
 // Debug Macros
 

@@ -49,7 +49,6 @@ private:
     void CreateMatrices();
     void CreateBasicGeometry();
     void InitLights();
-    void CreatUI();
 
     void DrawLightSources();
     void DrawUI();
