@@ -1,15 +1,5 @@
 #pragma once
 
-//#define ENABLE_UI
-
-#if defined(_DEBUG)  && defined(ENABLE_UI)
-
-#include "../Utils/imgui/imgui.h"
-#include "../Utils/imgui/imgui_impl_win32.h"
-#include "../Utils/imgui/imgui_impl_dx11.h"
-
-#endif
-
 #include "DebugSettings.h"
 
 #include "DXCore.h"

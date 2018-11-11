@@ -503,9 +503,9 @@ void DXCore::CreateConsoleWindow( int bufferLines, int bufferColumns, int window
     EnableMenuItem( hmenu, SC_CLOSE, MF_GRAYED );
 }
 
-
-
-
+#if defined(ENABLE_UI)
+extern LRESULT ImGui_ImplWin32_WndProcHandler( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
+#endif
 
 // --------------------------------------------------------
 // Handles messages that are sent to our window by the
@@ -515,6 +515,12 @@ void DXCore::CreateConsoleWindow( int bufferLines, int bufferColumns, int window
 // --------------------------------------------------------
 LRESULT DXCore::ProcessMessage( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
+#if defined(ENABLE_UI)
+
+    if ( ImGui_ImplWin32_WndProcHandler( hWnd, uMsg, wParam, lParam ) )
+        return true;
+#endif
+
     // Check the incoming message and handle any we care about
     switch ( uMsg )
     {

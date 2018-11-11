@@ -1,5 +1,15 @@
 #pragma once
 
+#define ENABLE_UI
+
+#if defined(ENABLE_UI)
+
+#include "../Utils/imgui/imgui.h"
+#include "../Utils/imgui/imgui_impl_win32.h"
+#include "../Utils/imgui/imgui_impl_dx11.h"
+
+#endif
+
 #include <Windows.h>
 #include <d3d11.h>
 #include <string>

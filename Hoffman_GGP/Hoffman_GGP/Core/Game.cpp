@@ -168,7 +168,7 @@ void Game::InitLights()
 
 void Game::CreatUI()
 {
-#if defined(_DEBUG)  && defined(ENABLE_UI)
+#if defined(ENABLE_UI)
     // Setup IMgui
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -482,7 +482,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #endif // _DEBUG
 
-#if defined(_DEBUG)  && defined(ENABLE_UI)
+#if defined(ENABLE_UI)
 
     DrawUI();
 
@@ -553,7 +553,7 @@ void Game::DrawLightSources()
 
 void Game::DrawUI()
 {
-#if defined(_DEBUG)  && defined(ENABLE_UI)
+#if defined(ENABLE_UI)
     // Create a new IMGui frame
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
