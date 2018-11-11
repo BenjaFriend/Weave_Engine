@@ -486,13 +486,13 @@ void Game::Draw( float deltaTime, float totalTime )
 
     DrawUI();
 
-#endif
+#endif  // ENABLE_UI
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
     //  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
     swapChain->Present( 0, 0 );
-
+    //swapChain->Present( 1, 0 );   // Present with vsync
 }
 
 
@@ -562,6 +562,12 @@ void Game::DrawUI()
     // Create a window named test
     ImGui::Begin( "Test" );
 
+    ImGui::Text( "This is some useful text." );
+
+    if ( ImGui::Button( "Test Button" ) )
+    {
+        printf( "Pushed the button!\n" );
+    }
 
     ImGui::End();
     //
