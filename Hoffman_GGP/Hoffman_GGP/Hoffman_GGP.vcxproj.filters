@@ -28,8 +28,8 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{6eaed29b-00f6-4ccf-bc4f-4412a8896e8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\ImGUI">
-      <UniqueIdentifier>{1092195e-4033-477a-b0fd-6102821ec3e9}</UniqueIdentifier>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{e85a9b44-a058-4d21-a21b-9b7163126777}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,22 +72,25 @@
     <ClCompile Include="Physics\Collisions.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\imgui\imgui.cpp">
-      <Filter>Utils\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\imgui\imgui_draw.cpp">
-      <Filter>Utils\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\imgui\imgui_impl_dx11.cpp">
-      <Filter>Utils\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\imgui\imgui_impl_win32.cpp">
-      <Filter>Utils\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\imgui\imgui_widgets.cpp">
-      <Filter>Utils\ImGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui_impl_dx11.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui_impl_win32.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -138,33 +141,33 @@
     <ClInclude Include="Resources\ISaveable.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\imgui\imconfig.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imgui.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imgui_impl_dx11.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imgui_impl_win32.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imgui_internal.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imstb_rectpack.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imstb_textedit.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\imgui\imstb_truetype.h">
-      <Filter>Utils\ImGUI</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Core\DebugSettings.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="..\additional\imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui_impl_dx11.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui_impl_win32.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
