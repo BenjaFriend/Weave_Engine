@@ -72,7 +72,6 @@
     <ClCompile Include="Physics\Collisions.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="..\additional\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -90,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="..\additional\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Logger.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +145,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Core\DebugSettings.h" />
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="..\additional\imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -167,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="..\additional\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Logger.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
