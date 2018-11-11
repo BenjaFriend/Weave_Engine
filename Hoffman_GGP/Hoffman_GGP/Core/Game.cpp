@@ -60,7 +60,7 @@ Game::~Game()
 
     delete FlyingCamera;
 
-    InputManager::Release();
+    Input::InputManager::Release();
 
 }
 
@@ -285,7 +285,7 @@ void Game::Update( float deltaTime, float totalTime )
     if ( GetAsyncKeyState( VK_ESCAPE ) )
         Quit();
 
-    if ( InputManager::GetInstance()->IsAsyncKeyDown( 'L' ) )
+    if ( Input::InputManager::GetInstance()->IsKeyDown( 'L' ) )
     {
         UseDirLights = !UseDirLights;
     }

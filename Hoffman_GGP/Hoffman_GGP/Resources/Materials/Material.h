@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Core/DebugSettings.h"
+#include "../../stdafx.h"
 #include "../ISaveable.h"
 
 /////////////////////////////////////////////////

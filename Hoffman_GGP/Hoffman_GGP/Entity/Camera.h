@@ -128,4 +128,6 @@ private:
     /** If true than the camera will rotate */
     bool DoRotation = false;
 
+    /** Pointer to input manager */
+    Input::InputManager* inputManager = nullptr;
 };

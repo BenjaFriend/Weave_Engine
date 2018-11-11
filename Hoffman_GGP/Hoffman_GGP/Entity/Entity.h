@@ -1,5 +1,6 @@
 #pragma once
-#include "../Core/DebugSettings.h"
+
+#include "../stdafx.h"
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include "../Physics/Collisions.h"

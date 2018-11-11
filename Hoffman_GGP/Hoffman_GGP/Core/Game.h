@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DebugSettings.h"
+#include "../stdafx.h"
 
 #include "DXCore.h"
 #include "../Resources/SimpleShader.h"

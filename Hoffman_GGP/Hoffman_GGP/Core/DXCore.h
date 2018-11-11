@@ -1,6 +1,8 @@
 #pragma once
 
-#define ENABLE_UI
+#include "../stdafx.h"
+
+//#define ENABLE_UI
 
 #if defined(ENABLE_UI)
 

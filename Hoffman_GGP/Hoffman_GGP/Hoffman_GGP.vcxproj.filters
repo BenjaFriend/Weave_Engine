@@ -89,9 +89,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\DebugSettings.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Definitions.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -165,6 +162,7 @@
       <Filter>Utils\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Core\DebugSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

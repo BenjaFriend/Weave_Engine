@@ -1,6 +1,6 @@
 
 
-#include "DebugSettings.h"
+#include "../stdafx.h"
 #include <Windows.h>
 #include "Game.h"
 

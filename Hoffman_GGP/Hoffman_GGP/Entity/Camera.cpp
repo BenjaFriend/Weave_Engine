@@ -10,11 +10,13 @@ Camera::Camera()
 
     RotationXAxis = -85.f;
     RotationYAxis = -85.f;
+
+    inputManager = Input::InputManager::GetInstance();
 }
 
 Camera::~Camera()
 {
-
+    inputManager = nullptr;
 }
 
 void Camera::Update( const float aDeltaTime )
@@ -23,13 +25,11 @@ void Camera::Update( const float aDeltaTime )
     RelativeInput.z = 0.f;
     RelativeInput.y = 0.f;
 
-    InputManager* input = InputManager::GetInstance();
 
-
-    if ( input->IsAsyncKeyDown( 'W' ) ) { RelativeInput.z += 1.f; }
-    if ( input->IsAsyncKeyDown( 'S' ) ) { RelativeInput.z -= 1.f; }
-    if ( input->IsAsyncKeyDown( 'A' ) ) { RelativeInput.x -= 1.f; }
-    if ( input->IsAsyncKeyDown( 'D' ) ) { RelativeInput.x += 1.f; }
+    if ( inputManager->IsKeyDown( 'W' ) ) { RelativeInput.z += 1.f; }
+    if ( inputManager->IsKeyDown( 'S' ) ) { RelativeInput.z -= 1.f; }
+    if ( inputManager->IsKeyDown( 'A' ) ) { RelativeInput.x -= 1.f; }
+    if ( inputManager->IsKeyDown( 'D' ) ) { RelativeInput.x += 1.f; }
 
     // Moving up and down (Absolute)
     if ( GetAsyncKeyState( 'X' ) & 0x80000 ) { RelativeInput.y -= 1.f; }

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../stdafx.h"
+
 #include <vector>
 
 #include "Entity.h"
-#include "../Core/DebugSettings.h"
 #include "../Core/Definitions.h"
 
 /////////////////////////////////////////////////
