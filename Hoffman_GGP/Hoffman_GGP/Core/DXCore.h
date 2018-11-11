@@ -1,13 +1,9 @@
 #pragma once
 
-//#ifndef _DEBUG
-
 #define  ENABLE_UI
 
-//#endif
+//#include "Logger.h"
 
-
-#include "../stdafx.h"
 
 #if defined(ENABLE_UI)
 
@@ -17,11 +13,13 @@
 
 #endif
 
+#include "../stdafx.h"
+
 #include <Windows.h>
 #include <d3d11.h>
 #include <string>
 
-#include "Logger.h"
+#include "InputManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
@@ -87,6 +85,8 @@ protected:
 
     ID3D11RenderTargetView* backBufferRTV;
     ID3D11DepthStencilView* depthStencilView;
+
+    Input::InputManager* inputManager = nullptr;
 
     // Helper function for allocating a console window
     void CreateConsoleWindow( int bufferLines, int bufferColumns, int windowLines, int windowColumns );

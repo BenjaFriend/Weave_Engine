@@ -271,11 +271,6 @@ void Game::Update( float deltaTime, float totalTime )
     if ( GetAsyncKeyState( VK_ESCAPE ) )
         Quit();
 
-    if ( Input::InputManager::GetInstance()->IsKeyDown( 'L' ) )
-    {
-        UseDirLights = !UseDirLights;
-    }
-
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
@@ -308,54 +303,6 @@ void Game::Update( float deltaTime, float totalTime )
 
         PointLights[ i ].Position = newPos;
     }
-    /*
-    EntityManager* manager = EntityManager::GetInstance();
-    Entity* entityA = nullptr;
-    Entity* entityB = nullptr;
-
-    for ( size_t i = 0; i < manager->GetEntityCount(); ++i )
-    {
-        entityA = manager->GetEntity( i );
-
-        if ( entityA->GetPhysicsLayer() == EPhysicsLayer::STATIC ) continue;
-
-        XMFLOAT3 forceToApply = XMFLOAT3( 0.f, 0.f, 0.f );
-
-        for ( size_t j = 0; j < manager->GetEntityCount(); ++j )
-        {
-            entityB = manager->GetEntity( j );
-
-            if ( Physics::Collisions::Intersects( entityA->GetCollider(), entityB->GetCollider() ) )
-            {
-                //DEBUG_PRINT(" There is an entity collision! ");
-            }
-        }
-
-
-        // This introduces branching, remove it in the future and have a better solution
-        // probably with just putting the different entities in different "buckets" at
-        // some point
-
-        forceToApply.y += Gravity;
-
-        forceToApply.x *= deltaTime;
-        forceToApply.y *= deltaTime;
-        forceToApply.z *= deltaTime;
-
-        entityA->ApplyForce( forceToApply );
-
-        if ( entityA->GetPosition().y < -2.f )
-        {
-            XMFLOAT3 opposingVel = entityA->GetVelocity();
-            opposingVel.x *= -1.f;
-            opposingVel.y *= -1.f;
-            opposingVel.z *= -1.f;
-            entityA->ApplyForce( opposingVel );
-        }
-
-        entityA->ApplyAcceleration();
-    }
-    */
 }
 
 // --------------------------------------------------------
@@ -550,9 +497,9 @@ void Game::DrawUI()
 
     ImGui::Text( "This is some useful text." );
 
-    if ( ImGui::Button( "Test Button" ) )
+    if ( ImGui::Button( "Toggle Dir Lights" ) )
     {
-        printf( "Pushed the button!\n" );
+        UseDirLights = !UseDirLights;
     }
 
     ImGui::End();

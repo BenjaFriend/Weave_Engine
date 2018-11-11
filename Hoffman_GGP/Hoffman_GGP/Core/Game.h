@@ -8,7 +8,6 @@
 #include <vector>
 #include <thread>
 #include <chrono>
-#include "InputManager.h"
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"

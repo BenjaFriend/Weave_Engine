@@ -1,3 +1,6 @@
 [submodule "Hoffman_GGP/imgui"]
 	path = Hoffman_GGP/imgui
 	url = git@github.com:ocornut/imgui.git
+[submodule "Hoffman_GGP/additional/spdlog"]
+	path = Hoffman_GGP/additional/spdlog
+	url = git@github.com:gabime/spdlog.git

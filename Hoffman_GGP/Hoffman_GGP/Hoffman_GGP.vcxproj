@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
@@ -121,7 +121,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
@@ -148,7 +148,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -177,7 +177,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -200,12 +200,12 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\additional\imgui\imgui.cpp" />
-    <ClCompile Include="..\additional\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\additional\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\additional\imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="..\additional\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\additional\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\InputManager.cpp" />
@@ -222,14 +222,14 @@
     <ClCompile Include="Utils\MathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\additional\imgui\imconfig.h" />
-    <ClInclude Include="..\additional\imgui\imgui.h" />
-    <ClInclude Include="..\additional\imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="..\additional\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="..\additional\imgui\imgui_internal.h" />
-    <ClInclude Include="..\additional\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\additional\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\additional\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imgui.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imgui_internal.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
     <ClInclude Include="Core\DebugSettings.h" />
     <ClInclude Include="Core\Definitions.h" />
     <ClInclude Include="Core\DXCore.h" />

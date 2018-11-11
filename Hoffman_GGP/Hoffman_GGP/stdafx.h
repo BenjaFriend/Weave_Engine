@@ -12,13 +12,17 @@
 #include <assert.h>
 
 
-// Replace the new keyword with the debug new 
-/*#if defined(_DEBUG)
+/*
+#if defined(_DEBUG)
 
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
 
-#endif*/
+#endif
+*/
+
+
+// Replace the new keyword with the debug new 
 
 // Debug Macros
 

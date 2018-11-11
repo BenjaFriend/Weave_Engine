@@ -284,6 +284,8 @@ HRESULT DXCore::InitDirectX()
 
 #endif
 
+    inputManager = Input::InputManager::GetInstance();
+
     // Return the "everything is ok" HRESULT value
     return S_OK;
 }
@@ -582,6 +584,7 @@ LRESULT DXCore::ProcessMessage( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         case WM_LBUTTONDOWN:
         case WM_MBUTTONDOWN:
         case WM_RBUTTONDOWN:
+            
             OnMouseDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
             return 0;
 
