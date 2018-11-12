@@ -20,7 +20,13 @@ namespace Input
     {
         Horizontal,
         Vertical,
+
         Fire,
+        FireReleased,
+
+        Look,
+        LookReleased,
+
         Use
     };
 
@@ -45,10 +51,10 @@ namespace Input
         static void Release();
 
 
-        void BindAxis( InputType type, input_action_func inputListenerFunc );
+        void BindAction( input_action_func inputListenerFunc, InputType type );
 
         template<class T>
-        void BindAxis( InputType type, T* parentObj, void ( T::*inputListenerFunc )( ) )
+        void BindAction( T* parentObj, void ( T::*inputListenerFunc )( ), InputType type)
         {
             IListener* newListener = new ListenerMember<T>( parentObj, inputListenerFunc );
 
@@ -56,6 +62,9 @@ namespace Input
         }
 
         bool IsKeyDown( int vKey );
+
+        void OnLookDown( WPARAM buttonState, int x, int y );
+        void OnLookUp( WPARAM buttonState, int x, int y );
 
         // Windows specific input callbacks
 #if defined(_WIN32) || defined(_WIN64)

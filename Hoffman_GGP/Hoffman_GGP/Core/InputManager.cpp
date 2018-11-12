@@ -59,7 +59,7 @@ void InputManager::SignalInput( InputType type )
         ( *( *vec_itr ) ) ( );
 }
 
-void InputManager::BindAxis( InputType type, input_action_func inputListenerFunc )
+void InputManager::BindAction( input_action_func inputListenerFunc, InputType type )
 {
     IListener* newListener = new ListenerFunc( inputListenerFunc );
 
@@ -74,7 +74,7 @@ void InputManager::OnMouseDown( WPARAM buttonState, int x, int y )
 
 void InputManager::OnMouseUp( WPARAM buttonState, int x, int y )
 {
-
+    SignalInput( InputType::FireReleased );
 }
 
 void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
@@ -85,4 +85,14 @@ void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
 bool InputManager::IsKeyDown( int vKey )
 {
     return GetAsyncKeyState( vKey ) & 0x80000;
+}
+
+void Input::InputManager::OnLookDown( WPARAM buttonState, int x, int y )
+{
+    SignalInput( InputType::Look );
+}
+
+void Input::InputManager::OnLookUp( WPARAM buttonState, int x, int y )
+{
+    SignalInput( InputType::LookReleased );
 }

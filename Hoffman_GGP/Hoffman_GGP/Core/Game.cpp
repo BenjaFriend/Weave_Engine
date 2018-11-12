@@ -98,6 +98,10 @@ void Game::Init()
     // geometric primitives (points, lines or triangles) we want to draw.  
     // Essentially: "What kind of shape should the GPU draw with our data?"
     context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+
+    inputManager->BindAction( this, &Game::OnLookDown, Input::InputType::Look );
+    inputManager->BindAction( this, &Game::OnLookUp, Input::InputType::LookReleased );
+
 }
 
 // --------------------------------------------------------
@@ -277,32 +281,35 @@ void Game::Update( float deltaTime, float totalTime )
     static float speed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
-
-    for ( size_t i = 0; i < PointLights.size(); ++i )
+    if ( MovePointLights )
     {
-        XMFLOAT3 newPos = PointLights[ i ].Position;
-        XMFLOAT3 acceleration = {};
-
-
-        if ( i % 2 == 0 )
+        for ( size_t i = 0; i < PointLights.size(); ++i )
         {
-            newPos.x += speed * deltaTime;
-        }
-        else
-        {
-            newPos.x -= speed * deltaTime;
-        }
+            XMFLOAT3 newPos = PointLights[ i ].Position;
+            XMFLOAT3 acceleration = {};
 
-        amountMoved += speed * deltaTime;
 
-        if ( amountMoved > 5.f || amountMoved < -5.f )
-        {
-            amountMoved = 0.f;
-            speed *= -1.f;
+            if ( i % 2 == 0 )
+            {
+                newPos.x += speed * deltaTime;
+            }
+            else
+            {
+                newPos.x -= speed * deltaTime;
+            }
+
+            amountMoved += speed * deltaTime;
+
+            if ( amountMoved > 5.f || amountMoved < -5.f )
+            {
+                amountMoved = 0.f;
+                speed *= -1.f;
+            }
+
+            PointLights[ i ].Position = newPos;
         }
-
-        PointLights[ i ].Position = newPos;
     }
+   
 }
 
 // --------------------------------------------------------
@@ -373,45 +380,50 @@ void Game::Draw( float deltaTime, float totalTime )
 
     // Draw the Sky box -------------------------------------
 
-    // Set up sky render states
-    context->RSSetState( skyRastState );
-    context->OMSetDepthStencilState( skyDepthState, 0 );
+    if ( DrawSkyBox )
+    {
+        // Set up sky render states
+        context->RSSetState( skyRastState );
+        context->OMSetDepthStencilState( skyDepthState, 0 );
 
-    // After drawing all of our regular (solid) objects, draw the sky!
-    ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
-    ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
+        // After drawing all of our regular (solid) objects, draw the sky!
+        ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
+        ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
 
-    // Set the buffers
-    context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
-    context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
+        // Set the buffers
+        context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
+        context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
 
-    SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
-    SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+        SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+        SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
 
-    SkyBoxVS->CopyAllBufferData();
-    SkyBoxVS->SetShader();
+        SkyBoxVS->CopyAllBufferData();
+        SkyBoxVS->SetShader();
 
-    // Send texture-related stuff
-    SkyBoxPS->SetShaderResourceView( "SkyTexture", resourceMan->GetSRV( SkyboxSrvID ) );
-    SkyBoxPS->SetSamplerState( "BasicSampler", resourceMan->GetSampler( SamplerID ) );
+        // Send texture-related stuff
+        SkyBoxPS->SetShaderResourceView( "SkyTexture", resourceMan->GetSRV( SkyboxSrvID ) );
+        SkyBoxPS->SetSamplerState( "BasicSampler", resourceMan->GetSampler( SamplerID ) );
 
-    SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
-    SkyBoxPS->SetShader();
+        SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
+        SkyBoxPS->SetShader();
 
-    // Reset any changed render states!
-    context->RSSetState( skyRastState );
-    context->OMSetDepthStencilState( skyDepthState, 0 );
+        // Reset any changed render states!
+        context->RSSetState( skyRastState );
+        context->OMSetDepthStencilState( skyDepthState, 0 );
 
-    // Draw the skybox "mesh"
-    context->DrawIndexed( resourceMan->GetMesh(CubeMeshID)->GetIndexCount(), 0, 0 );
+        // Draw the skybox "mesh"
+        context->DrawIndexed( resourceMan->GetMesh( CubeMeshID )->GetIndexCount(), 0, 0 );
 
-    // Reset any states we've changed for the next frame!
-    context->RSSetState( 0 );
-    context->OMSetDepthStencilState( 0, 0 );
+        // Reset any states we've changed for the next frame!
+        context->RSSetState( 0 );
+        context->OMSetDepthStencilState( 0, 0 );
+    }
+
 
 #if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
-    DrawLightSources();
+    if( DrawLightGizmos )
+        DrawLightSources();
 
 #endif // _DEBUG
 
@@ -492,18 +504,28 @@ void Game::DrawUI()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+    // Draw the UI options here -----------------------------------
+
     // Create a window named test
-    ImGui::Begin( "Test" );
+    ImGui::Begin( "Light Options" );
 
-    ImGui::Text( "This is some useful text." );
+    ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
+    ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
+    ImGui::Checkbox( "Move Point Lights", &MovePointLights);
+    ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
 
-    if ( ImGui::Button( "Toggle Dir Lights" ) )
-    {
-        UseDirLights = !UseDirLights;
-    }
+    ImGui::End();   // If you want more than one window, then use ImGui::Beigin
+
+    ImGui::Begin("Controls");
+
+    ImGui::Text( "R.Click - Rotate" );
+    ImGui::Text( "WASD    - Move" );
+    ImGui::Text( "Space   - Go Up" );
+    ImGui::Text( "X       - Go Down" );
 
     ImGui::End();
-    //
+
+
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 #endif
@@ -518,14 +540,14 @@ void Game::DrawUI()
 // from the OS-level messages anyway, so these helpers have
 // been created to provide basic mouse input if you want it.
 // --------------------------------------------------------
-void Game::OnMouseDown( WPARAM buttonState, int x, int y )
+void Game::OnLookDown()
 {
     // Add any custom code here...
     FlyingCamera->SetDoRotation( true );
 
     // Save the previous mouse position, so we have it for the future
-    prevMousePos.x = x;
-    prevMousePos.y = y;
+    //prevMousePos.x = x;
+    //prevMousePos.y = y;
 
     // Caputure the mouse so we keep getting mouse move
     // events even if the mouse leaves the window.  we'll be
@@ -536,7 +558,7 @@ void Game::OnMouseDown( WPARAM buttonState, int x, int y )
 // --------------------------------------------------------
 // Helper method for mouse release
 // --------------------------------------------------------
-void Game::OnMouseUp( WPARAM buttonState, int x, int y )
+void Game::OnLookUp()
 {
     // Add any custom code here...
     // Reverse the camera direction

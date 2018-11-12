@@ -62,8 +62,8 @@ public:
 
     // Convenience methods for handling mouse input, since we
     // can easily grab mouse input from OS-level messages
-    virtual void OnMouseDown( WPARAM buttonState, int x, int y ) {}
-    virtual void OnMouseUp( WPARAM buttonState, int x, int y ) {}
+    //virtual void OnMouseDown( WPARAM buttonState, int x, int y ) {}
+    //virtual void OnMouseUp( WPARAM buttonState, int x, int y ) {}
     virtual void OnMouseMove( WPARAM buttonState, int x, int y ) {}
     virtual void OnMouseWheel( float wheelDelta, int x, int y ) {}
 
@@ -104,7 +104,10 @@ private:
     int fpsFrameCount;
     float fpsTimeElapsed;
 
-    void UpdateTimer();			// Updates the timer for this frame
+    void UpdateTimer();			// Updates the timer for this frame(
+    
     void UpdateTitleBarStats();	// Puts debug info in the title bar
+  
+        
 };
 

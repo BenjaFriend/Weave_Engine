@@ -36,8 +36,9 @@ public:
     void Draw( float deltaTime, float totalTime );
 
     // Overridden mouse input helper methods
-    void OnMouseDown( WPARAM buttonState, int x, int y );
-    void OnMouseUp( WPARAM buttonState, int x, int y );
+    void OnLookDown();
+    void OnLookUp();
+
     void OnMouseMove( WPARAM buttonState, int x, int y );
     void OnMouseWheel( float wheelDelta, int x, int y );
 
@@ -69,7 +70,10 @@ private:
     ID3D11DepthStencilState* skyDepthState = nullptr;
 
     bool UseDirLights = true;
+    bool DrawLightGizmos = true;
     bool DrawPhysicsCollider = true;
+    bool MovePointLights = true;
+    bool DrawSkyBox = true;
 
     const float Gravity = -0.001f;
 

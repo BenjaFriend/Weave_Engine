@@ -487,6 +487,7 @@ void DXCore::UpdateTitleBarStats()
     fpsTimeElapsed += 1.0f;
 }
 
+
 // --------------------------------------------------------
 // Allocates a console window we can print to for debugging
 // 
@@ -582,17 +583,23 @@ LRESULT DXCore::ProcessMessage( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
             // Mouse button being pressed (while the cursor is currently over our window)
         case WM_LBUTTONDOWN:
+            inputManager->OnMouseDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+            return 0;
+
         case WM_MBUTTONDOWN:
         case WM_RBUTTONDOWN:
             
-            OnMouseDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+            inputManager->OnLookDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
             return 0;
 
             // Mouse button being released (while the cursor is currently over our window)
         case WM_LBUTTONUP:
+            inputManager->OnMouseUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+            return 0;
+
         case WM_MBUTTONUP:
         case WM_RBUTTONUP:
-            OnMouseUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+            inputManager->OnLookUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
             return 0;
 
             // Cursor moves over the window (or outside, while we're currently capturing it)
