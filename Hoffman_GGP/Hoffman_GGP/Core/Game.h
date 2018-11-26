@@ -71,7 +71,7 @@ private:
 
 
 
-    const float Gravity = -0.001f;
+    float Gravity = -0.001f;
 
     ImVec4 BackgroundColor;
     float LightMoveSpeed = 1.f;

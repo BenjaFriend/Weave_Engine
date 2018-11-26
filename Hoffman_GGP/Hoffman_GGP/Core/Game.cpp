@@ -229,7 +229,7 @@ void Game::CreateBasicGeometry()
         resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
     entityMan->GetEntity( bronzeEntID )->SetMass( 10.f );
     SelectedEntity = entityMan->GetEntity( bronzeEntID );
-    
+
     // Load floor --------------------------------------------------------
     CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
@@ -502,7 +502,7 @@ void Game::DrawUI()
     // Draw the UI options here -----------------------------------
 
     {   // Options --------------------------
-        ImGui::Begin( "Options" );
+        ImGui::Begin( "Demo Options" );
 
         ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
 
@@ -516,6 +516,8 @@ void Game::DrawUI()
 
         // Lighting settings
         ImGui::SliderFloat( "Light Move Speed", &LightMoveSpeed, 0.0f, 1.0f );
+
+        ImGui::InputFloat( "Gravity", &Gravity );
 
         ImGui::End();   // If you want more than one window, then use ImGui::Beigin
     }
@@ -553,14 +555,24 @@ void Game::DrawUI()
         {
             ImGui::Begin( "Inspector" );
 
-            ImGui::Text( SelectedEntity->GetName().c_str() );
-            XMFLOAT3 newPos = SelectedEntity->GetPosition();
+            char buf[ 256 ];
+            strcpy_s( buf, SelectedEntity->GetName().c_str() );
+            ImGui::InputText( "Name", buf, 256 );
 
+            XMFLOAT3 newPos = SelectedEntity->GetPosition();
             ImGui::InputFloat3( "Position ", ( float* ) &newPos );
+
+            bool isActive = SelectedEntity->GetIsActive();
+            ImGui::Checkbox( "Is Active", &isActive );
+
+            float newMass = SelectedEntity->GetMass();
+            ImGui::InputFloat( "Mass", &newMass );
 
             // The position of the current object
             SelectedEntity->SetPosition( newPos );
-
+            SelectedEntity->SetName( buf );
+            SelectedEntity->SetIsActive( isActive );
+            SelectedEntity->SetMass( newMass );
             ImGui::End();
         }
     }
