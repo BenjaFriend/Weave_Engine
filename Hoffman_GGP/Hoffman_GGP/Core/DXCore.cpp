@@ -83,6 +83,11 @@ DXCore::~DXCore()
     if ( swapChain ) { swapChain->Release(); }
     if ( context ) { context->Release(); }
     if ( device ) { device->Release(); }
+
+    if ( loggerInstance )
+    {
+        delete loggerInstance;
+    }
 }
 
 // --------------------------------------------------------
@@ -157,6 +162,8 @@ HRESULT DXCore::InitWindow()
     // The window exists but is not visible yet
     // We need to tell Windows to show it, and how to show it
     ShowWindow( hWnd, SW_SHOW );
+
+    loggerInstance = new Logger();
 
     // Return an "everything is ok" HRESULT value
     return S_OK;
@@ -430,7 +437,7 @@ void DXCore::UpdateTimer()
     // Calculate delta time and clamp to zero
     //  - Could go negative if CPU goes into power save mode 
     //    or the process itself gets moved to another core
-    deltaTime = max( (float) ( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
+    deltaTime = __max( (float) ( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
 
     // Calculate the total time from start to now
     totalTime = (float) ( ( currentTime - startTime ) * perfCounterSeconds );

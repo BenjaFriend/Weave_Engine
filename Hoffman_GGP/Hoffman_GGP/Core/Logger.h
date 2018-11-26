@@ -4,6 +4,7 @@
 #define SPDLOG_DEBUG_ON
 
 #include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 
 class Logger
 {

@@ -2,9 +2,6 @@
 
 #define  ENABLE_UI
 
-//#include "Logger.h"
-
-
 #if defined(ENABLE_UI)
 
 #include "imgui/imgui.h"
@@ -87,6 +84,8 @@ protected:
     ID3D11DepthStencilView* depthStencilView;
 
     Input::InputManager* inputManager = nullptr;
+
+    Logger* loggerInstance = nullptr;
 
     // Helper function for allocating a console window
     void CreateConsoleWindow( int bufferLines, int bufferColumns, int windowLines, int windowColumns );

@@ -6,11 +6,11 @@
 #include <stdio.h>
 
 #define _CRTDBG_MAP_ALLOC  
+
 #include <stdlib.h>  
 #include <stdio.h>
 #include <crtdbg.h>  
 #include <assert.h>
-
 
 /*
 #if defined(_DEBUG)
@@ -26,6 +26,7 @@
 
 // Debug Macros
 
+#include "Core/Logger.h"
 
 #ifdef _DEBUG
 
