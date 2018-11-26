@@ -102,6 +102,7 @@ void Game::Init()
     inputManager->BindAction( this, &Game::OnLookDown, Input::InputType::Look );
     inputManager->BindAction( this, &Game::OnLookUp, Input::InputType::LookReleased );
 
+
 }
 
 // --------------------------------------------------------
@@ -178,6 +179,10 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
+    LOG_TRACE( "Create basic geometry!" );
+    LOG_WARN( "Create basic geometry!" );
+    LOG_ERROR( "Create basic geometry!" );
+
     // Load in the meshes
     PointLightMesh_ID = resourceMan->LoadMesh( "Assets/Models/sphere.obj" );
     size_t meshID = PointLightMesh_ID;

@@ -85,7 +85,7 @@ protected:
 
     Input::InputManager* inputManager = nullptr;
 
-    Logger* loggerInstance = nullptr;
+    Logger* logger = nullptr;
 
     // Helper function for allocating a console window
     void CreateConsoleWindow( int bufferLines, int bufferColumns, int windowLines, int windowColumns );

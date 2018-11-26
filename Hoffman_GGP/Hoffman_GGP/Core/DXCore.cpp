@@ -84,10 +84,8 @@ DXCore::~DXCore()
     if ( context ) { context->Release(); }
     if ( device ) { device->Release(); }
 
-    if ( loggerInstance )
-    {
-        delete loggerInstance;
-    }
+    Logger::ReleaseInstance();
+    logger = nullptr;
 }
 
 // --------------------------------------------------------
@@ -163,7 +161,7 @@ HRESULT DXCore::InitWindow()
     // We need to tell Windows to show it, and how to show it
     ShowWindow( hWnd, SW_SHOW );
 
-    loggerInstance = new Logger();
+    logger = Logger::GetInstance();
 
     // Return an "everything is ok" HRESULT value
     return S_OK;
