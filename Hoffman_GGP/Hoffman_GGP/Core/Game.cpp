@@ -204,7 +204,7 @@ void Game::CreateBasicGeometry()
     Material_ID matID = resourceMan->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ) );
+        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ), "Stone Sphere" );
 
     // Load Wood ball --------------------------------------------------------
     SRV_ID woodDif = resourceMan->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
@@ -215,7 +215,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
     Entity_ID woodEntID = entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( woodMatID ), newPos );
+        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( woodMatID ), newPos, "Wooden Sphere" );
     entityMan->GetEntity( woodEntID )->SetMass( 0.5f );
 
     // load Bronze ball --------------------------------------------------------
@@ -226,7 +226,7 @@ void Game::CreateBasicGeometry()
     Material_ID bronzeMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
 
     Entity_ID bronzeEntID = entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
+        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ), "Bronze Sphere" );
     entityMan->GetEntity( bronzeEntID )->SetMass( 10.f );
     SelectedEntity = entityMan->GetEntity( bronzeEntID );
 
@@ -240,7 +240,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(
-        resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos );
+        resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
@@ -558,37 +558,42 @@ void Game::DrawUI()
         {
             ImGui::Begin( "Inspector" );
 
-            char buf[ 256 ];
-            strcpy_s( buf, SelectedEntity->GetName().c_str() );
-            ImGui::InputText( "Name", buf, 256 );
-
-            XMFLOAT3 newPos = SelectedEntity->GetPosition();
-            ImGui::InputFloat3( "Position", ( float* ) &newPos );
-
-            XMFLOAT4 newRotation = SelectedEntity->GetRotation();
-            ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
-
-            XMFLOAT3 newScale = SelectedEntity->GetScale();
-            ImGui::InputFloat3( "Scale", ( float* ) &newScale );
+            char newNameBuf[ 256 ];
+            strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
+            ImGui::InputText( "Name", newNameBuf, 256 );
 
             bool isActive = SelectedEntity->GetIsActive();
             ImGui::Checkbox( "Is Active", &isActive );
 
-            float newMass = SelectedEntity->GetMass();
-            ImGui::InputFloat( "Mass", &newMass );
+            SelectedEntity->SetName( newNameBuf );
+            SelectedEntity->SetIsActive( isActive );
+
+            if ( ImGui::CollapsingHeader( "Transform" ) )
+            {
+                XMFLOAT3 newPos = SelectedEntity->GetPosition();
+                ImGui::InputFloat3( "Position", ( float* ) &newPos );
+
+                XMFLOAT4 newRotation = SelectedEntity->GetRotation();
+                ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
+
+                XMFLOAT3 newScale = SelectedEntity->GetScale();
+                ImGui::InputFloat3( "Scale", ( float* ) &newScale );
+
+                // The position of the current object
+                SelectedEntity->SetPosition( newPos );
+                SelectedEntity->SetScale( newScale );
+                SelectedEntity->SetRotation( newRotation );
+            }
 
             
+            if ( ImGui::CollapsingHeader( "Physics" ) )
+            {
+                float newMass = SelectedEntity->GetMass();
+                ImGui::InputFloat( "Mass", &newMass );
 
-            // The position of the current object
-            SelectedEntity->SetPosition( newPos );
-            SelectedEntity->SetScale( newScale);
-            SelectedEntity->SetRotation( newRotation );
-
-            SelectedEntity->SetName( buf );
-            SelectedEntity->SetIsActive( isActive );
-            SelectedEntity->SetMass( newMass );
-
-
+                SelectedEntity->SetMass( newMass );
+            }
+           
             ImGui::End();
         }
     }
