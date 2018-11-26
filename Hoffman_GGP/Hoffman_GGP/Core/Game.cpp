@@ -544,7 +544,10 @@ void Game::DrawUI()
         {
             CurrentEntity = entityMan->GetEntity( i );
 
-            ImGui::Text( CurrentEntity->GetName().c_str() );
+            if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+            {
+                SelectedEntity = CurrentEntity;
+            }
         }
 
         ImGui::End();
