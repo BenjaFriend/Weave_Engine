@@ -560,7 +560,13 @@ void Game::DrawUI()
             ImGui::InputText( "Name", buf, 256 );
 
             XMFLOAT3 newPos = SelectedEntity->GetPosition();
-            ImGui::InputFloat3( "Position ", ( float* ) &newPos );
+            ImGui::InputFloat3( "Position", ( float* ) &newPos );
+
+            XMFLOAT4 newRotation = SelectedEntity->GetRotation();
+            ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
+
+            XMFLOAT3 newScale = SelectedEntity->GetScale();
+            ImGui::InputFloat3( "Scale", ( float* ) &newScale );
 
             bool isActive = SelectedEntity->GetIsActive();
             ImGui::Checkbox( "Is Active", &isActive );
@@ -568,11 +574,18 @@ void Game::DrawUI()
             float newMass = SelectedEntity->GetMass();
             ImGui::InputFloat( "Mass", &newMass );
 
+            
+
             // The position of the current object
             SelectedEntity->SetPosition( newPos );
+            SelectedEntity->SetScale( newScale);
+            SelectedEntity->SetRotation( newRotation );
+
             SelectedEntity->SetName( buf );
             SelectedEntity->SetIsActive( isActive );
             SelectedEntity->SetMass( newMass );
+
+
             ImGui::End();
         }
     }
