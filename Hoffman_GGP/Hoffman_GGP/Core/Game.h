@@ -77,6 +77,8 @@ private:
 
     const float Gravity = -0.001f;
 
+    ImVec4 BackgroundColor;
+
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
 

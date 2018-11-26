@@ -30,11 +30,11 @@ Game::Game( HINSTANCE hInstance )
     //EntityCount = 0;
     FlyingCamera = new Camera();
 
-//#if defined(DEBUG) || defined(_DEBUG)
-    // Do we want a console window?  Probably only in debug mode
+    //#if defined(DEBUG) || defined(_DEBUG)
+        // Do we want a console window?  Probably only in debug mode
     CreateConsoleWindow( 500, 120, 32, 120 );
     printf( "Console window created successfully.  Feel free to printf() here.\n" );
-//#endif
+    //#endif
 
 }
 
@@ -102,7 +102,7 @@ void Game::Init()
     inputManager->BindAction( this, &Game::OnLookDown, Input::InputType::Look );
     inputManager->BindAction( this, &Game::OnLookUp, Input::InputType::LookReleased );
 
-
+    BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
 }
 
 // --------------------------------------------------------
@@ -235,7 +235,7 @@ void Game::CreateBasicGeometry()
 
 
     // Load floor --------------------------------------------------------
-    CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" ); 
+    CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     SRV_ID floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     SRV_ID floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
@@ -309,7 +309,7 @@ void Game::Update( float deltaTime, float totalTime )
             PointLights[ i ].Position = newPos;
         }
     }
-   
+
 }
 
 // --------------------------------------------------------
@@ -319,13 +319,13 @@ void Game::Draw( float deltaTime, float totalTime )
 {
     // Background color (Cornflower Blue in this case) for clearing
 
-    const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
+    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
     //const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
     //  - At the beginning of Draw (before drawing *anything*)
-    context->ClearRenderTargetView( backBufferRTV, color );
+    context->ClearRenderTargetView( backBufferRTV, ( float* ) ( &BackgroundColor ) );
     context->ClearDepthStencilView(
         depthStencilView,
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
@@ -373,7 +373,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
         context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
         context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
-      
+
         // Finally do the actual drawing
         context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
     }
@@ -422,7 +422,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
-    if( DrawLightGizmos )
+    if ( DrawLightGizmos )
         DrawLightSources();
 
 #endif // _DEBUG
@@ -511,12 +511,12 @@ void Game::DrawUI()
 
     ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
     ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
-    ImGui::Checkbox( "Move Point Lights", &MovePointLights);
+    ImGui::Checkbox( "Move Point Lights", &MovePointLights );
     ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
 
     ImGui::End();   // If you want more than one window, then use ImGui::Beigin
 
-    ImGui::Begin("Controls");
+    ImGui::Begin( "Controls" );
 
     ImGui::Text( "R.Click - Rotate" );
     ImGui::Text( "WASD    - Move" );
