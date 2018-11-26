@@ -114,24 +114,18 @@ void Game::LoadShaders()
 {
     vertexShader = new SimpleVertexShader( device, context );
     vertexShader->LoadShaderFile( L"VertexShader.cso" );
-    printf( "\nVert Shader Val:          %p\n", vertexShader );
 
     pixelShader = new SimplePixelShader( device, context );
     pixelShader->LoadShaderFile( L"PixelShader.cso" );
-    printf( "pixelShader Shader Val:     %p\n", pixelShader );
 
     UnlitPixelShader = new SimplePixelShader( device, context );
     UnlitPixelShader->LoadShaderFile( L"PixelShader_Unlit.cso" );
-    printf( "UnlitPixelShader Shader Val: %p\n", UnlitPixelShader );
 
     SkyBoxVS = new SimpleVertexShader( device, context );
     SkyBoxVS->LoadShaderFile( L"SkyVS.cso" );
-    printf( "SkyBoxVS Shader Val:        %p\n", SkyBoxVS );
 
     SkyBoxPS = new SimplePixelShader( device, context );
     SkyBoxPS->LoadShaderFile( L"SkyPS.cso" );
-    printf( "SkyBoxPS Shader Val:        %p\n", SkyBoxPS );
-
 }
 
 void Game::InitLights()
