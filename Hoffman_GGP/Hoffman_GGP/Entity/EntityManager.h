@@ -42,7 +42,7 @@ public:
     /// <param name="aMesh">Mesh for this entity</param>
     /// <param name="aMat">Material of this entity</param>
     /// <returns>The ID of that entity</returns>
-    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat );
+    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat, std::string aName = "Default Entity" );
 
     /// <summary>
     /// Adds an entity to the game with the given 
@@ -51,7 +51,7 @@ public:
     /// <param name="aMat">Material of this entity</param>
     /// <param name="aPos">The starting position of the entity</param>
     /// <returns></returns>
-    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos );
+    const Entity_ID AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos, std::string aName = "Default Entity" );
 
     /// <summary>
     /// Deletes entity with the given ID

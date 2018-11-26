@@ -69,15 +69,12 @@ private:
     ID3D11RasterizerState* skyRastState = nullptr;
     ID3D11DepthStencilState* skyDepthState = nullptr;
 
-    bool UseDirLights = true;
-    bool DrawLightGizmos = true;
-    bool DrawPhysicsCollider = true;
-    bool MovePointLights = true;
-    bool DrawSkyBox = true;
+
 
     const float Gravity = -0.001f;
 
     ImVec4 BackgroundColor;
+    float LightMoveSpeed = 1.f;
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
@@ -94,5 +91,17 @@ private:
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.
     POINT prevMousePos;
+
+    // Editor things
+    bool UseDirLights = true;
+    bool UsePointLights = true;
+
+    bool DrawLightGizmos = true;
+    bool DrawPhysicsCollider = true;
+    bool DrawSkyBox = true;
+
+
+    Entity* SelectedEntity = nullptr;
+
 };
 

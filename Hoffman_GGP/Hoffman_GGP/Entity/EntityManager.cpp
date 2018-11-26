@@ -45,15 +45,15 @@ void EntityManager::UnloadAllEntities()
     EntityArray.clear();
 }
 
-const Entity_ID EntityManager::AddEntity( Mesh* aMesh, Material* aMat )
+const Entity_ID EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName )
 {
-    EntityArray.push_back( new Entity( aMesh, aMat ) );
+    EntityArray.push_back( new Entity( aMesh, aMat, aName ) );
     return ( EntityArray.size() - 1 );
 }
 
-const Entity_ID EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos )
+const Entity_ID EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos, std::string aName )
 {
-    Entity* tempEnt = new Entity( aMesh, aMat );
+    Entity* tempEnt = new Entity( aMesh, aMat, aName );
     tempEnt->SetPosition( aPos );
     EntityArray.push_back( tempEnt );
     return ( EntityArray.size() - 1 );

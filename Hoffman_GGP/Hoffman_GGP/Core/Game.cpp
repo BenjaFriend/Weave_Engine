@@ -179,10 +179,6 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-    LOG_TRACE( "Create basic geometry!" );
-    LOG_WARN( "Create basic geometry!" );
-    LOG_ERROR( "Create basic geometry!" );
-
     // Load in the meshes
     PointLightMesh_ID = resourceMan->LoadMesh( "Assets/Models/sphere.obj" );
     size_t meshID = PointLightMesh_ID;
@@ -232,8 +228,8 @@ void Game::CreateBasicGeometry()
     Entity_ID bronzeEntID = entityMan->AddEntity(
         resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ) );
     entityMan->GetEntity( bronzeEntID )->SetMass( 10.f );
-
-
+    SelectedEntity = entityMan->GetEntity( bronzeEntID );
+    
     // Load floor --------------------------------------------------------
     CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
@@ -278,37 +274,36 @@ void Game::Update( float deltaTime, float totalTime )
     // Update the camera
     FlyingCamera->Update( deltaTime );
 
-    static float speed = 1.f;
+    static float currentSpeed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
-    if ( MovePointLights )
+
+    for ( size_t i = 0; i < PointLights.size(); ++i )
     {
-        for ( size_t i = 0; i < PointLights.size(); ++i )
+        XMFLOAT3 newPos = PointLights[ i ].Position;
+        XMFLOAT3 acceleration = {};
+
+
+        if ( i % 2 == 0 )
         {
-            XMFLOAT3 newPos = PointLights[ i ].Position;
-            XMFLOAT3 acceleration = {};
-
-
-            if ( i % 2 == 0 )
-            {
-                newPos.x += speed * deltaTime;
-            }
-            else
-            {
-                newPos.x -= speed * deltaTime;
-            }
-
-            amountMoved += speed * deltaTime;
-
-            if ( amountMoved > 5.f || amountMoved < -5.f )
-            {
-                amountMoved = 0.f;
-                speed *= -1.f;
-            }
-
-            PointLights[ i ].Position = newPos;
+            newPos.x += LightMoveSpeed * currentSpeed * deltaTime;
         }
+        else
+        {
+            newPos.x -= LightMoveSpeed * currentSpeed * deltaTime;
+        }
+
+        amountMoved += LightMoveSpeed * currentSpeed * deltaTime;
+
+        if ( amountMoved > 5.f || amountMoved < -5.f )
+        {
+            amountMoved = 0.f;
+            currentSpeed *= -1.f;
+        }
+
+        PointLights[ i ].Position = newPos;
     }
+
 
 }
 
@@ -360,7 +355,7 @@ void Game::Draw( float deltaTime, float totalTime )
         {
             pixelShader->SetData( "PointLights", ( void* ) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
         }
-        pixelShader->SetInt( "PointLightCount", static_cast< int >( PointLights.size() ) );
+        pixelShader->SetInt( "PointLightCount", ( UsePointLights ? static_cast< int >( PointLights.size() ) : 0 ) );
 
 
         // Send camera info ---------------------------------------------------------
@@ -498,7 +493,7 @@ void Game::DrawLightSources()
 
 void Game::DrawUI()
 {
-#if defined(ENABLE_UI)
+#if defined( ENABLE_UI )
     // Create a new IMGui frame
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -506,24 +501,69 @@ void Game::DrawUI()
 
     // Draw the UI options here -----------------------------------
 
-    // Create a window named test
-    ImGui::Begin( "Light Options" );
+    {   // Options --------------------------
+        ImGui::Begin( "Options" );
 
-    ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
-    ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
-    ImGui::Checkbox( "Move Point Lights", &MovePointLights );
-    ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
+        ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
 
-    ImGui::End();   // If you want more than one window, then use ImGui::Beigin
+        ImGui::Checkbox( "Use Point Lights", &UsePointLights );
+        ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
 
-    ImGui::Begin( "Controls" );
+        ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
 
-    ImGui::Text( "R.Click - Rotate" );
-    ImGui::Text( "WASD    - Move" );
-    ImGui::Text( "Space   - Go Up" );
-    ImGui::Text( "X       - Go Down" );
+        if ( !DrawSkyBox )
+            ImGui::ColorEdit3( "Background Color", ( float* ) ( &BackgroundColor ) ); // Edit 3 floats representing a color
 
-    ImGui::End();
+        // Lighting settings
+        ImGui::SliderFloat( "Light Move Speed", &LightMoveSpeed, 0.0f, 1.0f );
+
+        ImGui::End();   // If you want more than one window, then use ImGui::Beigin
+    }
+
+    {   // Stats and Info ---------------------------
+        ImGui::Begin( "Info" );
+        ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
+        ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
+
+        ImGui::Text( "R.Click - Rotate" );
+        ImGui::Text( "WASD    - Move" );
+        ImGui::Text( "Space   - Go Up" );
+        ImGui::Text( "X       - Go Down" );
+
+        ImGui::End();
+    }
+
+    {   // Draw the hierarchy of objects --------------------------
+        ImGui::Begin( "Hierarchy" );
+
+        Entity* CurrentEntity = nullptr;
+
+        for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+        {
+            CurrentEntity = entityMan->GetEntity( i );
+
+            ImGui::Text( CurrentEntity->GetName().c_str() );
+        }
+
+        ImGui::End();
+    }
+
+    {   // Inspector --------------------------
+        if ( SelectedEntity != nullptr )
+        {
+            ImGui::Begin( "Inspector" );
+
+            ImGui::Text( SelectedEntity->GetName().c_str() );
+            XMFLOAT3 newPos = SelectedEntity->GetPosition();
+
+            ImGui::InputFloat3( "Position ", ( float* ) &newPos );
+
+            // The position of the current object
+            SelectedEntity->SetPosition( newPos );
+
+            ImGui::End();
+        }
+    }
 
 
     ImGui::Render();

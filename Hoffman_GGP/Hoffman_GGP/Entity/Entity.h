@@ -30,7 +30,7 @@ public:
     /// </summary>
     /// <param name="aMesh">A pointer to this entity's mesh</param>
     /// <param name="aMat">A material for this entity to use</param>
-    Entity( Mesh * aMesh, Material* aMat );
+    Entity( Mesh * aMesh, Material* aMat, std::string aName );
 
     ~Entity();
 
@@ -140,7 +140,19 @@ public:
     /// <returns>True if active, false if in-active</returns>
     const bool GetIsActive() const;
 
-    // Physics Stuff -------------------------------
+    /// <summary>
+    /// Get this entity's name
+    /// </summary>
+    /// <returns>Reference to the name of this entity</returns>
+    const std::string & GetName() const;
+
+    /// <summary>
+    /// Set the name of this entity
+    /// </summary>
+    /// <param name="newName">The new name of this entity</param>
+    void SetName( std::string newName );
+
+    // Physics -------------------------------
 
     const EPhysicsLayer GetPhysicsLayer() const;
 
@@ -189,5 +201,7 @@ private:
 
     Physics::BoxCollider Collider;
 
+    /** The name of this object */
+    std::string Name = "Default Entity";
 };
 

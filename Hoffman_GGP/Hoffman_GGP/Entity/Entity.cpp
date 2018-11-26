@@ -8,8 +8,8 @@ struct ID3D11ShaderResourceView;
 
 using namespace DirectX;
 
-Entity::Entity( Mesh* aMesh, Material* aMat )
-    : EntityMesh( aMesh ), EntityMaterial( aMat )
+Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
+    : EntityMesh( aMesh ), EntityMaterial( aMat ), Name( aName )
 {
     // Set default values for position, scale and rotation
     Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
@@ -20,11 +20,12 @@ Entity::Entity( Mesh* aMesh, Material* aMat )
     Velocity = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
     Collider = {};
     Collider.MinX = -0.5f;
-    Collider.MaxX = +0.5f;                     
+    Collider.MaxX = +0.5f;
     Collider.MinY = -0.5f;
-    Collider.MaxY = +0.5f;                     
+    Collider.MaxY = +0.5f;
     Collider.MinZ = -0.5f;
     Collider.MaxZ = +0.5f;
+
     IsActive = true;
 }
 
@@ -201,6 +202,16 @@ void Entity::SetIsActive( const bool aStatus )
 const bool Entity::GetIsActive() const
 {
     return IsActive;
+}
+
+const std::string & Entity::GetName() const
+{
+    return Name;
+}
+
+void Entity::SetName( std::string newName )
+{
+    Name = newName;
 }
 
 const EPhysicsLayer Entity::GetPhysicsLayer() const

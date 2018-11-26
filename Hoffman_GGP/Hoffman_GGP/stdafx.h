@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <crtdbg.h>  
 #include <assert.h>
+#include <string>
 
 /*
 #if defined(_DEBUG)
