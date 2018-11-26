@@ -48,9 +48,12 @@ private:
     /** Static instance of the logger */
     static Logger* Instance;
 
-    /** Pointer to the current console that isbeing used for logging */
+    /** Pointer to the current console that is being used for logging */
     std::shared_ptr<spdlog::logger> console;
 };
+
+// Current print format: 
+// LOG_TRACE ( "This is an example of {}", "this" );
 
 #if defined( DEBUG ) || defined ( _DEBUG )
 

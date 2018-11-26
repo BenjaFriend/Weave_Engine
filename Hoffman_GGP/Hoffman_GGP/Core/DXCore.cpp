@@ -59,8 +59,8 @@ DXCore::DXCore(
 
     // Query performance counter for accurate timing information
     __int64 perfFreq;
-    QueryPerformanceFrequency( (LARGE_INTEGER*) &perfFreq );
-    perfCounterSeconds = 1.0 / (double) perfFreq;
+    QueryPerformanceFrequency( ( LARGE_INTEGER* ) &perfFreq );
+    perfCounterSeconds = 1.0 / ( double ) perfFreq;
 }
 
 // --------------------------------------------------------
@@ -103,7 +103,7 @@ HRESULT DXCore::InitWindow()
     wndClass.hInstance = hInstance;						// Our app's handle
     wndClass.hIcon = LoadIcon( NULL, IDI_APPLICATION );	// Default icon
     wndClass.hCursor = LoadCursor( NULL, IDC_ARROW );		// Default arrow cursor
-    wndClass.hbrBackground = (HBRUSH) GetStockObject( BLACK_BRUSH );
+    wndClass.hbrBackground = ( HBRUSH ) GetStockObject( BLACK_BRUSH );
     wndClass.lpszMenuName = NULL;
     wndClass.lpszClassName = "Direct3DWindowClass";
 
@@ -162,7 +162,7 @@ HRESULT DXCore::InitWindow()
     ShowWindow( hWnd, SW_SHOW );
 
     logger = Logger::GetInstance();
-
+    LOG_TRACE( "Logger initlaized!" );
     // Return an "everything is ok" HRESULT value
     return S_OK;
 }
@@ -230,7 +230,7 @@ HRESULT DXCore::InitDirectX()
     swapChain->GetBuffer(
         0,
         __uuidof( ID3D11Texture2D ),
-        (void**) &backBufferTexture );
+        ( void** ) &backBufferTexture );
 
     // Now that we have the texture, create a render target view
     // for the back buffer so we can render into it.  Then release
@@ -271,8 +271,8 @@ HRESULT DXCore::InitDirectX()
     D3D11_VIEWPORT viewport = {};
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
-    viewport.Width = (float) width;
-    viewport.Height = (float) height;
+    viewport.Width = ( float ) width;
+    viewport.Height = ( float ) height;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
     context->RSSetViewports( 1, &viewport );
@@ -320,7 +320,7 @@ void DXCore::OnResize()
     // Recreate the render target view for the back buffer
     // texture, then release our local texture reference
     ID3D11Texture2D* backBufferTexture;
-    swapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast<void**>( &backBufferTexture ) );
+    swapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast< void** >( &backBufferTexture ) );
     device->CreateRenderTargetView( backBufferTexture, 0, &backBufferRTV );
     backBufferTexture->Release();
 
@@ -354,8 +354,8 @@ void DXCore::OnResize()
     D3D11_VIEWPORT viewport = {};
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
-    viewport.Width = (float) width;
-    viewport.Height = (float) height;
+    viewport.Width = ( float ) width;
+    viewport.Height = ( float ) height;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
     context->RSSetViewports( 1, &viewport );
@@ -372,7 +372,7 @@ HRESULT DXCore::Run()
     // Grab the start time now that
     // the game loop is running
     __int64 now;
-    QueryPerformanceCounter( (LARGE_INTEGER*) &now );
+    QueryPerformanceCounter( ( LARGE_INTEGER* ) &now );
     startTime = now;
     currentTime = now;
     previousTime = now;
@@ -407,7 +407,7 @@ HRESULT DXCore::Run()
 
     // We'll end up here once we get a WM_QUIT message,
     // which usually comes from the user closing the window
-    return (HRESULT) msg.wParam;
+    return ( HRESULT ) msg.wParam;
 }
 
 
@@ -429,16 +429,16 @@ void DXCore::UpdateTimer()
 {
     // Grab the current time
     __int64 now;
-    QueryPerformanceCounter( (LARGE_INTEGER*) &now );
+    QueryPerformanceCounter( ( LARGE_INTEGER* ) &now );
     currentTime = now;
 
     // Calculate delta time and clamp to zero
     //  - Could go negative if CPU goes into power save mode 
     //    or the process itself gets moved to another core
-    deltaTime = __max( (float) ( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
+    deltaTime = __max( ( float ) ( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
 
     // Calculate the total time from start to now
-    totalTime = (float) ( ( currentTime - startTime ) * perfCounterSeconds );
+    totalTime = ( float ) ( ( currentTime - startTime ) * perfCounterSeconds );
 
     // Save current time for next frame
     previousTime = currentTime;
@@ -462,7 +462,7 @@ void DXCore::UpdateTitleBarStats()
         return;
 
     // How long did each frame take?  (Approx)
-    float mspf = 1000.0f / (float) fpsFrameCount;
+    float mspf = 1000.0f / ( float ) fpsFrameCount;
 
     // Quick and dirty title bar text (mostly for debugging)
     std::ostringstream output;
@@ -476,14 +476,14 @@ void DXCore::UpdateTitleBarStats()
     // Append the version of DirectX the app is using
     switch ( dxFeatureLevel )
     {
-        case D3D_FEATURE_LEVEL_11_1: output << "    DX 11.1"; break;
-        case D3D_FEATURE_LEVEL_11_0: output << "    DX 11.0"; break;
-        case D3D_FEATURE_LEVEL_10_1: output << "    DX 10.1"; break;
-        case D3D_FEATURE_LEVEL_10_0: output << "    DX 10.0"; break;
-        case D3D_FEATURE_LEVEL_9_3:  output << "    DX 9.3";  break;
-        case D3D_FEATURE_LEVEL_9_2:  output << "    DX 9.2";  break;
-        case D3D_FEATURE_LEVEL_9_1:  output << "    DX 9.1";  break;
-        default:                     output << "    DX ???";  break;
+    case D3D_FEATURE_LEVEL_11_1: output << "    DX 11.1"; break;
+    case D3D_FEATURE_LEVEL_11_0: output << "    DX 11.0"; break;
+    case D3D_FEATURE_LEVEL_10_1: output << "    DX 10.1"; break;
+    case D3D_FEATURE_LEVEL_10_0: output << "    DX 10.0"; break;
+    case D3D_FEATURE_LEVEL_9_3:  output << "    DX 9.3";  break;
+    case D3D_FEATURE_LEVEL_9_2:  output << "    DX 9.2";  break;
+    case D3D_FEATURE_LEVEL_9_1:  output << "    DX 9.1";  break;
+    default:                     output << "    DX ???";  break;
     }
 
     // Actually update the title bar and reset fps data
@@ -553,69 +553,69 @@ LRESULT DXCore::ProcessMessage( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     switch ( uMsg )
     {
         // This is the message that signifies the window closing
-        case WM_DESTROY:
-            PostQuitMessage( 0 ); // Send a quit message to our own program
+    case WM_DESTROY:
+        PostQuitMessage( 0 ); // Send a quit message to our own program
+        return 0;
+
+        // Prevent beeping when we "alt-enter" into fullscreen
+    case WM_MENUCHAR:
+        return MAKELRESULT( 0, MNC_CLOSE );
+
+        // Prevent the overall window from becoming too small
+    case WM_GETMINMAXINFO:
+        ( ( MINMAXINFO* ) lParam )->ptMinTrackSize.x = 200;
+        ( ( MINMAXINFO* ) lParam )->ptMinTrackSize.y = 200;
+        return 0;
+
+        // Sent when the window size changes
+    case WM_SIZE:
+        // Don't adjust anything when minimizing,
+        // since we end up with a width/height of zero
+        // and that doesn't play well with DirectX
+        if ( wParam == SIZE_MINIMIZED )
             return 0;
 
-            // Prevent beeping when we "alt-enter" into fullscreen
-        case WM_MENUCHAR:
-            return MAKELRESULT( 0, MNC_CLOSE );
+        // Save the new client area dimensions.
+        width = LOWORD( lParam );
+        height = HIWORD( lParam );
 
-            // Prevent the overall window from becoming too small
-        case WM_GETMINMAXINFO:
-            ( (MINMAXINFO*) lParam )->ptMinTrackSize.x = 200;
-            ( (MINMAXINFO*) lParam )->ptMinTrackSize.y = 200;
-            return 0;
+        // If DX is initialized, resize 
+        // our required buffers
+        if ( device )
+            OnResize();
 
-            // Sent when the window size changes
-        case WM_SIZE:
-            // Don't adjust anything when minimizing,
-            // since we end up with a width/height of zero
-            // and that doesn't play well with DirectX
-            if ( wParam == SIZE_MINIMIZED )
-                return 0;
+        return 0;
 
-            // Save the new client area dimensions.
-            width = LOWORD( lParam );
-            height = HIWORD( lParam );
+        // Mouse button being pressed (while the cursor is currently over our window)
+    case WM_LBUTTONDOWN:
+        inputManager->OnMouseDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
 
-            // If DX is initialized, resize 
-            // our required buffers
-            if ( device )
-                OnResize();
+    case WM_MBUTTONDOWN:
+    case WM_RBUTTONDOWN:
 
-            return 0;
+        inputManager->OnLookDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
 
-            // Mouse button being pressed (while the cursor is currently over our window)
-        case WM_LBUTTONDOWN:
-            inputManager->OnMouseDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
+        // Mouse button being released (while the cursor is currently over our window)
+    case WM_LBUTTONUP:
+        inputManager->OnMouseUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
 
-        case WM_MBUTTONDOWN:
-        case WM_RBUTTONDOWN:
-            
-            inputManager->OnLookDown( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
+    case WM_MBUTTONUP:
+    case WM_RBUTTONUP:
+        inputManager->OnLookUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
 
-            // Mouse button being released (while the cursor is currently over our window)
-        case WM_LBUTTONUP:
-            inputManager->OnMouseUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
+        // Cursor moves over the window (or outside, while we're currently capturing it)
+    case WM_MOUSEMOVE:
+        OnMouseMove( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
 
-        case WM_MBUTTONUP:
-        case WM_RBUTTONUP:
-            inputManager->OnLookUp( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
-
-            // Cursor moves over the window (or outside, while we're currently capturing it)
-        case WM_MOUSEMOVE:
-            OnMouseMove( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
-
-            // Mouse wheel is scrolled
-        case WM_MOUSEWHEEL:
-            OnMouseWheel( GET_WHEEL_DELTA_WPARAM( wParam ) / (float) WHEEL_DELTA, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-            return 0;
+        // Mouse wheel is scrolled
+    case WM_MOUSEWHEEL:
+        OnMouseWheel( GET_WHEEL_DELTA_WPARAM( wParam ) / ( float ) WHEEL_DELTA, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        return 0;
     }
 
     // Let Windows handle any messages we're not touching
