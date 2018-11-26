@@ -514,8 +514,12 @@ void Game::DrawUI()
         if ( !DrawSkyBox )
             ImGui::ColorEdit3( "Background Color", ( float* ) ( &BackgroundColor ) ); // Edit 3 floats representing a color
 
+        ImGui::Separator();
+
         // Lighting settings
         ImGui::SliderFloat( "Light Move Speed", &LightMoveSpeed, 0.0f, 1.0f );
+
+        ImGui::Separator();
 
         ImGui::InputFloat( "Gravity", &Gravity );
 
@@ -525,7 +529,9 @@ void Game::DrawUI()
     {   // Stats and Info ---------------------------
         ImGui::Begin( "Info" );
         ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
+        
         ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
+        ImGui::Separator();
 
         ImGui::Text( "R.Click - Rotate" );
         ImGui::Text( "WASD    - Move" );
@@ -548,6 +554,7 @@ void Game::DrawUI()
             {
                 SelectedEntity = CurrentEntity;
             }
+            ImGui::Separator();
         }
 
         ImGui::End();
@@ -556,28 +563,30 @@ void Game::DrawUI()
     {   // Inspector --------------------------
         if ( SelectedEntity != nullptr )
         {
-            ImGui::Begin( "Inspector" );
+            ImGui::Begin( "Inspector" ); 
+
+            bool isActive = SelectedEntity->GetIsActive();
+            ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
 
             char newNameBuf[ 256 ];
             strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
             ImGui::InputText( "Name", newNameBuf, 256 );
 
-            bool isActive = SelectedEntity->GetIsActive();
-            ImGui::Checkbox( "Is Active", &isActive );
-
             SelectedEntity->SetName( newNameBuf );
             SelectedEntity->SetIsActive( isActive );
+
+            ImGui::Separator();
 
             if ( ImGui::CollapsingHeader( "Transform" ) )
             {
                 XMFLOAT3 newPos = SelectedEntity->GetPosition();
                 ImGui::InputFloat3( "Position", ( float* ) &newPos );
 
-                XMFLOAT4 newRotation = SelectedEntity->GetRotation();
-                ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
-
                 XMFLOAT3 newScale = SelectedEntity->GetScale();
                 ImGui::InputFloat3( "Scale", ( float* ) &newScale );
+
+                XMFLOAT4 newRotation = SelectedEntity->GetRotation();
+                ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
 
                 // The position of the current object
                 SelectedEntity->SetPosition( newPos );
@@ -585,7 +594,8 @@ void Game::DrawUI()
                 SelectedEntity->SetRotation( newRotation );
             }
 
-            
+            ImGui::Separator();
+
             if ( ImGui::CollapsingHeader( "Physics" ) )
             {
                 float newMass = SelectedEntity->GetMass();
