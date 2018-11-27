@@ -4,6 +4,7 @@
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include "../Physics/Collisions.h"
+#include "../ECS/ComponentManager.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -68,9 +69,90 @@ public:
     /// </summary>
     void ApplyAcceleration();
 
-    ////////////////////////////////////////////////////
-    // Accessors
-    ////////////////////////////////////////////////////
+    // Components ------------------------------
+
+    /// <summary>
+    /// Get a pointer to this component on this entity
+    /// </summary>
+    /// <returns>
+    /// Pointer to the component if it exists, nullptr 
+    /// if this entity does not have a component of this type
+    /// </returns>
+    template<typename T>
+    T* GetComponent()
+    {
+        return this->componentManager->GetComponent<T>( this->entID );
+    }
+
+    /// <summary>
+    /// Add a component of type T to this entity
+    /// </summary>
+    template<class T, class ...P>
+    T* AddComponent( P&&... param )
+    {
+        return
+            this->componentManager->AddComponent<T>(
+                this->entID,
+                std::forward<P>( param )...
+                );
+    }
+
+    /// <summary>
+    /// Remove the component of this type from this entity
+    /// </summary>
+    template<typename T>
+    void RemoveComponent()
+    {
+        this->componentManager->RemoveComponent<T>( this->entID );
+    }
+
+private:
+
+    // TODO: Make this a smart pointer at some point
+    /** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
+    Mesh* EntityMesh = nullptr;
+
+    /** This entity's material */
+    Material* EntityMaterial = nullptr;
+
+    /** The current position of this entity */
+    DirectX::XMFLOAT3 Position;
+
+    /** The current Scale of this entity */
+    DirectX::XMFLOAT3 Scale;
+
+    /** The current rotation of this entity */
+    DirectX::XMFLOAT4 Rotation;
+
+    /** Flag for if this entity is active or not */
+    bool IsActive;
+
+    /** The current physics layer of this entity */
+    EPhysicsLayer PhysicsLayer = EPhysicsLayer::MOVEABLE;
+
+    /** The mass of this object */
+    float Mass = 1.0f;
+
+    DirectX::XMFLOAT3 Velocity;
+
+    DirectX::XMFLOAT3 Acceleration;
+
+    Physics::BoxCollider Collider;
+
+    /** The name of this object */
+    std::string Name = "Default Entity";
+
+    /** The unique ID of this entity */
+    ECS::EntityID entID;
+
+    /** handles the adding/removing of components for this entity */
+    ECS::ComponentManager * componentManager = nullptr;
+
+
+////////////////////////////////////////////////////
+// Accessors
+////////////////////////////////////////////////////
+public:
 
     /** Returns this entity's mesh */
     Mesh * GetEntityMesh() const;
@@ -161,47 +243,11 @@ public:
     void SetVelocity( const DirectX::XMFLOAT3& aVel );
 
     const DirectX::XMFLOAT3 GetVelocity() const;
-
+    
     const float GetMass() const;
 
     void SetMass( const float aMass );
 
     const Physics::BoxCollider & GetCollider() const;
 
-private:
-
-    // TODO: Make this a smart pointer at some point
-    /** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
-    Mesh* EntityMesh = nullptr;
-
-    /** This entity's material */
-    Material* EntityMaterial = nullptr;
-
-    /** The current position of this entity */
-    DirectX::XMFLOAT3 Position;
-
-    /** The current Scale of this entity */
-    DirectX::XMFLOAT3 Scale;
-
-    /** The current rotation of this entity */
-    DirectX::XMFLOAT4 Rotation;
-
-    /** Flag for if this entity is active or not */
-    bool IsActive;
-
-    /** The current physics layer of this entity */
-    EPhysicsLayer PhysicsLayer = EPhysicsLayer::MOVEABLE;
-
-    /** The mass of this object */
-    float Mass = 1.0f;
-
-    DirectX::XMFLOAT3 Velocity;
-
-    DirectX::XMFLOAT3 Acceleration;
-
-    Physics::BoxCollider Collider;
-
-    /** The name of this object */
-    std::string Name = "Default Entity";
 };
-

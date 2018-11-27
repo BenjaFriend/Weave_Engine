@@ -27,6 +27,8 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
     Collider.MaxZ = +0.5f;
 
     IsActive = true;
+
+    componentManager = ECS::ComponentManager::GetInstance();
 }
 
 // virtual destructor
@@ -38,12 +40,12 @@ Entity::~Entity()
 
 void Entity::MoveRelative( const float aX, const float aY, const float aZ )
 {
-    // rotate desired movement by our rotatoin
+    // rotate desired movement by our rotation
     XMVECTOR dir = XMVector3Rotate(
         XMVectorSet( aX, aY, aZ, 0 ),
         XMLoadFloat4( &Rotation ) );
 
-    // Add to postion and store
+    // Add to position and store
     XMStoreFloat3(
         &Position,
         XMLoadFloat3( &Position ) + dir );

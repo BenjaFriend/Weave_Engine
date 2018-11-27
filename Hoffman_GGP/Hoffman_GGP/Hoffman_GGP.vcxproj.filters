@@ -22,9 +22,6 @@
     <Filter Include="Resources\Materials">
       <UniqueIdentifier>{409103a1-562f-4da8-b80b-669e6ebea96f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entity\Components">
-      <UniqueIdentifier>{7dedb583-90ae-4949-8476-957afd902dc7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{6eaed29b-00f6-4ccf-bc4f-4412a8896e8c}</UniqueIdentifier>
     </Filter>
@@ -97,9 +94,6 @@
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="ECS\ComponentManager.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS\Component.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="FamilyTypeID.cpp" />
@@ -192,6 +186,9 @@
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="FamilyTypeID.h" />
+    <ClInclude Include="TestComponent.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

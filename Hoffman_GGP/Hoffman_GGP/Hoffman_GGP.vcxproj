@@ -211,7 +211,6 @@
     <ClCompile Include="Core\InputManager.cpp" />
     <ClCompile Include="Core\Logger.cpp" />
     <ClCompile Include="Core\Main.cpp" />
-    <ClCompile Include="ECS\Component.cpp" />
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
@@ -255,6 +254,7 @@
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Utils\MathHelper.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
+#include "../FamilyTypeID.h"
 
 namespace ECS
 {
@@ -26,10 +27,10 @@ namespace ECS
             return STATIC_COMPONENT_TYPE_ID;
         }
 
-    };
+    };  // Component
 
     // This private member only exists to force the compiler to create an instance of Component T,
-// which will set its unique identifier.
+    // which will set its unique identifier.
     template<class T>
     const ComponentTypeId ECS::Component<T>::STATIC_COMPONENT_TYPE_ID = ECS::Util::FamilyTypeID<IComponent>::Get<T>();
 

@@ -4,6 +4,7 @@
 #include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
 #include "../Resources/Materials/Material.h"
+#include "../TestComponent.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -62,6 +63,7 @@ Game::~Game()
 
     Input::InputManager::Release();
 
+    ECS::ComponentManager::ReleaseInstance();
 }
 
 // --------------------------------------------------------
@@ -72,6 +74,7 @@ void Game::Init()
 {
     entityMan = EntityManager::GetInstance();
     resourceMan = ResourceManager::Initalize( device );
+    ComponentMan = ECS::ComponentManager::GetInstance();
 
     // Rasterizer state for drawing the inside of my sky box geometry
     D3D11_RASTERIZER_DESC rs = {};
@@ -241,6 +244,28 @@ void Game::CreateBasicGeometry()
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(
         resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
+
+    Entity* floorEntity = entityMan->GetEntity( floorID );
+    floorEntity->AddComponent<TestComponent>( 15.f );
+
+    TestComponent* myComponent = floorEntity->GetComponent<TestComponent>();
+
+    if ( myComponent != nullptr )
+    {
+        LOG_WARN( "We got the boi! {}", myComponent->GetData() );
+    }
+
+    floorEntity->RemoveComponent<TestComponent>();
+
+    myComponent = floorEntity->GetComponent<TestComponent>();
+    if ( myComponent == nullptr )
+    {
+        LOG_WARN( "We have removed the test commponent!" );
+    }
+    else
+    {
+        LOG_ERROR( "We have NOT removed the test boi!" );
+    }
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
@@ -603,6 +628,9 @@ void Game::DrawUI()
 
                 SelectedEntity->SetMass( newMass );
             }
+
+            // Loop through each of this entity's components
+                // Call DrawEidtor on it
            
             ImGui::End();
         }

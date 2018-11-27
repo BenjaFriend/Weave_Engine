@@ -1,4 +1,5 @@
 #pragma once
+#include "../stdafx.h"
 
 namespace ECS
 {
@@ -15,6 +16,11 @@ namespace ECS
         IComponent() {}
 
         virtual ~IComponent() {}
+
+        virtual void DrawEditorGUI()
+        {
+
+        }
 
         inline const bool operator==( const IComponent& other ) const { return id == other.id; }
         inline const bool operator!=( const IComponent& other ) const { return id == other.id; }
