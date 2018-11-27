@@ -255,6 +255,7 @@
     <ClInclude Include="Resources\Vertex.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="TestComponentTwo.h" />
     <ClInclude Include="Utils\MathHelper.h" />
   </ItemGroup>
   <ItemGroup>

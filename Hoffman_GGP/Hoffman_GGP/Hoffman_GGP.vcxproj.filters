@@ -189,6 +189,9 @@
     <ClInclude Include="TestComponent.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="TestComponentTwo.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

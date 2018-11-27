@@ -18,6 +18,9 @@ public:
 
     float GetData() { return myData; }
 
+    virtual const char* ComponentName() { return "TestComponent"; }
+
+
 private:
 
     float myData = 21.f;

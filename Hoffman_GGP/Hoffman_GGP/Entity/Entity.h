@@ -10,6 +10,7 @@
 // Forward Declarations
 class Mesh;
 class Material;
+class Component;
 
 enum EPhysicsLayer
 {
@@ -23,6 +24,8 @@ enum EPhysicsLayer
 /// <author>Ben Hoffman</author>
 class Entity
 {
+
+    static size_t EntityCount;
 
 public:
 
@@ -104,6 +107,11 @@ public:
     void RemoveComponent()
     {
         this->componentManager->RemoveComponent<T>( this->entID );
+    }
+
+    const ECS::ComponentMap * GetAllComponents( ) const
+    {
+        return componentManager->GetAllComponents( this->entID );
     }
 
 private:

@@ -8,6 +8,10 @@
 namespace ECS
 {
 
+    // This has pretty bad spatial locality but I don't have time
+    // to implement a custom allocator
+    typedef std::unordered_map<ComponentTypeId, IComponent*> ComponentMap;
+
     /// <summary>
     /// Component manager that keeps track of what components
     /// currently exist
@@ -68,6 +72,20 @@ namespace ECS
             return static_cast< T* >( activeComponents[ aEntityID ][ CTID ] );
         }
 
+        const ComponentMap * GetAllComponents( const EntityID aEntityID ) const
+        {            
+            auto itr = activeComponents.find( aEntityID );
+            if ( itr == activeComponents.end() )
+            {
+                // not found
+                return nullptr;
+            }
+            else
+            {
+                return &itr->second;
+            }
+        }
+
         template <class T>
         void RemoveComponent( const EntityID aEntityID )
         {
@@ -91,10 +109,6 @@ namespace ECS
         /// </summary>
         void CleanupAllComponents();
 
-        // This has pretty bad spatial locality but I don't have time
-        // to implement a custom allocator
-        typedef std::unordered_map<ComponentTypeId, IComponent*> ComponentMap;
-
         /** Keep track of all component types */
         std::unordered_map<EntityID, ComponentMap> activeComponents;
 
@@ -102,8 +116,6 @@ namespace ECS
         size_t ComponentCount = 0;
 
     };  // ComponentManager
-
-
 
 
 } // namespace ECS

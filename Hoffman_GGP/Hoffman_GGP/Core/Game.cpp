@@ -4,7 +4,11 @@
 #include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
 #include "../Resources/Materials/Material.h"
+
+#include "../ECS/IComponent.h"
 #include "../TestComponent.h"
+#include "../TestComponentTwo.h"
+
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -249,27 +253,22 @@ void Game::CreateBasicGeometry()
     floorEntity->AddComponent<TestComponent>( 15.f );
 
     TestComponent* myComponent = floorEntity->GetComponent<TestComponent>();
+    TestComponentTwo* testComp2 = floorEntity->AddComponent<TestComponentTwo>();
 
     if ( myComponent != nullptr )
     {
-        LOG_WARN( "We got the boi! {}", myComponent->GetData() );
+        LOG_WARN( "We got the compoennt name of {} {}", myComponent->ComponentName(), myComponent->GetData() );
     }
 
-    floorEntity->RemoveComponent<TestComponent>();
-
-    myComponent = floorEntity->GetComponent<TestComponent>();
-    if ( myComponent == nullptr )
+    if ( testComp2 != nullptr )
     {
-        LOG_WARN( "We have removed the test commponent!" );
-    }
-    else
-    {
-        LOG_ERROR( "We have NOT removed the test boi!" );
+        LOG_WARN( "We got the compoennt name of {} {}", testComp2->ComponentName(), testComp2->GetData() );
     }
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
 
+    SelectedEntity = entityMan->GetEntity( floorID );
 
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( context, L"Assets/Textures/SunnyCubeMap.dds" );
@@ -554,7 +553,7 @@ void Game::DrawUI()
     {   // Stats and Info ---------------------------
         ImGui::Begin( "Info" );
         ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
-        
+
         ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
         ImGui::Separator();
 
@@ -588,7 +587,7 @@ void Game::DrawUI()
     {   // Inspector --------------------------
         if ( SelectedEntity != nullptr )
         {
-            ImGui::Begin( "Inspector" ); 
+            ImGui::Begin( "Inspector" );
 
             bool isActive = SelectedEntity->GetIsActive();
             ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
@@ -630,8 +629,24 @@ void Game::DrawUI()
             }
 
             // Loop through each of this entity's components
-                // Call DrawEidtor on it
-           
+            auto compMap = SelectedEntity->GetAllComponents();
+            if ( compMap != nullptr )
+            {
+                for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+                {
+                    ImGui::Separator();
+
+                    ECS::IComponent* theComp = ( compItr->second );
+                    if ( theComp != nullptr )
+                    {
+                        if ( ImGui::CollapsingHeader( theComp->ComponentName() ) )
+                        {
+                            theComp->DrawEditorGUI();
+                        }
+                    }
+                }
+            }
+
             ImGui::End();
         }
     }

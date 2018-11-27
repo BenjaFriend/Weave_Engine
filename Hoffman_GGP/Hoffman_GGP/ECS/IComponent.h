@@ -36,6 +36,8 @@ namespace ECS
 
         const EntityID& GetOwner() const { return this->owner; }
 
+        virtual const char* ComponentName() = 0;
+
     protected:
 
         /** The unique ID of this component */
