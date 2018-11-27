@@ -13,6 +13,17 @@
 #include <assert.h>
 #include <string>
 
+#define  ENABLE_UI
+
+#if defined(ENABLE_UI)
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+
+#endif
+
+
 /*
 #if defined(_DEBUG)
 

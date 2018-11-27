@@ -221,6 +221,7 @@
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
+    <ClCompile Include="TestComponentTwo.cpp" />
     <ClCompile Include="Utils\MathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>

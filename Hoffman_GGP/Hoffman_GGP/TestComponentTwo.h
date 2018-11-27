@@ -20,6 +20,8 @@ public:
 
     virtual const char* ComponentName() { return "TestComponentTwo"; }
 
+    virtual void DrawEditorGUI() override;
+
 private:
 
     bool myData = true;

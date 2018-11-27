@@ -97,6 +97,7 @@
       <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="FamilyTypeID.cpp" />
+    <ClCompile Include="TestComponentTwo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
