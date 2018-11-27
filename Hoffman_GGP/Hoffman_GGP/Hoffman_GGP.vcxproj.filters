@@ -31,6 +31,9 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{e85a9b44-a058-4d21-a21b-9b7163126777}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{299ebfb2-90f8-4eba-b4eb-a77d63243e4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -93,6 +96,13 @@
     <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="ECS\ComponentManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\Component.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="FamilyTypeID.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -172,6 +182,16 @@
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ECS\ComponentManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\IComponent.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\Component.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="FamilyTypeID.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

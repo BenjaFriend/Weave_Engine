@@ -1,6 +1,6 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "ComponentManager.h"
-#include "Entity/Entity.h"
+#include "../Entity/Entity.h"
 
 // Singleton requirement
 ECS::ComponentManager* ECS::ComponentManager::instance = nullptr;
