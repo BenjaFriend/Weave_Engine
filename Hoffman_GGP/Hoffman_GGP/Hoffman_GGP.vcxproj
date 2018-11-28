@@ -217,6 +217,7 @@
     <ClCompile Include="Entity\EntityManager.cpp" />
     <ClCompile Include="FamilyTypeID.cpp" />
     <ClCompile Include="Physics\Collisions.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="FamilyTypeID.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
     <ClInclude Include="Physics\Collisions.h" />
+    <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />

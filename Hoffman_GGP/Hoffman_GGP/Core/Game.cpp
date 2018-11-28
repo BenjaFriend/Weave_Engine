@@ -60,7 +60,7 @@ Game::~Game()
     skyDepthState->Release();
 
     EntityManager::ReleaseInstance();
-
+    Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
 
     delete FlyingCamera;
@@ -78,6 +78,7 @@ void Game::Init()
 {
     entityMan = EntityManager::GetInstance();
     resourceMan = ResourceManager::Initalize( device );
+    PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
 
     // Rasterizer state for drawing the inside of my sky box geometry
@@ -196,7 +197,6 @@ void Game::CreateBasicGeometry()
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    //samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
     samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 

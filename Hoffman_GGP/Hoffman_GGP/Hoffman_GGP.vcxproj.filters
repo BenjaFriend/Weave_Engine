@@ -98,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="FamilyTypeID.cpp" />
     <ClCompile Include="TestComponentTwo.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="TestComponentTwo.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsManager.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

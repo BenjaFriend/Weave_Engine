@@ -12,6 +12,7 @@
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
+#include "../Physics/PhysicsManager.h"
 #include "../ECS/ComponentManager.h"
 
 /////////////////////////////////////////////////
@@ -104,6 +105,6 @@ private:
 
     Entity* SelectedEntity = nullptr;
     ECS::ComponentManager* ComponentMan = nullptr;
-
+    Physics::PhysicsManager* PhysicsMan = nullptr;
 };
 
