@@ -8,11 +8,15 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <iomanip>
+
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
 #include "../ECS/ComponentManager.h"
+
+#include "json/json.hpp"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -54,7 +58,10 @@ private:
     void DrawLightSources();
     void DrawUI();
 
-    
+    void SaveScene();
+    void LoadScene();
+    char SceneFile[ 64 ] = "Scene_test.json";
+
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader = nullptr;
     SimplePixelShader* pixelShader = nullptr;

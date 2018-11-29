@@ -62,14 +62,11 @@ const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* 
     if ( iResult == S_OK )
     {
         SRViews.push_back( tempSRV );
-
-        return static_cast<size_t> ( SRViews.size() - 1 );
+        return static_cast< size_t > ( SRViews.size() - 1 );
     }
     else
     {
-        DEBUG_PRINT( "SRV LOADING FAILURE!" );
-        // #RemoveWhenDoneDebugging
-        throw "SRV LOADING FAILURE!";
+        LOG_ERROR( "SRV LOADING FAILURE!" );
         return -1;
     }
 }
@@ -120,7 +117,7 @@ const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
     if ( iResult == S_OK )
     {
         Samplers.push_back( NewSamplerState );
-        return Samplers.size() - 1 ;
+        return Samplers.size() - 1;
     }
     else
     {
@@ -136,13 +133,13 @@ ID3D11SamplerState * ResourceManager::GetSampler( const size_t aID )
 }
 
 const Material_ID ResourceManager::LoadMaterial(
-    SimpleVertexShader* aVertexShader, 
-    SimplePixelShader* aPixelShader, 
+    SimpleVertexShader* aVertexShader,
+    SimplePixelShader* aPixelShader,
     const SRV_ID aDiffSrvID,
-    const SRV_ID aNormSrvID, 
-    const SRV_ID aRoughnessSrvID, 
+    const SRV_ID aNormSrvID,
+    const SRV_ID aRoughnessSrvID,
     const SRV_ID aMetalSrvID,
-    const Sampler_ID aSamplerID 
+    const Sampler_ID aSamplerID
 )
 {
     Material* newMat = new Material(

@@ -528,6 +528,16 @@ void Game::DrawUI()
     {   // Options --------------------------
         ImGui::Begin( "Demo Options" );
 
+        if ( ImGui::Button( "Save Scene", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+        {
+            SaveScene();
+        }
+
+        if ( ImGui::Button( "Load Scene", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+        {
+            LoadScene();
+        }
+
         ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
 
         ImGui::Checkbox( "Use Point Lights", &UsePointLights );
@@ -655,6 +665,31 @@ void Game::DrawUI()
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 #endif
+}
+
+void Game::SaveScene()
+{
+    nlohmann::json njson;
+
+    njson[ "Scene Name" ] = "Test_Scene";
+
+    Entity* CurrentEntity = entityMan->GetEntity( 0 );
+
+    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    {
+        CurrentEntity = entityMan->GetEntity( i );
+
+        CurrentEntity->SaveObject( njson );
+    }   
+
+    std::ofstream ofs( SceneFile );
+    ofs << std::setw( 4 ) << njson << std::endl;
+    ofs.close();
+}
+
+void Game::LoadScene()
+{
+    
 }
 
 

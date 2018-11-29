@@ -19,8 +19,6 @@ void Logger::ReleaseInstance()
 
 std::shared_ptr<spdlog::logger> Logger::GetCurrentConsole()
 {
-    Instance->console->info( "GetConsole" );
-
     return Instance->console;
 }
 

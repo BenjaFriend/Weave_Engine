@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "json/json.hpp"
 
 /// <summary>
 /// An interface determining that this object is "saveable"
@@ -9,10 +10,11 @@
 class ISaveable
 {
 public:
+
     /// <summary>
     /// Outputs this objects data to the given out file stream
     /// </summary>
     /// <param name="aOutFile">File to send this data to</param>
-    virtual void SaveObject( std::ofstream* aOutFile ) = 0;
+    virtual void SaveObject( nlohmann::json& aOutFile ) = 0;
     
 };
