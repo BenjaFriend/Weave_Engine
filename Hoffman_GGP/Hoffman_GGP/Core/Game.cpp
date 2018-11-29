@@ -680,16 +680,50 @@ void Game::SaveScene()
         CurrentEntity = entityMan->GetEntity( i );
 
         CurrentEntity->SaveObject( njson );
-    }   
+    }
 
     std::ofstream ofs( SceneFile );
-    ofs << std::setw( 4 ) << njson << std::endl;
+    if ( ofs.is_open() )
+    {
+        ofs << std::setw( 4 ) << njson << std::endl;
+    }
+    else
+    {
+        LOG_ERROR( "Failed to save scene: {}", SceneFile );
+    }
     ofs.close();
 }
 
 void Game::LoadScene()
 {
-    
+    std::ifstream ifs( SceneFile );
+    if ( ifs.is_open() )
+    {
+        // Store the info in the scene file in the JSON object
+        nlohmann::json njson;
+        ifs >> njson;
+        nlohmann::json::iterator it = njson[ "Entities" ].begin();
+
+        for ( ; it != njson[ "Entities" ].end(); ++it )
+        {
+            // Key is the name 
+            LOG_TRACE( "Entity: {}", it.key() );
+            
+            // Value is all the components
+            nlohmann::json::iterator compItr = njson[ "Entities" ][ it.key() ].begin();
+            for ( ; compItr != njson[ "Entities" ][ it.key() ].end(); ++compItr )
+            {
+
+            }
+        }
+
+    }
+    else
+    {
+        LOG_ERROR( "Failed to load scene: {}", SceneFile );
+    }
+
+    ifs.close();
 }
 
 

@@ -119,15 +119,15 @@ void Entity::ApplyAcceleration()
 
 void Entity::SaveObject( nlohmann::json & aOutFile )
 {
-    aOutFile[ Name ][ "POS" ][ "X" ] = Position.x;
-    aOutFile[ Name ][ "POS" ][ "Y" ] = Position.y;
-    aOutFile[ Name ][ "POS" ][ "Z" ] = Position.z;
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "X" ] = Position.x;
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Y" ] = Position.y;
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Z" ] = Position.z;
 
-    aOutFile[ Name ][ "ROT" ][ "X" ] = Rotation.x;
-    aOutFile[ Name ][ "ROT" ][ "Y" ] = Rotation.y;
-    aOutFile[ Name ][ "ROT" ][ "Z" ] = Rotation.z;
-    aOutFile[ Name ][ "ROT" ][ "W" ] = Rotation.w;
-    
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "X" ] = Rotation.x;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Y" ] = Rotation.y;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Z" ] = Rotation.z;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "W" ] = Rotation.w;
+
     // Save each component
     auto compMap = this->GetAllComponents();
 

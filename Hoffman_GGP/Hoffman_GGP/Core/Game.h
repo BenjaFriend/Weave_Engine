@@ -58,8 +58,17 @@ private:
     void DrawLightSources();
     void DrawUI();
 
+    /// <summary>
+    /// Save all entities to a scene json file 
+    /// </summary>
     void SaveScene();
+
+    /// <summary>
+    /// Loads entities from the scene json file 
+    /// </summary>
     void LoadScene();
+
+    /** The current scene file to save all entities to */
     char SceneFile[ 64 ] = "Scene_test.json";
 
     // Wrappers for DirectX shaders to provide simplified functionality
