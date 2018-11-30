@@ -459,7 +459,7 @@ void Game::Draw( float deltaTime, float totalTime )
     //swapChain->Present( 1, 0 );   // Present with vsync
 }
 
-
+// #Editor
 void Game::DrawLightSources()
 {
     Mesh* lightMesh = ResourceManager::GetInstance()->GetMesh( PointLightMesh_ID );
@@ -515,6 +515,7 @@ void Game::DrawLightSources()
 
 }
 
+// #Editor
 void Game::DrawUI()
 {
 #if defined( ENABLE_UI )
@@ -667,6 +668,7 @@ void Game::DrawUI()
 #endif
 }
 
+// #Editor
 void Game::SaveScene()
 {
     nlohmann::json njson;
@@ -694,6 +696,7 @@ void Game::SaveScene()
     ofs.close();
 }
 
+// #Editor
 void Game::LoadScene()
 {
     std::ifstream ifs( SceneFile );
@@ -707,16 +710,15 @@ void Game::LoadScene()
         for ( ; it != njson[ "Entities" ].end(); ++it )
         {
             // Key is the name 
-            LOG_TRACE( "Entity: {}", it.key() );
+            LOG_TRACE( "Entity: {}\n", it.key() );
             
             // Value is all the components
             nlohmann::json::iterator compItr = njson[ "Entities" ][ it.key() ].begin();
             for ( ; compItr != njson[ "Entities" ][ it.key() ].end(); ++compItr )
             {
-
+                std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
             }
         }
-
     }
     else
     {
