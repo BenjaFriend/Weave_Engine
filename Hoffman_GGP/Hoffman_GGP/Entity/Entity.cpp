@@ -32,8 +32,8 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
     IsActive = true;
 
     entID = EntityCount++;
-    
-    
+
+
     componentManager = ECS::ComponentManager::GetInstance();
 }
 
@@ -115,6 +115,33 @@ void Entity::ApplyAcceleration()
         XMLoadFloat3( &Position ) + XMLoadFloat3( &Velocity ) );
 
     XMStoreFloat3( &Acceleration, curAcceleration * 0.f );
+}
+
+void Entity::SaveObject( nlohmann::json & aOutFile )
+{
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "X" ] = Position.x;
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Y" ] = Position.y;
+    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Z" ] = Position.z;
+
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "X" ] = Rotation.x;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Y" ] = Rotation.y;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Z" ] = Rotation.z;
+    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "W" ] = Rotation.w;
+
+    // Save each component
+    auto compMap = this->GetAllComponents();
+
+    if ( compMap != nullptr )
+    {
+        for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+        {
+            ECS::IComponent* theComp = ( compItr->second );
+            if ( theComp != nullptr )
+            {
+                theComp->SaveObject( aOutFile );
+            }
+        }
+    }
 }
 
 ////////////////////////////////////////////////////

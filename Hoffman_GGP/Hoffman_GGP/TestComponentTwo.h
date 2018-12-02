@@ -8,7 +8,7 @@ public:
 
     TestComponentTwo()
     {
-        
+
     }
 
     ~TestComponentTwo()
@@ -21,6 +21,8 @@ public:
     virtual const char* ComponentName() { return "TestComponentTwo"; }
 
     virtual void DrawEditorGUI() override;
+
+    virtual void SaveObject( nlohmann::json& aOutFile ) override;
 
 private:
 

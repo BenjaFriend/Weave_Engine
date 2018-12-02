@@ -4,6 +4,7 @@
 // https://github.com/tobias-stein/EntityComponentSystem
 
 #include "../stdafx.h"
+#include "../Resources/ISaveable.h"
 
 namespace ECS
 {
@@ -14,7 +15,7 @@ namespace ECS
     /// <summary>
     /// Base component interface for all components in ECS
     /// </summary>
-    class IComponent
+    class IComponent : ISaveable
     {
         friend class ComponentManager;
 
@@ -28,8 +29,14 @@ namespace ECS
         /// Natively draw any IMGUI fields that are to be used
         /// with this component here
         /// </summary>
-        virtual void DrawEditorGUI() { }
+        virtual void DrawEditorGUI() = 0;
         
+        /// <summary>
+        /// Write the data for this component to a file
+        /// </summary>
+        /// <param name="aOutFile">The file stream to write to</param>
+        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;
+
         ////////////////////////////////////////////////////    
         // Operators 
 

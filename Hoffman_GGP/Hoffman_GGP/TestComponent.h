@@ -20,6 +20,15 @@ public:
 
     virtual const char* ComponentName() { return "TestComponent"; }
 
+    virtual void DrawEditorGUI() override
+    {
+        ImGui::InputFloat( "Test Data", &this->myData );
+    }
+
+    virtual void SaveObject( nlohmann::json & aOutFile ) override
+    {
+
+    }
 
 private:
 

@@ -41,7 +41,7 @@ public:
     /// Save this material to the given asset file 
     /// </summary>
     /// <param name="aOutFile">File to send material data to</param>
-    void SaveObject( std::ofstream* aOutFile ) override;
+    void SaveObject( nlohmann::json & aOutFile ) override;
 
 
     ////////////////////////////////////////////////////

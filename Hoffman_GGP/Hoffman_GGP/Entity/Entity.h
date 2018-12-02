@@ -5,6 +5,7 @@
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include "../Physics/Collisions.h"
 #include "../ECS/ComponentManager.h"
+#include "../Resources/ISaveable.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -22,7 +23,7 @@ enum EPhysicsLayer
 ///  Represents a game entity and their transformations.
 /// </summary>
 /// <author>Ben Hoffman</author>
-class Entity
+class Entity : ISaveable
 {
 
     static size_t EntityCount;
@@ -113,6 +114,8 @@ public:
     {
         return componentManager->GetAllComponents( this->entID );
     }
+
+    void SaveObject( nlohmann::json& aOutFile );
 
 private:
 

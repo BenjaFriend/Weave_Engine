@@ -1,8 +1,11 @@
 
 
 #include "../stdafx.h"
-#include <Windows.h>
 #include "Game.h"
+
+#if defined(_WIN32) || defined(_WIN64)
+
+#include <Windows.h>
 
 // --------------------------------------------------------
 // Entry point for a graphical (non-console) Windows application
@@ -70,3 +73,5 @@ int WINAPI WinMain(
     // whatever we get back once the game loop is over
     return dxGame.Run();
 }
+
+#endif

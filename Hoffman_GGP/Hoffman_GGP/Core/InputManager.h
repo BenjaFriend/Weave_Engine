@@ -15,7 +15,7 @@
 
 namespace Input
 {
-
+    // #MakeCrossPlatform
     enum InputType
     {
         Horizontal,

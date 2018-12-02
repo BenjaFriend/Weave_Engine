@@ -28,7 +28,7 @@ struct DirectionalLight
 };
 
 
-struct PointLight
+struct PointLightData
 {
     FLOAT3 Color;        // 12 bytes
     float Range;                    // 16 bytes

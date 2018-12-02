@@ -8,12 +8,16 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <iomanip>
+
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
 #include "../Physics/PhysicsManager.h"
 #include "../ECS/ComponentManager.h"
+
+#include "json/json.hpp"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -55,7 +59,19 @@ private:
     void DrawLightSources();
     void DrawUI();
 
-    
+    /// <summary>
+    /// Save all entities to a scene json file 
+    /// </summary>
+    void SaveScene();
+
+    /// <summary>
+    /// Loads entities from the scene json file 
+    /// </summary>
+    void LoadScene();
+
+    /** The current scene file to save all entities to */
+    char SceneFile[ 64 ] = "Scene_test.json";
+
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader = nullptr;
     SimplePixelShader* pixelShader = nullptr;
@@ -87,7 +103,7 @@ private:
 
     // Lights
     std::vector<DirectionalLight> DirLights;
-    std::vector<PointLight> PointLights;
+    std::vector<PointLightData> PointLights;
     Mesh_ID PointLightMesh_ID = 0;
 
     // Keeps track of the old mouse position.  Useful for 

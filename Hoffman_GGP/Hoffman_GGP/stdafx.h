@@ -12,6 +12,7 @@
 #include <crtdbg.h>  
 #include <assert.h>
 #include <string>
+#include <fstream>
 
 #define  ENABLE_UI
 

@@ -36,12 +36,10 @@ Material::~Material()
     DEBUG_PRINT( "Material class dtor!" );
 }
 
-void Material::SaveObject( std::ofstream * aOutFile )
+void Material::SaveObject( nlohmann::json & aOutFile )
 {
     // Out the file names of any shaders that we have
-    DEBUG_PRINT( "Material class save!!" );
-
-    
+    DEBUG_PRINT( "Material class save!!" );    
 }
 
 ////////////////////////////////////////////////////
