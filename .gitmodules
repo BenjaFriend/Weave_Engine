@@ -4,3 +4,6 @@
 [submodule "Hoffman_GGP/additional/spdlog"]
 	path = Hoffman_GGP/additional/spdlog
 	url = git@github.com:gabime/spdlog.git
+[submodule "Hoffman_GGP/additional/LuaBridge"]
+	path = Hoffman_GGP/additional/LuaBridge
+	url = git@github.com:vinniefalco/LuaBridge.git

@@ -77,7 +77,7 @@ float4 main(VertexToPixel input) : SV_TARGET
         lightColor += CalculatePointLight( PointLights[ j ], input.normal, input.worldPos, CameraPosition, roughness, metal, surfaceColor.rgb, specColor );
     }
 
-    float3 gammaCorrect = float3( pow( lightColor.rgb * surfaceColor.rgb, (1.0 / 2.2) ) );
+    float3 gammaCorrect = float3( pow( abs( lightColor.rgb * surfaceColor.rgb ), (1.0 / 2.2) ) );
     
     return float4( gammaCorrect, 1 );
 
