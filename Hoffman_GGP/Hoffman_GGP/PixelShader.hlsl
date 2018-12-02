@@ -8,7 +8,7 @@ cbuffer externalData : register( b0 )
     int DirLightCount;
 
     // Array of dir light data
-    PointLight PointLights[ MAX_POINT_LIGHTS ];
+    PointLightData PointLights[ MAX_POINT_LIGHTS ];
     int PointLightCount;
 
     float3 CameraPosition; // Needed for specular (reflection) calculation

@@ -21,7 +21,7 @@ static const float PI = 3.14159265359f;
 // Basic lighting calculations -----------------------------------------------
 
 // Range-based attenuation function // From Chris Cascioli
-float Attenuate( PointLight light, float3 worldPos )
+float Attenuate( PointLightData light, float3 worldPos )
 {
     float dist = distance( light.Position, worldPos );
 
@@ -113,7 +113,7 @@ float3 CalculateDirLight( float3 norm, DirectionalLight aLight )
 }
 
 // From Chris for now
-float3 CalculatePointLight( PointLight light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
+float3 CalculatePointLight( PointLightData light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
 {
     // Calc light direction
     float3 toLight = normalize( light.Position - worldPos );

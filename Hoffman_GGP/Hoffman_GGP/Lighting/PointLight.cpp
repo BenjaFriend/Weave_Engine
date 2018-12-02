@@ -2,8 +2,8 @@
 
 PointLight::PointLight( DirectX::XMFLOAT3 aColor,
     DirectX::XMFLOAT3 aPos,
-    float aIntensity = 1.f,
-    float aRange = 5.f )
+    float aIntensity,
+    float aRange )
 {
     LightingData = {};
     LightingData.Color = aColor;
@@ -14,6 +14,8 @@ PointLight::PointLight( DirectX::XMFLOAT3 aColor,
 
 PointLight::~PointLight()
 {
+
+
 
 }
 
