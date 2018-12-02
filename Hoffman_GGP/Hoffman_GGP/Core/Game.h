@@ -16,6 +16,7 @@
 #include "../Physics/Collisions.h"
 #include "../Physics/PhysicsManager.h"
 #include "../ECS/ComponentManager.h"
+#include "../Resources/RenderSystem.h"
 
 #include "json/json.hpp"
 
@@ -101,9 +102,6 @@ private:
     ResourceManager* resourceMan = nullptr;
     EntityManager* entityMan = nullptr;
 
-    // Lights
-    std::vector<DirectionalLight> DirLights;
-    std::vector<PointLightData> PointLights;
     Mesh_ID PointLightMesh_ID = 0;
 
     // Keeps track of the old mouse position.  Useful for 
@@ -122,5 +120,7 @@ private:
     Entity* SelectedEntity = nullptr;
     ECS::ComponentManager* ComponentMan = nullptr;
     Physics::PhysicsManager* PhysicsMan = nullptr;
+
+    RenderSystem* RenderSys = nullptr;
 };
 

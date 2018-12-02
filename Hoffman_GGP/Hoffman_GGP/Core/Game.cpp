@@ -63,6 +63,12 @@ Game::~Game()
     Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
 
+    if ( RenderSys != nullptr )
+    {
+        delete RenderSys;
+        RenderSys = nullptr;
+    }
+
     delete FlyingCamera;
 
     Input::InputManager::Release();
@@ -80,6 +86,7 @@ void Game::Init()
     resourceMan = ResourceManager::Initalize( device );
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
+    RenderSys = new RenderSystem();
 
     // Rasterizer state for drawing the inside of my sky box geometry
     D3D11_RASTERIZER_DESC rs = {};
@@ -139,37 +146,38 @@ void Game::LoadShaders()
 
 void Game::InitLights()
 {
+    XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
+    XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
+
     DirectionalLight Light1 = {};
     Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
     Light1.Intensity = 0.1f;
-    DirLights.emplace_back( Light1 );
 
     DirectionalLight Light2 = {};
     Light2.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     Light2.DiffuseColor = XMFLOAT4( 0.5f, 1.f, 1.f, 0.1f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
     Light2.Intensity = 1.0f;
-    DirLights.emplace_back( Light2 );
-
-    XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
-    XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
-
+    
     PointLightData pLight1 = {};
     pLight1.Color = Red;
     pLight1.Position = XMFLOAT3( 0.f, 2.0f, 0.0f );
     pLight1.Intensity = 2.f;
     pLight1.Range = 5.f;
-    PointLights.emplace_back( pLight1 );
-
+    
     PointLightData pLight2 = {};
     pLight2.Color = Blue;
     pLight2.Position = XMFLOAT3( 0.f, -1.0f, 0.0f );
     pLight2.Intensity = 5.f;
     pLight2.Range = 2.f;
-    PointLights.emplace_back( pLight2 );
+
+    RenderSys->AddDirLight( Light1 );
+    RenderSys->AddDirLight( Light2 );
+    RenderSys->AddPointLight( pLight1 );
+    RenderSys->AddPointLight( pLight2 );
 }
 
 // --------------------------------------------------------
@@ -301,34 +309,6 @@ void Game::Update( float deltaTime, float totalTime )
     static float currentSpeed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
-
-    for ( size_t i = 0; i < PointLights.size(); ++i )
-    {
-        XMFLOAT3 newPos = PointLights[ i ].Position;
-        XMFLOAT3 acceleration = {};
-
-
-        if ( i % 2 == 0 )
-        {
-            newPos.x += LightMoveSpeed * currentSpeed * deltaTime;
-        }
-        else
-        {
-            newPos.x -= LightMoveSpeed * currentSpeed * deltaTime;
-        }
-
-        amountMoved += LightMoveSpeed * currentSpeed * deltaTime;
-
-        if ( amountMoved > 5.f || amountMoved < -5.f )
-        {
-            amountMoved = 0.f;
-            currentSpeed *= -1.f;
-        }
-
-        PointLights[ i ].Position = newPos;
-    }
-
-
 }
 
 // --------------------------------------------------------
@@ -368,19 +348,8 @@ void Game::Draw( float deltaTime, float totalTime )
 
         if ( !CurrentEntity->GetIsActive() ) continue;
 
-        // Send lighting info ---------------------------------------------------------
-        if ( DirLights.size() > 0 )
-        {
-            pixelShader->SetData( "DirLights", ( void* ) ( &DirLights[ 0 ] ), sizeof( DirectionalLight ) * MAX_DIR_LIGHTS );
-        }
-        pixelShader->SetInt( "DirLightCount", ( UseDirLights ? static_cast< int >( DirLights.size() ) : 0 ) );
 
-        if ( PointLights.size() > 0 )
-        {
-            pixelShader->SetData( "PointLights", ( void* ) ( &PointLights[ 0 ] ), sizeof( PointLightData ) * MAX_POINT_LIGHTS );
-        }
-        pixelShader->SetInt( "PointLightCount", ( UsePointLights ? static_cast< int >( PointLights.size() ) : 0 ) );
-
+        RenderSys->RenderFrame( vertexShader, pixelShader );        
 
         // Send camera info ---------------------------------------------------------
         pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
@@ -474,6 +443,8 @@ void Game::DrawLightSources()
     // Set up vertex shader
     vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
     vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+
+    auto PointLights = RenderSys->GetPointLights();
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {

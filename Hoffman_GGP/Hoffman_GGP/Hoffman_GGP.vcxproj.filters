@@ -99,6 +99,10 @@
     <ClCompile Include="FamilyTypeID.cpp" />
     <ClCompile Include="TestComponentTwo.cpp" />
     <ClCompile Include="Lighting\PointLight.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Resources\RenderSystem.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -196,6 +200,10 @@
     </ClInclude>
     <ClInclude Include="Lighting\PointLight.h">
       <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Resources\RenderSystem.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
