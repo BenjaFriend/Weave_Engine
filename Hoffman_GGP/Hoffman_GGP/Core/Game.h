@@ -102,7 +102,7 @@ private:
 
     // Lights
     std::vector<DirectionalLight> DirLights;
-    std::vector<PointLight> PointLights;
+    std::vector<PointLightData> PointLights;
     Mesh_ID PointLightMesh_ID = 0;
 
     // Keeps track of the old mouse position.  Useful for 

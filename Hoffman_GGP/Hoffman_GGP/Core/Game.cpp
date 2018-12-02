@@ -156,14 +156,14 @@ void Game::InitLights()
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
     XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
-    PointLight pLight1 = {};
+    PointLightData pLight1 = {};
     pLight1.Color = Red;
     pLight1.Position = XMFLOAT3( 0.f, 2.0f, 0.0f );
     pLight1.Intensity = 2.f;
     pLight1.Range = 5.f;
     PointLights.emplace_back( pLight1 );
 
-    PointLight pLight2 = {};
+    PointLightData pLight2 = {};
     pLight2.Color = Blue;
     pLight2.Position = XMFLOAT3( 0.f, -1.0f, 0.0f );
     pLight2.Intensity = 5.f;
@@ -377,7 +377,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
         if ( PointLights.size() > 0 )
         {
-            pixelShader->SetData( "PointLights", ( void* ) ( &PointLights[ 0 ] ), sizeof( PointLight ) * MAX_POINT_LIGHTS );
+            pixelShader->SetData( "PointLights", ( void* ) ( &PointLights[ 0 ] ), sizeof( PointLightData ) * MAX_POINT_LIGHTS );
         }
         pixelShader->SetInt( "PointLightCount", ( UsePointLights ? static_cast< int >( PointLights.size() ) : 0 ) );
 
@@ -477,7 +477,7 @@ void Game::DrawLightSources()
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
-        PointLight light = PointLights[ i ];
+        PointLightData light = PointLights[ i ];
         // Set buffers in the input assembler
         UINT stride = sizeof( Vertex );
         UINT offset = 0;
@@ -712,11 +712,15 @@ void Game::LoadScene()
             // Key is the name 
             LOG_TRACE( "Entity: {}\n", it.key() );
             
+            // Create a new entity
+
             // Value is all the components
             nlohmann::json::iterator compItr = njson[ "Entities" ][ it.key() ].begin();
             for ( ; compItr != njson[ "Entities" ][ it.key() ].end(); ++compItr )
             {
                 std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
+                // Add component of this type
+
             }
         }
     }
