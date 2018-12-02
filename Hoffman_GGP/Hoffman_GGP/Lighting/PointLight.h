@@ -7,11 +7,15 @@
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 
+class RenderSystem;
+
 class PointLight : public ECS::Component<PointLight>
 {
 public:
 
-    PointLight( DirectX::XMFLOAT3 aColor,
+    PointLight( 
+        RenderSystem* aRendSys,
+        DirectX::XMFLOAT3 aColor,
         DirectX::XMFLOAT3 aPos, 
         float aIntensity = 1.f, 
         float aRange = 5.f
@@ -24,6 +28,8 @@ public:
     virtual const char* ComponentName() { return "PointLight"; }
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
+
+    virtual void DrawEditorGUI() override;
 
 private:
 

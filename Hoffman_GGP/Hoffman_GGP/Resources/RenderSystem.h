@@ -22,6 +22,11 @@ public:
 
     ~RenderSystem();
 
+    /// <summary>
+    /// Render all meshes/lights in this system
+    /// </summary>
+    /// <param name="aVertShader">The vert shader to use</param>
+    /// <param name="aPixShader"></param>
     void RenderFrame( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader );
 
     /// <summary>
@@ -34,12 +39,11 @@ public:
     /// Add a point light to this render system
     /// </summary>
     /// <param name="aPointLight">The point light to be added</param>
-    void AddPointLight( PointLightData & aPointLight );
+    void AddPointLight( PointLightData * aPointLight );
 
     const std::vector<DirectionalLight> & GetDirLights() const;
 
-
-    const std::vector<PointLightData> & GetPointLights() const;
+    const std::vector<PointLightData*> & GetPointLights() const;
 
 private:
 
@@ -51,6 +55,6 @@ private:
 
     std::vector<DirectionalLight> DirLights;
 
-    std::vector<PointLightData> PointLights;
+    std::vector<PointLightData*> PointLights;
 
 };

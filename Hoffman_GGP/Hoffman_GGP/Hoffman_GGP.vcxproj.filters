@@ -98,10 +98,12 @@
     </ClCompile>
     <ClCompile Include="FamilyTypeID.cpp" />
     <ClCompile Include="TestComponentTwo.cpp" />
-    <ClCompile Include="Lighting\PointLight.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Resources\RenderSystem.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Lighting\PointLight.cpp">
+      <Filter>Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

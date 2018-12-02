@@ -8,7 +8,7 @@
 #include "../ECS/IComponent.h"
 #include "../TestComponent.h"
 #include "../TestComponentTwo.h"
-
+#include "../Lighting/PointLight.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -150,6 +150,8 @@ void Game::InitLights()
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
     XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
+
+
     DirectionalLight Light1 = {};
     Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
@@ -161,23 +163,18 @@ void Game::InitLights()
     Light2.DiffuseColor = XMFLOAT4( 0.5f, 1.f, 1.f, 0.1f );
     Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
     Light2.Intensity = 1.0f;
-    
-    PointLightData pLight1 = {};
-    pLight1.Color = Red;
-    pLight1.Position = XMFLOAT3( 0.f, 2.0f, 0.0f );
-    pLight1.Intensity = 2.f;
-    pLight1.Range = 5.f;
-    
-    PointLightData pLight2 = {};
-    pLight2.Color = Blue;
-    pLight2.Position = XMFLOAT3( 0.f, -1.0f, 0.0f );
-    pLight2.Intensity = 5.f;
-    pLight2.Range = 2.f;
 
     RenderSys->AddDirLight( Light1 );
     RenderSys->AddDirLight( Light2 );
-    RenderSys->AddPointLight( pLight1 );
-    RenderSys->AddPointLight( pLight2 );
+
+    // Add Point Lights
+    Entity_ID point_iD1 = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
+    Entity* pLightEntity = entityMan->GetEntity( point_iD1 );
+    pLightEntity->AddComponent<PointLight>( RenderSys, Red, XMFLOAT3( 0.f, 2.0f, 0.0f ) );
+
+    Entity_ID point_iD2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
+    Entity* pLightEntity2 = entityMan->GetEntity( point_iD2 );
+    pLightEntity2->AddComponent<PointLight>( RenderSys, Blue, XMFLOAT3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -348,22 +345,27 @@ void Game::Draw( float deltaTime, float totalTime )
 
         if ( !CurrentEntity->GetIsActive() ) continue;
 
+        if ( CurrentEntity->GetMaterial() != nullptr )
+        {
+            RenderSys->RenderFrame(
+                CurrentEntity->GetMaterial()->GetVertexShader(),
+                CurrentEntity->GetMaterial()->GetPixelShader()
+            );
 
-        RenderSys->RenderFrame( vertexShader, pixelShader );        
+            // Send camera info ---------------------------------------------------------
+            pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
+            CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
-        // Send camera info ---------------------------------------------------------
-        pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
-        CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
+            // Draw the entity ---------------------------------------------------------
+            EnMesh = CurrentEntity->GetEntityMesh();
+            VertBuff = EnMesh->GetVertexBuffer();
 
-        // Draw the entity ---------------------------------------------------------
-        EnMesh = CurrentEntity->GetEntityMesh();
-        VertBuff = EnMesh->GetVertexBuffer();
+            context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
+            context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
 
-        context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
-        context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
-
-        // Finally do the actual drawing
-        context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
+            // Finally do the actual drawing
+            context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
+        }
     }
 
     // Draw the Sky box -------------------------------------
@@ -375,8 +377,8 @@ void Game::Draw( float deltaTime, float totalTime )
         context->OMSetDepthStencilState( skyDepthState, 0 );
 
         // After drawing all of our regular (solid) objects, draw the sky!
-        ID3D11Buffer* skyVB = CurrentEntity->GetEntityMesh()->GetVertexBuffer();
-        ID3D11Buffer* skyIB = CurrentEntity->GetEntityMesh()->GetIndexBuffer();
+        ID3D11Buffer* skyVB = resourceMan->GetMesh( CubeMeshID )->GetVertexBuffer();
+        ID3D11Buffer* skyIB = resourceMan->GetMesh( CubeMeshID )->GetIndexBuffer();
 
         // Set the buffers
         context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
@@ -448,7 +450,7 @@ void Game::DrawLightSources()
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
-        PointLightData light = PointLights[ i ];
+        PointLightData light = *PointLights[ i ];
         // Set buffers in the input assembler
         UINT stride = sizeof( Vertex );
         UINT offset = 0;
@@ -682,7 +684,7 @@ void Game::LoadScene()
         {
             // Key is the name 
             LOG_TRACE( "Entity: {}\n", it.key() );
-            
+
             // Create a new entity
 
             // Value is all the components
