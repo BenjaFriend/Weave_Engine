@@ -3,6 +3,7 @@
 #include <WindowsX.h>
 #include <sstream>
 
+
 // Define the static instance variable so our OS-level 
 // message handling function below can talk to our object
 DXCore* DXCore::DXCoreInstance = 0;
@@ -164,6 +165,27 @@ HRESULT DXCore::InitWindow()
     logger = Logger::GetInstance();
     LOG_TRACE( "Logger initlaized!" );
     // Return an "everything is ok" HRESULT value
+    
+    using namespace luabridge;
+
+    lua_State* L = luaL_newstate();
+    const char* luaScript = "test.lua";
+    //luaL_dofile( L, "test.lua" );
+    if ( luaL_loadfile( L, luaScript ) || lua_pcall( L, 0, 0, 0 ) )
+    {
+        LOG_ERROR( "Failed to load lua script: {}", luaScript );
+    }
+
+    //luaL_openlibs( L );
+    //lua_pcall( L, 0, 0, 0 );
+    //LuaRef s = getGlobal( L, "testString" );
+    //LuaRef n = getGlobal( L, "number" );
+    //std::string luaString = s.cast<std::string>();
+    //int answer = n.cast<int>();
+    //std::cout << luaString << std::endl;
+    //std::cout << "And here's our number:" << answer << std::endl;
+
+
     return S_OK;
 }
 
