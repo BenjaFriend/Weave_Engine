@@ -187,9 +187,6 @@ HRESULT DXCore::InitWindow()
         std::cout << "And here's our number:" << answer << std::endl;
     }
 
-
-
-
     return S_OK;
 }
 
