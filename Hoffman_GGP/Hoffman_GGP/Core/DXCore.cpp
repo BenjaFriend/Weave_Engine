@@ -169,21 +169,25 @@ HRESULT DXCore::InitWindow()
     using namespace luabridge;
 
     lua_State* L = luaL_newstate();
-    const char* luaScript = "test.lua";
+    const char* luaScript = "Assets/Scripts/test.lua";
     //luaL_dofile( L, "test.lua" );
     if ( luaL_loadfile( L, luaScript ) || lua_pcall( L, 0, 0, 0 ) )
     {
         LOG_ERROR( "Failed to load lua script: {}", luaScript );
     }
+    else
+    {
+        luaL_openlibs( L );
+        lua_pcall( L, 0, 0, 0 );
+        LuaRef s = getGlobal( L, "testString" );
+        LuaRef n = getGlobal( L, "number" );
+        std::string luaString = s.cast<std::string>();
+        int answer = n.cast<int>();
+        std::cout << luaString << std::endl;
+        std::cout << "And here's our number:" << answer << std::endl;
+    }
 
-    //luaL_openlibs( L );
-    //lua_pcall( L, 0, 0, 0 );
-    //LuaRef s = getGlobal( L, "testString" );
-    //LuaRef n = getGlobal( L, "number" );
-    //std::string luaString = s.cast<std::string>();
-    //int answer = n.cast<int>();
-    //std::cout << luaString << std::endl;
-    //std::cout << "And here's our number:" << answer << std::endl;
+
 
 
     return S_OK;
