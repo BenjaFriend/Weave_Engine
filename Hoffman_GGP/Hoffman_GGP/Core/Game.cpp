@@ -119,6 +119,8 @@ void Game::Init()
     inputManager->BindAction( this, &Game::OnLookUp, Input::InputType::LookReleased );
 
     BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
+
+    LoadScripts();
 }
 
 // --------------------------------------------------------
@@ -701,6 +703,30 @@ void Game::LoadScene()
     }
 
     ifs.close();
+}
+
+void Game::LoadScripts()
+{
+    using namespace luabridge;
+
+    lua_State* L = luaL_newstate();
+    const char* luaScript = "Assets/Scripts/test.lua";
+    if ( luaL_loadfile( L, luaScript ) || lua_pcall( L, 0, 0, 0 ) )
+    {
+        LOG_ERROR( "Failed to load lua script: {}", luaScript );
+    }
+    else
+    {
+        luaL_openlibs( L );
+        lua_pcall( L, 0, 0, 0 );
+        LuaRef s = getGlobal( L, "testString" );
+        LuaRef n = getGlobal( L, "number" );
+        std::string luaString = s.cast<std::string>();
+        int answer = n.cast<int>();
+        LOG_TRACE( luaString );
+        LOG_TRACE( "And here's our number: {}", answer );
+    }
+
 }
 
 

@@ -70,6 +70,11 @@ private:
     /// </summary>
     void LoadScene();
 
+    /// <summary>
+    /// Loading of any lua scripts that we want to for 
+    /// </summary>
+    void LoadScripts();
+
     /** The current scene file to save all entities to */
     char SceneFile[ 64 ] = "Scene_test.json";
 
