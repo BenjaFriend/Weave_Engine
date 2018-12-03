@@ -23,3 +23,52 @@ build process:
 ```
 xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"
 ```
+
+Now that we have the build all set up, you should be able to compile and run.
+
+To test to see if Lua bridge is actually working, make the following lua script:
+
+```lua
+testString = "hello lua!";
+number = 42;
+```
+
+And somewhere in your C++, throw in this test code:
+
+```C++
+extern "C"
+{
+  #include "lua/lua.h"
+  #include "lua/lauxlib.h"
+  #include "lua/lualib.h"
+}
+#include "LuaBridge/LuaBridge.h"
+
+// ...
+
+int main() {
+  using namespace luabridge;
+
+  lua_State* L = luaL_newstate();
+  luaL_openlibs( L );
+
+  const char* luaScript = "Assets/Scripts/test.lua";
+
+  if ( luaL_loadfile( L, filename.c_str() ) || lua_pcall( L, 0, 0, 0 ) )
+  {
+      LOG_ERROR( "Failed to load lua script: {}", filename );
+  }
+  else
+  {
+      LOG_TRACE( "Loaded lua script: {}", filename );
+
+      LuaRef s = getGlobal( L, "testString" );
+      LuaRef n = getGlobal( L, "number" );
+      std::string luaString = s.cast<std::string>();
+      int answer = n.cast<int>();
+
+      LOG_TRACE( luaString );
+      LOG_TRACE( "And here's our number: {}", answer );
+  }
+}
+```
