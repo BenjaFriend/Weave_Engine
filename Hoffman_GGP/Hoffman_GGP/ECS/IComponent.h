@@ -50,7 +50,11 @@ namespace ECS
 
         inline const bool IsEnabled() const { return this->isEnabled; }
 
-        inline void SetSenabled( bool aEnabledState ) { this->isEnabled = aEnabledState; }
+        inline void SetSenabled( bool aEnabledState ) 
+        { 
+            this->isEnabled = aEnabledState; 
+            ( this->isEnabled ? OnEnable() : OnDisable() );
+        }
 
         /// <summary>
         /// Get the owning Entity ID of this component
@@ -74,6 +78,10 @@ namespace ECS
 
         /** The owner of this component */
         EntityID owner;
+
+        virtual void OnEnable() {}
+
+        virtual void OnDisable() {}
 
     };  // IComponent
 

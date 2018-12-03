@@ -15,13 +15,11 @@ PointLight::PointLight(
     LightingData.Intensity = aIntensity;
     LightingData.Range = aRange;
 
-    aRendSys->AddPointLight( &LightingData );
+    aRendSys->AddPointLight( this );
 }
 
 PointLight::~PointLight()
 {
-
-
 
 }
 
@@ -37,7 +35,13 @@ void PointLight::SaveObject( nlohmann::json & aOutFile )
 
 void PointLight::DrawEditorGUI()
 {
+    bool enabledSetting = this->isEnabled;
+
+    ImGui::Checkbox( "Is Enabled", &enabledSetting );
+    ImGui::InputFloat3( "Pos Offset", ( float* ) &LightingData.Position );
     ImGui::InputFloat( "Range", &LightingData.Range );
     ImGui::InputFloat( "Intensity", &LightingData.Intensity );
     ImGui::ColorEdit3( "Color", ( float* ) &LightingData.Color );
+
+    this->SetSenabled( enabledSetting );
 }

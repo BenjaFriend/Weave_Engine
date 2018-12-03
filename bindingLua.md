@@ -3,7 +3,7 @@
 These are the steps that I took to bind Lua to this C++ engine
 
 I did this based off of [this](https://eliasdaler.wordpress.com/2014/07/18/using-lua-with-cpp-luabridge/)
-tutorial.
+tutorial and [this one](https://eliasdaler.wordpress.com/2015/08/10/using-lua-and-cpp-in-practice/).
 
 Add [LuaBridge](https://github.com/vinniefalco/LuaBridge) as a submodule
 in the `additional` directory folder.

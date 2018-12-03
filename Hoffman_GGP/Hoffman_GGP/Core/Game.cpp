@@ -450,7 +450,7 @@ void Game::DrawLightSources()
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
-        PointLightData light = *PointLights[ i ];
+        PointLightData light = PointLights[ i ]->GetLightData();
         // Set buffers in the input assembler
         UINT stride = sizeof( Vertex );
         UINT offset = 0;

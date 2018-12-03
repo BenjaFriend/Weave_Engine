@@ -7,6 +7,7 @@
 // Forward Declarations
 class SimplePixelShader;
 class SimpleVertexShader;
+class PointLight;
 struct PointLightData;
 struct DirectionalLight;
 
@@ -39,11 +40,11 @@ public:
     /// Add a point light to this render system
     /// </summary>
     /// <param name="aPointLight">The point light to be added</param>
-    void AddPointLight( PointLightData * aPointLight );
+    void AddPointLight( PointLight * aPointLight );
 
     const std::vector<DirectionalLight> & GetDirLights() const;
 
-    const std::vector<PointLightData*> & GetPointLights() const;
+    const std::vector<PointLight*> & GetPointLights() const;
 
 private:
 
@@ -55,6 +56,6 @@ private:
 
     std::vector<DirectionalLight> DirLights;
 
-    std::vector<PointLightData*> PointLights;
+    std::vector<PointLight*> PointLights;
 
 };

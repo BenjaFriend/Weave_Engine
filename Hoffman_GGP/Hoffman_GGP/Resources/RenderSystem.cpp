@@ -2,7 +2,7 @@
 
 #include "../Resources/SimpleShader.h"
 #include "../Lighting/LightShaderDefs.h"
-
+#include "../Lighting/PointLight.h"
 
 RenderSystem::RenderSystem()
 {
@@ -27,7 +27,7 @@ void RenderSystem::AddDirLight( DirectionalLight & aDirLight )
     DirLights.push_back( aDirLight );
 }
 
-void RenderSystem::AddPointLight( PointLightData * aPointLight )
+void RenderSystem::AddPointLight( PointLight * aPointLight )
 {
     PointLights.push_back( aPointLight );
 }
@@ -37,7 +37,7 @@ const std::vector<DirectionalLight>& RenderSystem::GetDirLights() const
     return DirLights;
 }
 
-const std::vector<PointLightData*> & RenderSystem::GetPointLights() const
+const std::vector<PointLight*> & RenderSystem::GetPointLights() const
 {
     return PointLights;
 }
@@ -57,9 +57,21 @@ void RenderSystem::SetLightData( SimplePixelShader* aPixShader )
         // I need a pointer to these bois that is continuous in 
         // memory so that I can send it to the GPU
         PointLightData newArr[ MAX_POINT_LIGHTS ];
+        size_t lightCount = PointLights.size();
+
         for ( size_t i = 0; i < PointLights.size(); ++i )
         {
-            memcpy( ( void* ) ( newArr + i ), ( void* ) PointLights[ i ], sizeof( PointLightData ) );
+            if ( !PointLights[ i ]->IsEnabled() )
+            {
+                --lightCount;
+                continue;
+            }
+
+            memcpy(
+                ( void* ) ( newArr + i ),
+                ( ( void* ) ( &PointLights[ i ]->GetLightData() ) ),
+                sizeof( PointLightData )
+            );
         }
 
         aPixShader->SetData( "PointLights", ( void* ) ( &newArr[ 0 ] ), sizeof( PointLightData ) * MAX_POINT_LIGHTS );

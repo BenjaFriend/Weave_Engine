@@ -29,7 +29,7 @@ namespace ECS
 
         virtual const char* ComponentName() = 0;
 
-        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;
+        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;        
 
     };  // Component
 

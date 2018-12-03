@@ -170,7 +170,6 @@ HRESULT DXCore::InitWindow()
 
     lua_State* L = luaL_newstate();
     const char* luaScript = "Assets/Scripts/test.lua";
-    //luaL_dofile( L, "test.lua" );
     if ( luaL_loadfile( L, luaScript ) || lua_pcall( L, 0, 0, 0 ) )
     {
         LOG_ERROR( "Failed to load lua script: {}", luaScript );
