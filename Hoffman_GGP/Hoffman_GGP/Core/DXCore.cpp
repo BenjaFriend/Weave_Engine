@@ -165,7 +165,7 @@ HRESULT DXCore::InitWindow()
     logger = Logger::GetInstance();
     LOG_TRACE( "Logger initlaized!" );
     // Return an "everything is ok" HRESULT value
-    
+
     using namespace luabridge;
 
     lua_State* L = luaL_newstate();
@@ -183,8 +183,8 @@ HRESULT DXCore::InitWindow()
         LuaRef n = getGlobal( L, "number" );
         std::string luaString = s.cast<std::string>();
         int answer = n.cast<int>();
-        std::cout << luaString << std::endl;
-        std::cout << "And here's our number:" << answer << std::endl;
+        LOG_TRACE( luaString );
+        LOG_TRACE( "And here's our number: {}", answer );
     }
 
     return S_OK;

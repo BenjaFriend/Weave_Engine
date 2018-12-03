@@ -100,7 +100,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
+      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"
+xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
     <PreLinkEvent>
@@ -125,7 +126,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
+      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"
+xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
       <Message>Copy the assets of the game to the output directory</Message>
     </PostBuildEvent>
     <PreLinkEvent>
@@ -159,7 +161,8 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy the assets of the game to the output directory</Message>
-      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
+      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"
+xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -188,7 +191,8 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy the assets of the game to the output directory</Message>
-      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"</Command>
+      <Command>xcopy /E /d "$(SolutionDir)Assets" "$(OutDir)Assets\"
+xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
