@@ -8,8 +8,9 @@
 class SimplePixelShader;
 class SimpleVertexShader;
 class PointLight;
+class DirLight;
 struct PointLightData;
-struct DirectionalLight;
+struct DirectionalLightData;
 
 /// <summary>
 /// A render system will track different types of meshes or other drawable
@@ -34,7 +35,7 @@ public:
     /// Add a dir light to this system
     /// </summary>
     /// <param name="aDirLight">The dir light to be added</param>
-    void AddDirLight( DirectionalLight & aDirLight );
+    void AddDirLight( DirLight * aDirLight );
 
     /// <summary>
     /// Add a point light to this render system
@@ -42,7 +43,7 @@ public:
     /// <param name="aPointLight">The point light to be added</param>
     void AddPointLight( PointLight * aPointLight );
 
-    const std::vector<DirectionalLight> & GetDirLights() const;
+    const std::vector<DirLight*> & GetDirLights() const;
 
     const std::vector<PointLight*> & GetPointLights() const;
 
@@ -54,7 +55,7 @@ private:
     /// <param name="aPixShader">Pixel shader to send lighting info to</param>
     void SetLightData( SimplePixelShader* aPixShader );
 
-    std::vector<DirectionalLight> DirLights;
+    std::vector<DirLight*> DirLights;
 
     std::vector<PointLight*> PointLights;
 

@@ -103,7 +103,7 @@ float3 MicrofacetBRDF( float3 n, float3 l, float3 v, float roughness, float meta
 
 // Light Calculations -----------------------------------------------
 
-float3 CalculateDirLight( float3 norm, DirectionalLight aLight )
+float3 CalculateDirLight( float3 norm, DirectionalLightData aLight )
 {
     float3 lightNormDir = normalize( -aLight.Direction.rgb );
 
@@ -133,7 +133,7 @@ float3 CalculatePointLight( PointLightData light, float3 normal, float3 worldPos
 }
 
 // From chris
-float3 DirLightPBR( DirectionalLight light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
+float3 DirLightPBR( DirectionalLightData light, float3 normal, float3 worldPos, float3 camPos, float roughness, float metalness, float3 surfaceColor, float3 specularColor )
 {
     // Get normalize direction to the light
     float3 toLight = normalize( -light.Direction );

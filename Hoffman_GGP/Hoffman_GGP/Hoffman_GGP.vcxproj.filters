@@ -105,6 +105,9 @@
     <ClCompile Include="Lighting\PointLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="Lighting\DirLight.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -206,6 +209,9 @@
     <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Resources\RenderSystem.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Lighting\DirLight.h">
+      <Filter>Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

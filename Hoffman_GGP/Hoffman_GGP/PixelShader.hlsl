@@ -4,7 +4,7 @@
 cbuffer externalData : register( b0 )
 {    
     // Array of dir light data
-    DirectionalLight DirLights[ MAX_DIR_LIGHTS ];
+    DirectionalLightData DirLights[ MAX_DIR_LIGHTS ];
     int DirLightCount;
 
     // Array of dir light data

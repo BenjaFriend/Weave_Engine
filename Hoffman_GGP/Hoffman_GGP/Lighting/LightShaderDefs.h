@@ -19,7 +19,7 @@
 
 #endif
 
-struct DirectionalLight
+struct DirectionalLightData
 {
     FLOAT4 AmbientColor;
     FLOAT4 DiffuseColor;

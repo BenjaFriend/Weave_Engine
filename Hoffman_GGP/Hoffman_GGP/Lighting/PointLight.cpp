@@ -35,13 +35,9 @@ void PointLight::SaveObject( nlohmann::json & aOutFile )
 
 void PointLight::DrawEditorGUI()
 {
-    bool enabledSetting = this->isEnabled;
-
-    ImGui::Checkbox( "Is Enabled", &enabledSetting );
+    ImGui::Checkbox( "Is Enabled", &this->isEnabled );
     ImGui::InputFloat3( "Pos Offset", ( float* ) &LightingData.Position );
     ImGui::InputFloat( "Range", &LightingData.Range );
     ImGui::InputFloat( "Intensity", &LightingData.Intensity );
     ImGui::ColorEdit3( "Color", ( float* ) &LightingData.Color );
-
-    this->SetSenabled( enabledSetting );
 }

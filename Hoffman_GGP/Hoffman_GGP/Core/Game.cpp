@@ -9,6 +9,7 @@
 #include "../TestComponent.h"
 #include "../TestComponentTwo.h"
 #include "../Lighting/PointLight.h"
+#include "../Lighting/DirLight.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -152,20 +153,17 @@ void Game::InitLights()
 
 
 
-    DirectionalLight Light1 = {};
-    Light1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
-    Light1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
-    Light1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    Light1.Intensity = 0.1f;
+    DirectionalLightData DirLight1 = {};
+    DirLight1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
+    DirLight1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
+    DirLight1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    DirLight1.Intensity = 10.f;
 
-    DirectionalLight Light2 = {};
-    Light2.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
-    Light2.DiffuseColor = XMFLOAT4( 0.5f, 1.f, 1.f, 0.1f );
-    Light2.Direction = XMFLOAT3( -1.0f, 0.0f, 0.5f );
-    Light2.Intensity = 1.0f;
 
-    RenderSys->AddDirLight( Light1 );
-    RenderSys->AddDirLight( Light2 );
+    // Add Dir Lights
+    Entity_ID dirLight_ID = entityMan->AddEntity( nullptr, nullptr, "Dir Light 1" );
+    Entity* dirLightEntity = entityMan->GetEntity( dirLight_ID );
+    dirLightEntity->AddComponent<DirLight>( RenderSys, DirLight1 );
 
     // Add Point Lights
     Entity_ID point_iD1 = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
@@ -450,6 +448,8 @@ void Game::DrawLightSources()
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
+        if ( !PointLights[ i ]->IsEnabled() ) continue;
+
         PointLightData light = PointLights[ i ]->GetLightData();
         // Set buffers in the input assembler
         UINT stride = sizeof( Vertex );
