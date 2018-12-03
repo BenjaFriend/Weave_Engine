@@ -231,6 +231,7 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     <ClCompile Include="Resources\SimpleShader.cpp" />
     <ClCompile Include="TestComponentTwo.cpp" />
     <ClCompile Include="Utils\MathHelper.cpp" />
+    <ClCompile Include="Utils\ScriptHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
@@ -270,6 +271,7 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TestComponentTwo.h" />
     <ClInclude Include="Utils\MathHelper.h" />
+    <ClInclude Include="Utils\ScriptHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

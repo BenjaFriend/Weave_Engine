@@ -14,14 +14,7 @@
 // instead of in Visual Studio settings if we want
 #pragma comment(lib, "d3d11.lib")
 
-extern "C" 
-{
-    #include "lua/lua.h"
-    #include "lua/lauxlib.h"
-    #include "lua/lualib.h"
-}
-#include "LuaBridge/LuaBridge.h"
-
+#include "../Utils/ScriptHelper.h"
 
 class DXCore
 {

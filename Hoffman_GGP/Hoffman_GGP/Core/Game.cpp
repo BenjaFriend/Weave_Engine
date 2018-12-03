@@ -710,21 +710,22 @@ void Game::LoadScripts()
     using namespace luabridge;
 
     lua_State* L = luaL_newstate();
+    luaL_openlibs( L );
+
     const char* luaScript = "Assets/Scripts/test.lua";
-    if ( luaL_loadfile( L, luaScript ) || lua_pcall( L, 0, 0, 0 ) )
+    if ( luah::loadScript( L, luaScript ) )
     {
-        LOG_ERROR( "Failed to load lua script: {}", luaScript );
-    }
-    else
-    {
-        luaL_openlibs( L );
-        lua_pcall( L, 0, 0, 0 );
-        LuaRef s = getGlobal( L, "testString" );
-        LuaRef n = getGlobal( L, "number" );
-        std::string luaString = s.cast<std::string>();
-        int answer = n.cast<int>();
-        LOG_TRACE( luaString );
-        LOG_TRACE( "And here's our number: {}", answer );
+        luah::loadGetKeysFunction( L );
+
+        auto v = luah::getTableKeys( L, "ghost" );
+        LuaRef entityTable = getGlobal( L, "ghost" );
+        //LuaRef s = getGlobal( L, "testString" );
+        //LuaRef n = getGlobal( L, "number" );
+        //std::string luaString = s.cast<std::string>();
+        //int answer = n.cast<int>();
+        //
+        //LOG_TRACE( luaString );
+        //LOG_TRACE( "And here's our number: {}", answer );
     }
 
 }

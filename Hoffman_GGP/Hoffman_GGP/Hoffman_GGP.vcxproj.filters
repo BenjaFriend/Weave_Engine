@@ -108,6 +108,9 @@
     <ClCompile Include="Lighting\DirLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\ScriptHelper.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="Lighting\DirLight.h">
       <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\ScriptHelper.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
