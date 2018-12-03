@@ -23,6 +23,26 @@ PointLight::~PointLight()
 
 }
 
+void PointLight::SetColor( DirectX::XMFLOAT3 & aColor )
+{
+    LightingData.Color = aColor;
+}
+
+void PointLight::SetPosition( DirectX::XMFLOAT3 aPos )
+{
+    LightingData.Position = aPos;
+}
+
+void PointLight::SetIntensity( float aVal )
+{
+    LightingData.Intensity = aVal;
+}
+
+void PointLight::SetRange( float aVal )
+{
+    LightingData.Range = aVal;
+}
+
 const PointLightData & PointLight::GetLightData() const
 {
     return LightingData;

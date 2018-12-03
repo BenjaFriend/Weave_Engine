@@ -37,6 +37,18 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
     componentManager = ECS::ComponentManager::GetInstance();
 }
 
+Entity::Entity()
+{
+    // Set default values for position, scale and rotation
+    Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
+    Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
+    Rotation = DirectX::XMFLOAT4();
+    IsActive = true;
+
+    entID = EntityCount++;
+    componentManager = ECS::ComponentManager::GetInstance();
+}
+
 // virtual destructor
 Entity::~Entity()
 {

@@ -37,6 +37,11 @@ public:
     /// <param name="aMat">A material for this entity to use</param>
     Entity( Mesh * aMesh, Material* aMat, std::string aName );
 
+    /// <summary>
+    /// Default constructor for this entity
+    /// </summary>
+    Entity();
+
     ~Entity();
 
     /// <summary>

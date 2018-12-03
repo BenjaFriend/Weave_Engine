@@ -151,13 +151,11 @@ void Game::InitLights()
     XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
     XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
-
-
     DirectionalLightData DirLight1 = {};
     DirLight1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     DirLight1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
     DirLight1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    DirLight1.Intensity = 10.f;
+    DirLight1.Intensity = 1.f;
 
 
     // Add Dir Lights

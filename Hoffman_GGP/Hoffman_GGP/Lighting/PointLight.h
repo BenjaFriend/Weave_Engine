@@ -23,6 +23,14 @@ public:
 
     ~PointLight();
 
+    void SetColor( DirectX::XMFLOAT3 & aColor );
+
+    void SetPosition( DirectX::XMFLOAT3 aPos );
+
+    void SetIntensity( float aVal );
+
+    void SetRange( float aVal );
+
     const PointLightData& GetLightData() const;
 
     virtual const char* ComponentName() { return "PointLight"; }
