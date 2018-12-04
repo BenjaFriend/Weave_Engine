@@ -47,6 +47,6 @@ private:
 
     PointLightData LightingData;
 
-    bool DrawRange = true;
+    bool DrawRange = false;
 
 };

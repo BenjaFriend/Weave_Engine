@@ -132,7 +132,7 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -266,6 +266,7 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     <ClCompile Include="Resources\RenderSystem.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
+    <ClCompile Include="Scripting\ScriptUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -276,7 +277,6 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Utils\ScriptHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
@@ -312,8 +312,8 @@ xcopy /E /d "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command>
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />
+    <ClInclude Include="Scripting\ScriptUtils.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Utils\ScriptHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

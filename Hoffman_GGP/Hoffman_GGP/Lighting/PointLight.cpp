@@ -72,4 +72,5 @@ void PointLight::DrawEditorGUI()
     ImGui::InputFloat( "Range", &LightingData.Range );
     ImGui::InputFloat( "Intensity", &LightingData.Intensity );
     ImGui::ColorEdit3( "Color", ( float* ) &LightingData.Color );
+    ImGui::Checkbox( "Draw Wireframe", &DrawRange );
 }

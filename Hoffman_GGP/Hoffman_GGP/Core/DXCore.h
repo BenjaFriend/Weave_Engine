@@ -14,7 +14,7 @@
 // instead of in Visual Studio settings if we want
 #pragma comment(lib, "d3d11.lib")
 
-#include "../Utils/ScriptHelper.h"
+#include "../Scripting/ScriptUtils.h"
 
 class DXCore
 {

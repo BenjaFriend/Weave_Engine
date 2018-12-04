@@ -194,7 +194,6 @@ void Game::CreateMatrices()
     FlyingCamera->UpdateProjectionMatrix( width, height );
 }
 
-
 // --------------------------------------------------------
 // Creates the geometry we're going to draw - a single triangle for now
 // --------------------------------------------------------
@@ -471,28 +470,30 @@ void Game::DrawLightSources()
         context->DrawIndexed( indexCount, 0, 0 );
 
         // Wireframe mode ---------------------------------
+        if ( PointLights[ i ]->GetDrawRange() )
+        {
+            scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
 
-        scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
+            // Make the transform for this light
+            XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
 
-        // Make the transform for this light
-        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+            // Draw the wireframe point light range
+            vertexShader->SetMatrix4x4( "world", world );
 
-        // Draw the wireframe point light range
-        vertexShader->SetMatrix4x4( "world", world );
+            UnlitPixelShader->SetFloat3( "Color", finalColor );
 
-        UnlitPixelShader->SetFloat3( "Color", finalColor );
+            // Copy data to the shaders
+            vertexShader->CopyAllBufferData();
+            UnlitPixelShader->CopyAllBufferData();
 
-        // Copy data to the shaders
-        vertexShader->CopyAllBufferData();
-        UnlitPixelShader->CopyAllBufferData();
-        
-        // Set the wireframe rasterizer state
-        context->RSSetState( WireFrame );
-        // Draw the wireframe
-        context->DrawIndexed( indexCount, 0, 0 );
+            // Set the wireframe rasterizer state
+            context->RSSetState( WireFrame );
+            // Draw the wireframe
+            context->DrawIndexed( indexCount, 0, 0 );
 
-        // Reset the rasterizer state
-        context->RSSetState( 0 );
+            // Reset the rasterizer state
+            context->RSSetState( 0 );
+        }   
     }
 
 }
@@ -716,27 +717,7 @@ void Game::LoadScene()
 
 void Game::LoadScripts()
 {
-    using namespace luabridge;
-
-    lua_State* L = luaL_newstate();
-    luaL_openlibs( L );
-
-    const char* luaScript = "Assets/Scripts/test.lua";
-    if ( luah::loadScript( L, luaScript ) )
-    {
-        //luah::loadGetKeysFunction( L );
-
-        //auto v = luah::getTableKeys( L, "ghost" );
-        //LuaRef entityTable = getGlobal( L, "ghost" );
-        //LuaRef s = getGlobal( L, "testString" );
-        //LuaRef n = getGlobal( L, "number" );
-        //std::string luaString = s.cast<std::string>();
-        //int answer = n.cast<int>();
-        //
-        //LOG_TRACE( luaString );
-        //LOG_TRACE( "And here's our number: {}", answer );
-    }
-
+    Scripting::TestScripting();
 }
 
 

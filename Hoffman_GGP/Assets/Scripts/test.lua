@@ -1,8 +1,2 @@
-ghost = {
-    GraphicsComponent = {
-        filename = "ghost.png"
-    },
-    NpcComponent = {
-        phrase = "I'M A SCARY GHOST!!!"
-    }
-}
+local e = EntityData.new()
+e.name = "Hello lua world"

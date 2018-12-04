@@ -7,3 +7,6 @@
 [submodule "Hoffman_GGP/additional/LuaBridge"]
 	path = Hoffman_GGP/additional/LuaBridge
 	url = git@github.com:vinniefalco/LuaBridge.git
+[submodule "Hoffman_GGP/additional/sol2"]
+	path = Hoffman_GGP/additional/sol2
+	url = git@github.com:ThePhD/sol2.git

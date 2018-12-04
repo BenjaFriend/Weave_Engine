@@ -16,9 +16,6 @@
     <Filter Include="Lighting">
       <UniqueIdentifier>{28d24c1d-e7ad-4799-bd5f-5787fdb70818}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{6531483a-37d5-476c-ad29-af567469ca05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Materials">
       <UniqueIdentifier>{409103a1-562f-4da8-b80b-669e6ebea96f}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{299ebfb2-90f8-4eba-b4eb-a77d63243e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{1c9e2adb-e382-4805-bf81-7c5c97592a54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,12 +100,12 @@
     <ClCompile Include="Lighting\DirLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\ScriptHelper.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp">
       <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\ScriptUtils.cpp">
+      <Filter>Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,11 +202,11 @@
     <ClInclude Include="Lighting\DirLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\ScriptHelper.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="ECS\FamilyTypeID.h">
       <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\ScriptUtils.h">
+      <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
