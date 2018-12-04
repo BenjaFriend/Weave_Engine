@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "Material.h"
 #include "../SimpleShader.h"
 

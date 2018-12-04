@@ -1,3 +1,4 @@
+#include "../stdafx.h"
 #include "SimpleShader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1611,9 +1612,9 @@ void SimpleComputeShader::DispatchByGroups( unsigned int groupsX, unsigned int g
 void SimpleComputeShader::DispatchByThreads( unsigned int threadsX, unsigned int threadsY, unsigned int threadsZ )
 {
     deviceContext->Dispatch(
-        max( (unsigned int) ceil( (float) threadsX / this->threadsX ), 1 ),
-        max( (unsigned int) ceil( (float) threadsY / this->threadsY ), 1 ),
-        max( (unsigned int) ceil( (float) threadsZ / this->threadsZ ), 1 ) );
+        __max( (unsigned int) ceil( (float) threadsX / this->threadsX ), 1 ),
+        __max( (unsigned int) ceil( (float) threadsY / this->threadsY ), 1 ),
+        __max( (unsigned int) ceil( (float) threadsZ / this->threadsZ ), 1 ) );
 }
 
 // --------------------------------------------------------

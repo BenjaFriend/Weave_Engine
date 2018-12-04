@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "PhysicsManager.h"
 
 using namespace Physics;

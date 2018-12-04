@@ -8,6 +8,8 @@
 // Missing features:
 //  [ ] Platform: Gamepad support (best leaving it to user application to fill io.NavInputs[] with gamepad inputs from their source of choice).
 
+#include "stdafx.h"
+
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #ifndef WIN32_LEAN_AND_MEAN

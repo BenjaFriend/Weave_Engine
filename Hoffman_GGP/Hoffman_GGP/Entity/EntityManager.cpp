@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "EntityManager.h"
 #include "../Resources/Materials/Material.h"
 #include "../Resources/Mesh.h"

@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "Mesh.h"
 #include "Vertex.h"
 

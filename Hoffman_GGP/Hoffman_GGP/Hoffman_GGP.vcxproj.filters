@@ -63,9 +63,6 @@
     <ClCompile Include="Resources\SimpleShader.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\MathHelper.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Resources\Materials\Material.cpp">
       <Filter>Resources\Materials</Filter>
     </ClCompile>
@@ -93,8 +90,6 @@
     <ClCompile Include="ECS\ComponentManager.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="FamilyTypeID.cpp" />
-    <ClCompile Include="TestComponentTwo.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Resources\RenderSystem.cpp">
       <Filter>Resources</Filter>
@@ -107,6 +102,10 @@
     </ClCompile>
     <ClCompile Include="Utils\ScriptHelper.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ECS\FamilyTypeID.cpp">
+      <Filter>ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,9 +144,6 @@
     </ClInclude>
     <ClInclude Include="Lighting\LightShaderDefs.h">
       <Filter>Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\MathHelper.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Materials\Material.h">
       <Filter>Resources\Materials</Filter>
@@ -196,13 +192,6 @@
     <ClInclude Include="ECS\Component.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="FamilyTypeID.h" />
-    <ClInclude Include="TestComponent.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponentTwo.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting\PointLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
@@ -215,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="Utils\ScriptHelper.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\FamilyTypeID.h">
+      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

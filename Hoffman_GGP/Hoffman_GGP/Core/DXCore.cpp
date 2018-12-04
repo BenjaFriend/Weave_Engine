@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "DXCore.h"
 
 #include <WindowsX.h>

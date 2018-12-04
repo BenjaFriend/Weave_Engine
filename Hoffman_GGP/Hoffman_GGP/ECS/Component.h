@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
-#include "../FamilyTypeID.h"
+#include "FamilyTypeID.h"
 
 namespace ECS
 {

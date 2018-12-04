@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "Game.h"
 #include "../Resources/Vertex.h"
 #include "../Resources/Mesh.h"
@@ -6,8 +8,6 @@
 #include "../Resources/Materials/Material.h"
 
 #include "../ECS/IComponent.h"
-#include "../TestComponent.h"
-#include "../TestComponentTwo.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
 
@@ -253,20 +253,6 @@ void Game::CreateBasicGeometry()
         resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
-    floorEntity->AddComponent<TestComponent>( 15.f );
-
-    TestComponent* myComponent = floorEntity->GetComponent<TestComponent>();
-    TestComponentTwo* testComp2 = floorEntity->AddComponent<TestComponentTwo>();
-
-    if ( myComponent != nullptr )
-    {
-        LOG_WARN( "We got the compoennt name of {} {}", myComponent->ComponentName(), myComponent->GetData() );
-    }
-
-    if ( testComp2 != nullptr )
-    {
-        LOG_WARN( "We got the compoennt name of {} {}", testComp2->ComponentName(), testComp2->GetData() );
-    }
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );

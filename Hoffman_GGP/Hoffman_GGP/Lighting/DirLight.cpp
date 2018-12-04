@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "DirLight.h"
 
 #include "../Resources/RenderSystem.h"

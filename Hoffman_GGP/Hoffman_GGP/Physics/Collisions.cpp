@@ -1,3 +1,5 @@
+#include "../stdafx.h"
+
 #include "Collisions.h"
 
 using namespace Physics;
