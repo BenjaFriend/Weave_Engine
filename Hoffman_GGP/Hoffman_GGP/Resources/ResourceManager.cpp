@@ -94,9 +94,13 @@ const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar
     }
     else
     {
-        DEBUG_PRINT( "DDS SRV LOADING FAILURE!" );
-        // #RemoveWhenDoneDebugging
-        throw "DDS SRV LOADING FAILURE!";
+        size_t i;
+        constexpr size_t BUF_SIZE = 64;
+        char fileName[ BUF_SIZE ];
+
+        wcstombs_s( &i, fileName, BUF_SIZE, aFileName, BUF_SIZE );
+
+        LOG_ERROR( "DDS SRV LOADING FAILURE! {}", fileName );
 
         return -1;
     }
@@ -193,7 +197,7 @@ void ResourceManager::UnloadMeshes()
     }
 
     Meshes.clear();
-    DEBUG_PRINT( "Unloaded Meshes!" );
+    LOG_TRACE( "Unloaded Meshes!" );
 
 }
 
@@ -206,7 +210,7 @@ void ResourceManager::UnloadMaterials()
     }
 
     Materials.clear();
-    DEBUG_PRINT( "Unloaded Materials!" );
+    LOG_TRACE( "Unloaded Materials!" );
 
 }
 
@@ -219,7 +223,7 @@ void ResourceManager::UnloadSRVs()
     }
 
     SRViews.clear();
-    DEBUG_PRINT( "Unloaded SRVs!" );
+    LOG_TRACE( "Unloaded SRVs!" );
 
     // Release each DX11 resource that was loaded here
     for ( auto it = Samplers.begin(); it != Samplers.end(); ++it )
@@ -228,7 +232,7 @@ void ResourceManager::UnloadSRVs()
     }
 
     Samplers.clear();
-    DEBUG_PRINT( "Unloaded Samplers!" );
+    LOG_TRACE( "Unloaded Samplers!" );
 
 }
 

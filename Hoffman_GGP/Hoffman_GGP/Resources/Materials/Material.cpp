@@ -33,13 +33,12 @@ Material::~Material()
     MetalSRV = nullptr;
     RoughnessSRV = nullptr;
     Sampler = nullptr;
-    DEBUG_PRINT( "Material class dtor!" );
 }
 
 void Material::SaveObject( nlohmann::json & aOutFile )
 {
     // Out the file names of any shaders that we have
-    DEBUG_PRINT( "Material class save!!" );    
+    LOG_WARN( "Implement Material class save!!" );    
 }
 
 ////////////////////////////////////////////////////

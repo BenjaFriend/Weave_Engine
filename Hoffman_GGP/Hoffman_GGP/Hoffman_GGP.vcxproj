@@ -92,11 +92,11 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

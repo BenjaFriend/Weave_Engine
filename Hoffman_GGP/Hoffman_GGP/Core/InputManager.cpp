@@ -7,7 +7,6 @@ InputManager* InputManager::Instance;
 
 InputManager::InputManager()
 {
-    DEBUG_PRINT( "Input Manager ctor\n" );
 }
 
 InputManager::~InputManager()
@@ -26,7 +25,6 @@ InputManager::~InputManager()
             }
         }
     }
-    DEBUG_PRINT( "Input Listeners destroyed!" );
 }
 
 InputManager * InputManager::GetInstance()
