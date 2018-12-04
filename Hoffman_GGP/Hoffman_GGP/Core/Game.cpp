@@ -275,8 +275,6 @@ void Game::CreateBasicGeometry()
 
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( context, L"Assets/Textures/SunnyCubeMap.dds" );
-    SkyboxSrvID = resourceMan->LoadSRV_DDS( context, L"badBoi/Textures/SunnyCubeMap.dds" );
-
 }
 
 // --------------------------------------------------------
