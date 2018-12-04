@@ -97,7 +97,12 @@ private:
 
     float Gravity = -0.001f;
 
+#ifdef ENABLE_UI
+
     ImVec4 BackgroundColor;
+
+#endif // ENABLE_UI
+
     float LightMoveSpeed = 1.f;
 
     // Flying camera for initial testing

@@ -715,10 +715,10 @@ void Game::LoadScripts()
     const char* luaScript = "Assets/Scripts/test.lua";
     if ( luah::loadScript( L, luaScript ) )
     {
-        luah::loadGetKeysFunction( L );
+        //luah::loadGetKeysFunction( L );
 
-        auto v = luah::getTableKeys( L, "ghost" );
-        LuaRef entityTable = getGlobal( L, "ghost" );
+        //auto v = luah::getTableKeys( L, "ghost" );
+        //LuaRef entityTable = getGlobal( L, "ghost" );
         //LuaRef s = getGlobal( L, "testString" );
         //LuaRef n = getGlobal( L, "number" );
         //std::string luaString = s.cast<std::string>();
