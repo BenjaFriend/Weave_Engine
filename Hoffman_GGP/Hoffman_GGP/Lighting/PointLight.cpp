@@ -50,6 +50,16 @@ const PointLightData & PointLight::GetLightData() const
     return LightingData;
 }
 
+const bool PointLight::GetDrawRange() const
+{
+    return DrawRange;
+}
+
+void PointLight::SetDrawRange(bool aVal)
+{
+    DrawRange = aVal;
+}
+
 void PointLight::SaveObject( nlohmann::json & aOutFile )
 {
 

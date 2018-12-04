@@ -33,6 +33,10 @@ public:
 
     const PointLightData& GetLightData() const;
 
+    const bool GetDrawRange() const;
+
+    void SetDrawRange(bool aDrawRange);
+
     virtual const char* ComponentName() { return "PointLight"; }
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
@@ -42,5 +46,7 @@ public:
 private:
 
     PointLightData LightingData;
+
+    bool DrawRange = true;
 
 };

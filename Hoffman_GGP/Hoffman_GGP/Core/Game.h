@@ -84,6 +84,8 @@ private:
     SimplePixelShader* UnlitPixelShader = nullptr;
 
     Sampler_ID SamplerID;
+    ID3D11RasterizerState* WireFrame = nullptr;
+
     SRV_ID SkyboxSrvID;
     Mesh_ID CubeMeshID;
 

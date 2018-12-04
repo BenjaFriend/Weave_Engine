@@ -59,6 +59,10 @@ Game::~Game()
 
     skyRastState->Release();
     skyDepthState->Release();
+    if ( WireFrame != nullptr )
+    {
+        WireFrame->Release();
+    }
 
     EntityManager::ReleaseInstance();
     Physics::PhysicsManager::ReleaseInstance();
@@ -88,6 +92,12 @@ void Game::Init()
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
     RenderSys = new RenderSystem();
+
+    // Create a wireframe rasterizer state
+    D3D11_RASTERIZER_DESC wireRS = {};
+    wireRS.FillMode = D3D11_FILL_WIREFRAME;
+    wireRS.CullMode = D3D11_CULL_NONE;
+    device->CreateRasterizerState( &wireRS, &WireFrame );
 
     // Rasterizer state for drawing the inside of my sky box geometry
     D3D11_RASTERIZER_DESC rs = {};
@@ -202,9 +212,10 @@ void Game::CreateBasicGeometry()
     samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
     samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
+    
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
+    
     // Create the stone sphere --------------------------------------------------
     SRV_ID diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
     SRV_ID normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
@@ -214,7 +225,7 @@ void Game::CreateBasicGeometry()
     Material_ID matID = resourceMan->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
 
     entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 1.f, 0.f, 0.f ), "Stone Sphere" );
+        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 2.f, 0.f, 0.f ), "Stone Sphere" );
 
     // Load Wood ball --------------------------------------------------------
     SRV_ID woodDif = resourceMan->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
@@ -223,7 +234,7 @@ void Game::CreateBasicGeometry()
     SRV_ID woodMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
     Material_ID woodMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
 
-    XMFLOAT3 newPos = XMFLOAT3( -1.f, 0.f, 0.f );
+    XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
     Entity_ID woodEntID = entityMan->AddEntity(
         resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( woodMatID ), newPos, "Wooden Sphere" );
     entityMan->GetEntity( woodEntID )->SetMass( 0.5f );
@@ -297,11 +308,6 @@ void Game::Update( float deltaTime, float totalTime )
 // --------------------------------------------------------
 void Game::Draw( float deltaTime, float totalTime )
 {
-    // Background color (Cornflower Blue in this case) for clearing
-
-    //const float color[ 4 ] = { 0.4f, 0.6f, 0.75f, 0.0f };
-    //const float color[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
     //  - At the beginning of Draw (before drawing *anything*)
@@ -380,11 +386,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
         SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
         SkyBoxPS->SetShader();
-
-        // Reset any changed render states!
-        context->RSSetState( skyRastState );
-        context->OMSetDepthStencilState( skyDepthState, 0 );
-
+        
         // Draw the skybox "mesh"
         context->DrawIndexed( resourceMan->GetMesh( CubeMeshID )->GetIndexCount(), 0, 0 );
 
@@ -443,7 +445,7 @@ void Game::DrawLightSources()
         context->IASetVertexBuffers( 0, 1, &vb, &stride, &offset );
         context->IASetIndexBuffer( ib, DXGI_FORMAT_R32_UINT, 0 );
 
-        float scale = light.Range / 13.0f;
+        float scale = 0.5f;
 
         XMMATRIX rotMat = XMMatrixIdentity();
         XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );
@@ -466,10 +468,31 @@ void Game::DrawLightSources()
         // Copy data
         vertexShader->CopyAllBufferData();
         UnlitPixelShader->CopyAllBufferData();
-
-        // Draw
         context->DrawIndexed( indexCount, 0, 0 );
 
+        // Wireframe mode ---------------------------------
+
+        scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
+
+        // Make the transform for this light
+        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+
+        // Draw the wireframe point light range
+        vertexShader->SetMatrix4x4( "world", world );
+
+        UnlitPixelShader->SetFloat3( "Color", finalColor );
+
+        // Copy data to the shaders
+        vertexShader->CopyAllBufferData();
+        UnlitPixelShader->CopyAllBufferData();
+        
+        // Set the wireframe rasterizer state
+        context->RSSetState( WireFrame );
+        // Draw the wireframe
+        context->DrawIndexed( indexCount, 0, 0 );
+
+        // Reset the rasterizer state
+        context->RSSetState( 0 );
     }
 
 }
