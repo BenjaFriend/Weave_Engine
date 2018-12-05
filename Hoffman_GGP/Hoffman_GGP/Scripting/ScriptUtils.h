@@ -8,6 +8,4 @@ namespace Scripting
 
     void TestScripting();
 
-    void ParseTable( sol::table & aTable );
-
 }

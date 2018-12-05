@@ -4,76 +4,62 @@
 
 void Scripting::TestScripting()
 {
-
-    struct EntityData
-    {
-        std::string name;
-        int hp;
-    };
-
     sol::state lua;
     lua.open_libraries( sol::lib::base );
-    lua.new_usertype<EntityData>(
-        "EntityData",
-        "name", &EntityData::name,
-        "hp", &EntityData::hp
-        );
 
     lua.script_file( "Assets/Scripts/test.lua" );
 
     sol::optional<sol::table> maybeObjs = lua[ "objs" ];
     if ( maybeObjs != sol::nullopt )
-    {    
+    {
         sol::table& objsTable = maybeObjs.value();
-        ParseTable( objsTable );
+       
+
+        auto parseFunc = [ ] ( auto& func, sol::table & aTable ) -> void
+        {
+            // Iterate over this table
+            for ( auto key_val : aTable )
+            {
+                const sol::object& key = key_val.first;
+                const sol::object& value = key_val.second;
+
+                LOG_TRACE( "Key: {}", key.as<std::string>() );
+
+                // Determine the type of data that is in this key
+                auto t = value.get_type();
+                switch ( t )
+                {             
+                case sol::type::table:
+                    // Check for other components types
+                    func( func, value.as<sol::table>() );
+
+                    break;
+                case sol::type::string:
+                    // What is this key? 
+                    // Do something with that value
+                    //aTable[ key.as<std::string>() ];
+                    break;
+                //case sol::type::number:
+                //case sol::type::boolean:
+                //case sol::type::function:
+                //case sol::type::userdata:
+                case sol::type::none:
+                case sol::type::lua_nil:
+                default:
+                    break;
+                }
+            }
+        };
+
+        parseFunc( parseFunc, objsTable );
+        
+
     }
 }
 
 void Scripting::ParseTable( sol::table & aTable )
 {
-    for ( auto key_val : aTable )
-    {
-        const sol::object& key = key_val.first;
-        const sol::object& value = key_val.second;
-
-        LOG_TRACE( "Key: {}", key.as<std::string>() );
-
-        auto t = value.get_type();
-
-        switch ( t )
-        {
-        case sol::type::none:
-            break;
-        case sol::type::lua_nil:
-            break;
-
-        case sol::type::table:
-            // Check for other components types
-            ParseTable( value.as<sol::table>() );
-            break;
-
-        case sol::type::string:
-            break;
-        case sol::type::number:
-            break;
-        case sol::type::thread:
-            break;
-        case sol::type::boolean:
-            break;
-        case sol::type::function:
-            break;
-        case sol::type::userdata:
-            break;
-        case sol::type::lightuserdata:
-            break;
-        case sol::type::poly:
-            break;
-        default:
-            break;
-        }
-
-        //( *aTable )[ key.as<std::string>() ];
-    }
+    
 }
 
 /// <summary>
