@@ -21,26 +21,59 @@ void Scripting::TestScripting()
 
     lua.script_file( "Assets/Scripts/test.lua" );
 
-    sol::optional<int> testInt = lua[ "testInt" ];
-    if ( testInt != sol::nullopt )
-    {
-        int x = *testInt + 5;
-        LOG_TRACE( "Test Int: {}", x );
+    sol::optional<sol::table> maybeObjs = lua[ "objs" ];
+    if ( maybeObjs != sol::nullopt )
+    {    
+        sol::table& objsTable = maybeObjs.value();
+        ParseTable( objsTable );
     }
+}
 
-    
-    sol::optional<sol::table> objs = lua[ "objs" ];
-    if ( objs != sol::nullopt )
+void Scripting::ParseTable( sol::table & aTable )
+{
+    for ( auto key_val : aTable )
     {
-        LOG_TRACE( "Got the object table!" );
-        
+        const sol::object& key = key_val.first;
+        const sol::object& value = key_val.second;
+
+        LOG_TRACE( "Key: {}", key.as<std::string>() );
+
+        auto t = value.get_type();
+
+        switch ( t )
+        {
+        case sol::type::none:
+            break;
+        case sol::type::lua_nil:
+            break;
+
+        case sol::type::table:
+            // Check for other components types
+            ParseTable( value.as<sol::table>() );
+            break;
+
+        case sol::type::string:
+            break;
+        case sol::type::number:
+            break;
+        case sol::type::thread:
+            break;
+        case sol::type::boolean:
+            break;
+        case sol::type::function:
+            break;
+        case sol::type::userdata:
+            break;
+        case sol::type::lightuserdata:
+            break;
+        case sol::type::poly:
+            break;
+        default:
+            break;
+        }
+
+        //( *aTable )[ key.as<std::string>() ];
     }
-
-
-    // Getting components like this is annoying
-    //std::string name = lua[ "ghost" ][ "GraphicsComponent" ][ "filename" ];
-    //LOG_TRACE( "Ghost Name: {}", name );
-
 }
 
 /// <summary>
@@ -93,7 +126,6 @@ void IterateOverTestKeys()
 
     auto fx = [ &things ] ( auto& f, auto& tbl ) -> void
     {
-
         for ( auto key_value_pair : tbl )
         {
             const sol::object& key = key_value_pair.first;
@@ -118,7 +150,6 @@ void IterateOverTestKeys()
                     if ( key.is<std::string>() )
                     {
                         LOG_TRACE( "Key : {}", key.as<std::string>() );
-                        std::cout << "key " << key.as<std::string>() << " is a thing -- ";
                     }
                     else if ( key.is<int>() )
                     {
