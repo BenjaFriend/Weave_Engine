@@ -3,8 +3,8 @@ objs = {            -- create an objects table
         data = 15,
         file = "test.txt"
     },
-    entity2 = {
-        data = 30;
+    entity32 = {
+        data = 30,
         file = "lolHelp"
     }
 }

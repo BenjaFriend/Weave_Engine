@@ -31,6 +31,9 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{1c9e2adb-e382-4805-bf81-7c5c97592a54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripting\Lua_src">
+      <UniqueIdentifier>{f4299d4f-fb99-4db1-815f-65924fdef5fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -232,5 +235,8 @@
     </None>
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
+    <None Include="..\Assets\Scripts\test.lua">
+      <Filter>Scripting\Lua_src</Filter>
+    </None>
   </ItemGroup>
 </Project>
