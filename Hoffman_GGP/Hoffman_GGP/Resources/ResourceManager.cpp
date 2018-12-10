@@ -32,7 +32,7 @@ void ResourceManager::ReleaseInstance()
     }
 }
 
-const Mesh_ID ResourceManager::LoadMesh( char * aFileName )
+const Mesh_ID ResourceManager::LoadMesh( const char * aFileName )
 {
     Meshes.push_back( new Mesh( currentDevice, aFileName ) );
     return Meshes.size() - 1;

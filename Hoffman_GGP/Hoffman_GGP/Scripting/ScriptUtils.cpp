@@ -1,43 +1,13 @@
 #include "../stdafx.h"
 
 #include "ScriptUtils.h"
-#include "../Entity/EntityManager.h"
 
 using namespace Scripting;
-
-
-void CreateEntity( EntityCreationData& aEntity )
-{
-    LOG_ERROR( "Create ent called! {}", aEntity.data );
-
-}
 
 void Scripting::TestScripting()
 {
     sol::state lua;
     lua.open_libraries( sol::lib::base );
-
-    // Define the entity types
-    lua.new_usertype<EntityCreationData>( "Entity",
-        "data", &EntityCreationData::data,
-        "file", &EntityCreationData::file
-        );
-
-    lua.set_function( "CreateEntity", &CreateEntity );
-
-    // Load in this script...
-    lua.script_file( "Assets/Scripts/test.lua" );
-
-    // Call start on the script if it has it
-    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
-    if ( unsafe_startFunc != sol::nullopt )
-    {
-        sol::function& start_function = unsafe_startFunc.value();
-        start_function();
-        LOG_TRACE( "Has start function" );
-    }
-
-
 
     // The object creation table
     sol::optional<sol::table> maybeObjs = lua [ "objs" ];
@@ -82,7 +52,7 @@ void Scripting::TestScripting()
                     if ( possibleEntity )
                     {
                         EntityCreationData& aEntity = possibleEntity.value();
-                        LOG_WARN( "Entity data: {}", aEntity.data );
+                        LOG_WARN( "Entity data: {}", aEntity.name );
                         entitiesToCreate.push_back( aEntity );
                     }
                 }
@@ -100,4 +70,82 @@ void Scripting::TestScripting()
         parseFunc( parseFunc, objsTable );
 
     }
+}
+
+ScriptManager::ScriptManager( 
+    ID3D11Device* aDevice, 
+    ID3D11DeviceContext* aContext 
+)
+    : device( aDevice ), context( aContext )
+{
+    entityMan = EntityManager::GetInstance();
+}
+
+ScriptManager::~ScriptManager()
+{
+    updateTicks.clear();
+
+    entityMan = nullptr;
+}
+
+void ScriptManager::Update( float deltaTime )
+{
+    for ( auto it : updateTicks )
+    {
+        it( deltaTime );
+    }
+}
+
+void ScriptManager::LoadScripts()
+{
+    // #TODO 
+    // Load all scripts currently here
+    LoadScript( "Assets/Scripts/test.lua" );
+}
+
+void ScriptManager::LoadScript( const char * aFile )
+{
+    sol::state lua;
+    lua.open_libraries( sol::lib::base );
+
+    lua [ "device" ] = device;
+    lua [ "context" ] = context;
+
+    // Define the entity types
+    lua.new_usertype<Scripting::EntityCreationData>( "Entity",
+
+        sol::constructors<
+        EntityCreationData( const char* aName, const char* aMeshName )
+        >(),
+
+        "name", &EntityCreationData::name,
+        "meshName", &EntityCreationData::meshName,
+        "SetPos", &EntityCreationData::SetPos
+        );
+
+    // Load in this script...
+    lua.script_file( aFile );
+
+    // Call start on the script if it has it
+    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
+    if ( unsafe_startFunc != sol::nullopt )
+    {
+        LOG_TRACE( "Has start function" );
+
+        sol::function& start_function = unsafe_startFunc.value();
+        start_function();
+    }
+
+    // Store the update function for later if there is one
+    sol::optional <sol::function> unsafe_updateFunc = lua [ "update" ];
+    if ( unsafe_updateFunc != sol::nullopt )
+    {
+        LOG_TRACE( "Has update function" );
+
+        sol::function& update_func = unsafe_updateFunc.value();
+
+        updateTicks.emplace_back( update_func );
+    }
+
+    luaStates.push_back( std::move( lua ) );
 }

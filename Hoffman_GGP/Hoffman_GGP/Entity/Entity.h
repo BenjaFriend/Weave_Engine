@@ -2,7 +2,6 @@
 
 #include "../stdafx.h"
 
-#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include "../Physics/Collisions.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ISaveable.h"
@@ -65,13 +64,13 @@ public:
     /// </summary>
     /// <param name="aView">View matrix</param>
     /// <param name="aProjection">Project matrix</param>
-    void PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection );
+    void PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection );
 
     /// <summary>
     /// Apply a force to this entity
     /// </summary>
     /// <param name="aForce">The force to apply</param>
-    void ApplyForce( const DirectX::XMFLOAT3 aForce );
+    void ApplyForce( const VEC3 aForce );
 
     /// <summary>
     /// Apply the current acceleration to the velocity and set acceleration to 0

@@ -1,37 +1,25 @@
-anEntity = Entity.new()
-anEntity.data = 72
+why = {};
 
-objects = {}
+posY = 0;
 
-objects[0] = anEntity
-objects[1] = anEntity
-
---- Iterate through entity array and create them
-for objCount = 0, #objects do
-  CreateEntity (objects[objCount])
-end
-
--- Called from C++ when we are initalized
+-----------------------------------------------
+--- Called from C++ when we are initialized ---
+-----------------------------------------------
 function start()
 
-  another = Entity.new()
-  another.data = 56
-  CreateEntity (another)
+    why = Entity.new( "Lau Entity", "Assets/Models/sphere.obj" )
+    why:SetPos(0, 2, 0)
+
+    TEST = Entity.new()
 
 end
 
+-----------------------------------
+--- Called from C++ every frame ---
+-----------------------------------
+function update(dt)
 
---------objs = {            -- create an objects table
---------
---------    entityName1 = {
---------        data = 15,
---------        file = "test.txt",
---------        aTabe = Entity.new()
---------    },
---------
---------    entity34 = {
---------        data = 30,
---------        file = "lolHelp"
---------    }
---------}   -- end objs table
---------
+    posY = posY + dt * 3
+    why:SetPos(0, posY, 0)
+
+end

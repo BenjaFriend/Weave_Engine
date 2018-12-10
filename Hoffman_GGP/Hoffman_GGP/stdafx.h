@@ -1,18 +1,44 @@
 #pragma once
 
-#include <iostream>
+/*************************************************************/
+/* System includes                                           */
+/*************************************************************/
 
+#define _CRTDBG_MAP_ALLOC   // memory leak detection
+#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <cstdlib>  // wcstombs_s
-#define _CRTDBG_MAP_ALLOC  
-
 #include <stdlib.h>  
 #include <stdio.h>
 #include <crtdbg.h>  
 #include <assert.h>
 #include <string>
 #include <fstream>
+
+#include "Core/Logger.h"
+
+
+/**************************************************************/
+/* Platform specifications                                    */
+/**************************************************************/
+#if defined( _WIN32 ) || defined ( _WIN64 )
+
+#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
+#include <d3d11.h>
+
+typedef DirectX::XMFLOAT3           VEC3;
+typedef DirectX::XMFLOAT4           VEC4;
+typedef DirectX::XMFLOAT4X4         VEC4x4;
+
+#else 
+
+// Using other another graphics library
+
+
+#endif
+
+
 
 #define  ENABLE_UI
 
@@ -23,7 +49,6 @@
 #include "imgui/imgui_impl_dx11.h"
 
 #endif
-
 
 /*
 #if defined(_DEBUG)
@@ -39,4 +64,3 @@
 
 // Debug Macros
 
-#include "Core/Logger.h"

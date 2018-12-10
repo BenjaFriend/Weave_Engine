@@ -78,7 +78,7 @@ void Entity::MoveAbsolute( const float aX, const float aY, const float aZ )
     Position.z += aZ;
 }
 
-void Entity::PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::XMFLOAT4X4 & aProjection )
+void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
 {
     assert( EntityMaterial != nullptr );
     SimpleVertexShader* VertShader = EntityMaterial->GetVertexShader();
@@ -102,7 +102,7 @@ void Entity::PrepareMaterial( const DirectX::XMFLOAT4X4 & aView, const DirectX::
     PixelShader->CopyAllBufferData();
 }
 
-void Entity::ApplyForce( const DirectX::XMFLOAT3 aForce )
+void Entity::ApplyForce( const VEC3 aForce )
 {
     XMVECTOR force = XMLoadFloat3( &aForce );
     // Scale the vector by the mass

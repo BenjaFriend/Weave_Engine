@@ -63,7 +63,7 @@ public:
     /// </summary>
     /// <param name="aFileName"></param>
     /// <returns>An ID for the current mesh file to be used elsewhere</returns>
-    const Mesh_ID LoadMesh( char* aFileName );
+    const Mesh_ID LoadMesh( const char* aFileName );
 
     /// <summary>
     /// Get a pointer to a mesh with it's ID

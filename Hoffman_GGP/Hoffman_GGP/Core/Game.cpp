@@ -58,6 +58,12 @@ Game::~Game()
         WireFrame->Release();
     }
 
+    if ( ScriptMan != nullptr )
+    {
+        delete ScriptMan;
+        ScriptMan = nullptr;
+    }
+
     EntityManager::ReleaseInstance();
     Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
@@ -86,6 +92,7 @@ void Game::Init()
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
     RenderSys = new RenderSystem();
+    ScriptMan = new Scripting::ScriptManager( device, context );
 
     // Create a wireframe rasterizer state
     D3D11_RASTERIZER_DESC wireRS = {};
@@ -124,7 +131,7 @@ void Game::Init()
 
     BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
 
-    LoadScripts();
+    ScriptMan->LoadScripts();
 }
 
 // --------------------------------------------------------
@@ -215,10 +222,10 @@ void Game::CreateBasicGeometry()
     samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
     samplerDesc.MaxAnisotropy = 16;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    
+
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-    
+
     // Create the stone sphere --------------------------------------------------
     SRV_ID diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
     SRV_ID normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
@@ -300,6 +307,8 @@ void Game::Update( float deltaTime, float totalTime )
 
     // Update the camera
     FlyingCamera->Update( deltaTime );
+
+    ScriptMan->Update( deltaTime );
 
     static float currentSpeed = 1.f;
     static float amountMoved = 0.f;
@@ -389,7 +398,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
         SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
         SkyBoxPS->SetShader();
-        
+
         // Draw the skybox "mesh"
         context->DrawIndexed( resourceMan->GetMesh( CubeMeshID )->GetIndexCount(), 0, 0 );
 
@@ -439,9 +448,9 @@ void Game::DrawLightSources()
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
-        if ( !PointLights[ i ]->IsEnabled() ) continue;
+        if ( !PointLights [ i ]->IsEnabled() ) continue;
 
-        PointLightData light = PointLights[ i ]->GetLightData();
+        PointLightData light = PointLights [ i ]->GetLightData();
         // Set buffers in the input assembler
         UINT stride = sizeof( Vertex );
         UINT offset = 0;
@@ -474,7 +483,7 @@ void Game::DrawLightSources()
         context->DrawIndexed( indexCount, 0, 0 );
 
         // Wireframe mode ---------------------------------
-        if ( PointLights[ i ]->GetDrawRange() )
+        if ( PointLights [ i ]->GetDrawRange() )
         {
             scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
 
@@ -497,7 +506,7 @@ void Game::DrawLightSources()
 
             // Reset the rasterizer state
             context->RSSetState( 0 );
-        }   
+        }
     }
 
 }
@@ -590,7 +599,7 @@ void Game::DrawUI()
             bool isActive = SelectedEntity->GetIsActive();
             ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
 
-            char newNameBuf[ 256 ];
+            char newNameBuf [ 256 ];
             strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
             ImGui::InputText( "Name", newNameBuf, 256 );
 
@@ -660,7 +669,7 @@ void Game::SaveScene()
 {
     nlohmann::json njson;
 
-    njson[ "Scene Name" ] = "Test_Scene";
+    njson [ "Scene Name" ] = "Test_Scene";
 
     Entity* CurrentEntity = entityMan->GetEntity( 0 );
 
@@ -692,9 +701,9 @@ void Game::LoadScene()
         // Store the info in the scene file in the JSON object
         nlohmann::json njson;
         ifs >> njson;
-        nlohmann::json::iterator it = njson[ "Entities" ].begin();
+        nlohmann::json::iterator it = njson [ "Entities" ].begin();
 
-        for ( ; it != njson[ "Entities" ].end(); ++it )
+        for ( ; it != njson [ "Entities" ].end(); ++it )
         {
             // Key is the name 
             LOG_TRACE( "Entity: {}\n", it.key() );
@@ -702,8 +711,8 @@ void Game::LoadScene()
             // Create a new entity
 
             // Value is all the components
-            nlohmann::json::iterator compItr = njson[ "Entities" ][ it.key() ].begin();
-            for ( ; compItr != njson[ "Entities" ][ it.key() ].end(); ++compItr )
+            nlohmann::json::iterator compItr = njson [ "Entities" ] [ it.key() ].begin();
+            for ( ; compItr != njson [ "Entities" ] [ it.key() ].end(); ++compItr )
             {
                 std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
                 // Add component of this type
@@ -718,12 +727,6 @@ void Game::LoadScene()
 
     ifs.close();
 }
-
-void Game::LoadScripts()
-{
-    Scripting::TestScripting();
-}
-
 
 
 #pragma region Mouse Input
