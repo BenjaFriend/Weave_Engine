@@ -51,12 +51,6 @@ Game::Game( HINSTANCE hInstance )
 // --------------------------------------------------------
 Game::~Game()
 {
-    delete vertexShader;
-    delete pixelShader;
-    delete UnlitPixelShader;
-    delete SkyBoxVS;
-    delete SkyBoxPS;
-
     skyRastState->Release();
     skyDepthState->Release();
     if ( WireFrame != nullptr )
@@ -141,20 +135,30 @@ void Game::Init()
 // --------------------------------------------------------
 void Game::LoadShaders()
 {
-    vertexShader = new SimpleVertexShader( device, context );
-    vertexShader->LoadShaderFile( L"VertexShader.cso" );
+    vertexShader = resourceMan->LoadShader<SimpleVertexShader>(
+        device,
+        context,
+        L"VertexShader.cso" );
 
-    pixelShader = new SimplePixelShader( device, context );
-    pixelShader->LoadShaderFile( L"PixelShader.cso" );
+    pixelShader = resourceMan->LoadShader<SimplePixelShader>(
+        device,
+        context,
+        L"PixelShader.cso" );
 
-    UnlitPixelShader = new SimplePixelShader( device, context );
-    UnlitPixelShader->LoadShaderFile( L"PixelShader_Unlit.cso" );
+    UnlitPixelShader = resourceMan->LoadShader<SimplePixelShader>(
+        device,
+        context,
+        L"PixelShader_Unlit.cso" );
 
-    SkyBoxVS = new SimpleVertexShader( device, context );
-    SkyBoxVS->LoadShaderFile( L"SkyVS.cso" );
+    SkyBoxVS = resourceMan->LoadShader<SimpleVertexShader>(
+        device,
+        context,
+        L"SkyVS.cso" );
 
-    SkyBoxPS = new SimplePixelShader( device, context );
-    SkyBoxPS->LoadShaderFile( L"SkyPS.cso" );
+    SkyBoxPS = resourceMan->LoadShader<SimplePixelShader>(
+        device,
+        context,
+        L"SkyPS.cso" );
 }
 
 void Game::InitLights()

@@ -183,8 +183,9 @@ ResourceManager::~ResourceManager()
 
     UnloadMaterials();
 
-    // Unload shaders
     UnloadSRVs();
+
+    UnloadShaders();
 
     currentDevice = nullptr;
 }
@@ -235,6 +236,17 @@ void ResourceManager::UnloadSRVs()
     Samplers.clear();
     LOG_TRACE( "Unloaded Samplers!" );
 
+}
+
+void ResourceManager::UnloadShaders()
+{
+    auto itr = Shaders.begin();
+    for ( ; itr != Shaders.end(); ++itr )
+    {
+        if( itr->second != nullptr)
+            delete ( itr->second );
+    }
+    Shaders.clear();
 }
 
 inline const ID3D11Device * ResourceManager::GetCurrentDevice() const

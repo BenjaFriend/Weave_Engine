@@ -18,4 +18,7 @@ namespace Scripting
     void TestScripting();
 
 
+    void LoadSceneFile( ID3D11Device* aDevice, const char * aFile );
+
+
 }   // namespace Scripting

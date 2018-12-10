@@ -16,7 +16,7 @@
 
 #define  ENABLE_UI
 
-#if defined(ENABLE_UI)
+#if defined( ENABLE_UI )
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -32,8 +32,8 @@
 #define new DEBUG_NEW
 
 #endif
-*/
 
+*/
 
 // Replace the new keyword with the debug new 
 

@@ -2,11 +2,22 @@
 
 #include "../stdafx.h"
 
+#if defined( _WIN32 ) || defined ( _WIN64 )
 
-#include <vector>
 #include "d3d11.h"	// ID3D11Buffer
 #include "WICTextureLoader.h"
 #include "DDSTextureLoader.h"
+
+using ShaderFile = LPCWSTR;
+
+#else
+
+#endif
+
+#include <vector>
+#include <type_traits>
+
+#include "SimpleShader.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -14,11 +25,12 @@ class Mesh;
 class Material;
 class SimpleVertexShader;
 class SimplePixelShader;
+class ISimpleShader;
 
-using Mesh_ID            = size_t;
-using Material_ID        = size_t;
-using SRV_ID             = size_t;
-using Sampler_ID         = size_t;
+using Mesh_ID = size_t;
+using Material_ID = size_t;
+using SRV_ID = size_t;
+using Sampler_ID = size_t;
 
 /// <summary>
 /// Loading and unloading all graphics resources like SRV's, meshes, and 
@@ -70,6 +82,45 @@ public:
 
     const SRV_ID LoadSRV_DDS( ID3D11DeviceContext* aContext, wchar_t* aFileName );
 
+    template<class T>
+    T* LoadShader(
+        ID3D11Device* aDevice,
+        ID3D11DeviceContext* aContext,
+        const wchar_t* aFileName
+    )
+    {
+        static_assert(
+            std::is_base_of<ISimpleShader, T>::value,
+            "T is not derived from ISimpleShader."
+            );
+
+        // Check if this shader is already loaded, if so , then return it
+        if ( Shaders.find( aFileName ) != Shaders.end() )
+        {
+            return reinterpret_cast< T* >( Shaders.at( aFileName ) );
+        }
+
+        // Create a new shader
+        ISimpleShader* shader = new T( aDevice, aContext );
+        shader->LoadShaderFile( aFileName );
+
+        // Add to the map of shaders
+        Shaders.emplace( aFileName, shader );
+
+#if defined( _DEBUG ) || defined ( DEBUG )
+        const size_t size = 64;
+        char buffer [ size ];
+
+        size_t ret;
+        wcstombs_s( &ret, buffer, aFileName, size );
+        //ret = wcstombs( buffer, aFileName, sizeof( buffer ) );
+        if ( ret == size - 1 ) buffer [ size - 1 ] = '\0';
+        LOG_TRACE( "Shader Loaded: {}", buffer );
+#endif
+
+        return reinterpret_cast< T* >( shader );
+    }
+
     /// <summary>
     /// Gets an SRV bsaed on the given ID
     /// </summary>
@@ -107,7 +158,7 @@ public:
         const SRV_ID aNormSrvID,
         const SRV_ID aRoughnessSrvID,
         const SRV_ID aMetalSrvID,
-        const Sampler_ID aSamplerID 
+        const Sampler_ID aSamplerID
     );
 
     /// <summary>
@@ -144,7 +195,15 @@ private:
     /// </summary>
     void UnloadSRVs();
 
+    /// <summary>
+    /// Deletes all currently loaded shaders
+    /// </summary>
+    void UnloadShaders();
+
     static ResourceManager* Instance;
+
+
+    std::unordered_map<ShaderFile, ISimpleShader*> Shaders;
 
     std::vector<Mesh*> Meshes;
 
@@ -166,4 +225,3 @@ private:
     ID3D11Device* currentDevice;
 
 };
-
