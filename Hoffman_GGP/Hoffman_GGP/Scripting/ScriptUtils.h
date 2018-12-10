@@ -5,7 +5,17 @@
 
 namespace Scripting
 {
+    // Create the entity type
+    struct EntityCreationData
+    {
+        EntityCreationData() { LOG_WARN( "Hello Entity" ); }
+        ~EntityCreationData() { LOG_WARN( "Bye Entity" ); }
+        int data;
+        std::string file;
+    };
+
 
     void TestScripting();
 
-}
+
+}   // namespace Scripting

@@ -1,29 +1,54 @@
 #include "../stdafx.h"
 
 #include "ScriptUtils.h"
+#include "../Entity/EntityManager.h"
+
+using namespace Scripting;
+
+
+void CreateEntity( EntityCreationData& aEntity )
+{
+    LOG_ERROR( "Create ent called! {}", aEntity.data );
+
+}
 
 void Scripting::TestScripting()
 {
     sol::state lua;
     lua.open_libraries( sol::lib::base );
 
-    struct EntityCreationData
-    {
-        int data;
-        std::string file;
-    };
+    // Define the entity types
+    lua.new_usertype<EntityCreationData>( "Entity",
+        "data", &EntityCreationData::data,
+        "file", &EntityCreationData::file
+        );
 
-    lua.new_usertype<EntityCreationData>( "EntityCreationData" );
+    lua.set_function( "CreateEntity", &CreateEntity );
 
-
+    // Load in this script...
     lua.script_file( "Assets/Scripts/test.lua" );
 
-    sol::optional<sol::table> maybeObjs = lua[ "objs" ];
+    // Call start on the script if it has it
+    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
+    if ( unsafe_startFunc != sol::nullopt )
+    {
+        sol::function& start_function = unsafe_startFunc.value();
+        start_function();
+        LOG_TRACE( "Has start function" );
+    }
+
+
+
+    // The object creation table
+    sol::optional<sol::table> maybeObjs = lua [ "objs" ];
+
+    // A vector of data to create
+    std::vector<std::reference_wrapper<EntityCreationData>> entitiesToCreate;
+
     if ( maybeObjs != sol::nullopt )
     {
         sol::table& objsTable = maybeObjs.value();
 
-        std::vector<std::reference_wrapper<EntityCreationData>> entitiesToCreate;
 
         auto parseFunc = [ &entitiesToCreate ] ( auto& func, sol::table & aTable ) -> void
         {
@@ -39,33 +64,31 @@ void Scripting::TestScripting()
                 auto t = value.get_type();
                 switch ( t )
                 {
+
                 case sol::type::table:
                     // Check for other components types
                     func( func, value.as<sol::table>() );
                     break;
 
                 case sol::type::string:
-                    // What is this key? 
-                    // Do something with that value
-                    //aTable[ key.as<std::string>() ];
+                    LOG_TRACE( "String data Key: {}", key.as<std::string>() );
                     break;
-                    //case sol::type::number:
-                    //case sol::type::boolean:
-                    //case sol::type::function:
+
                 case sol::type::userdata:
+                {
+                    LOG_TRACE( "USER DATA KEY: {}", key.as<std::string>() );
 
-                    //sol::optional<EntityCreationData&> possibleEntity = sol::nullopt;
+                    sol::optional<EntityCreationData&> possibleEntity = value.as<sol::optional<EntityCreationData&>>();
+                    if ( possibleEntity )
+                    {
+                        EntityCreationData& aEntity = possibleEntity.value();
+                        LOG_WARN( "Entity data: {}", aEntity.data );
+                        entitiesToCreate.push_back( aEntity );
+                    }
+                }
+                break;
 
-                    //possibleEntity = value.as<sol::optional<EntityCreationData&>>();
-                    //if ( possibleEntity )
-                    //{
-                       // EntityCreationData& aEntity = possibleEntity.value();
-                        //entitiesToCreate.push_back( aEntity );
-                    //}
-
-
-                    break;
-                    
+                case sol::type::function:
                 case sol::type::none:
                 case sol::type::lua_nil:
                 default:
@@ -75,5 +98,6 @@ void Scripting::TestScripting()
         };
 
         parseFunc( parseFunc, objsTable );
+
     }
 }
