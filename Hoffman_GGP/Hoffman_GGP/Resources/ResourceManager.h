@@ -8,9 +8,8 @@
 #include "WICTextureLoader.h"
 #include "DDSTextureLoader.h"
 
-using FileName = const wchar_t*;
-
 #else
+
 
 #endif
 
@@ -87,7 +86,7 @@ public:
     T* LoadShader(
         ID3D11Device* aDevice,
         ID3D11DeviceContext* aContext,
-        const wchar_t* aFileName
+        std::wstring aFileName
     )
     {
         static_assert(
@@ -96,14 +95,15 @@ public:
             );
 
         // Check if this shader is already loaded, if so , then return it
-        if ( Shaders.find( aFileName ) != Shaders.end() )
+        auto got = Shaders.find( aFileName );
+        if ( got != Shaders.end() )
         {
-            return reinterpret_cast< T* >( Shaders.at( aFileName ) );
+            return reinterpret_cast< T* >( got->second );
         }
 
         // Create a new shader
         ISimpleShader* shader = new T( aDevice, aContext );
-        shader->LoadShaderFile( aFileName );
+        shader->LoadShaderFile( aFileName.c_str() );
 
         // Add to the map of shaders
         Shaders.emplace( aFileName, shader );
@@ -113,8 +113,7 @@ public:
         char buffer [ size ];
 
         size_t ret;
-        wcstombs_s( &ret, buffer, aFileName, size );
-        //ret = wcstombs( buffer, aFileName, sizeof( buffer ) );
+        wcstombs_s( &ret, buffer, aFileName.c_str(), size );
         if ( ret == size - 1 ) buffer [ size - 1 ] = '\0';
         LOG_TRACE( "Shader Loaded: {}", buffer );
 #endif
@@ -251,7 +250,7 @@ private:
     };
 
 
-    std::unordered_map<FileName, ISimpleShader*> Shaders;
+    std::unordered_map<std::wstring, ISimpleShader*> Shaders;
 
     std::vector<LoadedMesh*> Meshes;
 

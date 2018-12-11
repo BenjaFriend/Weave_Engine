@@ -63,40 +63,39 @@ namespace Scripting
             MaterialCreationData(
                 ID3D11Device* aDevice,
                 ID3D11DeviceContext* aContext,
-                const char* vertexShader,
-                const char* pixelShader,
-                const char* albedoTexture,
-                const char* normalTexture,
-                const char* RoughnessTexture,
-                const char* MetalTexture
+                FileName vertexShader,
+                FileName pixelShader,
+                FileName albedoTexture,
+                FileName normalTexture,
+                FileName roughnessTexture,
+                FileName metalTexture
             )
             {
-                LOG_WARN( " Create a material: {} {}", aDevice != nullptr, aContext != nullptr );
                 ResourceManager* resourceMan = ResourceManager::GetInstance();
 
-                const wchar_t* vsW = GetWC( vertexShader );
-                const wchar_t* psW = GetWC( pixelShader );
-                const wchar_t* albedoW = GetWC( albedoTexture );
-                const wchar_t* normalW = GetWC( normalTexture );
-                const wchar_t* roughW = GetWC( RoughnessTexture );
-                const wchar_t* MetalW = GetWC( MetalTexture );
+                //FileName vsW = vertexShader;
+                //FileName psW = GetWC( pixelShader );
+                //FileName albedoW = GetWC( albedoTexture );
+                //FileName normalW = GetWC( normalTexture );
+                //FileName roughW = GetWC( RoughnessTexture );
+                //FileName MetalW = GetWC( MetalTexture );
 
                 SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
                     aDevice,
                     aContext,
-                    vsW );
+                    vertexShader );
 
                 SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
                     aDevice,
                     aContext,
-                    psW );
+                    pixelShader );
                 
                 assert( ps && vs );
 
-                SRV_ID dif = resourceMan->LoadSRV( aContext, albedoW );
-                SRV_ID normSRV = resourceMan->LoadSRV( aContext, normalW );
-                SRV_ID roughnessMap = resourceMan->LoadSRV( aContext, roughW );
-                SRV_ID metalMap = resourceMan->LoadSRV( aContext, MetalW );
+                SRV_ID dif = resourceMan->LoadSRV( aContext, albedoTexture);
+                SRV_ID normSRV = resourceMan->LoadSRV( aContext, normalTexture );
+                SRV_ID roughnessMap = resourceMan->LoadSRV( aContext, roughnessTexture );
+                SRV_ID metalMap = resourceMan->LoadSRV( aContext, metalTexture );
 
                 materialID = resourceMan->LoadMaterial(
                     vs,
@@ -109,12 +108,12 @@ namespace Scripting
                 
                 // #TODO 
                 // Figure out what the deal with wide chars and lua is because this sucks
-                SAFE_DELETE( vsW );
-                SAFE_DELETE( psW );
-                SAFE_DELETE( albedoW );
-                SAFE_DELETE( normalW );
-                SAFE_DELETE( roughW );
-                SAFE_DELETE( MetalW );
+                //SAFE_DELETE( vsW );
+                //SAFE_DELETE( psW );
+                //SAFE_DELETE( albedoW );
+                //SAFE_DELETE( normalW );
+                //SAFE_DELETE( roughW );
+                //SAFE_DELETE( MetalW );
             }
 
             ~MaterialCreationData() {}
@@ -125,15 +124,15 @@ namespace Scripting
         // Create the entity type
         struct EntityCreationData
         {
-            EntityCreationData( const char* aName, const char* aMeshName, MaterialCreationData* matData )
+            EntityCreationData( std::string aName, FileName aMeshName, MaterialCreationData* matData )
             {
-                LOG_TRACE( "Load Lua Entity: {} {} ", aName, aMeshName );
+                LOG_TRACE( "Load Lua Entity: {} ", aName );
 
-                WideName = GetWC( aMeshName );
+                MeshName = aMeshName;
 
                 ResourceManager* resMan = ResourceManager::GetInstance();
 
-                Mesh* mesh = std::get<1>( resMan->LoadMesh( WideName ) );
+                Mesh* mesh = std::get<1>( resMan->LoadMesh( MeshName ) );
 
                 // Create the entity in the entity manager
                 Entity_ID id = EntityManager::GetInstance()->AddEntity(
@@ -148,16 +147,34 @@ namespace Scripting
             ~EntityCreationData()
             {
                 CreatedEntity = nullptr;
-
-                SAFE_DELETE( WideName );
             }
 
-            void SetPos( float x, float y, float z )
+            void SetPos( const float x, const float y, const float z )
             {
                 assert( CreatedEntity != nullptr );
 
                 DirectX::XMFLOAT3 newPos( x, y, z );
                 CreatedEntity->SetPosition( newPos );
+            }
+
+            void SetScale( const float x, const float y, const float z )
+            {
+                assert( CreatedEntity != nullptr );
+
+                DirectX::XMFLOAT3 newScale( x, y, z );
+                CreatedEntity->SetScale( newScale );
+            }
+
+            void SetMass( const float aVal )
+            {
+                assert( CreatedEntity != nullptr );
+                CreatedEntity->SetMass( aVal );
+            }
+
+            const float GetMass() const
+            {
+                assert( CreatedEntity != nullptr );
+                return CreatedEntity->GetMass();
             }
 
         private:
@@ -170,7 +187,7 @@ namespace Scripting
             Entity* CreatedEntity = nullptr;
 
             /** The file name of this created entity in wide format */
-            FileName WideName = nullptr;
+            FileName MeshName;
         };
 
     };

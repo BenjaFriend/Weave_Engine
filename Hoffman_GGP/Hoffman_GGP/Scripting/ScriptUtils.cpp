@@ -69,10 +69,16 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
     // Define the entity types
     aLua.new_usertype<EntityCreationData>( "Entity",
         sol::constructors<
-        EntityCreationData( const char* aName, const char* aMeshName, MaterialCreationData* matData )
+        EntityCreationData( std::string aName, FileName aMeshName, MaterialCreationData* matData )
         >(),
 
-        "SetPos", &EntityCreationData::SetPos
+        "SetPos", &EntityCreationData::SetPos,
+
+        "SetScale", &EntityCreationData::SetScale,
+
+        "SetMass", &EntityCreationData::SetMass,
+        "GetMass", &EntityCreationData::GetMass
+
         );
 
     aLua.new_usertype<MaterialCreationData>( "Material",
@@ -81,12 +87,12 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
         MaterialCreationData(
             ID3D11Device* aDevice,
             ID3D11DeviceContext* aContext,
-            const char* vertexShader,
-            const char* pixelShader,
-            const char* albedoTexture,
-            const char* normalTexture,
-            const char* RoughnessTexture,
-            const char* MetalTexture
+            FileName vertexShader,
+            FileName pixelShader,
+            FileName albedoTexture,
+            FileName normalTexture,
+            FileName roughnessTexture,
+            FileName metalTexture
         )>()
 
         );

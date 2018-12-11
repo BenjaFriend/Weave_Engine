@@ -225,18 +225,7 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-    // load Bronze ball --------------------------------------------------------
-    SRV_ID bronzeDif = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
-    SRV_ID bronzeNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );
-    SRV_ID bronzeRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_roughness.png" );
-    SRV_ID bronzeMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_metal.png" );
-    Material_ID bronzeMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, bronzeDif, bronzeNormSRV, bronzeRoughnessMap, bronzeMetalMap, SamplerID );
-
-    Entity_ID bronzeEntID = entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( bronzeMatID ), XMFLOAT3( -2.f, 0.f, 0.f ), "Bronze Sphere" );
-    entityMan->GetEntity( bronzeEntID )->SetMass( 10.f );
-    SelectedEntity = entityMan->GetEntity( bronzeEntID );
-
+    
     // Load floor --------------------------------------------------------
     CubeMeshID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/cube.obj" ) );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );

@@ -10,7 +10,7 @@ Mesh::Mesh( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndeci
     CreateBuffers( aDevice, aVerts, aNumVerts, aIndecies, aIndexCount );
 }
 
-Mesh::Mesh( ID3D11Device* aDevice, const char * objFile )
+Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
 {
     // File input object
     std::ifstream obj( objFile );

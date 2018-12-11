@@ -37,18 +37,18 @@ const std::tuple<Mesh_ID, Mesh*> ResourceManager::LoadMesh( FileName aFileName )
     // Ensure that this mesh isn't already loaded
     for ( size_t i = 0; i < Meshes.size(); ++i )
     {
-        if ( wcscmp( Meshes [ i ]->fileName, aFileName ) == 0 )
+        if ( Meshes [ i ]->fileName == aFileName  )
         {
             return std::make_tuple( i, Meshes [ i ]->mesh );
         }
     }
 
-    const size_t size = 64;
-    char fileNameBuf [ 128 ];
-    size_t ret;
-    wcstombs_s( &ret, fileNameBuf, aFileName, size );
+    //const size_t size = 64;
+    //char fileNameBuf [ 128 ];
+    //size_t ret;
+    //wcstombs_s( &ret, fileNameBuf, aFileName, size );
 
-    Mesh* newMesh = new Mesh( currentDevice, fileNameBuf );
+    Mesh* newMesh = new Mesh( currentDevice, aFileName );
     LoadedMesh* newLoadedMesh = new LoadedMesh( aFileName, newMesh );
 
     Meshes.push_back( newLoadedMesh );
@@ -81,7 +81,7 @@ const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, FileName 
     HRESULT iResult = CreateWICTextureFromFile(
         currentDevice,
         aContext,
-        aFileName,
+        aFileName.c_str(),
         0,
         &tempSRV
     );

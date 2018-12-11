@@ -31,7 +31,7 @@ public:
     /// Create a mesh based off of the mesh file
     /// </summary>
     /// <param name="aMeshFile">File name to load</param>
-    Mesh( ID3D11Device* aDevice, const char* objFile );
+    Mesh( ID3D11Device* aDevice, FileName objFile );
 
     /** Destructor to release DX11 objects */
     ~Mesh();

@@ -31,11 +31,13 @@
 typedef DirectX::XMFLOAT3           VEC3;
 typedef DirectX::XMFLOAT4           VEC4;
 typedef DirectX::XMFLOAT4X4         VEC4x4;
+using FileName = std::wstring;
 
 #else 
 
 // Using other another graphics library
 
+using FileName = std::string;
 
 #endif
 
