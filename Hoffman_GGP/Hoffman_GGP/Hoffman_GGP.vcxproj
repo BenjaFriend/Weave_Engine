@@ -34,7 +34,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -94,8 +94,19 @@
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
+    <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <UseClangCl>false</UseClangCl>
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <UseClangCl>false</UseClangCl>
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
@@ -105,7 +116,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -161,7 +172,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -192,7 +203,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
