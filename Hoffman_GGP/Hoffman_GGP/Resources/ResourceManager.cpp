@@ -32,23 +32,50 @@ void ResourceManager::ReleaseInstance()
     }
 }
 
-const Mesh_ID ResourceManager::LoadMesh( const char * aFileName )
+const std::tuple<Mesh_ID, Mesh*> ResourceManager::LoadMesh( FileName aFileName )
 {
-    Meshes.push_back( new Mesh( currentDevice, aFileName ) );
-    return Meshes.size() - 1;
+    // Ensure that this mesh isn't already loaded
+    for ( size_t i = 0; i < Meshes.size(); ++i )
+    {
+        if ( wcscmp( Meshes [ i ]->fileName, aFileName ) == 0 )
+        {
+            return std::make_tuple( i, Meshes [ i ]->mesh );
+        }
+    }
+
+    const size_t size = 64;
+    char fileNameBuf [ 128 ];
+    size_t ret;
+    wcstombs_s( &ret, fileNameBuf, aFileName, size );
+
+    Mesh* newMesh = new Mesh( currentDevice, fileNameBuf );
+    LoadedMesh* newLoadedMesh = new LoadedMesh( aFileName, newMesh );
+
+    Meshes.push_back( newLoadedMesh );
+    return std::make_tuple( Meshes.size() - 1, newMesh );
 }
 
 Mesh * ResourceManager::GetMesh( const Mesh_ID aMeshID )
 {
     assert( aMeshID >= 0 && aMeshID < Meshes.size() );
 
-    return Meshes[ aMeshID ];
+    return Meshes [ aMeshID ]->mesh;
 }
 
-const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* aFileName )
+const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, FileName aFileName )
 {
     assert( aContext != nullptr );
 
+    // Ensure that this isn't already loaded in
+    // Expensive, but only happens at program start
+    // and stops texture from being loaded in more than once
+    for ( size_t i = 0; i < SRViews.size(); ++i )
+    {
+        if ( SRViews [ i ]->fileName == aFileName )
+            return i;
+    }
+
+    // Load this texture
     ID3D11ShaderResourceView* tempSRV = nullptr;
 
     HRESULT iResult = CreateWICTextureFromFile(
@@ -62,7 +89,9 @@ const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, wchar_t* 
     // if success
     if ( iResult == S_OK )
     {
-        SRViews.push_back( tempSRV );
+        LoadedSRV* newSrv = new LoadedSRV( aFileName, tempSRV );
+
+        SRViews.push_back( newSrv );
         return static_cast< size_t > ( SRViews.size() - 1 );
     }
     else
@@ -89,7 +118,9 @@ const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar
     // if success
     if ( iResult == S_OK )
     {
-        SRViews.push_back( tempSRV );
+        LoadedSRV* newSrv = new LoadedSRV( aFileName, tempSRV );
+
+        SRViews.push_back( newSrv );
 
         return SRViews.size() - 1;
     }
@@ -97,7 +128,7 @@ const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar
     {
         size_t i;
         constexpr size_t BUF_SIZE = 64;
-        char fileName[ BUF_SIZE ];
+        char fileName [ BUF_SIZE ];
 
         wcstombs_s( &i, fileName, BUF_SIZE, aFileName, BUF_SIZE );
 
@@ -111,7 +142,7 @@ ID3D11ShaderResourceView * ResourceManager::GetSRV( const SRV_ID aSrvID )
 {
     assert( aSrvID >= 0 && aSrvID < SRViews.size() );
 
-    return SRViews[ aSrvID ];
+    return SRViews [ aSrvID ]->srv;
 }
 
 const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
@@ -130,11 +161,11 @@ const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
     }
 }
 
-ID3D11SamplerState * ResourceManager::GetSampler( const size_t aID )
+ID3D11SamplerState * ResourceManager::GetSampler( const SRV_ID aID )
 {
     assert( aID >= 0 && aID < Samplers.size() );
 
-    return Samplers[ aID ];
+    return Samplers [ aID ];
 }
 
 const Material_ID ResourceManager::LoadMaterial(
@@ -150,11 +181,11 @@ const Material_ID ResourceManager::LoadMaterial(
     Material* newMat = new Material(
         aVertexShader,
         aPixelShader,
-        SRViews[ aDiffSrvID ],
-        SRViews[ aNormSrvID ],
-        SRViews[ aRoughnessSrvID ],
-        SRViews[ aMetalSrvID ],
-        Samplers[ aSamplerID ]
+        SRViews [ aDiffSrvID ]->srv,
+        SRViews [ aNormSrvID ]->srv,
+        SRViews [ aRoughnessSrvID ]->srv,
+        SRViews [ aMetalSrvID ]->srv,
+        Samplers [ aSamplerID ]
     );
 
     Materials.push_back( newMat );
@@ -166,7 +197,7 @@ Material* ResourceManager::GetMaterial( const Material_ID aID )
 {
     assert( aID >= 0 && aID < Materials.size() );
 
-    return Materials[ aID ];
+    return Materials [ aID ];
 }
 
 // Private constructor
@@ -221,7 +252,7 @@ void ResourceManager::UnloadSRVs()
     // Release each DX11 resource that was loaded here
     for ( auto it = SRViews.begin(); it != SRViews.end(); ++it )
     {
-        ( *it )->Release();
+        delete *( it );
     }
 
     SRViews.clear();
@@ -243,7 +274,7 @@ void ResourceManager::UnloadShaders()
     auto itr = Shaders.begin();
     for ( ; itr != Shaders.end(); ++itr )
     {
-        if( itr->second != nullptr)
+        if ( itr->second != nullptr )
             delete ( itr->second );
     }
     Shaders.clear();

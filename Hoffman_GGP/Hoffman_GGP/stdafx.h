@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <string>
 #include <fstream>
+#include <tuple>
 
 #include "Core/Logger.h"
 
@@ -64,3 +65,12 @@ typedef DirectX::XMFLOAT4X4         VEC4x4;
 
 // Debug Macros
 
+static const wchar_t *GetWC( const char *c )
+{
+    const size_t cSize = strlen( c ) + 1;
+    wchar_t* wc = new wchar_t [ cSize ];
+
+    mbstowcs( wc, c, cSize );
+
+    return wc;
+}

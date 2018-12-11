@@ -108,11 +108,39 @@ void ScriptManager::LoadScript( const char * aFile )
     sol::state lua;
     lua.open_libraries( sol::lib::base );
 
-    lua [ "device" ] = device;
-    lua [ "context" ] = context;
+    // Set lua types
+    DefinedLuaTypes( lua );
+
+    // Load in this script...
+    lua.script_file( aFile );
+
+    // Call start on the script if it has it
+    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
+    if ( unsafe_startFunc != sol::nullopt )
+    {
+        sol::function& start_function = unsafe_startFunc.value();
+        start_function();
+    }
+
+    // Store the update function for later if there is one
+    sol::optional <sol::function> unsafe_updateFunc = lua [ "update" ];
+    if ( unsafe_updateFunc != sol::nullopt )
+    {
+        sol::function& update_func = unsafe_updateFunc.value();
+
+        updateTicks.emplace_back( update_func );
+    }
+
+    luaStates.push_back( std::move( lua ) );
+}
+
+void ScriptManager::DefinedLuaTypes( sol::state & aLua )
+{
+    aLua [ "device" ] = device;
+    aLua [ "context" ] = context;
 
     // Define the entity types
-    lua.new_usertype<Scripting::EntityCreationData>( "Entity",
+    aLua.new_usertype<Scripting::EntityCreationData>( "Entity",
 
         sol::constructors<
         EntityCreationData( const char* aName, const char* aMeshName )
@@ -123,29 +151,9 @@ void ScriptManager::LoadScript( const char * aFile )
         "SetPos", &EntityCreationData::SetPos
         );
 
-    // Load in this script...
-    lua.script_file( aFile );
-
-    // Call start on the script if it has it
-    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
-    if ( unsafe_startFunc != sol::nullopt )
-    {
-        LOG_TRACE( "Has start function" );
-
-        sol::function& start_function = unsafe_startFunc.value();
-        start_function();
-    }
-
-    // Store the update function for later if there is one
-    sol::optional <sol::function> unsafe_updateFunc = lua [ "update" ];
-    if ( unsafe_updateFunc != sol::nullopt )
-    {
-        LOG_TRACE( "Has update function" );
-
-        sol::function& update_func = unsafe_updateFunc.value();
-
-        updateTicks.emplace_back( update_func );
-    }
-
-    luaStates.push_back( std::move( lua ) );
+    aLua.new_usertype<VEC3>( "VEC3",
+        "x", &VEC3::x,
+        "y", &VEC3::y,
+        "z", &VEC3::z
+        );
 }

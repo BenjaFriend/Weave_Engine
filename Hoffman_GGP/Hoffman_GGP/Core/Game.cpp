@@ -211,7 +211,7 @@ void Game::CreateMatrices()
 void Game::CreateBasicGeometry()
 {
     // Load in the meshes
-    PointLightMesh_ID = resourceMan->LoadMesh( "Assets/Models/sphere.obj" );
+    PointLightMesh_ID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/sphere.obj" ) );
     size_t meshID = PointLightMesh_ID;
 
     // Create the basic sampler ---------------------------------------------
@@ -228,6 +228,7 @@ void Game::CreateBasicGeometry()
 
     // Create the stone sphere --------------------------------------------------
     SRV_ID diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
+
     SRV_ID normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
     SRV_ID roughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
     SRV_ID metalMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
@@ -262,7 +263,7 @@ void Game::CreateBasicGeometry()
     SelectedEntity = entityMan->GetEntity( bronzeEntID );
 
     // Load floor --------------------------------------------------------
-    CubeMeshID = resourceMan->LoadMesh( "Assets/Models/cube.obj" );
+    CubeMeshID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/cube.obj" ) );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
     SRV_ID floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     SRV_ID floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );

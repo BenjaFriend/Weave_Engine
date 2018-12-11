@@ -8,7 +8,7 @@
 #include "WICTextureLoader.h"
 #include "DDSTextureLoader.h"
 
-using ShaderFile = LPCWSTR;
+using FileName = const wchar_t*;
 
 #else
 
@@ -18,10 +18,10 @@ using ShaderFile = LPCWSTR;
 #include <type_traits>
 
 #include "SimpleShader.h"
+#include "Mesh.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
-class Mesh;
 class Material;
 class SimpleVertexShader;
 class SimplePixelShader;
@@ -31,6 +31,7 @@ using Mesh_ID = size_t;
 using Material_ID = size_t;
 using SRV_ID = size_t;
 using Sampler_ID = size_t;
+
 
 /// <summary>
 /// Loading and unloading all graphics resources like SRV's, meshes, and 
@@ -61,9 +62,9 @@ public:
     /// <summary>
     /// Loads in a mesh with the given file name
     /// </summary>
-    /// <param name="aFileName"></param>
+    /// <param name="aFileName">The filename of the mesh</param>
     /// <returns>An ID for the current mesh file to be used elsewhere</returns>
-    const Mesh_ID LoadMesh( const char* aFileName );
+    const std::tuple<Mesh_ID, Mesh*> LoadMesh( FileName aFileName );
 
     /// <summary>
     /// Get a pointer to a mesh with it's ID
@@ -78,7 +79,7 @@ public:
     /// <param name="aContext">Device context to use</param>
     /// <param name="aFileName">File path of the assets</param>
     /// <returns>ID of the SRV to use for any later use</returns>
-    const SRV_ID LoadSRV( ID3D11DeviceContext* aContext, wchar_t* aFileName );
+    const SRV_ID LoadSRV( ID3D11DeviceContext* aContext, FileName aFileName );
 
     const SRV_ID LoadSRV_DDS( ID3D11DeviceContext* aContext, wchar_t* aFileName );
 
@@ -202,17 +203,64 @@ private:
 
     static ResourceManager* Instance;
 
+    /// <summary>
+    /// Keep track of a loaded SRV and it's file name
+    /// so that we can check if it has already been loaded 
+    /// in or not and keep 0(1) access over the vector in 
+    /// the drawing method
+    /// </summary>
+    struct LoadedSRV
+    {
+        LoadedSRV( FileName aName, ID3D11ShaderResourceView* aSrv )
+            : fileName( aName ), srv( aSrv )
+        {
+        }
 
-    std::unordered_map<ShaderFile, ISimpleShader*> Shaders;
+        ~LoadedSRV()
+        {
+            if ( srv != nullptr )
+            {
+                srv->Release();
+                srv = nullptr;
+            }
+        }
 
-    std::vector<Mesh*> Meshes;
+        FileName fileName = nullptr;
+        ID3D11ShaderResourceView* srv = nullptr;
+
+    };
+
+    struct LoadedMesh
+    {
+        LoadedMesh( FileName aName, Mesh* aMesh )
+            : fileName( aName ), mesh( aMesh )
+        {
+        }
+
+        ~LoadedMesh()
+        {
+            if ( mesh != nullptr )
+            {
+                delete mesh;
+                mesh = nullptr;
+            }
+        }
+
+        FileName fileName = nullptr;
+        Mesh* mesh = nullptr;
+    };
+
+
+    std::unordered_map<FileName, ISimpleShader*> Shaders;
+
+    std::vector<LoadedMesh*> Meshes;
 
     std::vector<Material*> Materials;
 
     /// <summary>
     /// The currently loaded Shader Resource Views
     /// </summary>
-    std::vector<ID3D11ShaderResourceView*> SRViews;
+    std::vector<LoadedSRV*> SRViews;
 
     /// <summary>
     /// Currently loaded samplers to use

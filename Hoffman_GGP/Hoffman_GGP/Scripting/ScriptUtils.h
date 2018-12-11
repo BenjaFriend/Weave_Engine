@@ -14,16 +14,17 @@ namespace Scripting
         EntityCreationData( const char* aName, const char* aMeshName )
             : name( aName ), meshName( aMeshName )
         {
-            // Tell the entity manager to create an Entity with
-            LOG_WARN( "Hello Entity, {} {} ", name, meshName );
-            Mesh_ID meshID = ResourceManager::GetInstance()->LoadMesh( meshName.c_str() );
-            Mesh* mesh = ResourceManager::GetInstance()->GetMesh( meshID );
+            LOG_TRACE( "Load Lua Entity: {} {} ", name, meshName );
+           
+            wideName = GetWC( aMeshName );
+
+            Mesh* mesh = std::get<1>( ResourceManager::GetInstance()->LoadMesh( wideName ) );
 
             // Create the entity in the entity manager
-            Entity_ID id = EntityManager::GetInstance()->AddEntity( 
+            Entity_ID id = EntityManager::GetInstance()->AddEntity(
                 mesh,
                 ResourceManager::GetInstance()->GetMaterial( 0 ),
-                name 
+                name
             );
 
             createdEntity = EntityManager::GetInstance()->GetEntity( id );
@@ -31,20 +32,69 @@ namespace Scripting
 
         ~EntityCreationData()
         {
-            LOG_WARN( "Bye Entity" );
+            LOG_TRACE( "Unload Lua Entity: {}", name );
             createdEntity = nullptr;
+            if ( wideName != nullptr )
+            {
+                delete wideName;
+                wideName = nullptr;
+            }
         }
 
         void SetPos( float x, float y, float z )
         {
-            DirectX::XMFLOAT3 newPos ( x, y, z );
+            assert( createdEntity != nullptr );
+
+            DirectX::XMFLOAT3 newPos( x, y, z );
             createdEntity->SetPosition( newPos );
         }
 
         std::string name;
         std::string meshName;
+        std::string vertexShaderFile;
+        std::string pixelShaderFile;
+
 
         Entity* createdEntity = nullptr;
+
+    private:
+        FileName wideName = nullptr;
+    };
+
+    struct MaterialCreationData
+    {
+        MaterialCreationData(
+            SimpleVertexShader* vertexShader,
+            SimplePixelShader* pixelShader,
+            ID3D11DeviceContext* context,
+            FileName albedoTexture,
+            FileName normalTexture,
+            FileName RoughnessTexture,
+            FileName MetalTexture
+        )
+        {
+            ResourceManager* resourceMan = ResourceManager::GetInstance();
+
+            SRV_ID dif = resourceMan->LoadSRV( context, albedoTexture );
+            SRV_ID normSRV = resourceMan->LoadSRV( context, normalTexture );
+            SRV_ID roughnessMap = resourceMan->LoadSRV( context, RoughnessTexture );
+            SRV_ID metalMap = resourceMan->LoadSRV( context, MetalTexture );
+
+           /* Material_ID woodMatID = resourceMan->LoadMaterial( 
+                vertexShader,
+                pixelShader,
+                dif,
+                normSRV,
+                roughnessMap,
+                metalMap,
+                SamplerID );*/
+
+        }
+
+        ~MaterialCreationData()
+        {
+
+        }
     };
 
 
@@ -78,10 +128,12 @@ namespace Scripting
         /// <param name="aFile"></param>
         void LoadScript( const char* aFile );
 
+        void DefinedLuaTypes( sol::state & aLua );
+
         /** Lua update function callbacks */
         std::vector<sol::function> updateTicks;
 
-        /** Lua states that should be persistant */
+        /** Lua states that should be persistent */
         std::vector<sol::state> luaStates;
 
         EntityManager* entityMan;
@@ -90,5 +142,6 @@ namespace Scripting
 
         ID3D11DeviceContext* context;
     };
+
 
 }   // namespace Scripting
