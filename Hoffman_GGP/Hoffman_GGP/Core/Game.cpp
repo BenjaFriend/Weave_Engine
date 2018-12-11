@@ -225,31 +225,6 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-
-    // Create the stone sphere --------------------------------------------------
-    SRV_ID diffSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_albedo.png" );
-
-    SRV_ID normSRV = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_normals.png" );
-    SRV_ID roughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_roughness.png" );
-    SRV_ID metalMap = resourceMan->LoadSRV( context, L"Assets/Textures/cobblestone_metal.png" );
-
-    Material_ID matID = resourceMan->LoadMaterial( vertexShader, pixelShader, diffSRV, normSRV, roughnessMap, metalMap, SamplerID );
-
-    entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( matID ), XMFLOAT3( 2.f, 0.f, 0.f ), "Stone Sphere" );
-
-    // Load Wood ball --------------------------------------------------------
-    SRV_ID woodDif = resourceMan->LoadSRV( context, L"Assets/Textures/wood_albedo.png" );
-    SRV_ID woodNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/wood_normals.png" );
-    SRV_ID woodRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_roughness.png" );
-    SRV_ID woodMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/wood_metal.png" );
-    Material_ID woodMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, woodDif, woodNormSRV, woodRoughnessMap, woodMetalMap, SamplerID );
-
-    XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
-    Entity_ID woodEntID = entityMan->AddEntity(
-        resourceMan->GetMesh( meshID ), resourceMan->GetMaterial( woodMatID ), newPos, "Wooden Sphere" );
-    entityMan->GetEntity( woodEntID )->SetMass( 0.5f );
-
     // load Bronze ball --------------------------------------------------------
     SRV_ID bronzeDif = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_albedo.png" );
     SRV_ID bronzeNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/bronze_normals.png" );

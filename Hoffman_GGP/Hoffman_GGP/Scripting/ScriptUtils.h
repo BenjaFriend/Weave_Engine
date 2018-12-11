@@ -8,91 +8,6 @@
 
 namespace Scripting
 {
-    // Create the entity type
-    struct EntityCreationData
-    {
-        EntityCreationData( const char* aName, const char* aMeshName )
-        {
-            LOG_TRACE( "Load Lua Entity: {} {} ", aName, aMeshName );
-
-            WideName = GetWC( aMeshName );
-
-            Mesh* mesh = std::get<1>( ResourceManager::GetInstance()->LoadMesh( WideName ) );
-
-            // Create the entity in the entity manager
-            Entity_ID id = EntityManager::GetInstance()->AddEntity(
-                mesh,
-                ResourceManager::GetInstance()->GetMaterial( 0 ),
-                aName
-            );
-
-            CreatedEntity = EntityManager::GetInstance()->GetEntity( id );
-        }
-
-        ~EntityCreationData()
-        {
-            CreatedEntity = nullptr;
-
-            SAFE_DELETE( WideName );
-        }
-
-        void SetPos( float x, float y, float z )
-        {
-            assert( CreatedEntity != nullptr );
-
-            DirectX::XMFLOAT3 newPos( x, y, z );
-            CreatedEntity->SetPosition( newPos );
-        }
-
-    private:
-
-        /** Info to create the entity */
-        std::string VertexShaderFile;
-        std::string PixelShaderFile;
-
-        /** Pointer to the entity that was created */
-        Entity* CreatedEntity = nullptr;
-
-        /** The file name of this created entity in wide format */
-        FileName WideName = nullptr;
-    };
-
-    struct MaterialCreationData
-    {
-        MaterialCreationData(
-            SimpleVertexShader* vertexShader,
-            SimplePixelShader* pixelShader,
-            ID3D11DeviceContext* context,
-            FileName albedoTexture,
-            FileName normalTexture,
-            FileName RoughnessTexture,
-            FileName MetalTexture
-        )
-        {
-            ResourceManager* resourceMan = ResourceManager::GetInstance();
-
-            SRV_ID dif = resourceMan->LoadSRV( context, albedoTexture );
-            SRV_ID normSRV = resourceMan->LoadSRV( context, normalTexture );
-            SRV_ID roughnessMap = resourceMan->LoadSRV( context, RoughnessTexture );
-            SRV_ID metalMap = resourceMan->LoadSRV( context, MetalTexture );
-
-            /* Material_ID woodMatID = resourceMan->LoadMaterial(
-                 vertexShader,
-                 pixelShader,
-                 dif,
-                 normSRV,
-                 roughnessMap,
-                 metalMap,
-                 SamplerID );*/
-
-        }
-
-        ~MaterialCreationData()
-        {
-
-        }
-    };
-
     class ScriptManager
     {
     public:
@@ -137,6 +52,127 @@ namespace Scripting
 
         /** Target context to create shaders/materials on */
         ID3D11DeviceContext* Context;
+
+
+        /***********************************************************/
+        /* Creation data definitions                               */
+        /***********************************************************/
+
+        struct MaterialCreationData
+        {
+            MaterialCreationData(
+                ID3D11Device* aDevice,
+                ID3D11DeviceContext* aContext,
+                const char* vertexShader,
+                const char* pixelShader,
+                const char* albedoTexture,
+                const char* normalTexture,
+                const char* RoughnessTexture,
+                const char* MetalTexture
+            )
+            {
+                LOG_WARN( " Create a material: {} {}", aDevice != nullptr, aContext != nullptr );
+                ResourceManager* resourceMan = ResourceManager::GetInstance();
+
+                const wchar_t* vsW = GetWC( vertexShader );
+                const wchar_t* psW = GetWC( pixelShader );
+                const wchar_t* albedoW = GetWC( albedoTexture );
+                const wchar_t* normalW = GetWC( normalTexture );
+                const wchar_t* roughW = GetWC( RoughnessTexture );
+                const wchar_t* MetalW = GetWC( MetalTexture );
+
+                SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
+                    aDevice,
+                    aContext,
+                    vsW );
+
+                SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
+                    aDevice,
+                    aContext,
+                    psW );
+                
+                assert( ps && vs );
+
+                SRV_ID dif = resourceMan->LoadSRV( aContext, albedoW );
+                SRV_ID normSRV = resourceMan->LoadSRV( aContext, normalW );
+                SRV_ID roughnessMap = resourceMan->LoadSRV( aContext, roughW );
+                SRV_ID metalMap = resourceMan->LoadSRV( aContext, MetalW );
+
+                materialID = resourceMan->LoadMaterial(
+                    vs,
+                    ps,
+                    dif,
+                    normSRV,
+                    roughnessMap,
+                    metalMap,
+                    0 );   // Use default sampler
+                
+                // #TODO 
+                // Figure out what the deal with wide chars and lua is because this sucks
+                SAFE_DELETE( vsW );
+                SAFE_DELETE( psW );
+                SAFE_DELETE( albedoW );
+                SAFE_DELETE( normalW );
+                SAFE_DELETE( roughW );
+                SAFE_DELETE( MetalW );
+            }
+
+            ~MaterialCreationData() {}
+
+            Material_ID materialID;
+        };
+
+        // Create the entity type
+        struct EntityCreationData
+        {
+            EntityCreationData( const char* aName, const char* aMeshName, MaterialCreationData* matData )
+            {
+                LOG_TRACE( "Load Lua Entity: {} {} ", aName, aMeshName );
+
+                WideName = GetWC( aMeshName );
+
+                ResourceManager* resMan = ResourceManager::GetInstance();
+
+                Mesh* mesh = std::get<1>( resMan->LoadMesh( WideName ) );
+
+                // Create the entity in the entity manager
+                Entity_ID id = EntityManager::GetInstance()->AddEntity(
+                    mesh,
+                    resMan->GetMaterial( matData->materialID ),
+                    aName
+                );
+
+                CreatedEntity = EntityManager::GetInstance()->GetEntity( id );
+            }
+
+            ~EntityCreationData()
+            {
+                CreatedEntity = nullptr;
+
+                SAFE_DELETE( WideName );
+            }
+
+            void SetPos( float x, float y, float z )
+            {
+                assert( CreatedEntity != nullptr );
+
+                DirectX::XMFLOAT3 newPos( x, y, z );
+                CreatedEntity->SetPosition( newPos );
+            }
+
+        private:
+
+            /** Info to create the entity */
+            std::string VertexShaderFile;
+            std::string PixelShaderFile;
+
+            /** Pointer to the entity that was created */
+            Entity* CreatedEntity = nullptr;
+
+            /** The file name of this created entity in wide format */
+            FileName WideName = nullptr;
+        };
+
     };
 
 

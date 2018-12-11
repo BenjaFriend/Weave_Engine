@@ -67,13 +67,28 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
     aLua [ "context" ] = Context;
 
     // Define the entity types
-    aLua.new_usertype<Scripting::EntityCreationData>( "Entity",
-
+    aLua.new_usertype<EntityCreationData>( "Entity",
         sol::constructors<
-        EntityCreationData( const char* aName, const char* aMeshName )
+        EntityCreationData( const char* aName, const char* aMeshName, MaterialCreationData* matData )
         >(),
 
         "SetPos", &EntityCreationData::SetPos
+        );
+
+    aLua.new_usertype<MaterialCreationData>( "Material",
+
+        sol::constructors<
+        MaterialCreationData(
+            ID3D11Device* aDevice,
+            ID3D11DeviceContext* aContext,
+            const char* vertexShader,
+            const char* pixelShader,
+            const char* albedoTexture,
+            const char* normalTexture,
+            const char* RoughnessTexture,
+            const char* MetalTexture
+        )>()
+
         );
 
     aLua.new_usertype<VEC3>( "VEC3",
