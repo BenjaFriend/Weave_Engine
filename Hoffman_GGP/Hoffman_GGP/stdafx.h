@@ -65,6 +65,8 @@ typedef DirectX::XMFLOAT4X4         VEC4x4;
 
 // Debug Macros
 
+#define SAFE_DELETE( obj ) if( obj != nullptr ){ delete obj; obj = nullptr; } 
+
 static const wchar_t *GetWC( const char *c )
 {
     const size_t cSize = strlen( c ) + 1;

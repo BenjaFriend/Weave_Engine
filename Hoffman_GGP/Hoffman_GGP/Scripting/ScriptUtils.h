@@ -12,53 +12,49 @@ namespace Scripting
     struct EntityCreationData
     {
         EntityCreationData( const char* aName, const char* aMeshName )
-            : name( aName ), meshName( aMeshName )
         {
-            LOG_TRACE( "Load Lua Entity: {} {} ", name, meshName );
-           
-            wideName = GetWC( aMeshName );
+            LOG_TRACE( "Load Lua Entity: {} {} ", aName, aMeshName );
 
-            Mesh* mesh = std::get<1>( ResourceManager::GetInstance()->LoadMesh( wideName ) );
+            WideName = GetWC( aMeshName );
+
+            Mesh* mesh = std::get<1>( ResourceManager::GetInstance()->LoadMesh( WideName ) );
 
             // Create the entity in the entity manager
             Entity_ID id = EntityManager::GetInstance()->AddEntity(
                 mesh,
                 ResourceManager::GetInstance()->GetMaterial( 0 ),
-                name
+                aName
             );
 
-            createdEntity = EntityManager::GetInstance()->GetEntity( id );
+            CreatedEntity = EntityManager::GetInstance()->GetEntity( id );
         }
 
         ~EntityCreationData()
         {
-            LOG_TRACE( "Unload Lua Entity: {}", name );
-            createdEntity = nullptr;
-            if ( wideName != nullptr )
-            {
-                delete wideName;
-                wideName = nullptr;
-            }
+            CreatedEntity = nullptr;
+
+            SAFE_DELETE( WideName );
         }
 
         void SetPos( float x, float y, float z )
         {
-            assert( createdEntity != nullptr );
+            assert( CreatedEntity != nullptr );
 
             DirectX::XMFLOAT3 newPos( x, y, z );
-            createdEntity->SetPosition( newPos );
+            CreatedEntity->SetPosition( newPos );
         }
 
-        std::string name;
-        std::string meshName;
-        std::string vertexShaderFile;
-        std::string pixelShaderFile;
-
-
-        Entity* createdEntity = nullptr;
-
     private:
-        FileName wideName = nullptr;
+
+        /** Info to create the entity */
+        std::string VertexShaderFile;
+        std::string PixelShaderFile;
+
+        /** Pointer to the entity that was created */
+        Entity* CreatedEntity = nullptr;
+
+        /** The file name of this created entity in wide format */
+        FileName WideName = nullptr;
     };
 
     struct MaterialCreationData
@@ -80,14 +76,14 @@ namespace Scripting
             SRV_ID roughnessMap = resourceMan->LoadSRV( context, RoughnessTexture );
             SRV_ID metalMap = resourceMan->LoadSRV( context, MetalTexture );
 
-           /* Material_ID woodMatID = resourceMan->LoadMaterial( 
-                vertexShader,
-                pixelShader,
-                dif,
-                normSRV,
-                roughnessMap,
-                metalMap,
-                SamplerID );*/
+            /* Material_ID woodMatID = resourceMan->LoadMaterial(
+                 vertexShader,
+                 pixelShader,
+                 dif,
+                 normSRV,
+                 roughnessMap,
+                 metalMap,
+                 SamplerID );*/
 
         }
 
@@ -96,10 +92,6 @@ namespace Scripting
 
         }
     };
-
-
-    void TestScripting();
-
 
     class ScriptManager
     {
@@ -128,19 +120,23 @@ namespace Scripting
         /// <param name="aFile"></param>
         void LoadScript( const char* aFile );
 
+        /// <summary>
+        /// Define the lua states for any game play scripts
+        /// </summary>
+        /// <param name="aLua">the lua state to edit</param>
         void DefinedLuaTypes( sol::state & aLua );
 
         /** Lua update function callbacks */
-        std::vector<sol::function> updateTicks;
+        std::vector<sol::function> UpdateTicks;
 
         /** Lua states that should be persistent */
-        std::vector<sol::state> luaStates;
+        std::vector<sol::state> LuaStates;
 
-        EntityManager* entityMan;
+        /** Target device to create shaders/materials on */
+        ID3D11Device* Device;
 
-        ID3D11Device* device;
-
-        ID3D11DeviceContext* context;
+        /** Target context to create shaders/materials on */
+        ID3D11DeviceContext* Context;
     };
 
 
