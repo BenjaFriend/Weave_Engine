@@ -92,22 +92,22 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsanitize=cfi -Wall -Wextra -pedantic</ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
