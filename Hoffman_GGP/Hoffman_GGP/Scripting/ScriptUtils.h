@@ -73,13 +73,6 @@ namespace Scripting
             {
                 ResourceManager* resourceMan = ResourceManager::GetInstance();
 
-                //FileName vsW = vertexShader;
-                //FileName psW = GetWC( pixelShader );
-                //FileName albedoW = GetWC( albedoTexture );
-                //FileName normalW = GetWC( normalTexture );
-                //FileName roughW = GetWC( RoughnessTexture );
-                //FileName MetalW = GetWC( MetalTexture );
-
                 SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
                     aDevice,
                     aContext,
@@ -105,15 +98,6 @@ namespace Scripting
                     roughnessMap,
                     metalMap,
                     0 );   // Use default sampler
-                
-                // #TODO 
-                // Figure out what the deal with wide chars and lua is because this sucks
-                //SAFE_DELETE( vsW );
-                //SAFE_DELETE( psW );
-                //SAFE_DELETE( albedoW );
-                //SAFE_DELETE( normalW );
-                //SAFE_DELETE( roughW );
-                //SAFE_DELETE( MetalW );
             }
 
             ~MaterialCreationData() {}

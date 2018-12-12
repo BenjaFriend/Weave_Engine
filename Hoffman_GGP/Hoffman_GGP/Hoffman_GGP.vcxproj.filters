@@ -234,9 +234,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
-    <None Include="packages.config" />
     <None Include="..\Assets\Scripts\test.lua">
       <Filter>Scripting\Lua_src</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
