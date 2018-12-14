@@ -10,8 +10,9 @@
 class RenderSystem;
 
 /// <summary>
-/// 
+/// Component for controlling a directional light
 /// </summary>
+/// <author>Ben Hoffman</author>
 class DirLight : public ECS::Component<DirLight>
 {
 public:

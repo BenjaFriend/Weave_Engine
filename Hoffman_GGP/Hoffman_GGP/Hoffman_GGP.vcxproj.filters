@@ -110,6 +110,9 @@
     <ClCompile Include="Scripting\ScriptUtils.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\BoxCollider.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -210,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="Scripting\ScriptUtils.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BoxCollider.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

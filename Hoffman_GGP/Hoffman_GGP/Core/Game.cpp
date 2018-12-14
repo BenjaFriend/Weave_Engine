@@ -10,6 +10,7 @@
 #include "../ECS/IComponent.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
+#include "../Physics/BoxCollider.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -239,6 +240,7 @@ void Game::CreateBasicGeometry()
         resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
+    floorEntity->AddComponent<BoxCollider>();
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
