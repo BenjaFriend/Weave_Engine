@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Collisions.h"
+#include "BoxCollider.h"
 
 namespace Physics
 {
@@ -46,7 +47,7 @@ namespace Physics
     
         static PhysicsManager* Instance;
 
-
+        std::vector<BoxCollider*> Colliders;
 
     };  // class PhysicsManager
 }   // namespace Physics

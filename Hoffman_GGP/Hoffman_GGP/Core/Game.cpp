@@ -478,6 +478,45 @@ void Game::DrawLightSources()
 
 }
 
+void Game::DrawColliders()
+{
+
+    XMMATRIX rotMat = XMMatrixIdentity();
+    XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );
+    XMMATRIX transMat = XMMatrixTranslation( light.Position.x, light.Position.y, light.Position.z );
+
+    // Make the transform for this light
+    XMFLOAT4X4 world;
+    XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+
+    // Set up the world matrix for this light
+    vertexShader->SetMatrix4x4( "world", world );
+
+    // Wireframe mode ---------------------------------  
+    scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
+
+    // Make the transform for this light
+    XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+
+    // Draw the wireframe point light range
+    vertexShader->SetMatrix4x4( "world", world );
+
+    UnlitPixelShader->SetFloat3( "Color", finalColor );
+
+    // Copy data to the shaders
+    vertexShader->CopyAllBufferData();
+    UnlitPixelShader->CopyAllBufferData();
+
+    // Set the wireframe rasterizer state
+    context->RSSetState( WireFrame );
+    // Draw the wireframe
+    context->DrawIndexed( indexCount, 0, 0 );
+
+    // Reset the rasterizer state
+    context->RSSetState( 0 );
+    
+}
+
 // #Editor
 void Game::DrawUI()
 {

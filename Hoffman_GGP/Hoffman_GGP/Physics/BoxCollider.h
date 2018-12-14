@@ -11,6 +11,10 @@ class BoxCollider : public ECS::Component<BoxCollider>
 {
 public:
 
+    /// <summary>
+    /// A box collider component to handle simple box collision 
+    /// </summary>
+    /// <param name="aExtents">The extents of this object</param>
     BoxCollider( const VEC3 & aExtents = VEC3( 1.f, 1.f, 1.f ) );
 
     ~BoxCollider();

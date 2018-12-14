@@ -58,6 +58,7 @@ private:
     void InitLights();
 
     void DrawLightSources();
+    void DrawColliders();
     void DrawUI();
 
     /// <summary>

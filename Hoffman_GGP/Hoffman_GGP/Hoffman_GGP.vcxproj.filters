@@ -93,7 +93,6 @@
     <ClCompile Include="ECS\ComponentManager.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Resources\RenderSystem.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -111,6 +110,9 @@
       <Filter>Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Physics\BoxCollider.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -201,7 +203,6 @@
     <ClInclude Include="Lighting\PointLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Resources\RenderSystem.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -215,6 +216,9 @@
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Physics\BoxCollider.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
