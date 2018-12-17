@@ -226,7 +226,7 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-    
+
     // Load floor --------------------------------------------------------
     CubeMeshID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/cube.obj" ) );
     SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
@@ -240,7 +240,7 @@ void Game::CreateBasicGeometry()
         resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
-    floorEntity->AddComponent<BoxCollider>();
+    Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 6.f, 6.f, 6.f ) );
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
@@ -271,6 +271,8 @@ void Game::Update( float deltaTime, float totalTime )
     // Quit if the escape key is pressed
     if ( GetAsyncKeyState( VK_ESCAPE ) )
         Quit();
+
+    PhysicsMan->Update( deltaTime );
 
     // Update the camera
     FlyingCamera->Update( deltaTime );
@@ -377,6 +379,9 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
 
+    if ( DebugDrawColliders )
+        DrawColliders();
+
     if ( DrawLightGizmos )
         DrawLightSources();
 
@@ -411,6 +416,10 @@ void Game::DrawLightSources()
     vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
     vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
 
+    // Set buffers in the input assembler
+    UINT stride = sizeof( Vertex );
+    UINT offset = 0;
+
     auto PointLights = RenderSys->GetPointLights();
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
@@ -418,9 +427,7 @@ void Game::DrawLightSources()
         if ( !PointLights [ i ]->IsEnabled() ) continue;
 
         PointLightData light = PointLights [ i ]->GetLightData();
-        // Set buffers in the input assembler
-        UINT stride = sizeof( Vertex );
-        UINT offset = 0;
+
         context->IASetVertexBuffers( 0, 1, &vb, &stride, &offset );
         context->IASetIndexBuffer( ib, DXGI_FORMAT_R32_UINT, 0 );
 
@@ -471,50 +478,66 @@ void Game::DrawLightSources()
             // Draw the wireframe
             context->DrawIndexed( indexCount, 0, 0 );
 
-            // Reset the rasterizer state
+            // Reset the Rasterizer state
             context->RSSetState( 0 );
         }
     }
-
 }
 
 void Game::DrawColliders()
 {
+    Mesh* cubeMesh = resourceMan->GetMesh( CubeMeshID );
+    ID3D11Buffer * vb = cubeMesh->GetVertexBuffer();
+    ID3D11Buffer * ib = cubeMesh->GetIndexBuffer();
+    unsigned int indexCount = cubeMesh->GetIndexCount();
 
-    XMMATRIX rotMat = XMMatrixIdentity();
-    XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );
-    XMMATRIX transMat = XMMatrixTranslation( light.Position.x, light.Position.y, light.Position.z );
+    // Turn on these shaders
+    vertexShader->SetShader();
+    UnlitPixelShader->SetShader();
 
-    // Make the transform for this light
-    XMFLOAT4X4 world;
-    XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+    // Set up vertex shader
+    vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+    vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
 
-    // Set up the world matrix for this light
-    vertexShader->SetMatrix4x4( "world", world );
+    // Set buffers in the input assembler
+    UINT stride = sizeof( Vertex );
+    UINT offset = 0;
 
-    // Wireframe mode ---------------------------------  
-    scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
+    auto colliders = PhysicsMan->GetColliders();
+    for ( Physics::BoxCollider* box : colliders )
+    {
+        const VEC3 & extents = box->GetExtents();
+        const VEC3 & pos = box->GetPosition();
 
-    // Make the transform for this light
-    XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+        XMMATRIX rotMat = XMMatrixIdentity();
+        XMMATRIX scaleMat = XMMatrixScaling( extents.x, extents.y, extents.z );
+        XMMATRIX transMat = XMMatrixTranslation( pos.x, pos.y, pos.z );
 
-    // Draw the wireframe point light range
-    vertexShader->SetMatrix4x4( "world", world );
+        // Make the transform for this light
+        XMFLOAT4X4 world;
 
-    UnlitPixelShader->SetFloat3( "Color", finalColor );
+        // Wireframe mode ---------------------------------
+        // Make the transform for this light
+        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
 
-    // Copy data to the shaders
-    vertexShader->CopyAllBufferData();
-    UnlitPixelShader->CopyAllBufferData();
+        // Draw the wire frame point light range
+        vertexShader->SetMatrix4x4( "world", world );
 
-    // Set the wireframe rasterizer state
-    context->RSSetState( WireFrame );
-    // Draw the wireframe
-    context->DrawIndexed( indexCount, 0, 0 );
+        UnlitPixelShader->SetFloat3( "Color", VEC3( 1.0f, 1.0f, 0.0f ) );
 
-    // Reset the rasterizer state
+        // Copy data to the shaders
+        vertexShader->CopyAllBufferData();
+        UnlitPixelShader->CopyAllBufferData();
+
+        // Set the wire frame Rasterizer state
+        context->RSSetState( WireFrame );
+
+        // Draw the wire frame
+        context->DrawIndexed( indexCount, 0, 0 );
+    }
+
+    // Reset the Rasterizer state
     context->RSSetState( 0 );
-    
 }
 
 // #Editor

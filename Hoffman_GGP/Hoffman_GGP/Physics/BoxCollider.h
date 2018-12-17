@@ -3,52 +3,58 @@
 #include "../stdafx.h"
 
 #include "../ECS/Component.h"
+#include "PhysicsManager.h"
 
-/// <summary>
-/// Box collider component
-/// </summary>
-class BoxCollider : public ECS::Component<BoxCollider>
+namespace Physics
 {
-public:
-
     /// <summary>
-    /// A box collider component to handle simple box collision 
+    /// Box collider component
     /// </summary>
-    /// <param name="aExtents">The extents of this object</param>
-    BoxCollider( const VEC3 & aExtents = VEC3( 1.f, 1.f, 1.f ) );
+    class BoxCollider : public ECS::Component<BoxCollider>
+    {
+    public:
 
-    ~BoxCollider();
+        /// <summary>
+        /// A box collider component to handle simple box collision 
+        /// </summary>
+        /// <param name="aExtents">The extents of this object</param>
+        BoxCollider( const VEC3 & aExtents = VEC3( 1.f, 1.f, 1.f ) );
 
-    virtual void DrawEditorGUI() override;
+        ~BoxCollider();
 
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
+        virtual void DrawEditorGUI() override;
 
-    virtual const char* ComponentName() { return "BoxCollider"; }
+        virtual void SaveObject( nlohmann::json & aOutFile ) override;
 
-    ////////////////////////////////////////////////////
-    // Accessors
-    ////////////////////////////////////////////////////
+        virtual const char* ComponentName() { return "BoxCollider"; }
 
-    const bool Collides( const BoxCollider & aOther );
+        const bool Collides( const BoxCollider & aOther );
 
-    void SetCenterOffset( const VEC3 & aVal );
+        ////////////////////////////////////////////////////
+        // Accessors
+        ////////////////////////////////////////////////////
 
-    const VEC3 & GetCenterOffset() const;
+        void SetCenterOffset( const VEC3 & aVal );
 
-    void SetExtents( const VEC3 & aVal );
+        const VEC3 & GetCenterOffset() const;
 
-    const VEC3 & GetExtents() const;
+        const VEC3 GetPosition() const;
 
-    const bool SetIsTrigger() const;
+        void SetExtents( const VEC3 & aVal );
 
-    void SetIsTrigger( bool aVal );
+        const VEC3 & GetExtents() const;
 
-private:
+        const bool SetIsTrigger() const;
 
-    VEC3 CenterOffset;
+        void SetIsTrigger( bool aVal );
 
-    VEC3 Extents;
+    private:
 
-    bool IsTrigger = false;
+        VEC3 CenterOffset;
 
-};
+        VEC3 Extents;
+
+        bool IsTrigger = false;
+
+    };
+}   // namespace Physics

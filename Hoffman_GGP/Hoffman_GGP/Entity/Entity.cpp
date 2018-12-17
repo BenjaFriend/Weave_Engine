@@ -23,18 +23,10 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
 
     Acceleration = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
     Velocity = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
-    Collider = {};
-    Collider.MinX = -0.5f;
-    Collider.MaxX = +0.5f;
-    Collider.MinY = -0.5f;
-    Collider.MaxY = +0.5f;
-    Collider.MinZ = -0.5f;
-    Collider.MaxZ = +0.5f;
 
     IsActive = true;
 
     entID = EntityCount++;
-
 
     componentManager = ECS::ComponentManager::GetInstance();
 }
@@ -291,9 +283,4 @@ const float Entity::GetMass() const
 void Entity::SetMass( float aMass )
 {
     Mass = aMass;
-}
-
-const Physics::BoxCollider & Entity::GetCollider() const
-{
-    return Collider;
 }

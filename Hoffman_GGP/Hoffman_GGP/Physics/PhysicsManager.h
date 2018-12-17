@@ -2,11 +2,12 @@
 
 #include <vector>
 
-#include "Collisions.h"
 #include "BoxCollider.h"
 
 namespace Physics
 {
+    class BoxCollider;
+
     /// <summary>
     /// A singleton for calculating all rigid body physics 
     /// on any active RigidBody components. 
@@ -35,9 +36,19 @@ namespace Physics
         /// Update any rigid body components that are active
         /// </summary>
         /// <param name="dt">Delta Time</param>
-        static void Update( float dt );
+        void Update( float dt );
 
+        /// <summary>
+        /// Add a box collider that needs to be calculated in physics
+        /// </summary>
+        /// <param name="aBox">The box collider</param>
+        void AddBoxCollider( Physics::BoxCollider* aBox );
 
+        /// <summary>
+        /// Gets a reference the the colliders vector for debug drawing
+        /// </summary>
+        /// <returns>const reference to the colliders in the scene</returns>
+        const std::vector<Physics::BoxCollider*> & GetColliders() const;
 
     private:
 
@@ -47,7 +58,8 @@ namespace Physics
     
         static PhysicsManager* Instance;
 
-        std::vector<BoxCollider*> Colliders;
+        std::vector<Physics::BoxCollider*> Colliders;
 
     };  // class PhysicsManager
+
 }   // namespace Physics

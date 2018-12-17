@@ -82,8 +82,8 @@ private:
     Sampler_ID SamplerID;
     ID3D11RasterizerState* WireFrame = nullptr;
 
-    SRV_ID SkyboxSrvID;
-    Mesh_ID CubeMeshID;
+    SRV_ID SkyboxSrvID = -1;
+    Mesh_ID CubeMeshID = -1;
 
     // Skybox resources
     SimpleVertexShader* SkyBoxVS = nullptr;
@@ -121,9 +121,8 @@ private:
     bool UsePointLights = true;
 
     bool DrawLightGizmos = true;
-    bool DrawPhysicsCollider = true;
     bool DrawSkyBox = true;
-
+    bool DebugDrawColliders = true;
 
     Entity* SelectedEntity = nullptr;
     ECS::ComponentManager* ComponentMan = nullptr;
@@ -131,4 +130,3 @@ private:
     Scripting::ScriptManager* ScriptMan = nullptr;
     RenderSystem* RenderSys = nullptr;
 };
-

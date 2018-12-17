@@ -16,13 +16,13 @@ const bool Physics::Collisions::IsPointInside( const DirectX::XMFLOAT3 & aPoint,
     return distance < aSphere.Radius;
 }
 
-const bool Physics::Collisions::IsPointInside( const DirectX::XMFLOAT3 & aPoint, const BoxCollider & aBox )
+/*const bool Physics::Collisions::IsPointInside( const DirectX::XMFLOAT3 & aPoint, const BoxCollider & aBox )
 {
     return
         ( aPoint.x >= aBox.MinX && aPoint.x <= aBox.MaxX ) &&
         ( aPoint.y >= aBox.MinY && aPoint.y <= aBox.MaxY ) &&
         ( aPoint.z >= aBox.MinZ && aPoint.z <= aBox.MaxZ );
-}
+}*/
 
 const bool Physics::Collisions::Intersects( const SphereCollider & aSphere, const SphereCollider & bSphere )
 {
@@ -34,7 +34,7 @@ const bool Physics::Collisions::Intersects( const SphereCollider & aSphere, cons
 
     return distance < ( aSphere.Radius + bSphere.Radius );
 }
-
+/*
 const bool Physics::Collisions::Intersects( const BoxCollider & aBox, const BoxCollider & bBox )
 {
     return 
@@ -42,3 +42,4 @@ const bool Physics::Collisions::Intersects( const BoxCollider & aBox, const BoxC
         ( aBox.MinY <= bBox.MaxY && aBox.MaxY >= bBox.MinY ) &&
         ( aBox.MinZ <= bBox.MaxZ && aBox.MaxZ >= bBox.MinZ );
 }
+*/

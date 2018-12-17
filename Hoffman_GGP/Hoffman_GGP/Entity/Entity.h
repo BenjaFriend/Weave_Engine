@@ -152,8 +152,6 @@ private:
 
     DirectX::XMFLOAT3 Acceleration;
 
-    Physics::BoxCollider Collider;
-
     /** The name of this object */
     std::string Name = "Default Entity";
 
@@ -262,7 +260,5 @@ public:
     const float GetMass() const;
 
     void SetMass( const float aMass );
-
-    const Physics::BoxCollider & GetCollider() const;
 
 };

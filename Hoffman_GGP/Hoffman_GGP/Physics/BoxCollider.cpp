@@ -2,13 +2,14 @@
 #include "BoxCollider.h"
 #include "../Entity/EntityManager.h"
 
+using namespace Physics;
+
 BoxCollider::BoxCollider( const VEC3 & aExtents )
     : Extents( aExtents )
 {
     CenterOffset = VEC3( 0.f, 0.f, 0.f );
-        //EntityManager::GetInstance()->GetEntity( owner )->GetPosition();
+    PhysicsManager::GetInstance()->AddBoxCollider( this );
 }
-
 
 BoxCollider::~BoxCollider()
 {
@@ -46,6 +47,15 @@ void BoxCollider::SetCenterOffset( const VEC3 & aVal )
 const VEC3 & BoxCollider::GetCenterOffset() const
 {
     return CenterOffset;
+}
+
+const VEC3 Physics::BoxCollider::GetPosition() const
+{
+    VEC3 worldPos = EntityManager::GetInstance()->GetEntity( owner )->GetPosition();
+    worldPos.x += CenterOffset.x;
+    worldPos.y += CenterOffset.y;
+    worldPos.z += CenterOffset.z;
+    return worldPos;
 }
 
 void BoxCollider::SetExtents( const VEC3 & aVal )

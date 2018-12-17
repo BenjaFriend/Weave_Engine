@@ -25,9 +25,25 @@ void PhysicsManager::ReleaseInstance()
 
 void PhysicsManager::Update( float dt )
 {
-
     // Loop through any Rigid Body components
+    size_t size = Colliders.size();
+    for ( size_t i = 0; i < size; ++i )
+    {
+        for ( size_t j = 0; j < size; ++j )
+        {
+            // Calculate collisions
+        }
+    }
+}
 
+void Physics::PhysicsManager::AddBoxCollider( Physics::BoxCollider * aBox )
+{
+    Colliders.push_back( aBox );
+}
+
+const std::vector<Physics::BoxCollider*> & Physics::PhysicsManager::GetColliders() const
+{
+    return Colliders;
 }
 
 PhysicsManager::PhysicsManager()
@@ -38,4 +54,5 @@ PhysicsManager::PhysicsManager()
 PhysicsManager::~PhysicsManager()
 {
     // Remove references to any rigid bodies
+    Colliders.clear();
 }
