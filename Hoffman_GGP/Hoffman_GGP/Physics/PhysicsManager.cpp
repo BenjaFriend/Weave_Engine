@@ -32,6 +32,10 @@ void PhysicsManager::Update( float dt )
         for ( size_t j = 0; j < size; ++j )
         {
             // Calculate collisions
+            if ( i != j && Colliders [ i ]->Collides( *Colliders [ j ] ) )
+            {
+                LOG_TRACE( "Collision! {} {}", i, j );
+            }
         }
     }
 }

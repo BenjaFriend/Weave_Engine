@@ -8,7 +8,7 @@
 namespace Physics
 {
     /// <summary>
-    /// Box collider component
+    /// Box collider component for basic collisions
     /// </summary>
     class BoxCollider : public ECS::Component<BoxCollider>
     {
@@ -38,6 +38,11 @@ namespace Physics
 
         const VEC3 & GetCenterOffset() const;
 
+        /// <summary>
+        /// Get the world position of this box collider with respect 
+        /// to the owning object.
+        /// </summary>
+        /// <returns>VEC3 that is the center of this collider</returns>
         const VEC3 GetPosition() const;
 
         void SetExtents( const VEC3 & aVal );

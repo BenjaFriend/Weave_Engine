@@ -240,10 +240,18 @@ void Game::CreateBasicGeometry()
         resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
-    Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 6.f, 6.f, 6.f ) );
+    Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
     entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
+
+    XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
+    Entity_ID secondBoxID = entityMan->AddEntity(
+        resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), newPos, "Box 2" );
+
+    Entity* secondBox = entityMan->GetEntity( secondBoxID );
+    Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
+
 
     SelectedEntity = entityMan->GetEntity( floorID );
 

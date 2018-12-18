@@ -30,13 +30,26 @@ const bool BoxCollider::Collides( const BoxCollider & aOther )
     VEC3 ownerPos = EntityManager::GetInstance()->GetEntity( owner )->GetPosition();
     VEC3 otherPos = EntityManager::GetInstance()->GetEntity( aOther.GetOwner() )->GetPosition();
 
+    // Account for the offset of the collider
+    ownerPos.x += this->CenterOffset.x;
+    ownerPos.y += this->CenterOffset.y;
+    ownerPos.z += this->CenterOffset.z;
+
+    otherPos.x += aOther.CenterOffset.x;
+    otherPos.y += aOther.CenterOffset.y;
+    otherPos.z += aOther.CenterOffset.z;
+
+    /*
+      return (a.minX <= b.maxX && a.maxX >= b.minX) &&
+             (a.minY <= b.maxY && a.maxY >= b.minY) &&
+             (a.minZ <= b.maxZ && a.maxZ >= b.minZ);
+
+    */
     return 
-        ownerPos.x - this->Extents.x <= otherPos.x + aOther.Extents.x &&
-        ownerPos.x + this->Extents.x >= otherPos.x + aOther.Extents.x &&
-        ownerPos.y - this->Extents.y <= otherPos.y + aOther.Extents.y &&
-        ownerPos.y + this->Extents.y >= otherPos.y + aOther.Extents.y &&
-        ownerPos.z - this->Extents.z <= otherPos.z + aOther.Extents.z && 
-        ownerPos.z + this->Extents.z >= otherPos.z + aOther.Extents.z;
+        ( ownerPos.x - Extents.x / 2 <= otherPos.x + aOther.Extents.x / 2 && ownerPos.x + Extents.x / 2 >= otherPos.x - aOther.Extents.x / 2 ) &&
+        ( ownerPos.y - Extents.y / 2 <= otherPos.y + aOther.Extents.y / 2 && ownerPos.y + Extents.y / 2 >= otherPos.y - aOther.Extents.y / 2 ) && 
+        ( ownerPos.z - Extents.z / 2 <= otherPos.z + aOther.Extents.z / 2 && ownerPos.z + Extents.z / 2 >= otherPos.z - aOther.Extents.z / 2 );
+
 }
 
 void BoxCollider::SetCenterOffset( const VEC3 & aVal )
