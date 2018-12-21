@@ -50,7 +50,7 @@ function start()
     bronzeMat
   );
 
-  stoneEntiy:SetPos(0, 0, 0)
+  stoneEntiy:SetPos(0, 4, 0)
   bronzeEntity:SetPos(-2, 1 , 0)
   bronze2:SetPos(2, 1, 0)
 
