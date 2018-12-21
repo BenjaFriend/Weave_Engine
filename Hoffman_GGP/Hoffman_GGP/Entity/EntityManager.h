@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "Entity.h"
-#include "../Core/Definitions.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

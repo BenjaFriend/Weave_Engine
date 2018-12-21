@@ -320,7 +320,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
     <ClInclude Include="Core\DebugSettings.h" />
-    <ClInclude Include="Core\Definitions.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Core\InputManager.h" />

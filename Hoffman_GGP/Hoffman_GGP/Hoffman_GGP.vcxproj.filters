@@ -117,9 +117,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Definitions.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Core\DXCore.h">
       <Filter>Core</Filter>
     </ClInclude>
