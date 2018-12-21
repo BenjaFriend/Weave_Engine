@@ -326,10 +326,10 @@ void Game::Draw( float deltaTime, float totalTime )
 
         if ( CurrentEntity->GetMaterial() != nullptr )
         {
-            RenderSys->RenderFrame(
-                CurrentEntity->GetMaterial()->GetVertexShader(),
-                CurrentEntity->GetMaterial()->GetPixelShader()
-            );
+            //RenderSys->RenderFrame(
+            //    CurrentEntity->GetMaterial()->GetVertexShader(),
+            //    CurrentEntity->GetMaterial()->GetPixelShader()
+            //);
 
             // Send camera info ---------------------------------------------------------
             pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
@@ -346,6 +346,11 @@ void Game::Draw( float deltaTime, float totalTime )
             context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
         }
     }
+
+    RenderSys->RenderFrame(
+        CurrentEntity->GetMaterial()->GetVertexShader(),
+        CurrentEntity->GetMaterial()->GetPixelShader()
+    );
 
     // Draw the Sky box -------------------------------------
 

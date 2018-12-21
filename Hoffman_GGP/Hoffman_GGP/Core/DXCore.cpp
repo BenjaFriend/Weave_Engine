@@ -458,7 +458,7 @@ void DXCore::UpdateTimer()
 // --------------------------------------------------------
 void DXCore::UpdateTitleBarStats()
 {
-    fpsFrameCount++;
+    ++fpsFrameCount;
 
     // Only calc FPS and update title bar once per second
     float timeDiff = totalTime - fpsTimeElapsed;

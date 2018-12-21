@@ -2,12 +2,6 @@
 
 #include "../stdafx.h"
 
-#if defined(_WIN32) || defined(_WIN64)
-
-#include <Windows.h>
-
-#endif // Windows
-
 #include <stdio.h>
 #include <unordered_map>
 #include <vector>

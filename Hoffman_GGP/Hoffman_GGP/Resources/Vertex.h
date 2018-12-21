@@ -1,11 +1,11 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include "../stdafx.h"
 
 struct Vertex
 {
-    DirectX::XMFLOAT3 Position;	    // The position of the vertex
-    DirectX::XMFLOAT2 UV;           // The UV position of the vertex
-    DirectX::XMFLOAT3 Normal;       // Normal Direction of the vertex
-    DirectX::XMFLOAT3 Tangent;		// Tangent for normal mapping
+    VEC3 Position;  // The position of the vertex
+    VEC2 UV;        // The UV position of the vertex
+    VEC3 Normal;    // Normal Direction of the vertex
+    VEC3 Tangent;	// Tangent for normal mapping
 };
