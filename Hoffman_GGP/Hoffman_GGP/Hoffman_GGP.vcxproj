@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -73,23 +73,27 @@
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <CustomBuildAfterTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
+    <CustomBuildAfterTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)_Output\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets />
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
@@ -137,6 +141,9 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -164,6 +171,9 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -195,6 +205,9 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <Message>
       </Message>
     </PreLinkEvent>
+    <CustomBuildStep>
+      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -226,6 +239,9 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <Message>
       </Message>
     </PreLinkEvent>
+    <CustomBuildStep>
+      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\additional\imgui\imgui\imgui.cpp">
