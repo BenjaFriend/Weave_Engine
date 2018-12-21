@@ -27,7 +27,14 @@ void ScriptManager::LoadScripts()
 {
     // #TODO 
     // Load all scripts currently here
-    LoadScript( "Assets/Scripts/test.lua" );
+    //LoadScript( "Assets/Scripts/test.lua" );
+
+    ReadDirectory( "Assets/Scripts/", ScriptPaths );
+
+    for ( auto it : ScriptPaths )
+    {
+        LoadScript( ( it ).c_str() );      
+    }
 }
 
 void ScriptManager::LoadScript( const char * aFile )
@@ -59,6 +66,7 @@ void ScriptManager::LoadScript( const char * aFile )
     }
 
     LuaStates.push_back( std::move( lua ) );
+    LOG_TRACE( "Loaded Lua script: {}", aFile );
 }
 
 void ScriptManager::DefinedLuaTypes( sol::state & aLua )
@@ -102,4 +110,14 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
         "y", &VEC3::y,
         "z", &VEC3::z
         );
+}
+
+void ScriptManager::ReadDirectory( const std::string & dirName, std::vector<std::string>& aPathVec )
+{
+    namespace fs = std::filesystem;
+
+    for ( const auto & entry : fs::directory_iterator( dirName ) )
+    {    
+        aPathVec.push_back( entry.path().generic_string() );
+    }
 }

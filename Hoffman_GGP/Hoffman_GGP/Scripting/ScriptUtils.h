@@ -2,6 +2,7 @@
 
 #define SOL_CHECK_ARGUMENTS 1
 #include <sol.hpp>
+#include <filesystem>
 
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
@@ -41,6 +42,8 @@ namespace Scripting
         /// <param name="aLua">the lua state to edit</param>
         void DefinedLuaTypes( sol::state & aLua );
 
+        void ReadDirectory( const std::string& dirName, std::vector<std::string>& aPathVec );
+
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;
 
@@ -53,6 +56,8 @@ namespace Scripting
         /** Target context to create shaders/materials on */
         ID3D11DeviceContext* Context;
 
+        /** Vector of script file paths */
+        std::vector<std::string> ScriptPaths;
 
         /***********************************************************/
         /* Creation data definitions                               */
@@ -162,6 +167,7 @@ namespace Scripting
             }
 
         private:
+
 
             /** Info to create the entity */
             std::string VertexShaderFile;

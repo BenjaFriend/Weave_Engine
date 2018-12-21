@@ -248,5 +248,8 @@
       <Filter>Scripting\Lua_src</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\Assets\Scripts\loadMaterials.lua">
+      <Filter>Scripting\Lua_src</Filter>
+    </None>
   </ItemGroup>
 </Project>

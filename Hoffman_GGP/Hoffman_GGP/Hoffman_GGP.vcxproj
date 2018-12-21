@@ -123,6 +123,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"
@@ -142,7 +143,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+      <Command>xcopy /e /h /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -153,6 +154,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"
@@ -172,7 +174,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+      <Command>xcopy /e /h /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -185,6 +187,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -206,7 +209,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       </Message>
     </PreLinkEvent>
     <CustomBuildStep>
-      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+      <Command>xcopy /e /h /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -219,6 +222,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <AdditionalIncludeDirectories>$(SolutionDir)additional\Autodesk_2019_0\include;$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -240,7 +244,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       </Message>
     </PreLinkEvent>
     <CustomBuildStep>
-      <Command>xcopy /e /d /h /s /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
+      <Command>xcopy /e /h /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -401,6 +405,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Assets\Scripts\loadMaterials.lua" />
     <None Include="..\Assets\Scripts\test.lua" />
     <None Include="ClassDiagram.cd" />
     <None Include="Lighting.hlsli" />
