@@ -4,7 +4,8 @@
 using namespace Physics;
 using namespace DirectX;
 
-RigidBody::RigidBody()
+RigidBody::RigidBody( float aMass ) :
+    Mass( aMass )
 {
     Acceleration = { 0.f, 0.f, 0.f };
     Velocity = { 0.f, 0.f, 0.f };
@@ -16,6 +17,7 @@ RigidBody::~RigidBody()
 
 void RigidBody::DrawEditorGUI()
 {
+    ImGui::InputFloat( "Mass", &Mass );
 }
 
 void RigidBody::SaveObject( nlohmann::json & aOutFile )
@@ -30,7 +32,7 @@ void RigidBody::ApplyAcceleration()
     XMStoreFloat3(
         &Velocity,
         XMLoadFloat3( &Velocity ) + curAcceleration );
-    
+
     // Add to position and store
     XMStoreFloat3(
         &Position,
@@ -69,4 +71,9 @@ const float RigidBody::GetMass() const
 void RigidBody::SetMass( float aMass )
 {
     Mass = aMass;
+}
+
+const EPhysicsLayer Physics::RigidBody::GetPhysicsLayer() const
+{
+    return Layer;
 }

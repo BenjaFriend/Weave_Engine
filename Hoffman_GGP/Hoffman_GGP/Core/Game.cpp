@@ -11,6 +11,7 @@
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
 #include "../Physics/BoxCollider.h"
+#include "../Physics/RigidBody.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -241,6 +242,7 @@ void Game::CreateBasicGeometry()
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
+    Physics::RigidBody* rb = floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
 

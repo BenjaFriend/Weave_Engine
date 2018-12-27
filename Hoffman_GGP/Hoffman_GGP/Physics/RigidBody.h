@@ -15,7 +15,7 @@ namespace Physics
     {
     public:
 
-        RigidBody();
+        RigidBody( float aMass );
 
         ~RigidBody();
 
@@ -48,6 +48,7 @@ namespace Physics
 
         void SetMass( const float aMass );
 
+        const EPhysicsLayer GetPhysicsLayer() const;
     private:
 
         /** The mass of this object */
@@ -57,6 +58,7 @@ namespace Physics
 
         VEC3 Acceleration;
 
+        EPhysicsLayer Layer;
     };
 
 }   // namespace Physics
