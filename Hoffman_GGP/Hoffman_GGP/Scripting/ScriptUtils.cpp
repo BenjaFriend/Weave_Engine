@@ -79,14 +79,8 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
         sol::constructors<
         EntityCreationData( std::string aName, FileName aMeshName, MaterialCreationData* matData )
         >(),
-
         "SetPos", &EntityCreationData::SetPos,
-
-        "SetScale", &EntityCreationData::SetScale,
-
-        "SetMass", &EntityCreationData::SetMass,
-        "GetMass", &EntityCreationData::GetMass
-
+        "SetScale", &EntityCreationData::SetScale
         );
 
     aLua.new_usertype<MaterialCreationData>( "Material",

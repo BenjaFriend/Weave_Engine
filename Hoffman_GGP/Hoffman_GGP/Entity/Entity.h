@@ -60,17 +60,6 @@ public:
     /// <param name="aProjection">Project matrix</param>
     void PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection );
 
-    /// <summary>
-    /// Apply a force to this entity
-    /// </summary>
-    /// <param name="aForce">The force to apply</param>
-    void ApplyForce( const VEC3 aForce );
-
-    /// <summary>
-    /// Apply the current acceleration to the velocity and set acceleration to 0
-    /// </summary>
-    void ApplyAcceleration();
-
     // Components ------------------------------
 
     /// <summary>
@@ -108,7 +97,7 @@ public:
         this->componentManager->RemoveComponent<T>( this->entID );
     }
 
-    const ECS::ComponentMap * GetAllComponents( ) const
+    const ECS::ComponentMap * GetAllComponents() const
     {
         return componentManager->GetAllComponents( this->entID );
     }
@@ -135,13 +124,6 @@ private:
 
     /** Flag for if this entity is active or not */
     bool IsActive;
-
-    /** The mass of this object */
-    float Mass = 1.0f;
-
-    DirectX::XMFLOAT3 Velocity;
-
-    DirectX::XMFLOAT3 Acceleration;
 
     /** The name of this object */
     std::string Name = "Default Entity";
@@ -237,15 +219,5 @@ public:
     /// </summary>
     /// <param name="newName">The new name of this entity</param>
     void SetName( std::string newName );
-
-    // Physics -------------------------------
-
-    void SetVelocity( const DirectX::XMFLOAT3& aVel );
-
-    const DirectX::XMFLOAT3 GetVelocity() const;
-    
-    const float GetMass() const;
-
-    void SetMass( const float aMass );
 
 };

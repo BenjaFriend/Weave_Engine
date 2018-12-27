@@ -668,14 +668,6 @@ void Game::DrawUI()
 
             ImGui::Separator();
 
-            if ( ImGui::CollapsingHeader( "Physics" ) )
-            {
-                float newMass = SelectedEntity->GetMass();
-                ImGui::InputFloat( "Mass", &newMass );
-
-                SelectedEntity->SetMass( newMass );
-            }
-
             // Loop through each of this entity's components
             auto compMap = SelectedEntity->GetAllComponents();
             if ( compMap != nullptr )

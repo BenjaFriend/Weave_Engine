@@ -21,9 +21,6 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
     Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
     Rotation = DirectX::XMFLOAT4();
 
-    Acceleration = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
-    Velocity = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
-
     IsActive = true;
 
     entID = EntityCount++;
@@ -94,35 +91,6 @@ void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
     PixelShader->CopyAllBufferData();
 }
 
-void Entity::ApplyForce( const VEC3 aForce )
-{
-    XMVECTOR force = XMLoadFloat3( &aForce );
-    // Scale the vector by the mass
-    force /= Mass;
-
-    // Add to position and store
-    XMStoreFloat3(
-        &Acceleration,
-        XMLoadFloat3( &Acceleration ) + force );
-}
-
-void Entity::ApplyAcceleration()
-{
-    XMVECTOR curAcceleration = XMLoadFloat3( &Acceleration );
-
-    // Apply the acceleration to the velocity
-    XMStoreFloat3(
-        &Velocity,
-        XMLoadFloat3( &Velocity ) + curAcceleration );
-
-    // Add to position and store
-    XMStoreFloat3(
-        &Position,
-        XMLoadFloat3( &Position ) + XMLoadFloat3( &Velocity ) );
-
-    XMStoreFloat3( &Acceleration, curAcceleration * 0.f );
-}
-
 void Entity::SaveObject( nlohmann::json & aOutFile )
 {
     aOutFile[ "Entities" ][ Name ][ "POS" ][ "X" ] = Position.x;
@@ -166,7 +134,6 @@ const Material* Entity::GetMaterial() const
 
 const DirectX::XMFLOAT3 & Entity::GetPosition() const
 {
-    // TODO: insert return statement here
     return Position;
 }
 
@@ -253,24 +220,4 @@ const std::string & Entity::GetName() const
 void Entity::SetName( std::string newName )
 {
     Name = newName;
-}
-
-void Entity::SetVelocity( const DirectX::XMFLOAT3 & aVel )
-{
-    Velocity = aVel;
-}
-
-const DirectX::XMFLOAT3 Entity::GetVelocity() const
-{
-    return Velocity;
-}
-
-const float Entity::GetMass() const
-{
-    return Mass;
-}
-
-void Entity::SetMass( float aMass )
-{
-    Mass = aMass;
 }

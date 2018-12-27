@@ -162,19 +162,7 @@ namespace Scripting
                 DirectX::XMFLOAT3 newScale( x, y, z );
                 CreatedEntity->SetScale( newScale );
             }
-
-            void SetMass( const float aVal )
-            {
-                assert( CreatedEntity != nullptr );
-                CreatedEntity->SetMass( aVal );
-            }
-
-            const float GetMass() const
-            {
-                assert( CreatedEntity != nullptr );
-                return CreatedEntity->GetMass();
-            }
-
+            
         private:
 
 
