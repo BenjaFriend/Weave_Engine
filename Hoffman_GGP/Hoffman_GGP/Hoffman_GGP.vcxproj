@@ -293,6 +293,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Physics\BoxCollider.cpp" />
     <ClCompile Include="Physics\Collisions.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\RenderSystem.cpp" />
@@ -337,6 +338,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Physics\BoxCollider.h" />
     <ClInclude Include="Physics\Collisions.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Physics\RigidBody.h" />
     <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />

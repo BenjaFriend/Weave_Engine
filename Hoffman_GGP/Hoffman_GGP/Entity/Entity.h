@@ -12,12 +12,6 @@ class Mesh;
 class Material;
 class Component;
 
-enum EPhysicsLayer
-{
-    MOVEABLE,
-    STATIC
-};
-
 /// <summary>
 ///  Represents a game entity and their transformations.
 /// </summary>
@@ -142,9 +136,6 @@ private:
     /** Flag for if this entity is active or not */
     bool IsActive;
 
-    /** The current physics layer of this entity */
-    EPhysicsLayer PhysicsLayer = EPhysicsLayer::MOVEABLE;
-
     /** The mass of this object */
     float Mass = 1.0f;
 
@@ -248,10 +239,6 @@ public:
     void SetName( std::string newName );
 
     // Physics -------------------------------
-
-    const EPhysicsLayer GetPhysicsLayer() const;
-
-    void SetPhysicsLayer( const EPhysicsLayer aLayer );
 
     void SetVelocity( const DirectX::XMFLOAT3& aVel );
 

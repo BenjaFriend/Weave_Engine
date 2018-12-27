@@ -255,16 +255,6 @@ void Entity::SetName( std::string newName )
     Name = newName;
 }
 
-const EPhysicsLayer Entity::GetPhysicsLayer() const
-{
-    return PhysicsLayer;
-}
-
-void Entity::SetPhysicsLayer( EPhysicsLayer aLayer )
-{
-    PhysicsLayer = aLayer;
-}
-
 void Entity::SetVelocity( const DirectX::XMFLOAT3 & aVel )
 {
     Velocity = aVel;
