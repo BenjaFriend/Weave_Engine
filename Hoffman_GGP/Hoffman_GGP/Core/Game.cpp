@@ -243,7 +243,6 @@ void Game::CreateBasicGeometry()
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
 
     entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
-    entityMan->GetEntity( floorID )->SetPhysicsLayer( EPhysicsLayer::STATIC );
 
     XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
     Entity_ID secondBoxID = entityMan->AddEntity(

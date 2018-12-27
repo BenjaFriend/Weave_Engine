@@ -115,6 +115,9 @@
     <ClCompile Include="Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\RigidBody.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Definitions.h">
@@ -219,6 +222,9 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PhysicsManager.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\RigidBody.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>

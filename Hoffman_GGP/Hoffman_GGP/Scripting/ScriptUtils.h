@@ -9,6 +9,10 @@
 
 namespace Scripting
 {
+    /// <summary>
+    /// Class for loading in all scripts in the assets folder
+    /// </summary>
+    /// <author>Ben Hoffman</author>
     class ScriptManager
     {
     public:
@@ -42,6 +46,11 @@ namespace Scripting
         /// <param name="aLua">the lua state to edit</param>
         void DefinedLuaTypes( sol::state & aLua );
 
+        /// <summary>
+        /// Read a given directory and add any files in it to the given vector
+        /// </summary>
+        /// <param name="dirName">The directory to search</param>
+        /// <param name="aPathVec">vector of file paths to add to</param>
         void ReadDirectory( const std::string& dirName, std::vector<std::string>& aPathVec );
 
         /** Lua update function callbacks */
