@@ -18,13 +18,13 @@ cobbleStoneInfo = {
 function start()
 
   -- Load in a material
-  cobbleStoneMat = LoadMaterial( cobbleStoneInfo )
+  --cobbleStoneMat = LoadMaterial( cobbleStoneInfo )
 
   -- Create a table of data to be used for entity creatoin
   Entity1Data = {
 	name = "This REALLLLL",
 	mesh = "Assets/Models/sphere.obj",
-	material = cobbleStoneMat,
+	material = LoadMaterial( cobbleStoneInfo ),
 	pos = VEC3.new(2, 5, 0)
   }
 

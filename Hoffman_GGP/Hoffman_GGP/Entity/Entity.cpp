@@ -132,7 +132,7 @@ const Material* Entity::GetMaterial() const
     return EntityMaterial;
 }
 
-const DirectX::XMFLOAT3 & Entity::GetPosition() const
+const VEC3 & Entity::GetPosition() const
 {
     return Position;
 }
@@ -154,7 +154,7 @@ const VEC3 & Entity::GetScale() const
     return Scale;
 }
 
-void Entity::SetScale( const DirectX::XMFLOAT3 & aNewScale )
+void Entity::SetScale( const VEC3 & aNewScale )
 {
     Scale = aNewScale;
 }
@@ -176,7 +176,7 @@ void Entity::SetRotation( const DirectX::XMFLOAT4 & aNewRot )
     Rotation = aNewRot;
 }
 
-XMFLOAT4X4 Entity::GetWorldMatrix()
+const XMFLOAT4X4 Entity::GetWorldMatrix() const
 {
     XMMATRIX ScaleMatrix = XMMatrixScaling(
         Scale.x,

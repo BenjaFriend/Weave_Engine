@@ -79,7 +79,18 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
         );
 
     aLua.new_usertype<Entity>( "Entity",
-        "GetName", &Entity::GetName
+        "GetName", &Entity::GetName,
+        "SetName", &Entity::SetName,
+        "SetIsActive", &Entity::SetIsActive,
+        "GetIsActive", &Entity::GetIsActive,
+        "GetPosition", &Entity::GetPosition,
+        "SetPosX", &Entity::SetPosX,
+        "SetPosY", &Entity::SetPosY,
+        "SetPosZ", &Entity::SetPosZ,
+        "GetScale", &Entity::GetScale,
+        "SetScaleX", &Entity::SetScaleX,
+        "SetScaleY", &Entity::SetScaleY,
+        "SetScaleZ", &Entity::SetScaleZ
         );
 }
 
@@ -159,7 +170,7 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
         metalMap,
         0 );   // Use default sampler
 
-    LOG_WARN( "Load material called!" );
+    LOG_TRACE( "Load material called!" );
 
     return resourceMan->GetMaterial( matID );
 }
@@ -174,6 +185,7 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     sol::optional<VEC3> unsafe_pos = aEntityInfo [ "pos" ];
     if ( unsafe_pos != sol::nullopt )
     {
+
         pos = unsafe_pos.value();
     }
 
@@ -187,6 +199,6 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
         pos,
         name
     );
-    LOG_WARN( "Create entity {}", name );
+    LOG_TRACE( "Create entity {}", name );
     return EntityManager::GetInstance()->GetEntity( id );
 }

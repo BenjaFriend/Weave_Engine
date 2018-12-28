@@ -135,9 +135,9 @@ private:
     ECS::ComponentManager * componentManager = nullptr;
 
 
-////////////////////////////////////////////////////
-// Accessors
-////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    // Accessors
+    ////////////////////////////////////////////////////
 public:
 
     /** Returns this entity's mesh */
@@ -163,14 +163,18 @@ public:
     /// <param name="aZ">new Z value of the position</param>
     void SetPosition( const float aX, const float aY, const float aZ );
 
+    void SetPosX( const float aVal ) { Position.x = aVal; }
+    void SetPosY( const float aVal ) { Position.y = aVal; }
+    void SetPosZ( const float aVal ) { Position.z = aVal; }
+
     /** Returns this entity's current scale */
-    const DirectX::XMFLOAT3 & GetScale() const;
+    const VEC3 & GetScale() const;
 
     /// <summary>
     /// Set the position of this entity 
     /// </summary>
     /// <param name="aNewScale">The new scale of this object</param>
-    void SetScale( const DirectX::XMFLOAT3 & aNewScale );
+    void SetScale( const VEC3 & aNewScale );
 
     /// <summary>
     /// Set the scale of the this entity 
@@ -180,21 +184,24 @@ public:
     /// <param name="aZ">new Z value of the scale</param>
     void SetScale( const float aX, const float aY, const float aZ );
 
+    void SetScaleX( const float aVal ) { Scale.x = aVal; }
+    void SetScaleY( const float aVal ) { Scale.y = aVal; }
+    void SetScaleZ( const float aVal ) { Scale.z = aVal; }
+
     /** Returns this entity's current rotation */
-    const DirectX::XMFLOAT4 & GetRotation() const;
+    const VEC4 & GetRotation() const;
 
     /// <summary>
     /// Set the rotation of this entity 
     /// </summary>
     /// <param name="aNewRot">The new rotation of this object</param>
-    void SetRotation( const DirectX::XMFLOAT4 & aNewRot );
+    void SetRotation( const VEC4 & aNewRot );
 
-    /**
-    * Calculate the world matrix for this entity
-    *
-    * @return	The calculate world matrix for this entity
-    */
-    DirectX::XMFLOAT4X4 GetWorldMatrix();
+    /// <summary>
+    /// Calculate the world matrix for this entity
+    /// </summary>
+    /// <returns>The calculate world matrix for this entity</returns>
+    const VEC4x4 GetWorldMatrix() const;
 
     /// <summary>
     /// Sets if this entity is active or not
