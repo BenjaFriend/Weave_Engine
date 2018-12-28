@@ -1,6 +1,8 @@
 
 posY = 0;
+LoadedEnt = {}
 
+--- Material creation data
 cobbleStoneInfo = {
     VS = "VertexShader.cso",
 	PS = "PixelShader.cso",
@@ -15,16 +17,20 @@ cobbleStoneInfo = {
 -----------------------------------------------
 function start()
 
+  -- Load in a material
   cobbleStoneMat = LoadMaterial( cobbleStoneInfo )
 
-  cobble1 = Entity.new(
-    "Cobblestone Material Sphere",
-    "Assets/Models/sphere.obj",
-    cobbleStoneMat
-  );
+  -- Create a table of data to be used for entity creatoin
+  Entity1Data = {
+	name = "This REALLLLL",
+	mesh = "Assets/Models/sphere.obj",
+	material = cobbleStoneMat,
+	pos = VEC3.new(2, 5, 0)
+  }
 
-  cobble1:SetPos(2, 1, 0)
-
+  -- Load in an entity with this type of data
+  LoadedEnt = CreateEntity( Entity1Data )
+	
 end
 
 -----------------------------------

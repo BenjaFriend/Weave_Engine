@@ -66,23 +66,20 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     aLua [ "device" ] = Device;
     aLua [ "context" ] = Context;
     aLua.set_function( "LoadMaterial", &Scripting::ScriptManager::LoadMaterial, this );
-
+    aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
 
     // Define the entity types
-    aLua.new_usertype<EntityCreationData>( "Entity",
-        sol::constructors<
-        EntityCreationData( std::string aName, FileName aMeshName, Material* aMat )
-        >(),
-        "SetPos", &EntityCreationData::SetPos,
-        "SetScale", &EntityCreationData::SetScale
-        );
-
     aLua.new_usertype<Material>( "Material" );
 
     aLua.new_usertype<VEC3>( "VEC3",
+        sol::constructors<VEC3( float x, float y, float z )>(),
         "x", &VEC3::x,
         "y", &VEC3::y,
         "z", &VEC3::z
+        );
+
+    aLua.new_usertype<Entity>( "Entity",
+        "GetName", &Entity::GetName
         );
 }
 
@@ -124,7 +121,7 @@ void ScriptManager::RunLuaFunction(
     }
 }
 
-/*** Called from lua */
+/** Called from Lua */
 Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
 {
     FileName vsName = aMatInfo [ "VS" ];
@@ -165,4 +162,31 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
     LOG_WARN( "Load material called!" );
 
     return resourceMan->GetMaterial( matID );
+}
+
+/** Called from Lua */
+Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
+{
+    std::string name = aEntityInfo [ "name" ];
+    FileName meshName = aEntityInfo [ "mesh" ];
+    Material* mat = aEntityInfo [ "material" ];
+    VEC3 pos = {};
+    sol::optional<VEC3> unsafe_pos = aEntityInfo [ "pos" ];
+    if ( unsafe_pos != sol::nullopt )
+    {
+        pos = unsafe_pos.value();
+    }
+
+    ResourceManager* resMan = ResourceManager::GetInstance();
+    Mesh* mesh = std::get<1>( resMan->LoadMesh( meshName ) );
+
+    // Create the entity in the entity manager
+    Entity_ID id = EntityManager::GetInstance()->AddEntity(
+        mesh,
+        mat,
+        pos,
+        name
+    );
+    LOG_WARN( "Create entity {}", name );
+    return EntityManager::GetInstance()->GetEntity( id );
 }

@@ -2,9 +2,10 @@
 
 #define SOL_CHECK_ARGUMENTS 1
 #include <sol.hpp>
-#include <filesystem>
+#include <filesystem>   // std::filesystem::directory_iterator
 
 #include "../Entity/EntityManager.h"
+#include "../Entity/Entity.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"
 
@@ -83,8 +84,16 @@ namespace Scripting
         /// <summary>
         /// Load in a material with the given table of info about it
         /// </summary>
-        /// <param name="aMatInfo"></param>
+        /// <param name="aMatInfo">Info about the material</param>
+        /// <returns>Pointer to the loaded material</returns>
         Material* LoadMaterial( const sol::table & aMatInfo );
+
+        /// <summary>
+        /// Load in an entity with the given info about it from a table
+        /// </summary>
+        /// <param name="aEntityInfo">Sol table from Lua</param>
+        /// <returns>Pointer to the created entity</returns>
+        Entity* CreateEntity( const sol::table & aEntityInfo );
 
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;
@@ -104,71 +113,6 @@ namespace Scripting
         /** Vector of script file paths */
         std::vector<std::string> ScriptPaths;
 
-        /*********************************************************/
-        /* Creation data definitions                             */
-        /*********************************************************/
-
-        struct EntityCreationData
-        {
-            EntityCreationData( 
-                std::string aName,
-                FileName aMeshName,
-                Material* aMat )
-            {
-                LOG_TRACE( "Load Lua Entity: {} ", aName );
-
-                MeshName = aMeshName;
-
-                ResourceManager* resMan = ResourceManager::GetInstance();
-
-                Mesh* mesh = std::get<1>( resMan->LoadMesh( MeshName ) );
-
-                // Create the entity in the entity manager
-                Entity_ID id = EntityManager::GetInstance()->AddEntity(
-                    mesh,
-                    aMat,
-                    aName
-                );
-
-                CreatedEntity = EntityManager::GetInstance()->GetEntity( id );
-            }
-
-            ~EntityCreationData()
-            {
-                CreatedEntity = nullptr;
-            }
-
-            void SetPos( const float x, const float y, const float z )
-            {
-                assert( CreatedEntity != nullptr );
-
-                DirectX::XMFLOAT3 newPos( x, y, z );
-                CreatedEntity->SetPosition( newPos );
-            }
-
-            void SetScale( const float x, const float y, const float z )
-            {
-                assert( CreatedEntity != nullptr );
-
-                DirectX::XMFLOAT3 newScale( x, y, z );
-                CreatedEntity->SetScale( newScale );
-            }
-            
-        private:
-
-
-            /** Info to create the entity */
-            std::string VertexShaderFile;
-            std::string PixelShaderFile;
-
-            /** Pointer to the entity that was created */
-            Entity* CreatedEntity = nullptr;
-
-            /** The file name of this created entity in wide format */
-            FileName MeshName;
-        };
-
     };
-
 
 }   // namespace Scripting

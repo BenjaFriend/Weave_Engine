@@ -137,7 +137,7 @@ const DirectX::XMFLOAT3 & Entity::GetPosition() const
     return Position;
 }
 
-void Entity::SetPosition( const DirectX::XMFLOAT3 & aNewPos )
+void Entity::SetPosition( const VEC3 & aNewPos )
 {
     Position = aNewPos;
 }
@@ -149,7 +149,7 @@ void Entity::SetPosition( const float aX, const float aY, const float aZ )
     Position.z = aZ;
 }
 
-const DirectX::XMFLOAT3 & Entity::GetScale() const
+const VEC3 & Entity::GetScale() const
 {
     return Scale;
 }
