@@ -134,6 +134,7 @@ void Game::Init()
     BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
 
     ScriptMan->LoadScripts();
+    inputManager->BindAction( ScriptMan, &Scripting::ScriptManager::OnClick, Input::InputType::Fire );
 }
 
 // --------------------------------------------------------

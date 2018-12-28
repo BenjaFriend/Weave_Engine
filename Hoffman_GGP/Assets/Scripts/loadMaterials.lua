@@ -1,3 +1,5 @@
+bronze2 = {}
+curY = 1
 -----------------------------------------------
 --- Called from C++ when we are initialized ---
 -----------------------------------------------
@@ -21,6 +23,16 @@ function start()
     bronzeMat
   );
   
-  bronze2:SetPos(-5, 1, 0)
+  bronze2:SetPos(-5, curY, 0)
+
+end
+
+-----------------------------------------------
+--- Called from C++ when there is a click   ---
+-----------------------------------------------
+function onClick()
+
+	curY = curY + 1
+	bronze2:SetPos(-5, curY, 0 )
 
 end

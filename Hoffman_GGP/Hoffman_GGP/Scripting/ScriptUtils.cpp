@@ -12,6 +12,7 @@ ScriptManager::ScriptManager( ID3D11Device* aDevice, ID3D11DeviceContext* aConte
 ScriptManager::~ScriptManager()
 {
     UpdateTicks.clear();
+    OnClickCallbacks.clear();
     LuaStates.clear();
 }
 
@@ -23,17 +24,20 @@ void ScriptManager::Update( float deltaTime )
     }
 }
 
+void Scripting::ScriptManager::OnClick()
+{
+    for ( auto it : OnClickCallbacks )
+        it();
+    LOG_TRACE( "Script click callback!" );
+}
+
 void ScriptManager::LoadScripts()
 {
-    // #TODO 
-    // Load all scripts currently here
-    //LoadScript( "Assets/Scripts/test.lua" );
-
     ReadDirectory( "Assets/Scripts/", ScriptPaths );
 
     for ( auto it : ScriptPaths )
     {
-        LoadScript( ( it ).c_str() );      
+        LoadScript( ( it ).c_str() );
     }
 }
 
@@ -48,22 +52,11 @@ void ScriptManager::LoadScript( const char * aFile )
     // Load in this script...
     lua.script_file( aFile );
 
-    // Call start on the script if it has it
-    sol::optional <sol::function> unsafe_startFunc = lua [ "start" ];
-    if ( unsafe_startFunc != sol::nullopt )
-    {
-        sol::function& start_function = unsafe_startFunc.value();
-        start_function();
-    }
+    RunLuaFunction( lua, "start" );
 
-    // Store the update function for later if there is one
-    sol::optional <sol::function> unsafe_updateFunc = lua [ "update" ];
-    if ( unsafe_updateFunc != sol::nullopt )
-    {
-        sol::function& update_func = unsafe_updateFunc.value();
+    AddCallback( lua, "update", UpdateTicks );
+    AddCallback( lua, "onClick", OnClickCallbacks );
 
-        UpdateTicks.emplace_back( update_func );
-    }
 
     LuaStates.push_back( std::move( lua ) );
     LOG_TRACE( "Loaded Lua script: {}", aFile );
@@ -106,12 +99,38 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
         );
 }
 
-void ScriptManager::ReadDirectory( const std::string & dirName, std::vector<std::string>& aPathVec )
+void ScriptManager::ReadDirectory( 
+    const std::string & dirName,
+    std::vector<std::string>& aPathVec )
 {
     namespace fs = std::filesystem;
 
     for ( const auto & entry : fs::directory_iterator( dirName ) )
-    {    
+    {
         aPathVec.push_back( entry.path().generic_string() );
+    }
+}
+
+void Scripting::ScriptManager::AddCallback( 
+    const sol::state & lua,
+    const char * aFuncName,
+    std::vector<sol::function>& aCallbackVec )
+{
+    // Store the function for later if there is one
+    sol::optional <sol::function> unsafe_func = lua [ aFuncName ];
+    if ( unsafe_func != sol::nullopt )
+    {
+        sol::function& safe_func = unsafe_func.value();
+        aCallbackVec.emplace_back( safe_func );
+    }
+}
+
+void Scripting::ScriptManager::RunLuaFunction( const sol::state & lua, const char * aFuncName )
+{
+    sol::optional <sol::function> unsafe_Func = lua [ "start" ];
+    if ( unsafe_Func != sol::nullopt )
+    {
+        // Run that function
+        unsafe_Func.value()();
     }
 }
