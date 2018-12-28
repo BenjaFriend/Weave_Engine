@@ -47,7 +47,7 @@ void ScriptManager::LoadScript( const char * aFile )
     lua.open_libraries( sol::lib::base );
 
     // Set lua types
-    DefinedLuaTypes( lua );
+    DefineLuaTypes( lua );
 
     // Load in this script...
     lua.script_file( aFile );
@@ -57,26 +57,29 @@ void ScriptManager::LoadScript( const char * aFile )
     AddCallback( lua, "update", UpdateTicks );
     AddCallback( lua, "onClick", OnClickCallbacks );
 
-
     LuaStates.push_back( std::move( lua ) );
     LOG_TRACE( "Loaded Lua script: {}", aFile );
 }
 
-void ScriptManager::DefinedLuaTypes( sol::state & aLua )
+void ScriptManager::DefineLuaTypes( sol::state & aLua )
 {
     aLua [ "device" ] = Device;
     aLua [ "context" ] = Context;
+    aLua.set_function( "LoadMaterial", &Scripting::ScriptManager::LoadMaterial, this );
+
 
     // Define the entity types
     aLua.new_usertype<EntityCreationData>( "Entity",
         sol::constructors<
-        EntityCreationData( std::string aName, FileName aMeshName, MaterialCreationData* matData )
+        EntityCreationData( std::string aName, FileName aMeshName, Material* aMat )
         >(),
         "SetPos", &EntityCreationData::SetPos,
         "SetScale", &EntityCreationData::SetScale
         );
 
-    aLua.new_usertype<MaterialCreationData>( "Material",
+    aLua.new_usertype<Material>( "Material" );
+
+    aLua.new_usertype<MaterialCreationData>( "MaterialData",
 
         sol::constructors<
         MaterialCreationData(
@@ -99,7 +102,7 @@ void ScriptManager::DefinedLuaTypes( sol::state & aLua )
         );
 }
 
-void ScriptManager::ReadDirectory( 
+void ScriptManager::ReadDirectory(
     const std::string & dirName,
     std::vector<std::string>& aPathVec )
 {
@@ -111,7 +114,7 @@ void ScriptManager::ReadDirectory(
     }
 }
 
-void Scripting::ScriptManager::AddCallback( 
+void ScriptManager::AddCallback(
     const sol::state & lua,
     const char * aFuncName,
     std::vector<sol::function>& aCallbackVec )
@@ -125,12 +128,57 @@ void Scripting::ScriptManager::AddCallback(
     }
 }
 
-void Scripting::ScriptManager::RunLuaFunction( const sol::state & lua, const char * aFuncName )
+void ScriptManager::RunLuaFunction(
+    const sol::state & lua,
+    const char * aFuncName )
 {
     sol::optional <sol::function> unsafe_Func = lua [ "start" ];
     if ( unsafe_Func != sol::nullopt )
     {
         // Run that function
-        unsafe_Func.value()();
+        unsafe_Func.value()( );
     }
+}
+
+/*** Called from lua */
+Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
+{
+    FileName vsName = aMatInfo [ "VS" ];
+    FileName psName = aMatInfo [ "PS" ];
+    FileName albedo = aMatInfo [ "albedo" ];
+    FileName norm = aMatInfo [ "norm" ];
+    FileName roughness = aMatInfo [ "roughness" ];
+    FileName metal = aMatInfo [ "metal" ];
+
+    ResourceManager* resourceMan = ResourceManager::GetInstance();
+
+    SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
+        Device,
+        Context,
+        vsName );
+
+    SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
+        Device,
+        Context,
+        psName );
+
+    assert( ps && vs );
+
+    SRV_ID dif = resourceMan->LoadSRV( Context, albedo );
+    SRV_ID normSRV = resourceMan->LoadSRV( Context, norm );
+    SRV_ID roughnessMap = resourceMan->LoadSRV( Context, roughness );
+    SRV_ID metalMap = resourceMan->LoadSRV( Context, metal );
+
+    Material_ID matID = resourceMan->LoadMaterial(
+        vs,
+        ps,
+        dif,
+        normSRV,
+        roughnessMap,
+        metalMap,
+        0 );   // Use default sampler
+
+    LOG_WARN( "Load material called!" );
+
+    return resourceMan->GetMaterial( matID );
 }

@@ -6,6 +6,7 @@
 
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
+#include "../Resources/Materials/Material.h"
 
 namespace Scripting
 {
@@ -49,7 +50,7 @@ namespace Scripting
         /// Define the lua states for any game play scripts
         /// </summary>
         /// <param name="aLua">the lua state to edit</param>
-        void DefinedLuaTypes( sol::state & aLua );
+        void DefineLuaTypes( sol::state & aLua );
 
         /// <summary>
         /// Read a given directory and add any files in it to the given vector
@@ -79,6 +80,12 @@ namespace Scripting
         /// <param name="aFuncName">Name of the function to run</param>
         void RunLuaFunction( const sol::state & lua, const char* aFuncName );
 
+        /// <summary>
+        /// Load in a material with the given table of info about it
+        /// </summary>
+        /// <param name="aMatInfo"></param>
+        Material* LoadMaterial( const sol::table & aMatInfo );
+
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;
 
@@ -97,61 +104,16 @@ namespace Scripting
         /** Vector of script file paths */
         std::vector<std::string> ScriptPaths;
 
-        /***********************************************************/
-        /* Creation data definitions                               */
-        /***********************************************************/
+        /*********************************************************/
+        /* Creation data definitions                             */
+        /*********************************************************/
 
-        struct MaterialCreationData
-        {
-            MaterialCreationData(
-                ID3D11Device* aDevice,
-                ID3D11DeviceContext* aContext,
-                FileName vertexShader,
-                FileName pixelShader,
-                FileName albedoTexture,
-                FileName normalTexture,
-                FileName roughnessTexture,
-                FileName metalTexture
-            )
-            {
-                ResourceManager* resourceMan = ResourceManager::GetInstance();
-
-                SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
-                    aDevice,
-                    aContext,
-                    vertexShader );
-
-                SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
-                    aDevice,
-                    aContext,
-                    pixelShader );
-                
-                assert( ps && vs );
-
-                SRV_ID dif = resourceMan->LoadSRV( aContext, albedoTexture);
-                SRV_ID normSRV = resourceMan->LoadSRV( aContext, normalTexture );
-                SRV_ID roughnessMap = resourceMan->LoadSRV( aContext, roughnessTexture );
-                SRV_ID metalMap = resourceMan->LoadSRV( aContext, metalTexture );
-
-                materialID = resourceMan->LoadMaterial(
-                    vs,
-                    ps,
-                    dif,
-                    normSRV,
-                    roughnessMap,
-                    metalMap,
-                    0 );   // Use default sampler
-            }
-
-            ~MaterialCreationData() {}
-
-            Material_ID materialID;
-        };
-
-        // Create the entity type
         struct EntityCreationData
         {
-            EntityCreationData( std::string aName, FileName aMeshName, MaterialCreationData* matData )
+            EntityCreationData( 
+                std::string aName,
+                FileName aMeshName,
+                Material* aMat )
             {
                 LOG_TRACE( "Load Lua Entity: {} ", aName );
 
@@ -164,7 +126,7 @@ namespace Scripting
                 // Create the entity in the entity manager
                 Entity_ID id = EntityManager::GetInstance()->AddEntity(
                     mesh,
-                    resMan->GetMaterial( matData->materialID ),
+                    aMat,
                     aName
                 );
 
