@@ -79,22 +79,6 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
 
     aLua.new_usertype<Material>( "Material" );
 
-    aLua.new_usertype<MaterialCreationData>( "MaterialData",
-
-        sol::constructors<
-        MaterialCreationData(
-            ID3D11Device* aDevice,
-            ID3D11DeviceContext* aContext,
-            FileName vertexShader,
-            FileName pixelShader,
-            FileName albedoTexture,
-            FileName normalTexture,
-            FileName roughnessTexture,
-            FileName metalTexture
-        )>()
-
-        );
-
     aLua.new_usertype<VEC3>( "VEC3",
         "x", &VEC3::x,
         "y", &VEC3::y,
