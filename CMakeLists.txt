@@ -1,5 +1,5 @@
 #######################
-# Generated from:  
+# This cmake file was Generated from:  
 # cmake-converter -p .\Hoffman_GGP\Hoffman_GGP\Hoffman_GGP.vcxproj -i
 #######################
 

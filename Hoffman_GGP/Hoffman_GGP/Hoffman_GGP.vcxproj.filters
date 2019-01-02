@@ -163,7 +163,6 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Core\DebugSettings.h" />
     <ClInclude Include="Core\Logger.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -246,7 +245,6 @@
     <None Include="Lighting.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="..\Assets\Scripts\test.lua">
       <Filter>Scripting\Lua_src</Filter>
     </None>

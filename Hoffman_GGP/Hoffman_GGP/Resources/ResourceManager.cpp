@@ -178,6 +178,7 @@ const Material_ID ResourceManager::LoadMaterial(
     const Sampler_ID aSamplerID
 )
 {
+    // #TODO: Only create this material if does not yet exist
     Material* newMat = new Material(
         aVertexShader,
         aPixelShader,

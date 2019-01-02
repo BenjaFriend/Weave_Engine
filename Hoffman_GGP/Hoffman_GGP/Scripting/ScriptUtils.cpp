@@ -170,8 +170,6 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
         metalMap,
         0 );   // Use default sampler
 
-    LOG_TRACE( "Load material called!" );
-
     return resourceMan->GetMaterial( matID );
 }
 
@@ -199,6 +197,5 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
         pos,
         name
     );
-    LOG_TRACE( "Create entity {}", name );
     return EntityManager::GetInstance()->GetEntity( id );
 }
