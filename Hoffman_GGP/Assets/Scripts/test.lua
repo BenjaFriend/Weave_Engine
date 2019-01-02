@@ -4,6 +4,7 @@ LoadedEnt = {}
 
 --- Material creation data
 cobbleStoneInfo = {
+	name = "Cobblestone Mat",
     VS = "VertexShader.cso",
 	PS = "PixelShader.cso",
 	albedo = "Assets/Textures/cobblestone_albedo.png",
@@ -17,10 +18,7 @@ cobbleStoneInfo = {
 -----------------------------------------------
 function start()
 
-  -- Load in a material
-  --cobbleStoneMat = LoadMaterial( cobbleStoneInfo )
-
-  -- Create a table of data to be used for entity creatoin
+  -- Create a table of data to be used for entity creation
   Entity1Data = {
 	name = "This REALLLLL",
 	mesh = "Assets/Models/sphere.obj",
@@ -31,16 +29,4 @@ function start()
   -- Load in an entity with this type of data
   LoadedEnt = CreateEntity( Entity1Data )
 	
-end
-
------------------------------------
---- Called from C++ every frame ---
------------------------------------
-function update( dt )
-
-  --posY = posY + totalTime * math.sin(0.8)
-
-
-  --woodEntity:SetPos(0, posY, 0)
-
 end

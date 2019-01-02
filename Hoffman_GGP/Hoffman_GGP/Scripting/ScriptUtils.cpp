@@ -135,6 +135,7 @@ void ScriptManager::RunLuaFunction(
 /** Called from Lua */
 Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
 {
+    Material_ID name = aMatInfo [ "name" ];
     FileName vsName = aMatInfo [ "VS" ];
     FileName psName = aMatInfo [ "PS" ];
     FileName albedo = aMatInfo [ "albedo" ];
@@ -161,7 +162,8 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
     SRV_ID roughnessMap = resourceMan->LoadSRV( Context, roughness );
     SRV_ID metalMap = resourceMan->LoadSRV( Context, metal );
 
-    Material_ID matID = resourceMan->LoadMaterial(
+    return resourceMan->LoadMaterial(
+        name,
         vs,
         ps,
         dif,
@@ -169,8 +171,6 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
         roughnessMap,
         metalMap,
         0 );   // Use default sampler
-
-    return resourceMan->GetMaterial( matID );
 }
 
 /** Called from Lua */

@@ -168,7 +168,8 @@ ID3D11SamplerState * ResourceManager::GetSampler( const SRV_ID aID )
     return Samplers [ aID ];
 }
 
-const Material_ID ResourceManager::LoadMaterial(
+Material* ResourceManager::LoadMaterial(
+    const Material_ID aName,
     SimpleVertexShader* aVertexShader,
     SimplePixelShader* aPixelShader,
     const SRV_ID aDiffSrvID,
@@ -178,6 +179,10 @@ const Material_ID ResourceManager::LoadMaterial(
     const Sampler_ID aSamplerID
 )
 {
+    if ( Materials.find( aName ) != Materials.end() )
+    {
+        return Materials [ aName ];
+    }
     // #TODO: Only create this material if does not yet exist
     Material* newMat = new Material(
         aVertexShader,
@@ -188,17 +193,18 @@ const Material_ID ResourceManager::LoadMaterial(
         SRViews [ aMetalSrvID ]->srv,
         Samplers [ aSamplerID ]
     );
-
-    Materials.push_back( newMat );
-
-    return Materials.size() - 1;
+    Materials [ aName ] = newMat;
+    LOG_TRACE( "Loaded new material: {}", aName );
+    return newMat;
 }
 
 Material* ResourceManager::GetMaterial( const Material_ID aID )
 {
-    assert( aID >= 0 && aID < Materials.size() );
-
-    return Materials [ aID ];
+    if ( Materials.find( aID ) != Materials.end() )
+    {
+        return Materials [ aID ];
+    }
+    return nullptr;
 }
 
 // Private constructor
@@ -238,14 +244,14 @@ void ResourceManager::UnloadMeshes()
 void ResourceManager::UnloadMaterials()
 {
     // Delete each material that has been added
-    for ( auto it = Materials.begin(); it != Materials.end(); ++it )
+    for ( auto itr = Materials.begin(); itr != Materials.end(); ++itr )
     {
-        delete ( *it );
+        if ( itr->second != nullptr )
+            delete ( itr->second );
     }
-
     Materials.clear();
-    LOG_TRACE( "Unloaded Materials!" );
 
+    LOG_TRACE( "Unloaded Materials!" );
 }
 
 void ResourceManager::UnloadSRVs()

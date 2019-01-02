@@ -2,6 +2,7 @@ curY = 1
 
 --- Material creation data
 cobbleStoneInfo = {
+	name = "Cobblestone Mat",
     VS = "VertexShader.cso",
 	PS = "PixelShader.cso",
 	albedo = "Assets/Textures/cobblestone_albedo.png",

@@ -26,11 +26,10 @@ class SimpleVertexShader;
 class SimplePixelShader;
 class ISimpleShader;
 
-using Mesh_ID = size_t;
-using Material_ID = size_t;
-using SRV_ID = size_t;
-using Sampler_ID = size_t;
-
+using Mesh_ID       = size_t;
+using Material_ID   = std::string;
+using SRV_ID        = size_t;
+using Sampler_ID    = size_t;
 
 /// <summary>
 /// Loading and unloading all graphics resources like SRV's, meshes, and 
@@ -151,7 +150,8 @@ public:
     /// <param name="aNormSrvID"></param>
     /// <param name="aSamplerID"></param>
     /// <returns></returns>
-    const Material_ID LoadMaterial(
+    Material* LoadMaterial(
+        const Material_ID aName,
         SimpleVertexShader* aVertexShader,
         SimplePixelShader* aPixelShader,
         const SRV_ID aDiffSrvID,
@@ -165,7 +165,7 @@ public:
     /// Get a pointer to the given material with this ID
     /// </summary>
     /// <param name="aID">ID of the mesh you are trying to access</param>
-    /// <returns>Pointer to hte given mesh</returns>
+    /// <returns>Pointer to the given mesh</returns>
     Material* GetMaterial( const Material_ID aID );
 
     /// <summary>
@@ -254,7 +254,9 @@ private:
 
     std::vector<LoadedMesh*> Meshes;
 
-    std::vector<Material*> Materials;
+    //std::vector<Material*> Materials;
+
+    std::unordered_map<std::string, Material*> Materials;
 
     /// <summary>
     /// The currently loaded Shader Resource Views

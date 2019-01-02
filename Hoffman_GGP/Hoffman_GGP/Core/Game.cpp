@@ -235,11 +235,11 @@ void Game::CreateBasicGeometry()
     SRV_ID floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
     SRV_ID floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
     SRV_ID floorMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
-    Material_ID floorMatID = resourceMan->LoadMaterial( vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
+    Material* floorMat = resourceMan->LoadMaterial( "Floor Mat", vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(
-        resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), floorPos, "Floor" );
+        resourceMan->GetMesh( CubeMeshID ), floorMat, floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
@@ -249,7 +249,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
     Entity_ID secondBoxID = entityMan->AddEntity(
-        resourceMan->GetMesh( CubeMeshID ), resourceMan->GetMaterial( floorMatID ), newPos, "Box 2" );
+        resourceMan->GetMesh( CubeMeshID ), floorMat, newPos, "Box 2" );
 
     Entity* secondBox = entityMan->GetEntity( secondBoxID );
     Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
