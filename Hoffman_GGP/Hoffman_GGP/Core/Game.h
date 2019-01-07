@@ -20,6 +20,15 @@
 
 #include "json/json.hpp"
 
+// Uncomment to not compile the editor
+#define EDITOR_ON
+
+#if defined(EDITOR_ON)
+
+#include "../Editor/EditorCore.h"
+
+#endif
+
 /////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
@@ -59,7 +68,6 @@ private:
 
     void DrawLightSources();
     void DrawColliders();
-    void DrawUI();
 
     /// <summary>
     /// Save all entities to a scene json file 
@@ -129,4 +137,10 @@ private:
     Physics::PhysicsManager* PhysicsMan = nullptr;
     Scripting::ScriptManager* ScriptMan = nullptr;
     RenderSystem* RenderSys = nullptr;
+
+#if defined(EDITOR_ON)
+
+    Editor::EditorCore* editor = nullptr;
+
+#endif
 };

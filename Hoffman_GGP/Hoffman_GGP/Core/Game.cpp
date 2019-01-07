@@ -70,6 +70,12 @@ Game::~Game()
     Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
 
+#if defined(EDITOR_ON)
+
+    Editor::EditorCore::ReleaseInstance();
+
+#endif
+
     if ( RenderSys != nullptr )
     {
         delete RenderSys;
@@ -93,6 +99,12 @@ void Game::Init()
     resourceMan = ResourceManager::Initalize( device );
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
+
+#if defined(EDITOR_ON)
+
+    editor = Editor::EditorCore::GetInstance();
+
+#endif
     RenderSys = new RenderSystem();
     ScriptMan = new Scripting::ScriptManager( device, context );
 
@@ -402,9 +414,9 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #endif // _DEBUG
 
-#if defined(ENABLE_UI)
+#if defined(EDITOR_ON)
 
-    DrawUI();
+    editor->Update();
 
 #endif  // ENABLE_UI
 
@@ -553,151 +565,6 @@ void Game::DrawColliders()
 
     // Reset the Rasterizer state
     context->RSSetState( 0 );
-}
-
-// #Editor
-void Game::DrawUI()
-{
-#if defined( ENABLE_UI )
-    // Create a new IMGui frame
-    ImGui_ImplDX11_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-
-    // Draw the UI options here -----------------------------------
-
-    {   // Options --------------------------
-        ImGui::Begin( "Demo Options" );
-
-        if ( ImGui::Button( "Save Scene", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
-        {
-            SaveScene();
-        }
-
-        if ( ImGui::Button( "Load Scene", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
-        {
-            LoadScene();
-        }
-
-        ImGui::Checkbox( "Use Dir Lights", &UseDirLights );
-
-        ImGui::Checkbox( "Use Point Lights", &UsePointLights );
-        ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
-
-        ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
-
-        if ( !DrawSkyBox )
-            ImGui::ColorEdit3( "Background Color", ( float* ) ( &BackgroundColor ) ); // Edit 3 floats representing a color
-
-        ImGui::Separator();
-
-        // Lighting settings
-        ImGui::SliderFloat( "Light Move Speed", &LightMoveSpeed, 0.0f, 1.0f );
-
-        ImGui::Separator();
-
-        ImGui::InputFloat( "Gravity", &Gravity );
-
-        ImGui::End();   // If you want more than one window, then use ImGui::Beigin
-    }
-
-    {   // Stats and Info ---------------------------
-        ImGui::Begin( "Info" );
-        ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
-
-        ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
-        ImGui::Separator();
-
-        ImGui::Text( "R.Click - Rotate" );
-        ImGui::Text( "WASD    - Move" );
-        ImGui::Text( "Space   - Go Up" );
-        ImGui::Text( "X       - Go Down" );
-
-        ImGui::End();
-    }
-
-    {   // Draw the hierarchy of objects --------------------------
-        ImGui::Begin( "Hierarchy" );
-
-        Entity* CurrentEntity = nullptr;
-
-        for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
-        {
-            CurrentEntity = entityMan->GetEntity( i );
-
-            if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
-            {
-                SelectedEntity = CurrentEntity;
-            }
-            ImGui::Separator();
-        }
-
-        ImGui::End();
-    }
-
-    {   // Inspector --------------------------
-        if ( SelectedEntity != nullptr )
-        {
-            ImGui::Begin( "Inspector" );
-
-            bool isActive = SelectedEntity->GetIsActive();
-            ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
-
-            char newNameBuf [ 256 ];
-            strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
-            ImGui::InputText( "Name", newNameBuf, 256 );
-
-            SelectedEntity->SetName( newNameBuf );
-            SelectedEntity->SetIsActive( isActive );
-
-            ImGui::Separator();
-
-            if ( ImGui::CollapsingHeader( "Transform" ) )
-            {
-                XMFLOAT3 newPos = SelectedEntity->GetPosition();
-                ImGui::InputFloat3( "Position", ( float* ) &newPos );
-
-                XMFLOAT3 newScale = SelectedEntity->GetScale();
-                ImGui::InputFloat3( "Scale", ( float* ) &newScale );
-
-                XMFLOAT4 newRotation = SelectedEntity->GetRotation();
-                ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
-
-                // The position of the current object
-                SelectedEntity->SetPosition( newPos );
-                SelectedEntity->SetScale( newScale );
-                SelectedEntity->SetRotation( newRotation );
-            }
-
-            ImGui::Separator();
-
-            // Loop through each of this entity's components
-            auto compMap = SelectedEntity->GetAllComponents();
-            if ( compMap != nullptr )
-            {
-                for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
-                {
-                    ImGui::Separator();
-
-                    ECS::IComponent* theComp = ( compItr->second );
-                    if ( theComp != nullptr )
-                    {
-                        if ( ImGui::CollapsingHeader( theComp->ComponentName() ) )
-                        {
-                            theComp->DrawEditorGUI();
-                        }
-                    }
-                }
-            }
-
-            ImGui::End();
-        }
-    }
-
-
-    ImGui::Render();
-    ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
-#endif
 }
 
 // #Editor

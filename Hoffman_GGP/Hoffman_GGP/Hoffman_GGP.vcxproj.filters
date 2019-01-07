@@ -34,6 +34,9 @@
     <Filter Include="Scripting\Lua_src">
       <UniqueIdentifier>{f4299d4f-fb99-4db1-815f-65924fdef5fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{9acedad1-1d3a-4a7e-8add-fccce6d03104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -117,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="Physics\RigidBody.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EditorCore.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="Physics\RigidBody.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EditorCore.h">
+      <Filter>Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
