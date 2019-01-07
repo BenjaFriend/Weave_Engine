@@ -17,15 +17,6 @@
 #include "../ECS/ComponentManager.h"
 #include "../Resources/RenderSystem.h"
 
-// Uncomment to not compile the editor
-#define EDITOR_ON
-
-#if defined(EDITOR_ON)
-
-#include "../Editor/EditorCore.h"
-
-#endif
-
 /////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
@@ -114,15 +105,8 @@ private:
     bool DrawSkyBox = true;
     bool DebugDrawColliders = true;
 
-    Entity* SelectedEntity = nullptr;
     ECS::ComponentManager* ComponentMan = nullptr;
     Physics::PhysicsManager* PhysicsMan = nullptr;
     Scripting::ScriptManager* ScriptMan = nullptr;
     RenderSystem* RenderSys = nullptr;
-
-#if defined(EDITOR_ON)
-
-    Editor::EditorCore* editor = nullptr;
-
-#endif
 };

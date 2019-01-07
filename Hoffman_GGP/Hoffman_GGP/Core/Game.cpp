@@ -38,11 +38,11 @@ Game::Game( HINSTANCE hInstance )
     //EntityCount = 0;
     FlyingCamera = new Camera();
 
-    //#if defined(DEBUG) || defined(_DEBUG)
-        // Do we want a console window?  Probably only in debug mode
+#if defined( DEBUG ) || defined( _DEBUG )
+    // Do we want a console window?  Probably only in debug mode
     CreateConsoleWindow( 500, 120, 32, 120 );
     printf( "Console window created successfully.  Feel free to printf() here.\n" );
-    //#endif
+#endif
 
 }
 
@@ -70,12 +70,6 @@ Game::~Game()
     Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
 
-#if defined(EDITOR_ON)
-
-    Editor::EditorCore::ReleaseInstance();
-
-#endif
-
     if ( RenderSys != nullptr )
     {
         delete RenderSys;
@@ -100,11 +94,6 @@ void Game::Init()
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
 
-#if defined(EDITOR_ON)
-
-    editor = Editor::EditorCore::GetInstance();
-
-#endif
     RenderSys = new RenderSystem();
     ScriptMan = new Scripting::ScriptManager( device, context );
 
@@ -265,9 +254,6 @@ void Game::CreateBasicGeometry()
 
     Entity* secondBox = entityMan->GetEntity( secondBoxID );
     Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
-
-
-    SelectedEntity = entityMan->GetEntity( floorID );
 
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( context, L"Assets/Textures/SunnyCubeMap.dds" );

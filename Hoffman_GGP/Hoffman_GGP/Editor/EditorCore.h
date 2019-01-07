@@ -4,6 +4,11 @@
 
 #include "../Entity/EntityManager.h"
 #include "../ECS/ComponentManager.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+
 #include "json/json.hpp"
 #include <iomanip>
 

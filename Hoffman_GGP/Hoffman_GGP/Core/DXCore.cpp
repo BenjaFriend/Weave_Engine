@@ -71,7 +71,7 @@ DXCore::DXCore(
 // --------------------------------------------------------
 DXCore::~DXCore()
 {
-#ifdef ENABLE_UI
+#if defined( ENABLE_UI )
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
@@ -89,6 +89,13 @@ DXCore::~DXCore()
 
     Logger::ReleaseInstance();
     logger = nullptr;
+
+#if defined( EDITOR_ON )
+
+    Editor::EditorCore::ReleaseInstance();
+    editor = nullptr;
+
+#endif
 }
 
 // --------------------------------------------------------
@@ -166,8 +173,14 @@ HRESULT DXCore::InitWindow()
 
     logger = Logger::GetInstance();
     LOG_TRACE( "Logger initlaized!" );
-    // Return an "everything is ok" HRESULT value
 
+#if defined( EDITOR_ON )
+
+    editor = Editor::EditorCore::GetInstance();
+
+#endif  // EDITOR_ON
+
+    // Return an "everything is ok" HRESULT value
     return S_OK;
 }
 

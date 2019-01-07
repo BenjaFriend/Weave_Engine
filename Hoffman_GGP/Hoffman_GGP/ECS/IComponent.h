@@ -6,6 +6,14 @@
 #include "../stdafx.h"
 #include "../Resources/ISaveable.h"
 
+#if defined( ENABLE_UI )
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+
+#endif
+
 namespace ECS
 {
     using ComponentID = size_t;

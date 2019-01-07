@@ -16,6 +16,11 @@
 
 #include "Core/Logger.h"    // Logging definitions to only happen in debug
 
+/**************************************************************/
+/* Runtime Options                                            */
+/**************************************************************/
+#define ENABLE_UI
+#define EDITOR_ON
 
 /**************************************************************/
 /* Platform specifications                                    */
@@ -42,19 +47,6 @@ typedef std::string                FileName;
 // GLM
 
 #endif
-
-
-
-#define  ENABLE_UI
-
-#if defined( ENABLE_UI )
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-#endif
-
-
-// Replace the new keyword with the debug new 
 
 /**************************************************************/
 /* Debug Macros                                               */
