@@ -3,7 +3,7 @@
 #include "../stdafx.h"
 #include "Game.h"
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined( _WIN32 ) || defined( _WIN64 )
 
 #include <Windows.h>
 
@@ -17,13 +17,8 @@ int WINAPI WinMain(
     int nCmdShow )				// How the window should be shown (we ignore this)
 {
 #if defined(DEBUG) | defined(_DEBUG)
-    // Enable memory leak detection as a quick and dirty
-    // way of determining if we forgot to clean something up
-    //  - You may want to use something more advanced, like Visual Leak Detector
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-
     _CrtSetReportMode( _CRT_ERROR, _CRTDBG_MODE_DEBUG );
-
 #endif
 
     // Ensure "Current Directory" (relative path) is always the .exe's folder
@@ -42,7 +37,7 @@ int WINAPI WinMain(
     {
         // Get the real, full path to this executable, end the string before
         // the filename itself and then set that as the current directory
-        char currentDir[ 1024 ] = {};
+        char currentDir [ 1024 ] = {};
         GetModuleFileName( 0, currentDir, 1024 );
         char* lastSlash = strrchr( currentDir, '\\' );
         if ( lastSlash )
@@ -72,6 +67,14 @@ int WINAPI WinMain(
     // Begin the message and game loop, and then return
     // whatever we get back once the game loop is over
     return dxGame.Run();
+}
+
+#else   // _WIN32 or _WIN64
+
+int main( int argc, char* argv [] )
+{
+    assert( "Unimplemented main!" );
+    return 0;
 }
 
 #endif

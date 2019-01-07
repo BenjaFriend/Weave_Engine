@@ -4,7 +4,8 @@
 
 #include "../Entity/EntityManager.h"
 #include "../ECS/ComponentManager.h"
-
+#include "json/json.hpp"
+#include <iomanip>
 
 namespace Editor
 {
@@ -35,11 +36,27 @@ namespace Editor
         /// <param name="dt">Delta Time of this frame</param>
         void Update();
 
+        /// <summary>
+        /// Save all entities to a scene json file 
+        /// </summary>
+        void SaveScene();
+
+        /// <summary>
+        /// Loads entities from the scene json file 
+        /// </summary>
+        void LoadScene();
+
     private:
 
         EditorCore();
 
         ~EditorCore();
+
+        /// <summary>
+        /// Load in any resources (shaders, meshes, etc) that the 
+        /// editor may need
+        /// </summary>
+        void LoadResources();
 
         /// <summary>
         /// Draw the editor UI
@@ -63,9 +80,14 @@ namespace Editor
         /** Flag to draw colliders or not */
         bool DebugDrawColliders = true;
 
+        /** Entity manager pointer for editing entity data */
         EntityManager* entityMan = nullptr;
 
+        /** The entity that the user wants to change */
         Entity* SelectedEntity = nullptr;
+
+        /** The current scene file to save all entities to */
+        char SceneFile [ 64 ] = "Scene_test.json";
 
     };
 

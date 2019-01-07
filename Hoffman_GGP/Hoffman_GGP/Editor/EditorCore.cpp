@@ -4,6 +4,7 @@
 
 using namespace Editor;
 
+// Initialize the editor singleton
 EditorCore* EditorCore::Instance = nullptr;
 
 EditorCore * EditorCore::GetInstance()
@@ -33,12 +34,20 @@ void EditorCore::Update()
 EditorCore::EditorCore()
 {
     entityMan = EntityManager::GetInstance();
+
+    LoadResources();
 }
 
 EditorCore::~EditorCore()
 {
     entityMan = nullptr;
     SelectedEntity = nullptr;
+}
+
+void EditorCore::LoadResources()
+{
+    // Load in any meshes that we may need for gizmos
+
 }
 
 void EditorCore::DrawUI()
@@ -51,7 +60,8 @@ void EditorCore::DrawUI()
 
     // Draw the UI options here -----------------------------------
 
-    {   // Options --------------------------
+    // Options --------------------------
+    {   
         ImGui::Begin( "Demo Options" );
 
         ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
@@ -65,7 +75,8 @@ void EditorCore::DrawUI()
         ImGui::End();   // If you want more than one window, then use ImGui::Beigin
     }
 
-    {   // Stats and Info ---------------------------
+    // Stats and Info ---------------------------
+    {   
         ImGui::Begin( "Info" );
         ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
 
@@ -80,7 +91,8 @@ void EditorCore::DrawUI()
         ImGui::End();
     }
 
-    {   // Draw the hierarchy of objects --------------------------
+    // Draw the hierarchy of objects --------------------------
+    {   
         ImGui::Begin( "Hierarchy" );
 
         Entity* CurrentEntity = nullptr;
@@ -99,7 +111,8 @@ void EditorCore::DrawUI()
         ImGui::End();
     }
 
-    {   // Inspector --------------------------
+    // Inspector --------------------------
+    {   
         if ( SelectedEntity != nullptr )
         {
             ImGui::Begin( "Inspector" );
@@ -166,4 +179,66 @@ void EditorCore::DrawUI()
 
 void EditorCore::DrawGizmos()
 {
+}
+
+void EditorCore::SaveScene()
+{
+    nlohmann::json njson;
+
+    njson [ "Scene Name" ] = "Test_Scene";
+
+    Entity* CurrentEntity = entityMan->GetEntity( 0 );
+
+    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    {
+        CurrentEntity = entityMan->GetEntity( i );
+
+        CurrentEntity->SaveObject( njson );
+    }
+
+    std::ofstream ofs( SceneFile );
+    if ( ofs.is_open() )
+    {
+        ofs << std::setw( 4 ) << njson << std::endl;
+    }
+    else
+    {
+        LOG_ERROR( "Failed to save scene: {}", SceneFile );
+    }
+    ofs.close();
+}
+
+void EditorCore::LoadScene()
+{
+    std::ifstream ifs( SceneFile );
+    if ( ifs.is_open() )
+    {
+        // Store the info in the scene file in the JSON object
+        nlohmann::json njson;
+        ifs >> njson;
+        nlohmann::json::iterator it = njson [ "Entities" ].begin();
+
+        for ( ; it != njson [ "Entities" ].end(); ++it )
+        {
+            // Key is the name 
+            LOG_TRACE( "Entity: {}\n", it.key() );
+
+            // Create a new entity
+
+            // Value is all the components
+            nlohmann::json::iterator compItr = njson [ "Entities" ] [ it.key() ].begin();
+            for ( ; compItr != njson [ "Entities" ] [ it.key() ].end(); ++compItr )
+            {
+                std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
+                // Add component of this type
+
+            }
+        }
+    }
+    else
+    {
+        LOG_ERROR( "Failed to load scene: {}", SceneFile );
+    }
+
+    ifs.close();
 }

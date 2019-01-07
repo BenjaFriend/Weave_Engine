@@ -340,11 +340,6 @@ void Game::Draw( float deltaTime, float totalTime )
 
         if ( CurrentEntity->GetMaterial() != nullptr )
         {
-            //RenderSys->RenderFrame(
-            //    CurrentEntity->GetMaterial()->GetVertexShader(),
-            //    CurrentEntity->GetMaterial()->GetPixelShader()
-            //);
-
             // Send camera info ---------------------------------------------------------
             pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
             CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
@@ -403,22 +398,17 @@ void Game::Draw( float deltaTime, float totalTime )
         context->OMSetDepthStencilState( 0, 0 );
     }
 
-
-#if defined( _DEBUG ) ||  defined( DRAW_LIGHTS )
-
     if ( DebugDrawColliders )
         DrawColliders();
 
     if ( DrawLightGizmos )
         DrawLightSources();
 
-#endif // _DEBUG
-
-#if defined(EDITOR_ON)
+#if defined( EDITOR_ON )
 
     editor->Update();
 
-#endif  // ENABLE_UI
+#endif  // EDITOR_ON
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
@@ -566,71 +556,6 @@ void Game::DrawColliders()
     // Reset the Rasterizer state
     context->RSSetState( 0 );
 }
-
-// #Editor
-void Game::SaveScene()
-{
-    nlohmann::json njson;
-
-    njson [ "Scene Name" ] = "Test_Scene";
-
-    Entity* CurrentEntity = entityMan->GetEntity( 0 );
-
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
-    {
-        CurrentEntity = entityMan->GetEntity( i );
-
-        CurrentEntity->SaveObject( njson );
-    }
-
-    std::ofstream ofs( SceneFile );
-    if ( ofs.is_open() )
-    {
-        ofs << std::setw( 4 ) << njson << std::endl;
-    }
-    else
-    {
-        LOG_ERROR( "Failed to save scene: {}", SceneFile );
-    }
-    ofs.close();
-}
-
-// #Editor
-void Game::LoadScene()
-{
-    std::ifstream ifs( SceneFile );
-    if ( ifs.is_open() )
-    {
-        // Store the info in the scene file in the JSON object
-        nlohmann::json njson;
-        ifs >> njson;
-        nlohmann::json::iterator it = njson [ "Entities" ].begin();
-
-        for ( ; it != njson [ "Entities" ].end(); ++it )
-        {
-            // Key is the name 
-            LOG_TRACE( "Entity: {}\n", it.key() );
-
-            // Create a new entity
-
-            // Value is all the components
-            nlohmann::json::iterator compItr = njson [ "Entities" ] [ it.key() ].begin();
-            for ( ; compItr != njson [ "Entities" ] [ it.key() ].end(); ++compItr )
-            {
-                std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
-                // Add component of this type
-
-            }
-        }
-    }
-    else
-    {
-        LOG_ERROR( "Failed to load scene: {}", SceneFile );
-    }
-
-    ifs.close();
-}
-
 
 #pragma region Mouse Input
 

@@ -8,7 +8,6 @@
 #include <vector>
 #include <thread>
 #include <chrono>
-#include <iomanip>
 
 #include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
@@ -17,8 +16,6 @@
 #include "../Physics/PhysicsManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/RenderSystem.h"
-
-#include "json/json.hpp"
 
 // Uncomment to not compile the editor
 #define EDITOR_ON
@@ -69,18 +66,7 @@ private:
     void DrawLightSources();
     void DrawColliders();
 
-    /// <summary>
-    /// Save all entities to a scene json file 
-    /// </summary>
-    void SaveScene();
 
-    /// <summary>
-    /// Loads entities from the scene json file 
-    /// </summary>
-    void LoadScene();
-
-    /** The current scene file to save all entities to */
-    char SceneFile[ 64 ] = "Scene_test.json";
 
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader = nullptr;
@@ -98,10 +84,6 @@ private:
     SimplePixelShader* SkyBoxPS = nullptr;
     ID3D11RasterizerState* skyRastState = nullptr;
     ID3D11DepthStencilState* skyDepthState = nullptr;
-
-
-
-    float Gravity = -0.001f;
 
 #ifdef ENABLE_UI
 

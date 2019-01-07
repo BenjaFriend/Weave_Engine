@@ -4,11 +4,8 @@
 /* System includes                                           */
 /*************************************************************/
 
-#define _CRTDBG_MAP_ALLOC   // memory leak detection
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <cstdlib>  // wcstombs_s
+#include <cstdlib>          // wcstombs_s
 #include <stdlib.h>  
 #include <stdio.h>
 #include <crtdbg.h>  
@@ -17,7 +14,7 @@
 #include <fstream>
 #include <tuple>
 
-#include "Core/Logger.h"
+#include "Core/Logger.h"    // Logging definitions to only happen in debug
 
 
 /**************************************************************/
@@ -42,6 +39,8 @@ typedef std::wstring                FileName;
 // Using other another graphics library
 typedef std::string                FileName;
 
+// GLM
+
 #endif
 
 
@@ -49,25 +48,30 @@ typedef std::string                FileName;
 #define  ENABLE_UI
 
 #if defined( ENABLE_UI )
-
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
-
 #endif
 
-/*
-#if defined(_DEBUG)
-
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#define new DEBUG_NEW
-
-#endif
-
-*/
 
 // Replace the new keyword with the debug new 
 
-// Debug Macros
+/**************************************************************/
+/* Debug Macros                                               */
+/**************************************************************/
 
+
+#if defined( _DEBUG ) || defined ( DEBUG )
+#define _CRTDBG_MAP_ALLOC   // memory leak detection
+#include <crtdbg.h> 
+
+//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+//#define new DEBUG_NEW
+
+#endif
+
+
+/**************************************************************/
+/* Util Macros                                                */
+/**************************************************************/
 #define SAFE_DELETE( obj ) if( obj != nullptr ){ delete obj; obj = nullptr; } 
