@@ -290,6 +290,13 @@ void Game::Update( float deltaTime, float totalTime )
     static float currentSpeed = 1.f;
     static float amountMoved = 0.f;
     const float target = 10.0f;
+
+
+#if defined( EDITOR_ON )
+
+    editor->Update( deltaTime );
+
+#endif  // EDITOR_ON
 }
 
 // --------------------------------------------------------
@@ -392,7 +399,7 @@ void Game::Draw( float deltaTime, float totalTime )
 
 #if defined( EDITOR_ON )
 
-    editor->Update();
+    editor->Draw( deltaTime, device, context );
 
 #endif  // EDITOR_ON
 

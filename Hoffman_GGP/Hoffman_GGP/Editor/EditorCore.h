@@ -12,6 +12,12 @@
 #include "json/json.hpp"
 #include <iomanip>
 
+#if defined ( _WIN32 ) || defined ( _WIN64 )
+
+#include <d3d11.h>
+
+#endif
+
 namespace Editor
 {
 
@@ -39,7 +45,13 @@ namespace Editor
         /// Update the editor for a frame
         /// </summary>
         /// <param name="dt">Delta Time of this frame</param>
-        void Update();
+        void Update( float dt );
+
+        void Draw( 
+            float dt,
+            ID3D11Device* aDevice,
+            ID3D11DeviceContext* aContext
+        );
 
         /// <summary>
         /// Save all entities to a scene json file 

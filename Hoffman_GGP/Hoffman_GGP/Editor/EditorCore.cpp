@@ -24,13 +24,6 @@ void EditorCore::ReleaseInstance()
     }
 }
 
-void EditorCore::Update()
-{
-    DrawUI();
-
-    DrawGizmos();
-}
-
 EditorCore::EditorCore()
 {
     entityMan = EntityManager::GetInstance();
@@ -48,6 +41,18 @@ void EditorCore::LoadResources()
 {
     // Load in any meshes that we may need for gizmos
 
+}
+
+void EditorCore::Update( float dt )
+{
+
+}
+
+void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
+{
+    DrawUI();
+
+    DrawGizmos();
 }
 
 void EditorCore::DrawUI()

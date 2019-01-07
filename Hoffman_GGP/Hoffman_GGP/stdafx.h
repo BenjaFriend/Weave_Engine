@@ -1,9 +1,16 @@
 #pragma once
 
+/// <summary>
+/// Precompiled header for this application.
+/// Contains flags for different options and typedef options
+/// for different platforms, and other common application libraries
+/// or tools
+/// </summary>
+/// <author>Ben Hoffman</author>
+
 /*************************************************************/
 /* System includes                                           */
 /*************************************************************/
-
 #include <iostream>
 #include <cstdlib>          // wcstombs_s
 #include <stdlib.h>  
@@ -19,8 +26,9 @@
 /**************************************************************/
 /* Runtime Options                                            */
 /**************************************************************/
-#define ENABLE_UI
-#define EDITOR_ON
+#define ENABLE_UI   // Flag for if we want ImGui to be included anywhere.
+                    // Should only turn off if you cannot use ImGui
+#define EDITOR_ON   // Flag for turning the editor on and off
 
 /**************************************************************/
 /* Platform specifications                                    */
@@ -44,7 +52,8 @@ typedef std::wstring                FileName;
 // Using other another graphics library
 typedef std::string                FileName;
 
-// GLM
+// #TODO 
+// Glm defintions 
 
 #endif
 
