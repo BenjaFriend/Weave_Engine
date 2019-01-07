@@ -59,14 +59,19 @@ typedef std::string                FileName;
 /**************************************************************/
 /* Debug Macros                                               */
 /**************************************************************/
-
-
 #if defined( _DEBUG ) || defined ( DEBUG )
+
 #define _CRTDBG_MAP_ALLOC   // memory leak detection
 #include <crtdbg.h> 
 
-//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-//#define new DEBUG_NEW
+// Debug new macro for trackinge xactly where the leaks are
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+//#define new DEBUG_NEW // This breaks IMGui
+
+#else 
+
+// Define DEBUG_NEW as just new
+#define DEBUG_NEW new
 
 #endif
 
