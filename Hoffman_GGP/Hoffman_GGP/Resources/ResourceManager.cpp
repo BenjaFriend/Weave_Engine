@@ -288,3 +288,20 @@ const ID3D11Device * ResourceManager::GetCurrentDevice() const
 {
     return currentDevice;
 }
+
+void ResourceManager::SetCurrentDevice( ID3D11Device * aDev )
+{
+    assert( aDev != nullptr );
+    currentDevice = aDev;
+}
+
+const ID3D11DeviceContext * ResourceManager::GetCurrentContext() const
+{
+    return currentContext;
+}
+
+void ResourceManager::SetCurrentContext( ID3D11DeviceContext * aContext )
+{
+    assert( aContext != nullptr );
+    currentContext = aContext;
+}

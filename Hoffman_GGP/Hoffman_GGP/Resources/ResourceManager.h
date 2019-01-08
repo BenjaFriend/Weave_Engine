@@ -43,8 +43,13 @@ public:
     /// <summary>
     /// Initialize the resource manager with any DX11 resources necessary
     /// </summary>
+    /// <param name="aDevice">Device to load assets with</param>
+    /// <param name="aContext">Context to load assets with</param>
     /// <returns>Static instance of the resource manager</returns>
-    static ResourceManager* Initalize( ID3D11Device* aDevice, ID3D11DeviceContext* aContext );
+    static ResourceManager* Initalize(
+        ID3D11Device* aDevice, 
+        ID3D11DeviceContext* aContext
+    );
 
     /// <summary>
     /// Gets a reference to the current resource manager
@@ -169,6 +174,12 @@ public:
     /// </summary>
     /// <returns>Pointer to the current device</returns>
     const ID3D11Device* GetCurrentDevice() const;
+
+    void SetCurrentDevice( ID3D11Device* aDev );
+
+    const ID3D11DeviceContext* GetCurrentContext() const;
+
+    void SetCurrentContext( ID3D11DeviceContext* aContext );
 
 private:
 
