@@ -43,6 +43,27 @@ void Material::SaveObject( nlohmann::json & aOutFile )
     LOG_WARN( "Implement Material class save!!" );    
 }
 
+void Material::SetShaderValues( const VEC4x4 & aWorld, const VEC4x4 & aView, const VEC4x4 & aProjection )
+{
+    VertexShader->SetMatrix4x4( "world", aWorld );
+    VertexShader->SetMatrix4x4( "view", aView );
+    VertexShader->SetMatrix4x4( "projection", aProjection );
+
+    VertexShader->SetShader();
+    VertexShader->CopyAllBufferData();
+
+
+    PixelShader->SetShaderResourceView( "DiffuseTexture", DiffuseSRV );
+    PixelShader->SetShaderResourceView( "NormalTexture", NormalSRV );
+    PixelShader->SetShaderResourceView( "RoughnessTexture", RoughnessSRV );
+    PixelShader->SetShaderResourceView( "MetalTexture", MetalSRV );
+
+    PixelShader->SetSamplerState( "BasicSampler", Sampler );
+
+    PixelShader->CopyAllBufferData();
+    PixelShader->SetShader();
+}
+
 ////////////////////////////////////////////////////
 // Accessors
 ////////////////////////////////////////////////////

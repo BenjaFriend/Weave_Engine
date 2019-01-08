@@ -157,19 +157,14 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
 
     assert( ps && vs );
 
-    SRV_ID dif = resourceMan->LoadSRV( Context, albedo );
-    SRV_ID normSRV = resourceMan->LoadSRV( Context, norm );
-    SRV_ID roughnessMap = resourceMan->LoadSRV( Context, roughness );
-    SRV_ID metalMap = resourceMan->LoadSRV( Context, metal );
-
     return resourceMan->LoadMaterial(
         name,
         vs,
         ps,
-        dif,
-        normSRV,
-        roughnessMap,
-        metalMap,
+        albedo,
+        norm,
+        roughness,
+        metal,
         0 );   // Use default sampler
 }
 
@@ -183,7 +178,6 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     sol::optional<VEC3> unsafe_pos = aEntityInfo [ "pos" ];
     if ( unsafe_pos != sol::nullopt )
     {
-
         pos = unsafe_pos.value();
     }
 

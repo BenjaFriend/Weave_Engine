@@ -90,7 +90,7 @@ Game::~Game()
 void Game::Init()
 {
     entityMan = EntityManager::GetInstance();
-    resourceMan = ResourceManager::Initalize( device );
+    resourceMan = ResourceManager::Initalize( device, context );
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
 
@@ -129,9 +129,10 @@ void Game::Init()
     // Essentially: "What kind of shape should the GPU draw with our data?"
     context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-    inputManager->BindAction( this, &Game::OnLookDown, Input::InputType::Look );
-    inputManager->BindAction( this, &Game::OnLookUp, Input::InputType::LookReleased );
-
+    inputManager->BindAction( this, &Game::OnMouseDown, Input::InputType::Look );
+    inputManager->BindAction( this, &Game::OnMouseUp, Input::InputType::LookReleased );
+    //inputManager->BindAction( this, &Game::Quit, Input::InputType::Quit );
+    
     BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
 
     ScriptMan->LoadScripts();
@@ -229,14 +230,26 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
+    // Create entity
+
+    // Give it a mesh
+        // The mesh will default to unlit pink material
+
+    // Set that meshes' material
 
     // Load floor --------------------------------------------------------
     CubeMeshID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/cube.obj" ) );
-    SRV_ID floorDif = resourceMan->LoadSRV( context, L"Assets/Textures/floor_albedo.png" );
-    SRV_ID floorNormSRV = resourceMan->LoadSRV( context, L"Assets/Textures/floor_normals.png" );
-    SRV_ID floorRoughnessMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_roughness.png" );
-    SRV_ID floorMetalMap = resourceMan->LoadSRV( context, L"Assets/Textures/floor_metal.png" );
-    Material* floorMat = resourceMan->LoadMaterial( "Floor Mat", vertexShader, pixelShader, floorDif, floorNormSRV, floorRoughnessMap, floorMetalMap, SamplerID );
+    
+    Material* floorMat = resourceMan->LoadMaterial( 
+        "Floor Mat",
+        vertexShader,
+        pixelShader,
+        L"Assets/Textures/floor_albedo.png",
+        L"Assets/Textures/floor_normals.png", 
+        L"Assets/Textures/floor_roughness.png",
+        L"Assets/Textures/floor_metal.png",
+        SamplerID
+    );
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(
@@ -256,7 +269,7 @@ void Game::CreateBasicGeometry()
     Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
 
     // Load in the skybox SRV --------------------------------------------------------
-    SkyboxSrvID = resourceMan->LoadSRV_DDS( context, L"Assets/Textures/SunnyCubeMap.dds" );
+    SkyboxSrvID = resourceMan->LoadSRV_DDS( L"Assets/Textures/SunnyCubeMap.dds" );
 }
 
 // --------------------------------------------------------
@@ -286,11 +299,6 @@ void Game::Update( float deltaTime, float totalTime )
     FlyingCamera->Update( deltaTime );
 
     ScriptMan->Update( deltaTime );
-
-    static float currentSpeed = 1.f;
-    static float amountMoved = 0.f;
-    const float target = 10.0f;
-
 
 #if defined( EDITOR_ON )
 
@@ -322,8 +330,9 @@ void Game::Draw( float deltaTime, float totalTime )
 
     Mesh* EnMesh = nullptr;
     ID3D11Buffer* VertBuff = nullptr;
-
-    Entity* CurrentEntity = entityMan->GetEntity( 0 );
+    ID3D11Buffer* IndexBuf = nullptr;
+    UINT IndexCount = 0;
+    Entity* CurrentEntity = nullptr;
 
     for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
     {
@@ -334,20 +343,22 @@ void Game::Draw( float deltaTime, float totalTime )
         if ( CurrentEntity->GetMaterial() != nullptr )
         {
             // Send camera info ---------------------------------------------------------
-            pixelShader->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
+            CurrentEntity->GetMaterial()->GetPixelShader()->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
             CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
             // Draw the entity ---------------------------------------------------------
             EnMesh = CurrentEntity->GetEntityMesh();
+            IndexBuf = EnMesh->GetIndexBuffer();
             VertBuff = EnMesh->GetVertexBuffer();
-
+            IndexCount = EnMesh->GetIndexCount();
+            // Set the buffer information
             context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
-            context->IASetIndexBuffer( EnMesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 );
+            context->IASetIndexBuffer( IndexBuf, DXGI_FORMAT_R32_UINT, 0 );
 
             // Finally do the actual drawing
-            context->DrawIndexed( CurrentEntity->GetEntityMesh()->GetIndexCount(), 0, 0 );
+            context->DrawIndexed( IndexCount, 0, 0 );
         }
-    }
+    }   // end Entity loop
 
     LightSys->SetShaderInfo(
         CurrentEntity->GetMaterial()->GetVertexShader(),
@@ -377,7 +388,7 @@ void Game::Draw( float deltaTime, float totalTime )
         SkyBoxVS->SetShader();
 
         // Send texture-related stuff
-        SkyBoxPS->SetShaderResourceView( "SkyTexture", resourceMan->GetSRV( SkyboxSrvID ) );
+        SkyBoxPS->SetShaderResourceView( "SkyTexture", SkyboxSrvID );
         SkyBoxPS->SetSamplerState( "BasicSampler", resourceMan->GetSampler( SamplerID ) );
 
         SkyBoxPS->CopyAllBufferData(); // Remember to copy to the GPU!!!!
@@ -557,7 +568,7 @@ void Game::DrawColliders()
 // from the OS-level messages anyway, so these helpers have
 // been created to provide basic mouse input if you want it.
 // --------------------------------------------------------
-void Game::OnLookDown()
+void Game::OnMouseDown()
 {
     // Add any custom code here...
     FlyingCamera->SetDoRotation( true );
@@ -575,7 +586,7 @@ void Game::OnLookDown()
 // --------------------------------------------------------
 // Helper method for mouse release
 // --------------------------------------------------------
-void Game::OnLookUp()
+void Game::OnMouseUp()
 {
     // Add any custom code here...
     // Reverse the camera direction
@@ -609,4 +620,5 @@ void Game::OnMouseWheel( float wheelDelta, int x, int y )
 {
     // Add any custom code here...
 }
+
 #pragma endregion

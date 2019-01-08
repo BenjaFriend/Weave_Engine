@@ -80,4 +80,4 @@ typedef std::string                FileName;
 /**************************************************************/
 /* Util Macros                                                */
 /**************************************************************/
-#define SAFE_DELETE( obj ) if( obj != nullptr ){ delete obj; obj = nullptr; } 
+#define SAFE_DELETE( obj ) if( obj != nullptr ){ delete obj; obj = nullptr; }  

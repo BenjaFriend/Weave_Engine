@@ -40,8 +40,8 @@ public:
     void Draw( float deltaTime, float totalTime );
 
     // Overridden mouse input helper methods
-    void OnLookDown();
-    void OnLookUp();
+    void OnMouseDown();
+    void OnMouseUp();
 
     void OnMouseMove( WPARAM buttonState, int x, int y );
     void OnMouseWheel( float wheelDelta, int x, int y );
@@ -67,7 +67,7 @@ private:
     Sampler_ID SamplerID;
     ID3D11RasterizerState* WireFrame = nullptr;
 
-    SRV_ID SkyboxSrvID = -1;
+    ID3D11ShaderResourceView* SkyboxSrvID = nullptr;
     Mesh_ID CubeMeshID = -1;
 
     // Skybox resources

@@ -28,7 +28,7 @@ class ISimpleShader;
 
 using Mesh_ID       = size_t;
 using Material_ID   = std::string;
-using SRV_ID        = size_t;
+using SRV_ID        = FileName;
 using Sampler_ID    = size_t;
 
 /// <summary>
@@ -44,7 +44,7 @@ public:
     /// Initialize the resource manager with any DX11 resources necessary
     /// </summary>
     /// <returns>Static instance of the resource manager</returns>
-    static ResourceManager* Initalize( ID3D11Device* aDevice );
+    static ResourceManager* Initalize( ID3D11Device* aDevice, ID3D11DeviceContext* aContext );
 
     /// <summary>
     /// Gets a reference to the current resource manager
@@ -77,9 +77,14 @@ public:
     /// <param name="aContext">Device context to use</param>
     /// <param name="aFileName">File path of the assets</param>
     /// <returns>ID of the SRV to use for any later use</returns>
-    const SRV_ID LoadSRV( ID3D11DeviceContext* aContext, FileName aFileName );
+    ID3D11ShaderResourceView* LoadSRV( const FileName & aFileName );
 
-    const SRV_ID LoadSRV_DDS( ID3D11DeviceContext* aContext, wchar_t* aFileName );
+    /// <summary>
+    /// Load in a DDS SRV (cube map) 
+    /// </summary>
+    /// <param name="aFileName">File where this txture can be found</param>
+    /// <returns>Pointer to the texture after it is loaded</returns>
+    ID3D11ShaderResourceView* LoadSRV_DDS( const FileName & aFileName );
 
     template<class T>
     T* LoadShader(
@@ -125,31 +130,22 @@ public:
     /// </summary>
     /// <param name="aSrvID"></param>
     /// <returns></returns>
-    ID3D11ShaderResourceView* GetSRV( const SRV_ID aSrvID );
+    ID3D11ShaderResourceView* GetSRV( const SRV_ID & aSrvID );
 
     /// <summary>
     /// Adds a new sampler with the given device to the current target device
     /// </summary>
     /// <param name="samplerDesc">Options for the given sampler desc</param>
     /// <returns>ID of the sampler that was created</returns>
-    const SRV_ID AddSampler( D3D11_SAMPLER_DESC & samplerDesc );
+    const Sampler_ID AddSampler( D3D11_SAMPLER_DESC & samplerDesc );
 
     /// <summary>
     /// Gets a pointer to the sampler state with the given ID
     /// </summary>
     /// <param name="aID">ID of the sampler you wish to access</param>
     /// <returns>pointer to the sampler state with the given ID</returns>
-    ID3D11SamplerState* GetSampler( const SRV_ID aID );
+    ID3D11SamplerState* GetSampler( const Sampler_ID aID );
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="aVertexShader"></param>
-    /// <param name="aPixelShader"></param>
-    /// <param name="aDiffSrvID"></param>
-    /// <param name="aNormSrvID"></param>
-    /// <param name="aSamplerID"></param>
-    /// <returns></returns>
     Material* LoadMaterial(
         const Material_ID aName,
         SimpleVertexShader* aVertexShader,
@@ -172,11 +168,11 @@ public:
     /// Gets a pointer to the current target device
     /// </summary>
     /// <returns>Pointer to the current device</returns>
-    inline const ID3D11Device* GetCurrentDevice() const;
+    const ID3D11Device* GetCurrentDevice() const;
 
 private:
 
-    ResourceManager( ID3D11Device* aDevice );
+    ResourceManager( ID3D11Device* aDevice, ID3D11DeviceContext* aContext );
 
     ~ResourceManager();
 
@@ -200,35 +196,10 @@ private:
     /// </summary>
     void UnloadShaders();
 
+    /** Static instance of the resource manager */
     static ResourceManager* Instance;
 
-    /// <summary>
-    /// Keep track of a loaded SRV and it's file name
-    /// so that we can check if it has already been loaded 
-    /// in or not and keep 0(1) access over the vector in 
-    /// the drawing method
-    /// </summary>
-    struct LoadedSRV
-    {
-        LoadedSRV( FileName aName, ID3D11ShaderResourceView* aSrv )
-            : fileName( aName ), srv( aSrv )
-        {
-        }
-
-        ~LoadedSRV()
-        {
-            if ( srv != nullptr )
-            {
-                srv->Release();
-                srv = nullptr;
-            }
-        }
-
-        FileName fileName = nullptr;
-        ID3D11ShaderResourceView* srv = nullptr;
-
-    };
-
+    // #TODO: Use a map of meshes instead for easy of use
     struct LoadedMesh
     {
         LoadedMesh( FileName aName, Mesh* aMesh )
@@ -249,19 +220,19 @@ private:
         Mesh* mesh = nullptr;
     };
 
-
+    /** Loaded shader files */
     std::unordered_map<std::wstring, ISimpleShader*> Shaders;
 
+    /** The currently loaded meshes */
     std::vector<LoadedMesh*> Meshes;
 
-    //std::vector<Material*> Materials;
-
+    /** Loaded materials */
     std::unordered_map<std::string, Material*> Materials;
 
     /// <summary>
     /// The currently loaded Shader Resource Views
     /// </summary>
-    std::vector<LoadedSRV*> SRViews;
+    std::unordered_map<FileName, ID3D11ShaderResourceView*> SRViews;
 
     /// <summary>
     /// Currently loaded samplers to use
@@ -271,6 +242,11 @@ private:
     /// <summary>
     /// The current graphics target device
     /// </summary>
-    ID3D11Device* currentDevice;
+    ID3D11Device* currentDevice = nullptr;
 
+    /// <summary>
+    /// Keep track of the current context so that we can easily load in
+    /// SRVs and other items that may need it
+    /// </summary>
+    ID3D11DeviceContext* currentContext = nullptr;
 };

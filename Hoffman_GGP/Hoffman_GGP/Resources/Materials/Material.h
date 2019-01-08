@@ -43,6 +43,11 @@ public:
     /// <param name="aOutFile">File to send material data to</param>
     void SaveObject( nlohmann::json & aOutFile ) override;
 
+    /// <summary>
+    /// Sets any values to the shaders that are on this material
+    /// and sends that data to the GPU
+    /// </summary>
+    virtual void SetShaderValues( const VEC4x4 & aWorld, const VEC4x4 & aView, const VEC4x4 & aProjection );
 
     ////////////////////////////////////////////////////
     // Accessors

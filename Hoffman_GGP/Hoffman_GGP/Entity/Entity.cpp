@@ -70,25 +70,11 @@ void Entity::MoveAbsolute( const float aX, const float aY, const float aZ )
 void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
 {
     assert( EntityMaterial != nullptr );
-    SimpleVertexShader* VertShader = EntityMaterial->GetVertexShader();
-    SimplePixelShader* PixelShader = EntityMaterial->GetPixelShader();
 
-    VertShader->SetMatrix4x4( "world", GetWorldMatrix() );
-    VertShader->SetMatrix4x4( "view", aView );
-    VertShader->SetMatrix4x4( "projection", aProjection );
-
-    VertShader->SetShader();
-    VertShader->CopyAllBufferData();
-
-    PixelShader->SetShaderResourceView( "DiffuseTexture", EntityMaterial->GetDiffuseSRV() );
-    PixelShader->SetShaderResourceView( "NormalTexture", EntityMaterial->GetNormalSRV() );
-    PixelShader->SetShaderResourceView( "RoughnessTexture", EntityMaterial->GetRoughnessSRV() );
-    PixelShader->SetShaderResourceView( "MetalTexture", EntityMaterial->GetMetalSRV() );
-
-    PixelShader->SetSamplerState( "BasicSampler", EntityMaterial->GetSamplerState() );
-
-    PixelShader->SetShader();
-    PixelShader->CopyAllBufferData();
+    // Render all meshes that are a part of this entity
+    // in the future I want to experiment with different meshes/material 
+    // settings
+    EntityMaterial->SetShaderValues( GetWorldMatrix() , aView, aProjection);
 }
 
 void Entity::SaveObject( nlohmann::json & aOutFile )

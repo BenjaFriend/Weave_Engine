@@ -7,11 +7,11 @@
 ResourceManager* ResourceManager::Instance = nullptr;
 using namespace  DirectX;
 
-ResourceManager * ResourceManager::Initalize( ID3D11Device* aDevice )
+ResourceManager * ResourceManager::Initalize( ID3D11Device* aDevice, ID3D11DeviceContext* aContext )
 {
     assert( Instance == nullptr && aDevice != nullptr );
 
-    Instance = new ResourceManager( aDevice );
+    Instance = new ResourceManager( aDevice, aContext );
 
     return Instance;
 }
@@ -21,6 +21,26 @@ ResourceManager * ResourceManager::GetInstance()
     assert( Instance != nullptr );
 
     return Instance;
+}
+
+// Private constructor
+ResourceManager::ResourceManager( ID3D11Device* aDevice, ID3D11DeviceContext* aContext )
+    : currentDevice( aDevice ), currentContext( aContext )
+{ }
+
+// Private destructor
+ResourceManager::~ResourceManager()
+{
+    UnloadMeshes();
+
+    UnloadMaterials();
+
+    UnloadSRVs();
+
+    UnloadShaders();
+
+    currentDevice = nullptr;
+    currentContext = nullptr;
 }
 
 void ResourceManager::ReleaseInstance()
@@ -37,7 +57,7 @@ const std::tuple<Mesh_ID, Mesh*> ResourceManager::LoadMesh( FileName aFileName )
     // Ensure that this mesh isn't already loaded
     for ( size_t i = 0; i < Meshes.size(); ++i )
     {
-        if ( Meshes [ i ]->fileName == aFileName  )
+        if ( Meshes [ i ]->fileName == aFileName )
         {
             return std::make_tuple( i, Meshes [ i ]->mesh );
         }
@@ -62,17 +82,13 @@ Mesh * ResourceManager::GetMesh( const Mesh_ID aMeshID )
     return Meshes [ aMeshID ]->mesh;
 }
 
-const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, FileName aFileName )
+ID3D11ShaderResourceView* ResourceManager::LoadSRV( const FileName & aFileName )
 {
-    assert( aContext != nullptr );
-
-    // Ensure that this isn't already loaded in
-    // Expensive, but only happens at program start
-    // and stops texture from being loaded in more than once
-    for ( size_t i = 0; i < SRViews.size(); ++i )
+    assert( currentContext != nullptr );
+    // If this SRV already exists, than just return that 
+    if ( SRViews.find( aFileName ) != SRViews.end() )
     {
-        if ( SRViews [ i ]->fileName == aFileName )
-            return i;
+        return SRViews [ aFileName ];
     }
 
     // Load this texture
@@ -80,7 +96,7 @@ const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, FileName 
 
     HRESULT iResult = CreateWICTextureFromFile(
         currentDevice,
-        aContext,
+        currentContext,
         aFileName.c_str(),
         0,
         &tempSRV
@@ -89,28 +105,31 @@ const SRV_ID ResourceManager::LoadSRV( ID3D11DeviceContext * aContext, FileName 
     // if success
     if ( iResult == S_OK )
     {
-        LoadedSRV* newSrv = new LoadedSRV( aFileName, tempSRV );
-
-        SRViews.push_back( newSrv );
-        return static_cast< size_t > ( SRViews.size() - 1 );
+        SRViews [ aFileName ] = tempSRV;
+        return tempSRV;
     }
     else
     {
         LOG_ERROR( "SRV LOADING FAILURE!" );
-        return -1;
+        return nullptr;
     }
 }
 
-const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar_t * aFileName )
+ID3D11ShaderResourceView* ResourceManager::LoadSRV_DDS( const FileName & aFileName )
 {
-    assert( aContext != nullptr );
+    assert( currentContext != nullptr );
+    // If this SRV already exists, than just return that 
+    if ( SRViews.find( aFileName ) != SRViews.end() )
+    {
+        return SRViews [ aFileName ];
+    }
 
     ID3D11ShaderResourceView* tempSRV = nullptr;
 
     HRESULT iResult = CreateDDSTextureFromFile(
         currentDevice,
-        aContext,
-        aFileName,
+        currentContext,
+        aFileName.c_str(),
         0,
         &tempSRV
     );
@@ -118,11 +137,9 @@ const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar
     // if success
     if ( iResult == S_OK )
     {
-        LoadedSRV* newSrv = new LoadedSRV( aFileName, tempSRV );
+        SRViews [ aFileName ] = tempSRV;
 
-        SRViews.push_back( newSrv );
-
-        return SRViews.size() - 1;
+        return tempSRV;
     }
     else
     {
@@ -130,22 +147,20 @@ const SRV_ID ResourceManager::LoadSRV_DDS( ID3D11DeviceContext * aContext, wchar
         constexpr size_t BUF_SIZE = 64;
         char fileName [ BUF_SIZE ];
 
-        wcstombs_s( &i, fileName, BUF_SIZE, aFileName, BUF_SIZE );
+        wcstombs_s( &i, fileName, BUF_SIZE, aFileName.c_str(), BUF_SIZE );
 
         LOG_ERROR( "DDS SRV LOADING FAILURE! {}", fileName );
 
-        return -1;
+        return nullptr;
     }
 }
 
-ID3D11ShaderResourceView * ResourceManager::GetSRV( const SRV_ID aSrvID )
+ID3D11ShaderResourceView * ResourceManager::GetSRV( const SRV_ID & aSrvID )
 {
-    assert( aSrvID >= 0 && aSrvID < SRViews.size() );
-
-    return SRViews [ aSrvID ]->srv;
+    return SRViews [ aSrvID ];
 }
 
-const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
+const Sampler_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
 {
     ID3D11SamplerState* NewSamplerState = nullptr;
     HRESULT iResult = currentDevice->CreateSamplerState( &aSamplerDesc, &NewSamplerState );
@@ -161,7 +176,7 @@ const SRV_ID ResourceManager::AddSampler( D3D11_SAMPLER_DESC & aSamplerDesc )
     }
 }
 
-ID3D11SamplerState * ResourceManager::GetSampler( const SRV_ID aID )
+ID3D11SamplerState * ResourceManager::GetSampler( const Sampler_ID aID )
 {
     assert( aID >= 0 && aID < Samplers.size() );
 
@@ -179,20 +194,23 @@ Material* ResourceManager::LoadMaterial(
     const Sampler_ID aSamplerID
 )
 {
+    // If this material already exists, than just return that 
     if ( Materials.find( aName ) != Materials.end() )
     {
         return Materials [ aName ];
     }
+
     // #TODO: Only create this material if does not yet exist
     Material* newMat = new Material(
         aVertexShader,
         aPixelShader,
-        SRViews [ aDiffSrvID ]->srv,
-        SRViews [ aNormSrvID ]->srv,
-        SRViews [ aRoughnessSrvID ]->srv,
-        SRViews [ aMetalSrvID ]->srv,
+        LoadSRV( aDiffSrvID ), 
+        LoadSRV ( aNormSrvID ),
+        LoadSRV ( aRoughnessSrvID ),
+        LoadSRV ( aMetalSrvID ),
         Samplers [ aSamplerID ]
     );
+
     Materials [ aName ] = newMat;
     LOG_TRACE( "Loaded new material: {}", aName );
     return newMat;
@@ -205,27 +223,6 @@ Material* ResourceManager::GetMaterial( const Material_ID aID )
         return Materials [ aID ];
     }
     return nullptr;
-}
-
-// Private constructor
-ResourceManager::ResourceManager( ID3D11Device* aDevice )
-    : currentDevice( aDevice )
-{
-
-}
-
-// Private destructor
-ResourceManager::~ResourceManager()
-{
-    UnloadMeshes();
-
-    UnloadMaterials();
-
-    UnloadSRVs();
-
-    UnloadShaders();
-
-    currentDevice = nullptr;
 }
 
 void ResourceManager::UnloadMeshes()
@@ -256,12 +253,12 @@ void ResourceManager::UnloadMaterials()
 
 void ResourceManager::UnloadSRVs()
 {
-    // Release each DX11 resource that was loaded here
-    for ( auto it = SRViews.begin(); it != SRViews.end(); ++it )
+    auto itr = SRViews.begin();
+    for ( ; itr != SRViews.end(); ++itr )
     {
-        delete *( it );
+        if ( itr->second != nullptr )
+            itr->second->Release();
     }
-
     SRViews.clear();
     LOG_TRACE( "Unloaded SRVs!" );
 
@@ -287,7 +284,7 @@ void ResourceManager::UnloadShaders()
     Shaders.clear();
 }
 
-inline const ID3D11Device * ResourceManager::GetCurrentDevice() const
+const ID3D11Device * ResourceManager::GetCurrentDevice() const
 {
     return currentDevice;
 }

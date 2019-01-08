@@ -21,7 +21,9 @@ namespace Input
         Look,
         LookReleased,
 
-        Use
+        Use,
+
+        Quit
     };
 
     /// <summary>
