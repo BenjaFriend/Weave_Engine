@@ -70,10 +70,10 @@ Game::~Game()
     Physics::PhysicsManager::ReleaseInstance();
     ResourceManager::ReleaseInstance();
 
-    if ( RenderSys != nullptr )
+    if ( LightSys != nullptr )
     {
-        delete RenderSys;
-        RenderSys = nullptr;
+        delete LightSys;
+        LightSys = nullptr;
     }
 
     delete FlyingCamera;
@@ -94,7 +94,7 @@ void Game::Init()
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
 
-    RenderSys = new RenderSystem();
+    LightSys = new LightSystem();
     ScriptMan = new Scripting::ScriptManager( device, context );
 
     // Create a wireframe rasterizer state
@@ -188,16 +188,16 @@ void Game::InitLights()
     // Add Dir Lights
     Entity_ID dirLight_ID = entityMan->AddEntity( nullptr, nullptr, "Dir Light 1" );
     Entity* dirLightEntity = entityMan->GetEntity( dirLight_ID );
-    dirLightEntity->AddComponent<DirLight>( RenderSys, DirLight1 );
+    dirLightEntity->AddComponent<DirLight>( LightSys, DirLight1 );
 
     // Add Point Lights
     Entity_ID point_iD1 = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
     Entity* pLightEntity = entityMan->GetEntity( point_iD1 );
-    pLightEntity->AddComponent<PointLight>( RenderSys, Red, XMFLOAT3( 0.f, 2.0f, 0.0f ) );
+    pLightEntity->AddComponent<PointLight>( LightSys, Red, XMFLOAT3( 0.f, 2.0f, 0.0f ) );
 
     Entity_ID point_iD2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
     Entity* pLightEntity2 = entityMan->GetEntity( point_iD2 );
-    pLightEntity2->AddComponent<PointLight>( RenderSys, Blue, XMFLOAT3( 0.f, -1.0f, 0.0f ) );
+    pLightEntity2->AddComponent<PointLight>( LightSys, Blue, XMFLOAT3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -349,7 +349,7 @@ void Game::Draw( float deltaTime, float totalTime )
         }
     }
 
-    RenderSys->RenderFrame(
+    LightSys->SetShaderInfo(
         CurrentEntity->GetMaterial()->GetVertexShader(),
         CurrentEntity->GetMaterial()->GetPixelShader()
     );
@@ -430,7 +430,7 @@ void Game::DrawLightSources()
     UINT stride = sizeof( Vertex );
     UINT offset = 0;
 
-    auto PointLights = RenderSys->GetPointLights();
+    auto PointLights = LightSys->GetPointLights();
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {

@@ -15,7 +15,7 @@
 #include "../Physics/Collisions.h"
 #include "../Physics/PhysicsManager.h"
 #include "../ECS/ComponentManager.h"
-#include "../Resources/RenderSystem.h"
+#include "../Resources/LightSystem.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -108,5 +108,5 @@ private:
     ECS::ComponentManager* ComponentMan = nullptr;
     Physics::PhysicsManager* PhysicsMan = nullptr;
     Scripting::ScriptManager* ScriptMan = nullptr;
-    RenderSystem* RenderSys = nullptr;
+    LightSystem* LightSys = nullptr;
 };

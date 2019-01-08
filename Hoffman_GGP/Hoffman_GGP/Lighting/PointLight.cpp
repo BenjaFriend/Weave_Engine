@@ -2,10 +2,10 @@
 
 #include "PointLight.h"
 
-#include "../Resources/RenderSystem.h"
+#include "../Resources/LightSystem.h"
 
 PointLight::PointLight(
-    RenderSystem* aRendSys,
+    LightSystem* aRendSys,
     DirectX::XMFLOAT3 aColor,
     DirectX::XMFLOAT3 aPos,
     float aIntensity,

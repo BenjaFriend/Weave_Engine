@@ -2,10 +2,10 @@
 
 #include "DirLight.h"
 
-#include "../Resources/RenderSystem.h"
+#include "../Resources/LightSystem.h"
 
 
-DirLight::DirLight( RenderSystem* aRendSys, DirectionalLightData aLightData )
+DirLight::DirLight( LightSystem* aRendSys, DirectionalLightData aLightData )
     : LightingData( aLightData )
 {
     aRendSys->AddDirLight( this );

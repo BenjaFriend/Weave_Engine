@@ -7,14 +7,14 @@
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 
-class RenderSystem;
+class LightSystem;
 
 class PointLight : public ECS::Component<PointLight>
 {
 public:
 
     PointLight( 
-        RenderSystem* aRendSys,
+        LightSystem* aRendSys,
         DirectX::XMFLOAT3 aColor,
         DirectX::XMFLOAT3 aPos, 
         float aIntensity = 1.f, 

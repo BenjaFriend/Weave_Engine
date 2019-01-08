@@ -1,50 +1,50 @@
 #include "../stdafx.h"
-#include "RenderSystem.h"
+#include "LightSystem.h"
 
 #include "../Resources/SimpleShader.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
 
-RenderSystem::RenderSystem()
+LightSystem::LightSystem()
 {
 
 }
 
-RenderSystem::~RenderSystem()
+LightSystem::~LightSystem()
 {
     // Release references to any info
     DirLights.clear();
     PointLights.clear();
 }
 
-void RenderSystem::RenderFrame( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader )
+void LightSystem::SetShaderInfo( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader )
 {
     // For each mesh renderer ...
     SetLightData( aPixShader );
 }
 
-void RenderSystem::AddDirLight( DirLight * aDirLight )
+void LightSystem::AddDirLight( DirLight * aDirLight )
 {
     DirLights.push_back( aDirLight );
 }
 
-void RenderSystem::AddPointLight( PointLight * aPointLight )
+void LightSystem::AddPointLight( PointLight * aPointLight )
 {
     PointLights.push_back( aPointLight );
 }
 
-const std::vector<DirLight*> & RenderSystem::GetDirLights() const
+const std::vector<DirLight*> & LightSystem::GetDirLights() const
 {
     return DirLights;
 }
 
-const std::vector<PointLight*> & RenderSystem::GetPointLights() const
+const std::vector<PointLight*> & LightSystem::GetPointLights() const
 {
     return PointLights;
 }
 
-void RenderSystem::SetLightData( SimplePixelShader* aPixShader )
+void LightSystem::SetLightData( SimplePixelShader* aPixShader )
 {
     // Send dir lights -------------------------------
     size_t dirLightCount = DirLights.size();

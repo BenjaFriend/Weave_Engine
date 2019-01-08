@@ -7,7 +7,7 @@
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 
-class RenderSystem;
+class LightSystem;
 
 /// <summary>
 /// Component for controlling a directional light
@@ -17,7 +17,7 @@ class DirLight : public ECS::Component<DirLight>
 {
 public:
 
-    DirLight( RenderSystem* aRendSys, DirectionalLightData aLightData );
+    DirLight( LightSystem* aRendSys, DirectionalLightData aLightData );
 
     ~DirLight();
 

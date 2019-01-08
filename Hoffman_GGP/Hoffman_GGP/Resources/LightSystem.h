@@ -2,7 +2,6 @@
 
 #include <vector>
 
-
 /////////////////////////////////////////////////
 // Forward Declarations
 class SimplePixelShader;
@@ -13,26 +12,27 @@ struct PointLightData;
 struct DirectionalLightData;
 
 /// <summary>
-/// A render system will track different types of meshes or other drawable
-/// resources, and render them on it's draw function. 
+/// A light system will keep track of any lights that are in the scene
+/// and be able to set whatever data is necessary on a set of shaders
 /// </summary>
-class RenderSystem
+/// <author>Ben Hoffman</author>
+class LightSystem
 {
 public:
 
-    RenderSystem();
+    LightSystem();
 
-    ~RenderSystem();
+    ~LightSystem();
 
     /// <summary>
-    /// Render all meshes/lights in this system
+    /// Set data about this 
     /// </summary>
     /// <param name="aVertShader">The vert shader to use</param>
     /// <param name="aPixShader"></param>
-    void RenderFrame( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader );
+    void SetShaderInfo( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader );
 
     /// <summary>
-    /// Add a dir light to this system
+    /// Add a directional light to this system
     /// </summary>
     /// <param name="aDirLight">The dir light to be added</param>
     void AddDirLight( DirLight * aDirLight );

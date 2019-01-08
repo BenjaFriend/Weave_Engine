@@ -603,7 +603,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
-    <ClCompile Include="Resources\RenderSystem.cpp" />
+    <ClCompile Include="Resources\LightSystem.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
@@ -659,7 +659,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />
-    <ClInclude Include="Resources\RenderSystem.h" />
+    <ClInclude Include="Resources\LightSystem.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />

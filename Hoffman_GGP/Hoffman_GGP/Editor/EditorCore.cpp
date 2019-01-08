@@ -40,7 +40,10 @@ EditorCore::~EditorCore()
 void EditorCore::LoadResources()
 {
     // Load in any meshes that we may need for gizmos
-
+    // Load in a cube
+    // Load in a sphere
+    // Load in unlit shaders
+    // Load in wireframe stuff
 }
 
 void EditorCore::Update( float dt )
