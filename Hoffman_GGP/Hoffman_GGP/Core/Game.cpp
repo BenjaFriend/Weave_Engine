@@ -187,17 +187,14 @@ void Game::InitLights()
 
 
     // Add Dir Lights
-    Entity_ID dirLight_ID = entityMan->AddEntity( nullptr, nullptr, "Dir Light 1" );
-    Entity* dirLightEntity = entityMan->GetEntity( dirLight_ID );
+    Entity* dirLightEntity = entityMan->AddEntity( nullptr, nullptr, "Dir Light 1" );
     dirLightEntity->AddComponent<DirLight>( LightSys, DirLight1 );
 
     // Add Point Lights
-    Entity_ID point_iD1 = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
-    Entity* pLightEntity = entityMan->GetEntity( point_iD1 );
+    Entity* pLightEntity = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
     pLightEntity->AddComponent<PointLight>( LightSys, Red, XMFLOAT3( 0.f, 2.0f, 0.0f ) );
 
-    Entity_ID point_iD2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
-    Entity* pLightEntity2 = entityMan->GetEntity( point_iD2 );
+    Entity* pLightEntity2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
     pLightEntity2->AddComponent<PointLight>( LightSys, Blue, XMFLOAT3( 0.f, -1.0f, 0.0f ) );
 }
 
@@ -217,8 +214,7 @@ void Game::CreateBasicGeometry()
 {
     // Load in the meshes
     PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
-    size_t meshID = 0;
-
+    
     // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -251,21 +247,19 @@ void Game::CreateBasicGeometry()
         SamplerID
     );
 
-    XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
-    Entity_ID floorID = entityMan->AddEntity(
+    VEC3 floorPos = VEC3( 0.f, -5.f, 0.f );
+    Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
-
-    Entity* floorEntity = entityMan->GetEntity( floorID );
+    
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
     Physics::RigidBody* rb = floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
-    entityMan->GetEntity( floorID )->SetScale( XMFLOAT3( 5.f, 5.f, 5.f ) );
+    floorEntity->SetScale( VEC3( 5.f, 5.f, 5.f ) );
 
-    XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
-    Entity_ID secondBoxID = entityMan->AddEntity(
+    VEC3 newPos = VEC3( 0.f, 0.f, 0.f );
+    Entity* secondBox = entityMan->AddEntity(
         CubeMesh, floorMat, newPos, "Box 2" );
-
-    Entity* secondBox = entityMan->GetEntity( secondBoxID );
+    
     Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
 
     // Load in the skybox SRV --------------------------------------------------------

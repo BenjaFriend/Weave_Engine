@@ -47,29 +47,29 @@ void EntityManager::UnloadAllEntities()
     EntityArray.clear();
 }
 
-const Entity_ID EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName )
+Entity* EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName )
 {
     EntityArray.push_back( new Entity( aMesh, aMat, aName ) );
-    return ( EntityArray.size() - 1 );
+    return EntityArray [ EntityArray.size() - 1 ];
 }
 
-const Entity_ID EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos, std::string aName )
+Entity* EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos, std::string aName )
 {
     Entity* tempEnt = new Entity( aMesh, aMat, aName );
     tempEnt->SetPosition( aPos );
     EntityArray.push_back( tempEnt );
-    return ( EntityArray.size() - 1 );
+    return EntityArray [ EntityArray.size() - 1 ];
 }
 
 void EntityManager::DeleteEntity( const Entity_ID aEntityID )
 {
     if ( aEntityID >= 0 && aEntityID < EntityArray.size() )
     {
-        Entity* tempEnt = EntityArray[ aEntityID ];
+        Entity* tempEnt = EntityArray [ aEntityID ];
         // Remove the entity from the vector
         EntityArray.erase( EntityArray.begin() + aEntityID );
         // Free the memory of that entity
-        delete EntityArray[ aEntityID ];
+        delete EntityArray [ aEntityID ];
     }
 }
 
@@ -77,7 +77,7 @@ Entity * EntityManager::GetEntity( const Entity_ID aEntityID ) const
 {
     assert( aEntityID >= 0 && aEntityID < EntityArray.size() );
 
-    return EntityArray[ aEntityID ];
+    return EntityArray [ aEntityID ];
 }
 
 //////////////////////////////////////////////////////////////////

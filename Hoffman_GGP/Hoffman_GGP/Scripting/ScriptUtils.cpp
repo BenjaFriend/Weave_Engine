@@ -185,11 +185,11 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     Mesh* mesh = resMan->LoadMesh( meshName );
 
     // Create the entity in the entity manager
-    Entity_ID id = EntityManager::GetInstance()->AddEntity(
+    Entity* ent = EntityManager::GetInstance()->AddEntity(
         mesh,
         mat,
         pos,
         name
     );
-    return EntityManager::GetInstance()->GetEntity( id );
+    return ent;
 }
