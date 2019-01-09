@@ -67,14 +67,14 @@ public:
     /// </summary>
     /// <param name="aFileName">The filename of the mesh</param>
     /// <returns>An ID for the current mesh file to be used elsewhere</returns>
-    const std::tuple<Mesh_ID, Mesh*> LoadMesh( FileName aFileName );
+    Mesh* LoadMesh( const FileName & aFileName );
 
     /// <summary>
     /// Get a pointer to a mesh with it's ID
     /// </summary>
     /// <param name="aMeshID">ID for the given mesh</param>
     /// <returns>mesh pointer to the given object</returns>
-    Mesh* GetMesh( const Mesh_ID aMeshID );
+    Mesh* GetMesh( const FileName & aMeshID );
 
     /// <summary>
     /// Load in an SRV with the given context
@@ -210,32 +210,11 @@ private:
     /** Static instance of the resource manager */
     static ResourceManager* Instance;
 
-    // #TODO: Use a map of meshes instead for easy of use
-    struct LoadedMesh
-    {
-        LoadedMesh( FileName aName, Mesh* aMesh )
-            : fileName( aName ), mesh( aMesh )
-        {
-        }
-
-        ~LoadedMesh()
-        {
-            if ( mesh != nullptr )
-            {
-                delete mesh;
-                mesh = nullptr;
-            }
-        }
-
-        FileName fileName = nullptr;
-        Mesh* mesh = nullptr;
-    };
-
     /** Loaded shader files */
     std::unordered_map<std::wstring, ISimpleShader*> Shaders;
 
     /** The currently loaded meshes */
-    std::vector<LoadedMesh*> Meshes;
+    std::unordered_map<FileName, Mesh*> Meshes;
 
     /** Loaded materials */
     std::unordered_map<std::string, Material*> Materials;

@@ -182,7 +182,7 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     }
 
     ResourceManager* resMan = ResourceManager::GetInstance();
-    Mesh* mesh = std::get<1>( resMan->LoadMesh( meshName ) );
+    Mesh* mesh = resMan->LoadMesh( meshName );
 
     // Create the entity in the entity manager
     Entity_ID id = EntityManager::GetInstance()->AddEntity(

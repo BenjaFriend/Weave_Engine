@@ -68,7 +68,7 @@ private:
     ID3D11RasterizerState* WireFrame = nullptr;
 
     ID3D11ShaderResourceView* SkyboxSrvID = nullptr;
-    Mesh_ID CubeMeshID = -1;
+    Mesh* CubeMesh = nullptr;
 
     // Skybox resources
     SimpleVertexShader* SkyBoxVS = nullptr;
@@ -91,7 +91,7 @@ private:
     ResourceManager* resourceMan = nullptr;
     EntityManager* entityMan = nullptr;
 
-    Mesh_ID PointLightMesh_ID = 0;
+    Mesh* PointLightMesh = nullptr;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.

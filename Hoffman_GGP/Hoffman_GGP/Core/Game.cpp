@@ -216,8 +216,8 @@ void Game::CreateMatrices()
 void Game::CreateBasicGeometry()
 {
     // Load in the meshes
-    PointLightMesh_ID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/sphere.obj" ) );
-    size_t meshID = PointLightMesh_ID;
+    PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
+    size_t meshID = 0;
 
     // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -238,7 +238,7 @@ void Game::CreateBasicGeometry()
     // Set that meshes' material
 
     // Load floor --------------------------------------------------------
-    CubeMeshID = std::get<0>( resourceMan->LoadMesh( L"Assets/Models/cube.obj" ) );
+    CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
     
     Material* floorMat = resourceMan->LoadMaterial( 
         "Floor Mat",
@@ -253,7 +253,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 floorPos = XMFLOAT3( 0.f, -5.f, 0.f );
     Entity_ID floorID = entityMan->AddEntity(
-        resourceMan->GetMesh( CubeMeshID ), floorMat, floorPos, "Floor" );
+        CubeMesh, floorMat, floorPos, "Floor" );
 
     Entity* floorEntity = entityMan->GetEntity( floorID );
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
@@ -263,7 +263,7 @@ void Game::CreateBasicGeometry()
 
     XMFLOAT3 newPos = XMFLOAT3( 0.f, 0.f, 0.f );
     Entity_ID secondBoxID = entityMan->AddEntity(
-        resourceMan->GetMesh( CubeMeshID ), floorMat, newPos, "Box 2" );
+        CubeMesh, floorMat, newPos, "Box 2" );
 
     Entity* secondBox = entityMan->GetEntity( secondBoxID );
     Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
@@ -374,8 +374,8 @@ void Game::Draw( float deltaTime, float totalTime )
         context->OMSetDepthStencilState( skyDepthState, 0 );
 
         // After drawing all of our regular (solid) objects, draw the sky!
-        ID3D11Buffer* skyVB = resourceMan->GetMesh( CubeMeshID )->GetVertexBuffer();
-        ID3D11Buffer* skyIB = resourceMan->GetMesh( CubeMeshID )->GetIndexBuffer();
+        ID3D11Buffer* skyVB = CubeMesh->GetVertexBuffer();
+        ID3D11Buffer* skyIB = CubeMesh->GetIndexBuffer();
 
         // Set the buffers
         context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
@@ -395,7 +395,7 @@ void Game::Draw( float deltaTime, float totalTime )
         SkyBoxPS->SetShader();
 
         // Draw the skybox "mesh"
-        context->DrawIndexed( resourceMan->GetMesh( CubeMeshID )->GetIndexCount(), 0, 0 );
+        context->DrawIndexed( CubeMesh->GetIndexCount(), 0, 0 );
 
         // Reset any states we've changed for the next frame!
         context->RSSetState( 0 );
@@ -424,7 +424,7 @@ void Game::Draw( float deltaTime, float totalTime )
 // #Editor
 void Game::DrawLightSources()
 {
-    Mesh* lightMesh = ResourceManager::GetInstance()->GetMesh( PointLightMesh_ID );
+    Mesh* lightMesh = PointLightMesh;
     ID3D11Buffer * vb = lightMesh->GetVertexBuffer();
     ID3D11Buffer * ib = lightMesh->GetIndexBuffer();
     unsigned int indexCount = lightMesh->GetIndexCount();
@@ -507,7 +507,7 @@ void Game::DrawLightSources()
 
 void Game::DrawColliders()
 {
-    Mesh* cubeMesh = resourceMan->GetMesh( CubeMeshID );
+    Mesh* cubeMesh = CubeMesh;
     ID3D11Buffer * vb = cubeMesh->GetVertexBuffer();
     ID3D11Buffer * ib = cubeMesh->GetIndexBuffer();
     unsigned int indexCount = cubeMesh->GetIndexCount();

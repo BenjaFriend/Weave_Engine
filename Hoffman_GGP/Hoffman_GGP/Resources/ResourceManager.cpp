@@ -52,34 +52,29 @@ void ResourceManager::ReleaseInstance()
     }
 }
 
-const std::tuple<Mesh_ID, Mesh*> ResourceManager::LoadMesh( FileName aFileName )
+Mesh* ResourceManager::LoadMesh( const FileName & aFileName )
 {
     // Ensure that this mesh isn't already loaded
-    for ( size_t i = 0; i < Meshes.size(); ++i )
+    if ( Meshes.find( aFileName ) != Meshes.end() )
     {
-        if ( Meshes [ i ]->fileName == aFileName )
-        {
-            return std::make_tuple( i, Meshes [ i ]->mesh );
-        }
+        return Meshes [ aFileName ];
     }
 
-    //const size_t size = 64;
-    //char fileNameBuf [ 128 ];
-    //size_t ret;
-    //wcstombs_s( &ret, fileNameBuf, aFileName, size );
-
     Mesh* newMesh = new Mesh( currentDevice, aFileName );
-    LoadedMesh* newLoadedMesh = new LoadedMesh( aFileName, newMesh );
 
-    Meshes.push_back( newLoadedMesh );
-    return std::make_tuple( Meshes.size() - 1, newMesh );
+    Meshes [ aFileName ] = newMesh;
+    
+    return newMesh;
 }
 
-Mesh * ResourceManager::GetMesh( const Mesh_ID aMeshID )
+Mesh * ResourceManager::GetMesh( const FileName & aFileName )
 {
-    assert( aMeshID >= 0 && aMeshID < Meshes.size() );
+    if ( Meshes.find( aFileName ) != Meshes.end() )
+    {
+        return Meshes [ aFileName ];
+    }
 
-    return Meshes [ aMeshID ]->mesh;
+    return nullptr;
 }
 
 ID3D11ShaderResourceView* ResourceManager::LoadSRV( const FileName & aFileName )
@@ -228,14 +223,14 @@ Material* ResourceManager::GetMaterial( const Material_ID aID )
 void ResourceManager::UnloadMeshes()
 {
     // Delete each mesh that has been added
-    for ( auto it = Meshes.begin(); it != Meshes.end(); ++it )
+    for ( auto itr = Meshes.begin(); itr != Meshes.end(); ++itr )
     {
-        delete ( *it );
+        if ( itr->second != nullptr )
+            delete ( itr->second );
     }
 
     Meshes.clear();
     LOG_TRACE( "Unloaded Meshes!" );
-
 }
 
 void ResourceManager::UnloadMaterials()
