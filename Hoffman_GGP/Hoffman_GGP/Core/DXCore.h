@@ -83,12 +83,12 @@ protected:
 
     // DirectX related objects and variables
     D3D_FEATURE_LEVEL		dxFeatureLevel;
-    IDXGISwapChain*			swapChain;
-    ID3D11Device*			device;
-    ID3D11DeviceContext*	context;
+    IDXGISwapChain*			swapChain = nullptr;
+    ID3D11Device*			device = nullptr;
+    ID3D11DeviceContext*	context = nullptr;
 
-    ID3D11RenderTargetView* backBufferRTV;
-    ID3D11DepthStencilView* depthStencilView;
+    ID3D11RenderTargetView* backBufferRTV = nullptr;
+    ID3D11DepthStencilView* depthStencilView = nullptr;
 
     Input::InputManager* inputManager = nullptr;
 

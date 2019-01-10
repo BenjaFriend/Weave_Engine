@@ -28,7 +28,7 @@ EditorCore::EditorCore()
 {
     entityMan = EntityManager::GetInstance();
 
-    //LoadResources();
+    LoadResources();
 }
 
 EditorCore::~EditorCore()

@@ -97,6 +97,13 @@ void Game::Init()
     LightSys = new LightSystem();
     ScriptMan = new Scripting::ScriptManager( device, context );
 
+#if defined( EDITOR_ON )
+
+    editor = Editor::EditorCore::GetInstance();
+    LOG_TRACE( "Editor Initalized!" );
+
+#endif  // EDITOR_ON
+
     // Create a wireframe rasterizer state
     D3D11_RASTERIZER_DESC wireRS = {};
     wireRS.FillMode = D3D11_FILL_WIREFRAME;

@@ -174,13 +174,6 @@ HRESULT DXCore::InitWindow()
     logger = Logger::GetInstance();
     LOG_TRACE( "Logger initlaized!" );
 
-#if defined( EDITOR_ON )
-
-    editor = Editor::EditorCore::GetInstance();
-    LOG_TRACE( "Editor Initalized!" );
-
-#endif  // EDITOR_ON
-
     // Return an "everything is ok" HRESULT value
     return S_OK;
 }
