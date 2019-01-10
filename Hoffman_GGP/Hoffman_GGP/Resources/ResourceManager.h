@@ -93,9 +93,9 @@ public:
 
     template<class T>
     T* LoadShader(
-        ID3D11Device* aDevice,
-        ID3D11DeviceContext* aContext,
-        std::wstring aFileName
+        std::wstring aFileName,
+        ID3D11Device* aDevice = currentDevice,
+        ID3D11DeviceContext* aContext = currentContext
     )
     {
         static_assert(
@@ -111,7 +111,7 @@ public:
         }
 
         // Create a new shader
-        ISimpleShader* shader = new T( aDevice, aContext );
+        ISimpleShader* shader = new T( currentDevice, currentContext);
         shader->LoadShaderFile( aFileName.c_str() );
 
         // Add to the map of shaders
@@ -232,11 +232,11 @@ private:
     /// <summary>
     /// The current graphics target device
     /// </summary>
-    ID3D11Device* currentDevice = nullptr;
+    static ID3D11Device* currentDevice;
 
     /// <summary>
     /// Keep track of the current context so that we can easily load in
     /// SRVs and other items that may need it
     /// </summary>
-    ID3D11DeviceContext* currentContext = nullptr;
+    static ID3D11DeviceContext* currentContext;
 };

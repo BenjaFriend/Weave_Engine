@@ -4,6 +4,8 @@
 
 #include "../Entity/EntityManager.h"
 #include "../ECS/ComponentManager.h"
+#include "../Resources/ResourceManager.h"
+#include "../Resources/SimpleShader.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -87,6 +89,12 @@ namespace Editor
 
         /** Static instance of the editor */
         static EditorCore* Instance;
+
+        /** Resource manager for handling any editor-specific shaders */
+        ResourceManager* resourceMan = nullptr;
+
+        /** The outline shader that can be used for the selected object */
+        SimplePixelShader* OutlineShader = nullptr;
 
         /** Flag to set lighting gizmos */
         bool DrawLightGizmos = true;

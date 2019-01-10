@@ -39,6 +39,9 @@ EditorCore::~EditorCore()
 
 void EditorCore::LoadResources()
 {
+    resourceMan = ResourceManager::GetInstance();
+    OutlineShader = resourceMan->LoadShader<SimplePixelShader>(
+        L"PixelShader_Unlit.cso" );
     // Load in any meshes that we may need for gizmos
     // Load in a cube
     // Load in a sphere

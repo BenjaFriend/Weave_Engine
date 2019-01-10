@@ -5,6 +5,9 @@
 
 // Singleton definitions
 ResourceManager* ResourceManager::Instance = nullptr;
+ID3D11Device* ResourceManager::currentDevice = nullptr;
+ID3D11DeviceContext* ResourceManager::currentContext = nullptr;
+
 using namespace  DirectX;
 
 ResourceManager * ResourceManager::Initalize( ID3D11Device* aDevice, ID3D11DeviceContext* aContext )
@@ -25,8 +28,10 @@ ResourceManager * ResourceManager::GetInstance()
 
 // Private constructor
 ResourceManager::ResourceManager( ID3D11Device* aDevice, ID3D11DeviceContext* aContext )
-    : currentDevice( aDevice ), currentContext( aContext )
-{ }
+{ 
+    currentDevice = aDevice;
+    currentContext = aContext;
+}
 
 // Private destructor
 ResourceManager::~ResourceManager()

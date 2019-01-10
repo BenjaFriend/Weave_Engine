@@ -148,28 +148,18 @@ void Game::Init()
 void Game::LoadShaders()
 {
     vertexShader = resourceMan->LoadShader<SimpleVertexShader>(
-        device,
-        context,
         L"VertexShader.cso" );
 
     pixelShader = resourceMan->LoadShader<SimplePixelShader>(
-        device,
-        context,
         L"PixelShader.cso" );
 
     UnlitPixelShader = resourceMan->LoadShader<SimplePixelShader>(
-        device,
-        context,
         L"PixelShader_Unlit.cso" );
 
     SkyBoxVS = resourceMan->LoadShader<SimpleVertexShader>(
-        device,
-        context,
         L"SkyVS.cso" );
 
     SkyBoxPS = resourceMan->LoadShader<SimplePixelShader>(
-        device,
-        context,
         L"SkyPS.cso" );
 }
 

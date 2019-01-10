@@ -146,13 +146,9 @@ Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
     ResourceManager* resourceMan = ResourceManager::GetInstance();
 
     SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
-        Device,
-        Context,
         vsName );
 
     SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
-        Device,
-        Context,
         psName );
 
     assert( ps && vs );
