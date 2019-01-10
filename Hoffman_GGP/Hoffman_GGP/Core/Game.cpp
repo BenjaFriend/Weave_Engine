@@ -55,10 +55,6 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
-    if ( WireFrame != nullptr )
-    {
-        WireFrame->Release();
-    }
 
     if ( ScriptMan != nullptr )
     {
@@ -100,6 +96,7 @@ void Game::Init()
 #if defined( EDITOR_ON )
 
     editor = Editor::EditorCore::GetInstance();
+    editor->SetCamera( FlyingCamera );
     LOG_TRACE( "Editor Initalized!" );
 
 #endif  // EDITOR_ON
@@ -108,7 +105,8 @@ void Game::Init()
     D3D11_RASTERIZER_DESC wireRS = {};
     wireRS.FillMode = D3D11_FILL_WIREFRAME;
     wireRS.CullMode = D3D11_CULL_NONE;
-    device->CreateRasterizerState( &wireRS, &WireFrame );
+    //device->CreateRasterizerState( &wireRS, &WireFrame );
+    WireFrame = resourceMan->LoadRasterizerState( "Wireframe", wireRS );
 
     // Rasterizer state for drawing the inside of my sky box geometry
     D3D11_RASTERIZER_DESC rs = {};
@@ -139,8 +137,6 @@ void Game::Init()
     inputManager->BindAction( this, &Game::OnMouseDown, Input::InputType::Look );
     inputManager->BindAction( this, &Game::OnMouseUp, Input::InputType::LookReleased );
     //inputManager->BindAction( this, &Game::Quit, Input::InputType::Quit );
-    
-    BackgroundColor = ImVec4( 0.45f, 0.55f, 0.60f, 1.00f );
 
     ScriptMan->LoadScripts();
     inputManager->BindAction( ScriptMan, &Scripting::ScriptManager::OnClick, Input::InputType::Fire );
@@ -399,11 +395,27 @@ void Game::Draw( float deltaTime, float totalTime )
     if ( DrawLightGizmos )
         DrawLightSources();
 
+#if defined ( ENABLE_UI )
+
+    // Create a new IMGui frame
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    // Draw any game UI
+    DrawUI();
+
+    // Draw the editor if we want to
 #if defined( EDITOR_ON )
 
     editor->Draw( deltaTime, device, context );
 
 #endif  // EDITOR_ON
+
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+
+#endif
 
     // Present the back buffer to the user
     //  - Puts the final frame we're drawing into the window so the user can see it
@@ -526,7 +538,7 @@ void Game::DrawColliders()
         XMMATRIX transMat = XMMatrixTranslation( pos.x, pos.y, pos.z );
 
         // Make the transform for this light
-        XMFLOAT4X4 world;
+        VEC4x4 world;
 
         // Wireframe mode ---------------------------------
         // Make the transform for this light
@@ -550,6 +562,25 @@ void Game::DrawColliders()
 
     // Reset the Rasterizer state
     context->RSSetState( 0 );
+}
+
+void Game::DrawUI()
+{
+
+    // Options --------------------------
+    {
+        ImGui::Begin( "Demo Options" );
+
+        ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
+
+        ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
+
+        ImGui::Separator();
+
+        ImGui::Separator();
+
+        ImGui::End();   // If you want more than one window, then use ImGui::Beigin
+    }
 }
 
 #pragma region Mouse Input

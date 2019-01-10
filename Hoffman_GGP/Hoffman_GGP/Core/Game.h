@@ -57,6 +57,10 @@ private:
     void DrawLightSources();
     void DrawColliders();
 
+    /// <summary>
+    /// Draw any game options
+    /// </summary>
+    void DrawUI();
 
 
     // Wrappers for DirectX shaders to provide simplified functionality
@@ -76,13 +80,7 @@ private:
     ID3D11RasterizerState* skyRastState = nullptr;
     ID3D11DepthStencilState* skyDepthState = nullptr;
 
-#ifdef ENABLE_UI
-
-    ImVec4 BackgroundColor;
-
-#endif // ENABLE_UI
-
-    float LightMoveSpeed = 1.f;
+    float BackgroundColor [ 4 ] = { 0.45f, 0.55f, 0.60f, 1.00f };
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
@@ -97,7 +95,7 @@ private:
     // determining how far the mouse moved in a single frame.
     POINT prevMousePos;
 
-    // Editor things
+    // Demo Options
     bool UseDirLights = true;
     bool UsePointLights = true;
 

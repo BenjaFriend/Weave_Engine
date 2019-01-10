@@ -24,6 +24,16 @@ void EditorCore::ReleaseInstance()
     }
 }
 
+void EditorCore::SetDrawLightGizmos( const bool aDrawGizmos )
+{
+    DrawLightGizmos = aDrawGizmos; 
+}
+
+void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
+{
+    SceneFile = aFileName;
+}
+
 EditorCore::EditorCore()
 {
     entityMan = EntityManager::GetInstance();
@@ -42,11 +52,14 @@ void EditorCore::LoadResources()
     resourceMan = ResourceManager::GetInstance();
     OutlineShader = resourceMan->LoadShader<SimplePixelShader>(
         L"PixelShader_Unlit.cso" );
-    // Load in any meshes that we may need for gizmos
-    // Load in a cube
-    // Load in a sphere
-    // Load in unlit shaders
-    // Load in wireframe stuff
+
+    VertexShader = resourceMan->LoadShader<SimpleVertexShader>(
+        L"VertexShader.cso" );
+
+    D3D11_RASTERIZER_DESC wireRS = {};
+    wireRS.FillMode = D3D11_FILL_WIREFRAME;
+    wireRS.CullMode = D3D11_CULL_NONE;
+    WireFrame = resourceMan->LoadRasterizerState( "Wireframe", wireRS );
 }
 
 void EditorCore::Update( float dt )
@@ -56,36 +69,58 @@ void EditorCore::Update( float dt )
 
 void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
 {
+    assert( CurrentCamera != nullptr && VertexShader != nullptr && OutlineShader != nullptr );
     DrawUI();
 
     DrawGizmos();
+
+    // Draw the selected object
+    if ( SelectedEntity != nullptr )
+    {
+        Mesh* mesh = SelectedEntity->GetEntityMesh();
+        // If there is no mesh, default to a sphere
+        if ( mesh == nullptr )
+        {
+            mesh = resourceMan->GetMesh( L"Assets/Models/sphere.obj" );
+        }
+
+        ID3D11Buffer * vb = mesh->GetVertexBuffer();
+        ID3D11Buffer * ib = mesh->GetIndexBuffer();
+        unsigned int indexCount = mesh->GetIndexCount();
+
+        // Set buffers in the input assembler
+        UINT stride = sizeof( Vertex );
+        UINT offset = 0;
+
+        // Make the transform for this light
+        VEC4x4 world = SelectedEntity->GetWorldMatrix();
+
+        // Set up vertex shader
+        VertexShader->SetMatrix4x4( "world", world );
+        VertexShader->SetMatrix4x4( "view", CurrentCamera->GetViewMatrix() );
+        VertexShader->SetMatrix4x4( "projection", CurrentCamera->GetProjectMatrix() );
+
+        VertexShader->SetShader();
+        VertexShader->CopyAllBufferData();
+
+        // Setup the outline shader
+        OutlineShader->SetFloat3( "Color", VEC3( 1.0f, 0.0f, 0.0f ) );
+
+        OutlineShader->SetShader();
+        OutlineShader->CopyAllBufferData();
+
+
+        aContext->RSSetState( WireFrame );
+
+        aContext->DrawIndexed( indexCount, 0, 0 );
+
+        aContext->RSSetState( 0 );
+    }
 }
 
 void EditorCore::DrawUI()
 {
 #if defined( ENABLE_UI )
-    // Create a new IMGui frame
-    ImGui_ImplDX11_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-
-    // Draw the UI options here -----------------------------------
-
-    // Options --------------------------
-    {   
-        ImGui::Begin( "Demo Options" );
-
-        ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
-
-        ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
-
-        ImGui::Separator();
-
-        ImGui::Separator();
-
-        ImGui::End();   // If you want more than one window, then use ImGui::Beigin
-    }
-
     // Stats and Info ---------------------------
     {   
         ImGui::Begin( "Info" );
@@ -182,9 +217,6 @@ void EditorCore::DrawUI()
         }
     }
 
-
-    ImGui::Render();
-    ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 #endif
 }
 
@@ -214,7 +246,7 @@ void EditorCore::SaveScene()
     }
     else
     {
-        LOG_ERROR( "Failed to save scene: {}", SceneFile );
+        //LOG_ERROR( "Failed to save scene: {}", SceneFile );
     }
     ofs.close();
 }
@@ -248,7 +280,7 @@ void EditorCore::LoadScene()
     }
     else
     {
-        LOG_ERROR( "Failed to load scene: {}", SceneFile );
+        //LOG_ERROR( "Failed to load scene: {}", SceneFile );
     }
 
     ifs.close();

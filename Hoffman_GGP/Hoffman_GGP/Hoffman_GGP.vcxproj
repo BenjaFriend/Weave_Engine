@@ -203,7 +203,7 @@
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
@@ -213,7 +213,7 @@
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux_Debug|x64'" Label="LLVM">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
@@ -228,7 +228,7 @@
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>
   <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch </ClangClAdditionalOptions>
+    <ClangClAdditionalOptions>-std=c++11 -Wc++11-narrowing -fsyntax-only  -Wmicrosoft-include -v --relocatable-pch -Wall -Wextra -pedantic</ClangClAdditionalOptions>
     <UseClangCl>false</UseClangCl>
     <UseLldLink>false</UseLldLink>
   </PropertyGroup>

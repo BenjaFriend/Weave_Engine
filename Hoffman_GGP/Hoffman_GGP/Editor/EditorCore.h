@@ -1,22 +1,27 @@
 #pragma once
 
-#include <DirectXMath.h>
-
 #include "../Entity/EntityManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/SimpleShader.h"
+#include "../Resources/Vertex.h"
+#include "../Entity/Camera.h"
+
+#include "json/json.hpp"
+#include <iomanip>
+
+#if defined ( ENABLE_UI )
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-#include "json/json.hpp"
-#include <iomanip>
+#endif
 
 #if defined ( _WIN32 ) || defined ( _WIN64 )
 
 #include <d3d11.h>
+#include <DirectXMath.h>
 
 #endif
 
@@ -49,7 +54,7 @@ namespace Editor
         /// <param name="dt">Delta Time of this frame</param>
         void Update( float dt );
 
-        void Draw( 
+        void Draw(
             float dt,
             ID3D11Device* aDevice,
             ID3D11DeviceContext* aContext
@@ -64,6 +69,31 @@ namespace Editor
         /// Loads entities from the scene json file 
         /// </summary>
         void LoadScene();
+
+        /// <summary>
+        /// Get the currently selected entity by by the user
+        /// </summary>
+        /// <returns>Pointer to the selected entity</returns>
+        Entity* GetSelectedEntity() const { return SelectedEntity; }
+
+        //////////////////////////////////////////////////////////////////
+        // Accessors 
+        //////////////////////////////////////////////////////////////////
+
+        const bool GetDrawLightGizmos() const { return DrawLightGizmos; }
+        void SetDrawLightGizmos( const bool aDrawGizmos );
+
+        const bool GetDrawSkybox() const { return DrawSkyBox; }
+        void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
+
+        const bool GetDrawColliders() const { return DebugDrawColliders; }
+        void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
+
+        void SetSceneFile( const FileName & aFileName );
+        const FileName & GetSceneFileName() const { return SceneFile; }
+
+        void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
+        Camera* GetCamera()const { return CurrentCamera; }
 
     private:
 
@@ -96,6 +126,15 @@ namespace Editor
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
 
+        /** Vertex shader to use for drawing any gizmos */
+        SimpleVertexShader* VertexShader = nullptr;
+        
+        /** Wireframe state for drawing gizmos */
+        ID3D11RasterizerState* WireFrame = nullptr;
+
+        /** The current editor camera */
+        Camera* CurrentCamera = nullptr;
+
         /** Flag to set lighting gizmos */
         bool DrawLightGizmos = true;
 
@@ -112,7 +151,7 @@ namespace Editor
         Entity* SelectedEntity = nullptr;
 
         /** The current scene file to save all entities to */
-        char SceneFile [ 64 ] = "Scene_test.json";
+        FileName SceneFile = L"Scene_test.json";
 
     };
 

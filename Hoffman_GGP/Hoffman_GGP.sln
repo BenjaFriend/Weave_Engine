@@ -10,9 +10,6 @@ Global
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Linux_Debug|ARM = Linux_Debug|ARM
-		Linux_Debug|x64 = Linux_Debug|x64
-		Linux_Debug|x86 = Linux_Debug|x86
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
@@ -24,12 +21,6 @@ Global
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Debug|x64.Build.0 = Debug|x64
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Debug|x86.ActiveCfg = Debug|Win32
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Debug|x86.Build.0 = Debug|Win32
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|ARM.ActiveCfg = Linux_Debug|ARM
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|ARM.Build.0 = Linux_Debug|ARM
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|x64.ActiveCfg = Linux_Debug|x64
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|x64.Build.0 = Linux_Debug|x64
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|x86.ActiveCfg = Linux_Debug|Win32
-		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Linux_Debug|x86.Build.0 = Linux_Debug|Win32
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Release|ARM.ActiveCfg = Release|ARM
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Release|ARM.Build.0 = Release|ARM
 		{EE668F6A-773C-44FD-ACEE-26F997AF51E2}.Release|x64.ActiveCfg = Release|x64

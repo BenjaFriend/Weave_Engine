@@ -44,6 +44,8 @@ ResourceManager::~ResourceManager()
 
     UnloadShaders();
 
+    UnloadRasterizers();
+
     currentDevice = nullptr;
     currentContext = nullptr;
 }
@@ -153,6 +155,33 @@ ID3D11ShaderResourceView* ResourceManager::LoadSRV_DDS( const FileName & aFileNa
 
         return nullptr;
     }
+}
+
+ID3D11RasterizerState * ResourceManager::LoadRasterizerState( const std::string & aName, D3D11_RASTERIZER_DESC & rsState )
+{
+    // Check if this exists already
+    if ( RastStates.find( aName ) != RastStates.end() ) return RastStates [ aName ];
+
+    ID3D11RasterizerState* newRS = nullptr;
+    HRESULT iRes = currentDevice->CreateRasterizerState( &rsState, &newRS );
+    if ( iRes == S_OK )
+    {
+        RastStates [ aName ] = newRS;
+        LOG_TRACE( "Loaded {} Rasterizer state!", aName );
+        return newRS;
+    }
+    else
+    {
+        LOG_ERROR( "Failed to load rasterizer state!" );
+        return nullptr;
+    }
+}
+
+ID3D11RasterizerState * ResourceManager::GetRasterizerState( const std::string & aName )
+{
+    if ( RastStates.find( aName ) != RastStates.end() ) return RastStates [ aName ];
+
+    return nullptr;
 }
 
 ID3D11ShaderResourceView * ResourceManager::GetSRV( const SRV_ID & aSrvID )
@@ -282,6 +311,18 @@ void ResourceManager::UnloadShaders()
             delete ( itr->second );
     }
     Shaders.clear();
+}
+
+void ResourceManager::UnloadRasterizers()
+{
+    auto itr = RastStates.begin();
+    for ( ; itr != RastStates.end(); ++itr )
+    {
+        if ( itr->second != nullptr )
+            itr->second->Release();
+    }
+    RastStates.clear();
+    LOG_TRACE( "Unloaded RastStates!" );
 }
 
 const ID3D11Device * ResourceManager::GetCurrentDevice() const

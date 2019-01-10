@@ -91,6 +91,21 @@ public:
     /// <returns>Pointer to the texture after it is loaded</returns>
     ID3D11ShaderResourceView* LoadSRV_DDS( const FileName & aFileName );
 
+    /// <summary>
+    /// Load in a rasterizer state and store it in this resource man
+    /// </summary>
+    /// <param name="aName">Name of the rasterizer</param>
+    /// <param name="rsState">Rasterizer state description</param>
+    /// <returns>Rasterizer pointer if successful</returns>
+    ID3D11RasterizerState* LoadRasterizerState( const std::string & aName, D3D11_RASTERIZER_DESC & rsState );
+
+    /// <summary>
+    /// Get a rasterizer state if it exists
+    /// </summary>
+    /// <param name="aName">Name of the rast state</param>
+    /// <returns>raster state if it exists, nullptr if not</returns>
+    ID3D11RasterizerState* GetRasterizerState( const std::string & aName );
+    
     template<class T>
     T* LoadShader(
         std::wstring aFileName,
@@ -207,6 +222,11 @@ private:
     /// </summary>
     void UnloadShaders();
 
+    /// <summary>
+    /// Release any rasterizer states
+    /// </summary>
+    void UnloadRasterizers();
+
     /** Static instance of the resource manager */
     static ResourceManager* Instance;
 
@@ -223,6 +243,9 @@ private:
     /// The currently loaded Shader Resource Views
     /// </summary>
     std::unordered_map<FileName, ID3D11ShaderResourceView*> SRViews;
+
+    /** Current rasterizer states */
+    std::unordered_map<std::string, ID3D11RasterizerState*> RastStates;
 
     /// <summary>
     /// Currently loaded samplers to use
