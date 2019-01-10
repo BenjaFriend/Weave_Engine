@@ -324,7 +324,7 @@ void ISimpleShader::CopyBufferData( unsigned int index )
 //              Useful for updating more frequently-changing
 //              variables without having to re-copy all buffers.
 // --------------------------------------------------------
-void ISimpleShader::CopyBufferData( std::string bufferName )
+void ISimpleShader::CopyBufferData( const std::string & bufferName )
 {
     // Ensure the shader is valid
     if ( !shaderValid ) return;
@@ -350,7 +350,7 @@ void ISimpleShader::CopyBufferData( std::string bufferName )
 // Returns true if data is copied, false if variable doesn't 
 // exist or sizes don't match
 // --------------------------------------------------------
-bool ISimpleShader::SetData( std::string name, const void* data, unsigned int size )
+bool ISimpleShader::SetData( const std::string & name, const void* data, unsigned int size )
 {
     // Look for the variable and verify
     SimpleShaderVariable* var = FindVariable( name, size );
@@ -370,7 +370,7 @@ bool ISimpleShader::SetData( std::string name, const void* data, unsigned int si
 // --------------------------------------------------------
 // Sets INTEGER data
 // --------------------------------------------------------
-bool ISimpleShader::SetInt( std::string name, int data )
+bool ISimpleShader::SetInt( const std::string & name, int data )
 {
     return this->SetData( name, (void*) ( &data ), sizeof( int ) );
 }
@@ -378,7 +378,7 @@ bool ISimpleShader::SetInt( std::string name, int data )
 // --------------------------------------------------------
 // Sets a FLOAT variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat( std::string name, float data )
+bool ISimpleShader::SetFloat( const std::string & name, float data )
 {
     return this->SetData( name, (void*) ( &data ), sizeof( float ) );
 }
@@ -386,7 +386,7 @@ bool ISimpleShader::SetFloat( std::string name, float data )
 // --------------------------------------------------------
 // Sets a FLOAT2 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat2( std::string name, const float data[ 2 ] )
+bool ISimpleShader::SetFloat2( const std::string & name, const float data[ 2 ] )
 {
     return this->SetData( name, (void*) data, sizeof( float ) * 2 );
 }
@@ -394,7 +394,7 @@ bool ISimpleShader::SetFloat2( std::string name, const float data[ 2 ] )
 // --------------------------------------------------------
 // Sets a FLOAT2 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat2( std::string name, const DirectX::XMFLOAT2 data )
+bool ISimpleShader::SetFloat2( const std::string & name, const DirectX::XMFLOAT2 data )
 {
     return this->SetData( name, &data, sizeof( float ) * 2 );
 }
@@ -402,7 +402,7 @@ bool ISimpleShader::SetFloat2( std::string name, const DirectX::XMFLOAT2 data )
 // --------------------------------------------------------
 // Sets a FLOAT3 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat3( std::string name, const float data[ 3 ] )
+bool ISimpleShader::SetFloat3( const std::string & name, const float data[ 3 ] )
 {
     return this->SetData( name, (void*) data, sizeof( float ) * 3 );
 }
@@ -410,7 +410,7 @@ bool ISimpleShader::SetFloat3( std::string name, const float data[ 3 ] )
 // --------------------------------------------------------
 // Sets a FLOAT3 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat3( std::string name, const DirectX::XMFLOAT3 data )
+bool ISimpleShader::SetFloat3( const std::string & name, const DirectX::XMFLOAT3 data )
 {
     return this->SetData( name, &data, sizeof( float ) * 3 );
 }
@@ -418,7 +418,7 @@ bool ISimpleShader::SetFloat3( std::string name, const DirectX::XMFLOAT3 data )
 // --------------------------------------------------------
 // Sets a FLOAT4 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat4( std::string name, const float data[ 4 ] )
+bool ISimpleShader::SetFloat4( const std::string & name, const float data[ 4 ] )
 {
     return this->SetData( name, (void*) data, sizeof( float ) * 4 );
 }
@@ -426,7 +426,7 @@ bool ISimpleShader::SetFloat4( std::string name, const float data[ 4 ] )
 // --------------------------------------------------------
 // Sets a FLOAT4 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat4( std::string name, const DirectX::XMFLOAT4 data )
+bool ISimpleShader::SetFloat4( const std::string & name, const DirectX::XMFLOAT4 data )
 {
     return this->SetData( name, &data, sizeof( float ) * 4 );
 }
@@ -434,7 +434,7 @@ bool ISimpleShader::SetFloat4( std::string name, const DirectX::XMFLOAT4 data )
 // --------------------------------------------------------
 // Sets a MATRIX (4x4) variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetMatrix4x4( std::string name, const float data[ 16 ] )
+bool ISimpleShader::SetMatrix4x4( const std::string & name, const float data[ 16 ] )
 {
     return this->SetData( name, (void*) data, sizeof( float ) * 16 );
 }
@@ -442,7 +442,7 @@ bool ISimpleShader::SetMatrix4x4( std::string name, const float data[ 16 ] )
 // --------------------------------------------------------
 // Sets a MATRIX (4x4) variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetMatrix4x4( std::string name, const DirectX::XMFLOAT4X4 data )
+bool ISimpleShader::SetMatrix4x4( const std::string & name, const DirectX::XMFLOAT4X4 data )
 {
     return this->SetData( name, &data, sizeof( float ) * 16 );
 }

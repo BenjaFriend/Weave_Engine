@@ -158,7 +158,7 @@ HRESULT DXCore::InitWindow()
         0,			// No parent window
         0,			// No menu
         hInstance,	// The app's handle
-        0 );			// No other windows in our application
+        0 );		// No other windows in our application
 
     // Ensure the window was created properly
     if ( hWnd == NULL )
@@ -177,6 +177,7 @@ HRESULT DXCore::InitWindow()
 #if defined( EDITOR_ON )
 
     editor = Editor::EditorCore::GetInstance();
+    LOG_TRACE( "Editor Initalized!" );
 
 #endif  // EDITOR_ON
 
