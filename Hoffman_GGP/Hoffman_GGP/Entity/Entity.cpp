@@ -15,17 +15,15 @@ size_t Entity::EntityCount = 0;
 
 Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
     : EntityMesh( aMesh ), EntityMaterial( aMat ), Name( aName )
-{
-    // Set default values for position, scale and rotation
-    Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
-    Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
-    Rotation = DirectX::XMFLOAT4();
-
+{    
     IsActive = true;
 
     entID = EntityCount++;
 
     componentManager = ECS::ComponentManager::GetInstance();
+
+    // Give entity component a transform 
+    EntityTransform = this->AddComponent<Transform>();
 }
 
 Entity::Entity()
@@ -43,8 +41,10 @@ Entity::Entity()
 // virtual destructor
 Entity::~Entity()
 {
+    EntityTransform = nullptr;
     EntityMesh = nullptr;
     EntityMaterial = nullptr;
+    componentManager = nullptr;
 }
 
 void Entity::MoveRelative( const float aX, const float aY, const float aZ )
@@ -74,7 +74,7 @@ void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
     // Render all meshes that are a part of this entity
     // in the future I want to experiment with different meshes/material 
     // settings
-    EntityMaterial->SetShaderValues( GetWorldMatrix() , aView, aProjection);
+    EntityMaterial->SetShaderValues( EntityTransform->GetWorldMatrix() , aView, aProjection);
 }
 
 void Entity::SaveObject( nlohmann::json & aOutFile )
@@ -116,76 +116,6 @@ Mesh * Entity::GetEntityMesh() const
 const Material* Entity::GetMaterial() const
 {
     return EntityMaterial;
-}
-
-const VEC3 & Entity::GetPosition() const
-{
-    return Position;
-}
-
-void Entity::SetPosition( const VEC3 & aNewPos )
-{
-    Position = aNewPos;
-}
-
-void Entity::SetPosition( const float aX, const float aY, const float aZ )
-{
-    Position.x = aX;
-    Position.y = aY;
-    Position.z = aZ;
-}
-
-const VEC3 & Entity::GetScale() const
-{
-    return Scale;
-}
-
-void Entity::SetScale( const VEC3 & aNewScale )
-{
-    Scale = aNewScale;
-}
-
-void Entity::SetScale( const float aX, const float aY, const float aZ )
-{
-    Scale.x = aX;
-    Scale.y = aY;
-    Scale.z = aZ;
-}
-
-const DirectX::XMFLOAT4 & Entity::GetRotation() const
-{
-    return Rotation;
-}
-
-void Entity::SetRotation( const DirectX::XMFLOAT4 & aNewRot )
-{
-    Rotation = aNewRot;
-}
-
-const XMFLOAT4X4 Entity::GetWorldMatrix() const
-{
-    XMMATRIX ScaleMatrix = XMMatrixScaling(
-        Scale.x,
-        Scale.y,
-        Scale.z );
-
-    XMMATRIX Rot = XMMatrixRotationRollPitchYaw(
-        Rotation.x,
-        Rotation.y,
-        Rotation.z );
-
-    XMMATRIX Pos = XMMatrixTranslation(
-        Position.x,
-        Position.y,
-        Position.z );
-
-    // Calculate the world matrix
-    XMMATRIX WorldMM = ScaleMatrix * Rot * Pos;
-
-    XMFLOAT4X4 World4x4;
-    XMStoreFloat4x4( &World4x4, XMMatrixTranspose( WorldMM ) );	// Don't forget to transpose!
-
-    return World4x4;
 }
 
 void Entity::SetIsActive( const bool aStatus )

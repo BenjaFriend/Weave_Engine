@@ -4,7 +4,9 @@
 
 Transform::Transform()
 {
-
+    Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
+    Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
+    Rotation = DirectX::XMFLOAT4();
 }
 
 Transform::~Transform()
@@ -12,6 +14,22 @@ Transform::~Transform()
 
 }
 
+void Transform::DrawEditorGUI()
+{
+    if ( ImGui::CollapsingHeader( "Transform" ) )
+    {
+        ImGui::InputFloat3( "Position", ( float* ) &Position);
+
+        ImGui::InputFloat3( "Scale", ( float* ) &Scale );
+
+        ImGui::InputFloat4( "Rotation", ( float* ) &Rotation);
+    }
+}
+
+void Transform::SaveObject( nlohmann::json & aOutFile )
+{
+
+}
 
 const VEC3 & Transform::GetPosition() const
 {
@@ -82,4 +100,3 @@ const DirectX::XMFLOAT4X4 Transform::GetWorldMatrix() const
 
     return World4x4;
 }
-

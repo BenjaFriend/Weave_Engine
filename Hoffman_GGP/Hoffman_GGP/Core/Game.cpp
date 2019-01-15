@@ -247,7 +247,7 @@ void Game::CreateBasicGeometry()
     Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
     Physics::RigidBody* rb = floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
-    floorEntity->SetScale( VEC3( 5.f, 5.f, 5.f ) );
+    floorEntity->GetTransform()->SetScale( VEC3( 5.f, 5.f, 5.f ) );
 
     VEC3 newPos = VEC3( 0.f, 0.f, 0.f );
     Entity* secondBox = entityMan->AddEntity(

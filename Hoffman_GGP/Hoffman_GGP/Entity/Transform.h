@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../ECS/ComponentManager.h"
 #include "../ECS/Component.h"
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
@@ -12,6 +11,13 @@ public:
     Transform();
 
     ~Transform();
+
+    virtual void DrawEditorGUI() override;
+
+    virtual void SaveObject( nlohmann::json & aOutFile ) override;
+
+    virtual const char* ComponentName() override { return "Transform"; }
+
 
     /** Returns this entity's current position */
     const DirectX::XMFLOAT3 & GetPosition() const;

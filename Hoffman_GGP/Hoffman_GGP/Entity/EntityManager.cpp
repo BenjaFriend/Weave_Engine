@@ -56,7 +56,7 @@ Entity* EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName
 Entity* EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const DirectX::XMFLOAT3 & aPos, std::string aName )
 {
     Entity* tempEnt = new Entity( aMesh, aMat, aName );
-    tempEnt->SetPosition( aPos );
+    tempEnt->GetTransform()->SetPosition( aPos );
     EntityArray.push_back( tempEnt );
     return EntityArray [ EntityArray.size() - 1 ];
 }

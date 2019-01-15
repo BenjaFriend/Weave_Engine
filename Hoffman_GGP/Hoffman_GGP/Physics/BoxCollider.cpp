@@ -27,8 +27,8 @@ void BoxCollider::SaveObject( nlohmann::json & aOutFile )
 
 const bool BoxCollider::Collides( const BoxCollider & aOther )
 {
-    VEC3 ownerPos = EntityManager::GetInstance()->GetEntity( owner )->GetPosition();
-    VEC3 otherPos = EntityManager::GetInstance()->GetEntity( aOther.GetOwner() )->GetPosition();
+    VEC3 ownerPos = EntityManager::GetInstance()->GetEntity( owner )->GetTransform()->GetPosition();
+    VEC3 otherPos = EntityManager::GetInstance()->GetEntity( aOther.GetOwner() )->GetTransform()->GetPosition();
 
     // Account for the offset of the collider
     ownerPos.x += this->CenterOffset.x;
@@ -64,7 +64,7 @@ const VEC3 & BoxCollider::GetCenterOffset() const
 
 const VEC3 Physics::BoxCollider::GetPosition() const
 {
-    VEC3 worldPos = EntityManager::GetInstance()->GetEntity( owner )->GetPosition();
+    VEC3 worldPos = EntityManager::GetInstance()->GetEntity( owner )->GetTransform()->GetPosition();
     worldPos.x += CenterOffset.x;
     worldPos.y += CenterOffset.y;
     worldPos.z += CenterOffset.z;

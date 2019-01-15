@@ -93,7 +93,7 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
         UINT offset = 0;
 
         // Make the transform for this light
-        VEC4x4 world = SelectedEntity->GetWorldMatrix();
+        VEC4x4 world = SelectedEntity->GetTransform()->GetWorldMatrix();
 
         // Set up vertex shader
         VertexShader->SetMatrix4x4( "world", world );
@@ -172,28 +172,7 @@ void EditorCore::DrawUI()
 
             SelectedEntity->SetName( newNameBuf );
             SelectedEntity->SetIsActive( isActive );
-
-            ImGui::Separator();
-
-            if ( ImGui::CollapsingHeader( "Transform" ) )
-            {
-                DirectX::XMFLOAT3 newPos = SelectedEntity->GetPosition();
-                ImGui::InputFloat3( "Position", ( float* ) &newPos );
-
-                DirectX::XMFLOAT3 newScale = SelectedEntity->GetScale();
-                ImGui::InputFloat3( "Scale", ( float* ) &newScale );
-
-                DirectX::XMFLOAT4 newRotation = SelectedEntity->GetRotation();
-                ImGui::InputFloat4( "Rotation", ( float* ) &newRotation );
-
-                // The position of the current object
-                SelectedEntity->SetPosition( newPos );
-                SelectedEntity->SetScale( newScale );
-                SelectedEntity->SetRotation( newRotation );
-            }
-
-            ImGui::Separator();
-
+            
             // Loop through each of this entity's components
             auto compMap = SelectedEntity->GetAllComponents();
             if ( compMap != nullptr )

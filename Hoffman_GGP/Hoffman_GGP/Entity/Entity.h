@@ -5,6 +5,7 @@
 #include "../Physics/Collisions.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ISaveable.h"
+#include "Transform.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -106,6 +107,9 @@ public:
 
 private:
 
+    /** The transform of the entity */
+    Transform* EntityTransform = nullptr;
+
     // TODO: Make this a smart pointer at some point
     /** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
     Mesh* EntityMesh = nullptr;
@@ -134,7 +138,6 @@ private:
     /** handles the adding/removing of components for this entity */
     ECS::ComponentManager * componentManager = nullptr;
 
-
     ////////////////////////////////////////////////////
     // Accessors
     ////////////////////////////////////////////////////
@@ -146,62 +149,8 @@ public:
     /** Returns this entity's material */
     const Material* GetMaterial() const;
 
-    /** Returns this entity's current position */
-    const DirectX::XMFLOAT3 & GetPosition() const;
-
-    /// <summary>
-    /// Set the position of this entity
-    /// </summary>
-    /// <param name="aNewPos">The new position of this object</param>
-    void SetPosition( const DirectX::XMFLOAT3 & aNewPos );
-
-    /// <summary>
-    /// Set the position of this entity 
-    /// </summary>
-    /// <param name="aX">new X value of the position</param>
-    /// <param name="aY">new Y value of the position</param>
-    /// <param name="aZ">new Z value of the position</param>
-    void SetPosition( const float aX, const float aY, const float aZ );
-
-    void SetPosX( const float aVal ) { Position.x = aVal; }
-    void SetPosY( const float aVal ) { Position.y = aVal; }
-    void SetPosZ( const float aVal ) { Position.z = aVal; }
-
-    /** Returns this entity's current scale */
-    const VEC3 & GetScale() const;
-
-    /// <summary>
-    /// Set the position of this entity 
-    /// </summary>
-    /// <param name="aNewScale">The new scale of this object</param>
-    void SetScale( const VEC3 & aNewScale );
-
-    /// <summary>
-    /// Set the scale of the this entity 
-    /// </summary>
-    /// <param name="aX">new X value of the scale</param>
-    /// <param name="aY">new Y value of the scale</param>
-    /// <param name="aZ">new Z value of the scale</param>
-    void SetScale( const float aX, const float aY, const float aZ );
-
-    void SetScaleX( const float aVal ) { Scale.x = aVal; }
-    void SetScaleY( const float aVal ) { Scale.y = aVal; }
-    void SetScaleZ( const float aVal ) { Scale.z = aVal; }
-
-    /** Returns this entity's current rotation */
-    const VEC4 & GetRotation() const;
-
-    /// <summary>
-    /// Set the rotation of this entity 
-    /// </summary>
-    /// <param name="aNewRot">The new rotation of this object</param>
-    void SetRotation( const VEC4 & aNewRot );
-
-    /// <summary>
-    /// Calculate the world matrix for this entity
-    /// </summary>
-    /// <returns>The calculate world matrix for this entity</returns>
-    const VEC4x4 GetWorldMatrix() const;
+    /** Get the current transform of this object */
+    Transform* GetTransform() const { return EntityTransform; }
 
     /// <summary>
     /// Sets if this entity is active or not

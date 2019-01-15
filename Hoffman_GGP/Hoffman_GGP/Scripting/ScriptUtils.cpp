@@ -82,15 +82,15 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
         "GetName", &Entity::GetName,
         "SetName", &Entity::SetName,
         "SetIsActive", &Entity::SetIsActive,
-        "GetIsActive", &Entity::GetIsActive,
-        "GetPosition", &Entity::GetPosition,
-        "SetPosX", &Entity::SetPosX,
-        "SetPosY", &Entity::SetPosY,
-        "SetPosZ", &Entity::SetPosZ,
-        "GetScale", &Entity::GetScale,
-        "SetScaleX", &Entity::SetScaleX,
-        "SetScaleY", &Entity::SetScaleY,
-        "SetScaleZ", &Entity::SetScaleZ
+        "GetIsActive", &Entity::GetIsActive
+        //"GetPosition", &Entity::GetPosition,
+        //"SetPosX", &Entity::SetPosX,
+        //"SetPosY", &Entity::SetPosY,
+        //"SetPosZ", &Entity::SetPosZ,
+        //"GetScale", &Entity::GetScale,
+        //"SetScaleX", &Entity::SetScaleX,
+        //"SetScaleY", &Entity::SetScaleY,
+        //"SetScaleZ", &Entity::SetScaleZ
         );
 }
 
