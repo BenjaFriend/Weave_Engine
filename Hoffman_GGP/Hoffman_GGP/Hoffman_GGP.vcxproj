@@ -596,6 +596,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\EntityManager.cpp" />
+    <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
     <ClCompile Include="Lighting\PointLight.cpp" />
     <ClCompile Include="Physics\BoxCollider.cpp" />
@@ -651,6 +652,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\EntityManager.h" />
+    <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Lighting\DirLight.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
     <ClInclude Include="Lighting\PointLight.h" />
