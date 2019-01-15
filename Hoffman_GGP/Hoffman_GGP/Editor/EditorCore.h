@@ -115,7 +115,7 @@ namespace Editor
         /// <summary>
         /// Draw any gizmos that should be on screen
         /// </summary>
-        void DrawGizmos();
+        void DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext );
 
         /** Static instance of the editor */
         static EditorCore* Instance;
@@ -152,6 +152,9 @@ namespace Editor
 
         /** The current scene file to save all entities to */
         FileName SceneFile = L"Scene_test.json";
+
+        /** The color that will be draw around the entity that's selected */
+        VEC3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };
 
     };
 

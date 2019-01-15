@@ -104,7 +104,7 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
         VertexShader->CopyAllBufferData();
 
         // Setup the outline shader
-        OutlineShader->SetFloat3( "Color", VEC3( 1.0f, 0.0f, 0.0f ) );
+        OutlineShader->SetFloat3( "Color", SelectedOutlineColor );
 
         OutlineShader->SetShader();
         OutlineShader->CopyAllBufferData();
@@ -220,8 +220,9 @@ void EditorCore::DrawUI()
 #endif
 }
 
-void EditorCore::DrawGizmos()
+void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
 {
+
 }
 
 void EditorCore::SaveScene()
