@@ -26,7 +26,7 @@ void EditorCore::ReleaseInstance()
 
 void EditorCore::SetDrawLightGizmos( const bool aDrawGizmos )
 {
-    DrawLightGizmos = aDrawGizmos; 
+    DrawLightGizmos = aDrawGizmos;
 }
 
 void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
@@ -72,7 +72,7 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
     assert( CurrentCamera != nullptr && VertexShader != nullptr && OutlineShader != nullptr );
     DrawUI();
 
-    DrawGizmos();
+    DrawGizmos( aDevice, aContext );
 
     // Draw the selected object
     if ( SelectedEntity != nullptr )
@@ -122,7 +122,7 @@ void EditorCore::DrawUI()
 {
 #if defined( ENABLE_UI )
     // Stats and Info ---------------------------
-    {   
+    {
         ImGui::Begin( "Info" );
         ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
 
@@ -138,7 +138,7 @@ void EditorCore::DrawUI()
     }
 
     // Draw the hierarchy of objects --------------------------
-    {   
+    {
         ImGui::Begin( "Hierarchy" );
 
         Entity* CurrentEntity = nullptr;
@@ -158,7 +158,7 @@ void EditorCore::DrawUI()
     }
 
     // Inspector --------------------------
-    {   
+    {
         if ( SelectedEntity != nullptr )
         {
             ImGui::Begin( "Inspector" );
