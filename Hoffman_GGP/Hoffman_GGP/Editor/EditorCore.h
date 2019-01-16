@@ -6,6 +6,7 @@
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
 #include "../Entity/Camera.h"
+#include "Gizmo.h"
 
 #include "json/json.hpp"
 #include <iomanip>
@@ -18,12 +19,7 @@
 
 #endif
 
-#if defined ( _WIN32 ) || defined ( _WIN64 )
-
-#include <d3d11.h>
-#include <DirectXMath.h>
-
-#endif
+#include "../MathHelper.h"
 
 namespace Editor
 {
@@ -80,8 +76,8 @@ namespace Editor
         // Accessors 
         //////////////////////////////////////////////////////////////////
 
-        const bool GetDrawLightGizmos() const { return DrawLightGizmos; }
-        void SetDrawLightGizmos( const bool aDrawGizmos );
+        const bool GetDrawGizmos() const { return DoGizmoDraw; }
+        void SetDrawGizmos( const bool aDrawGizmos );
 
         const bool GetDrawSkybox() const { return DrawSkyBox; }
         void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
@@ -126,6 +122,9 @@ namespace Editor
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
 
+        /** The unlit shader that we can use to draw light sources */
+        SimplePixelShader* UnlitShader = nullptr;
+
         /** Vertex shader to use for drawing any gizmos */
         SimpleVertexShader* VertexShader = nullptr;
         
@@ -136,7 +135,7 @@ namespace Editor
         Camera* CurrentCamera = nullptr;
 
         /** Flag to set lighting gizmos */
-        bool DrawLightGizmos = true;
+        bool DoGizmoDraw = true;
 
         /** Flag to draw the skybox */
         bool DrawSkyBox = true;
@@ -156,6 +155,11 @@ namespace Editor
         /** The color that will be draw around the entity that's selected */
         VEC3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };
 
+        /** The current gizmos that should be drawn */
+        std::vector<Gizmo*> CurrentGizmos;
+
     };
+
+    
 
 }   // namespace Editor

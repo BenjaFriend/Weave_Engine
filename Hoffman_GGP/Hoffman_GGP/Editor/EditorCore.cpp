@@ -24,9 +24,9 @@ void EditorCore::ReleaseInstance()
     }
 }
 
-void EditorCore::SetDrawLightGizmos( const bool aDrawGizmos )
+void EditorCore::SetDrawGizmos( const bool aDrawGizmos )
 {
-    DrawLightGizmos = aDrawGizmos;
+    DoGizmoDraw = aDrawGizmos;
 }
 
 void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
@@ -45,6 +45,14 @@ EditorCore::~EditorCore()
 {
     entityMan = nullptr;
     SelectedEntity = nullptr;
+
+    // Delete all gizmos
+    for ( size_t i = 0; i < CurrentGizmos.size(); ++i )
+    {
+        if ( CurrentGizmos [ i ] != nullptr )
+            delete CurrentGizmos [ i ];
+    }
+    CurrentGizmos.clear();
 }
 
 void EditorCore::LoadResources()
@@ -55,6 +63,9 @@ void EditorCore::LoadResources()
 
     VertexShader = resourceMan->LoadShader<SimpleVertexShader>(
         L"VertexShader.cso" );
+
+    UnlitShader = resourceMan->LoadShader<SimplePixelShader>(
+        L"PixelShader_Unlit.cso" );
 
     D3D11_RASTERIZER_DESC wireRS = {};
     wireRS.FillMode = D3D11_FILL_WIREFRAME;
@@ -72,7 +83,8 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
     assert( CurrentCamera != nullptr && VertexShader != nullptr && OutlineShader != nullptr );
     DrawUI();
 
-    DrawGizmos( aDevice, aContext );
+    if ( DoGizmoDraw )
+        DrawGizmos( aDevice, aContext );
 
     // Draw the selected object
     if ( SelectedEntity != nullptr )
@@ -172,7 +184,7 @@ void EditorCore::DrawUI()
 
             SelectedEntity->SetName( newNameBuf );
             SelectedEntity->SetIsActive( isActive );
-            
+
             // Loop through each of this entity's components
             auto compMap = SelectedEntity->GetAllComponents();
             if ( compMap != nullptr )
@@ -201,7 +213,10 @@ void EditorCore::DrawUI()
 
 void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
 {
+    for ( auto itr = CurrentGizmos.begin(); itr != CurrentGizmos.end(); ++itr )
+    {
 
+    }
 }
 
 void EditorCore::SaveScene()
