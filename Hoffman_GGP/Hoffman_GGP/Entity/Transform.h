@@ -1,9 +1,13 @@
 #pragma once
 
 #include "../ECS/Component.h"
+#include "../MathHelper.h"
 
-#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
-
+/// <summary>
+/// A transform component will give entities a position, 
+/// rotation, and scale
+/// </summary>
+/// <author>Ben Hoffman</author>
 class Transform : public ECS::Component<Transform>
 {
 public:
@@ -18,9 +22,8 @@ public:
 
     virtual const char* ComponentName() override { return "Transform"; }
 
-
     /** Returns this entity's current position */
-    const DirectX::XMFLOAT3 & GetPosition() const;
+    const VEC3 & GetPosition() const;
 
     /// <summary>
     /// Set the position of this entity

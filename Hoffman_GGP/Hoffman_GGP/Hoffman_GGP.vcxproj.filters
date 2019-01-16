@@ -244,6 +244,7 @@
     <ClInclude Include="Entity\Transform.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="MathHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
