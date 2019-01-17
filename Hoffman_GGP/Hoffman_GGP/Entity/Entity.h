@@ -39,14 +39,6 @@ public:
     ~Entity();
 
     /// <summary>
-    /// Move the entity relative to the direction it is facing 
-    /// </summary>
-    /// <param name="aX">new X value to add to this position</param>
-    /// <param name="aY">new Y value to add to this position</param>
-    /// <param name="aZ">new Z value to add to this position</param>
-    void MoveRelative( const float aX, const float aY, const float aZ );
-
-    /// <summary>
     /// Sets the material's shader data and activates the shaders
     /// </summary>
     /// <param name="aView">View matrix</param>
@@ -108,12 +100,6 @@ private:
 
     /** This entity's material */
     Material* EntityMaterial = nullptr;
-
-    /** The current position of this entity */
-    DirectX::XMFLOAT3 Position;
-
-    /** The current rotation of this entity */
-    DirectX::XMFLOAT4 Rotation;
 
     /** Flag for if this entity is active or not */
     bool IsActive;

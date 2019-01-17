@@ -244,8 +244,8 @@ void Game::CreateBasicGeometry()
     Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
     
-    Physics::BoxCollider* collider = floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
-    Physics::RigidBody* rb = floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
+    floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
+    floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
     floorEntity->GetTransform()->SetScale( VEC3( 5.f, 5.f, 5.f ) );
 
@@ -253,7 +253,7 @@ void Game::CreateBasicGeometry()
     Entity* secondBox = entityMan->AddEntity(
         CubeMesh, floorMat, newPos, "Box 2" );
     
-    Physics::BoxCollider* collider2 = secondBox->AddComponent<Physics::BoxCollider>();
+    secondBox->AddComponent<Physics::BoxCollider>();
 
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( L"Assets/Textures/SunnyCubeMap.dds" );
@@ -274,22 +274,22 @@ void Game::OnResize()
 // --------------------------------------------------------
 // Update your game here - user input, move objects, AI, etc.
 // --------------------------------------------------------
-void Game::Update( float deltaTime, float totalTime )
+void Game::Update( float dt, float totalTime )
 {
     // Quit if the escape key is pressed
     if ( GetAsyncKeyState( VK_ESCAPE ) )
         Quit();
 
-    PhysicsMan->Update( deltaTime );
+    PhysicsMan->Update( dt );
 
     // Update the camera
-    FlyingCamera->Update( deltaTime );
+    FlyingCamera->Update( dt );
 
-    ScriptMan->Update( deltaTime );
+    ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )
 
-    editor->Update( deltaTime );
+    editor->Update( dt );
 
 #endif  // EDITOR_ON
 }
@@ -297,7 +297,7 @@ void Game::Update( float deltaTime, float totalTime )
 // --------------------------------------------------------
 // Clear the screen, redraw everything, present to the user
 // --------------------------------------------------------
-void Game::Draw( float deltaTime, float totalTime )
+void Game::Draw( float dt, float totalTime )
 {
     // Clear the render target and depth buffer (erases what's on the screen)
     //  - Do this ONCE PER FRAME
@@ -408,7 +408,7 @@ void Game::Draw( float deltaTime, float totalTime )
     // Draw the editor if we want to
 #if defined( EDITOR_ON )
 
-    editor->Draw( deltaTime, device, context );
+    editor->Draw( dt, device, context );
 
 #endif  // EDITOR_ON
 
@@ -524,8 +524,6 @@ void Game::DrawColliders()
     vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
 
     // Set buffers in the input assembler
-    UINT stride = sizeof( Vertex );
-    UINT offset = 0;
 
     auto colliders = PhysicsMan->GetColliders();
     for ( Physics::BoxCollider* box : colliders )

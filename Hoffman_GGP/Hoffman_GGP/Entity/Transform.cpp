@@ -29,6 +29,21 @@ void Transform::DrawEditorGUI()
 void Transform::SaveObject( nlohmann::json & aOutFile )
 {
     // #TODO Save the pos, rot and scale of this object 
+    aOutFile [ "unimplemented" ] = 0;
+}
+
+void Transform::MoveRelative( const float aX, const float aY, const float aZ )
+{
+    using namespace DirectX;
+    // rotate desired movement by our rotation
+    XMVECTOR dir = XMVector3Rotate(
+        XMVectorSet( aX, aY, aZ, 0 ),
+        XMLoadFloat4( &Rotation ) );
+
+    // Add to position and store
+    XMStoreFloat3(
+        &Position,
+        XMLoadFloat3( &Position ) + dir );
 }
 
 void Transform::MoveAbsolute( const float aX, const float aY, const float aZ )

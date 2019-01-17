@@ -20,6 +20,7 @@ LightSystem::~LightSystem()
 
 void LightSystem::SetShaderInfo( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader )
 {
+    assert( aVertShader && aPixShader );
     // For each mesh renderer ...
     SetLightData( aPixShader );
 }

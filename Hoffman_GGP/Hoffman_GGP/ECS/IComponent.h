@@ -79,7 +79,7 @@ namespace ECS
     protected:
 
         /** The unique ID of this component */
-        ComponentID id = -1;
+        ComponentID id;
 
         /** If this component is enabled or not */
         bool isEnabled = true;

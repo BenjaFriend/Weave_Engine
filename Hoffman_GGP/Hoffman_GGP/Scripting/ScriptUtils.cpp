@@ -128,7 +128,7 @@ void ScriptManager::RunLuaFunction(
     const sol::state & lua,
     const char * aFuncName )
 {
-    sol::optional <sol::function> unsafe_Func = lua [ "start" ];
+    sol::optional <sol::function> unsafe_Func = lua [ aFuncName ];
     if ( unsafe_Func != sol::nullopt )
     {
         // Run that function

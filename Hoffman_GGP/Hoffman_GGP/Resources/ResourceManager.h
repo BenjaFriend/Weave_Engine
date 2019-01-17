@@ -26,10 +26,10 @@ class SimpleVertexShader;
 class SimplePixelShader;
 class ISimpleShader;
 
-using Mesh_ID       = size_t;
-using Material_ID   = std::string;
-using SRV_ID        = FileName;
-using Sampler_ID    = size_t;
+using Mesh_ID = size_t;
+using Material_ID = std::string;
+using SRV_ID = FileName;
+using Sampler_ID = size_t;
 
 /// <summary>
 /// Loading and unloading all graphics resources like SRV's, meshes, and 
@@ -47,7 +47,7 @@ public:
     /// <param name="aContext">Context to load assets with</param>
     /// <returns>Static instance of the resource manager</returns>
     static ResourceManager* Initalize(
-        ID3D11Device* aDevice, 
+        ID3D11Device* aDevice,
         ID3D11DeviceContext* aContext
     );
 
@@ -105,7 +105,7 @@ public:
     /// <param name="aName">Name of the rast state</param>
     /// <returns>raster state if it exists, nullptr if not</returns>
     ID3D11RasterizerState* GetRasterizerState( const std::string & aName );
-    
+
     template<class T>
     T* LoadShader(
         std::wstring aFileName,
@@ -126,7 +126,7 @@ public:
         }
 
         // Create a new shader
-        ISimpleShader* shader = new T( currentDevice, currentContext);
+        ISimpleShader* shader = new T( aDevice, aContext );
         shader->LoadShaderFile( aFileName.c_str() );
 
         // Add to the map of shaders

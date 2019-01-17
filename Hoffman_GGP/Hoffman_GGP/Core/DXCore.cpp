@@ -293,7 +293,6 @@ HRESULT DXCore::InitDirectX()
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO & io = ImGui::GetIO();
     ImGui_ImplWin32_Init( hWnd );
     ImGui_ImplDX11_Init( device, context );
     ImGui::StyleColorsDark();
@@ -520,15 +519,15 @@ void DXCore::CreateConsoleWindow( int bufferLines, int bufferColumns, int window
     // Get the console info and set the number of lines
     AllocConsole();
     GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &coninfo );
-    coninfo.dwSize.Y = bufferLines;
-    coninfo.dwSize.X = bufferColumns;
+    coninfo.dwSize.Y = static_cast< SHORT >( bufferLines );
+    coninfo.dwSize.X = static_cast< SHORT >( bufferColumns );
     SetConsoleScreenBufferSize( GetStdHandle( STD_OUTPUT_HANDLE ), coninfo.dwSize );
 
     SMALL_RECT rect;
     rect.Left = 0;
     rect.Top = 0;
-    rect.Right = windowColumns;
-    rect.Bottom = windowLines;
+    rect.Right = static_cast< SHORT >( windowColumns );
+    rect.Bottom = static_cast< SHORT >( windowLines );
     SetConsoleWindowInfo( GetStdHandle( STD_OUTPUT_HANDLE ), TRUE, &rect );
 
     FILE *stream;

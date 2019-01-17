@@ -46,19 +46,6 @@ Entity::~Entity()
     componentManager = nullptr;
 }
 
-void Entity::MoveRelative( const float aX, const float aY, const float aZ )
-{
-    // rotate desired movement by our rotation
-    XMVECTOR dir = XMVector3Rotate(
-        XMVectorSet( aX, aY, aZ, 0 ),
-        XMLoadFloat4( &Rotation ) );
-
-    // Add to position and store
-    XMStoreFloat3(
-        &Position,
-        XMLoadFloat3( &Position ) + dir );
-}
-
 void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
 {
     assert( EntityMaterial != nullptr );
@@ -71,15 +58,6 @@ void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
 
 void Entity::SaveObject( nlohmann::json & aOutFile )
 {
-    aOutFile[ "Entities" ][ Name ][ "POS" ][ "X" ] = Position.x;
-    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Y" ] = Position.y;
-    aOutFile[ "Entities" ][ Name ][ "POS" ][ "Z" ] = Position.z;
-
-    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "X" ] = Rotation.x;
-    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Y" ] = Rotation.y;
-    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "Z" ] = Rotation.z;
-    aOutFile[ "Entities" ][ Name ][ "ROT" ][ "W" ] = Rotation.w;
-
     // Save each component
     auto compMap = this->GetAllComponents();
 

@@ -23,6 +23,7 @@ void BoxCollider::DrawEditorGUI()
 
 void BoxCollider::SaveObject( nlohmann::json & aOutFile )
 {
+    aOutFile [ "unimplemented" ] = 0;
 }
 
 const bool BoxCollider::Collides( const BoxCollider & aOther )

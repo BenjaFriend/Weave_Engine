@@ -133,6 +133,46 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
 void EditorCore::DrawUI()
 {
 #if defined( ENABLE_UI )
+
+    ImGuiWindowFlags corner =
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoSavedSettings |
+        ImGuiWindowFlags_AlwaysAutoResize |
+        ImGuiWindowFlags_MenuBar |
+        ImGuiWindowFlags_NoTitleBar;
+    // Draw the file menu ----------------------
+    {
+        bool isOpen = true;
+        ImGui::Begin( "My First Tool", &isOpen, corner );
+        ImGui::SetWindowPos( ImVec2( 0, 0 ), true );
+
+        if ( ImGui::BeginMenuBar() )
+        {
+            if ( ImGui::BeginMenu( "File" ) )
+            {
+                if ( ImGui::MenuItem( "Open Scene", "Ctrl+O" ) )
+                {
+                    /* Do stuff */
+                    LOG_TRACE( "Open file!" );
+                    
+                }
+                if ( ImGui::MenuItem( "Save Scene", "Ctrl+S" ) )
+                {
+                    /* Do stuff */
+                    LOG_TRACE( "Save file!" );
+                    SaveScene();
+                }
+
+
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenuBar();
+        }
+        ImGui::End();
+    }
+
     // Stats and Info ---------------------------
     {
         ImGui::Begin( "Info" );
