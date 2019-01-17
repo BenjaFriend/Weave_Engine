@@ -28,7 +28,14 @@ void Transform::DrawEditorGUI()
 
 void Transform::SaveObject( nlohmann::json & aOutFile )
 {
+    // #TODO Save the pos, rot and scale of this object 
+}
 
+void Transform::MoveAbsolute( const float aX, const float aY, const float aZ )
+{
+    Position.x += aX;
+    Position.y += aY;
+    Position.z += aZ;
 }
 
 const VEC3 & Transform::GetPosition() const

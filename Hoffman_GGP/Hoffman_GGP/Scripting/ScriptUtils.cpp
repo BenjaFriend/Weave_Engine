@@ -78,19 +78,23 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
         "z", &VEC3::z
         );
 
+    aLua.new_usertype<Transform>( "Transform",
+        "GetPosition", &Transform::GetPosition,
+        "SetPosX", &Transform::SetPosX,
+        "SetPosY", &Transform::SetPosY,
+        "SetPosZ", &Transform::SetPosZ,
+        "GetScale", &Transform::GetScale,
+        "SetScaleX", &Transform::SetScaleX,
+        "SetScaleY", &Transform::SetScaleY,
+        "SetScaleZ", &Transform::SetScaleZ
+        );
+
     aLua.new_usertype<Entity>( "Entity",
         "GetName", &Entity::GetName,
         "SetName", &Entity::SetName,
         "SetIsActive", &Entity::SetIsActive,
-        "GetIsActive", &Entity::GetIsActive
-        //"GetPosition", &Entity::GetPosition,
-        //"SetPosX", &Entity::SetPosX,
-        //"SetPosY", &Entity::SetPosY,
-        //"SetPosZ", &Entity::SetPosZ,
-        //"GetScale", &Entity::GetScale,
-        //"SetScaleX", &Entity::SetScaleX,
-        //"SetScaleY", &Entity::SetScaleY,
-        //"SetScaleZ", &Entity::SetScaleZ
+        "GetIsActive", &Entity::GetIsActive,
+        "GetTransform", &Entity::GetTransform
         );
 }
 

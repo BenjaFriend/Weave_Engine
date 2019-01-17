@@ -47,14 +47,6 @@ public:
     void MoveRelative( const float aX, const float aY, const float aZ );
 
     /// <summary>
-    /// Adds to the position NOT relative to the direction you are facing
-    /// </summary>
-    /// <param name="aX">new X value to add to this position</param>
-    /// <param name="aY">new Y value to add to this position</param>
-    /// <param name="aZ">new Z value to add to this position</param>
-    void MoveAbsolute( const float aX, const float aY, const float aZ );
-
-    /// <summary>
     /// Sets the material's shader data and activates the shaders
     /// </summary>
     /// <param name="aView">View matrix</param>
@@ -119,9 +111,6 @@ private:
 
     /** The current position of this entity */
     DirectX::XMFLOAT3 Position;
-
-    /** The current Scale of this entity */
-    DirectX::XMFLOAT3 Scale;
 
     /** The current rotation of this entity */
     DirectX::XMFLOAT4 Rotation;

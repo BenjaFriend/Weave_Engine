@@ -28,14 +28,13 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
 
 Entity::Entity()
 {
-    // Set default values for position, scale and rotation
-    Position = DirectX::XMFLOAT3( 0.f, 0.f, 0.f );
-    Scale = DirectX::XMFLOAT3( 1.f, 1.f, 1.f );
-    Rotation = DirectX::XMFLOAT4();
     IsActive = true;
 
     entID = EntityCount++;
     componentManager = ECS::ComponentManager::GetInstance();
+
+    // Give entity component a transform 
+    EntityTransform = this->AddComponent<Transform>();
 }
 
 // virtual destructor
@@ -58,13 +57,6 @@ void Entity::MoveRelative( const float aX, const float aY, const float aZ )
     XMStoreFloat3(
         &Position,
         XMLoadFloat3( &Position ) + dir );
-}
-
-void Entity::MoveAbsolute( const float aX, const float aY, const float aZ )
-{
-    Position.x += aX;
-    Position.y += aY;
-    Position.z += aZ;
 }
 
 void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )

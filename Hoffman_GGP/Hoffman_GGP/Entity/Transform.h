@@ -22,6 +22,22 @@ public:
 
     virtual const char* ComponentName() override { return "Transform"; }
 
+    /// <summary>
+    /// Move the entity relative to the direction it is facing 
+    /// </summary>
+    /// <param name="aX">new X value to add to this position</param>
+    /// <param name="aY">new Y value to add to this position</param>
+    /// <param name="aZ">new Z value to add to this position</param>
+    void MoveRelative( const float aX, const float aY, const float aZ );
+
+    /// <summary>
+    /// Adds to the position NOT relative to the direction you are facing
+    /// </summary>
+    /// <param name="aX">new X value to add to this position</param>
+    /// <param name="aY">new Y value to add to this position</param>
+    /// <param name="aZ">new Z value to add to this position</param>
+    void MoveAbsolute( const float aX, const float aY, const float aZ );
+
     /** Returns this entity's current position */
     const VEC3 & GetPosition() const;
 
