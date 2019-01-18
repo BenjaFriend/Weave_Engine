@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../stdafx.h"
+#include "../Utils/Dispatcher.hpp"
 
 namespace SceneManagement
 {
@@ -45,6 +46,13 @@ namespace SceneManagement
         /// <returns>Name of the current scene</returns>
         const FileName GetActiveScene() const { return ActiveScene; }
 
+        /// <summary>
+        /// The dispatcher for OnSceneLoad that you can use to add 
+        /// listeners to this function
+        /// </summary>
+        /// <returns>Dispatcher reference for onScene load</returns>
+        const Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }
+
     private:
 
         SceneManager();
@@ -56,5 +64,7 @@ namespace SceneManagement
         
         /** The current scene that is loaded in */
         FileName ActiveScene;
+
+        Dispatcher OnSceneLoadDispatcher;
     };
 }   // namespace SceneManagement

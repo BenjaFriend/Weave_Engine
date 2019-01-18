@@ -37,6 +37,9 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{9acedad1-1d3a-4a7e-8add-fccce6d03104}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{c53457fd-b4a5-4dae-b29e-f15774912ba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -250,6 +253,9 @@
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Core\SceneManager.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Dispatcher.hpp">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

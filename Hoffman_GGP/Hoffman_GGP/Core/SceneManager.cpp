@@ -36,6 +36,9 @@ SceneManager::~SceneManager()
 void SceneManager::LoadScene( FileName & aSceneName )
 {
     // Parse the scene file and load in the given settings / entities
+
+    // Let any listeners know that the scene has been loaded
+    OnSceneLoadDispatcher.Dispatch();
 }
 
 void SceneManager::UnloadCurrentScene()

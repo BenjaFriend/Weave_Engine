@@ -717,6 +717,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Resources\Vertex.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Utils\Dispatcher.hpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Editor_Outline.hlsl">
