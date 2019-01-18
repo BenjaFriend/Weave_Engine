@@ -9,6 +9,7 @@
 #include <string>
 
 #include "InputManager.h"
+#include "SceneManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
@@ -91,7 +92,7 @@ protected:
     ID3D11DepthStencilView* depthStencilView = nullptr;
 
     Input::InputManager* inputManager = nullptr;
-
+    SceneManagement::SceneManager* sceneManager = nullptr;
     Logger* logger = nullptr;
 
 #if defined(EDITOR_ON)

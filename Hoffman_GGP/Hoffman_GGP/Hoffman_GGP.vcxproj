@@ -634,6 +634,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Core\InputManager.cpp" />
     <ClCompile Include="Core\Logger.cpp" />
     <ClCompile Include="Core\Main.cpp" />
+    <ClCompile Include="Core\SceneManager.cpp" />
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
@@ -688,6 +689,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Core\InputManager.h" />
     <ClInclude Include="Core\Logger.h" />
+    <ClInclude Include="Core\SceneManager.h" />
     <ClInclude Include="ECS\Component.h" />
     <ClInclude Include="ECS\ComponentManager.h" />
     <ClInclude Include="ECS\FamilyTypeID.h" />

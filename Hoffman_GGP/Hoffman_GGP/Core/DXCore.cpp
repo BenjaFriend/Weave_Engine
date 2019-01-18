@@ -89,6 +89,8 @@ DXCore::~DXCore()
 
     Logger::ReleaseInstance();
     logger = nullptr;
+    SceneManagement::SceneManager::ReleaseInstance();
+    sceneManager = nullptr;
 
 #if defined( EDITOR_ON )
 
@@ -173,6 +175,8 @@ HRESULT DXCore::InitWindow()
 
     logger = Logger::GetInstance();
     LOG_TRACE( "Logger initlaized!" );
+
+    sceneManager = SceneManagement::SceneManager::GetInstance();
 
     // Return an "everything is ok" HRESULT value
     return S_OK;

@@ -130,6 +130,9 @@
     <ClCompile Include="Entity\Transform.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Core\SceneManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -245,6 +248,9 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h" />
+    <ClInclude Include="Core\SceneManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
