@@ -74,8 +74,6 @@ Game::~Game()
 
     delete FlyingCamera;
 
-    Input::InputManager::Release();
-
     ECS::ComponentManager::ReleaseInstance();
 }
 
@@ -136,7 +134,7 @@ void Game::Init()
 
     inputManager->BindAction( this, &Game::OnMouseDown, Input::InputType::Look );
     inputManager->BindAction( this, &Game::OnMouseUp, Input::InputType::LookReleased );
-    //inputManager->BindAction( this, &Game::Quit, Input::InputType::Quit );
+    inputManager->BindAction( this, &Game::Quit, Input::InputType::Quit );
 
     ScriptMan->LoadScripts();
     inputManager->BindAction( ScriptMan, &Scripting::ScriptManager::OnClick, Input::InputType::Fire );
@@ -276,10 +274,7 @@ void Game::OnResize()
 // --------------------------------------------------------
 void Game::Update( float dt, float totalTime )
 {
-    // Quit if the escape key is pressed
-    if ( GetAsyncKeyState( VK_ESCAPE ) )
-        Quit();
-
+    inputManager->Update( dt );
     PhysicsMan->Update( dt );
 
     // Update the camera
@@ -639,6 +634,11 @@ void Game::OnMouseMove( WPARAM buttonState, int x, int y )
 void Game::OnMouseWheel( float wheelDelta, int x, int y )
 {
     // Add any custom code here...
+}
+
+void Game::Quit()
+{
+    DXCore::Quit();
 }
 
 #pragma endregion

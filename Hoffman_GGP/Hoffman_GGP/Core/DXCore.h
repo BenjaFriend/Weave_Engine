@@ -59,7 +59,7 @@ public:
     HRESULT InitWindow();
     HRESULT InitDirectX();
     HRESULT Run();
-    void Quit();
+    virtual void Quit();
     virtual void OnResize();
 
     // Pure virtual methods for setup and game functionality

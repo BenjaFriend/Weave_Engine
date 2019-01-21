@@ -92,6 +92,9 @@ DXCore::~DXCore()
     SceneManagement::SceneManager::ReleaseInstance();
     sceneManager = nullptr;
 
+    Input::InputManager::ReleaseInstance();
+    inputManager = nullptr;
+
 #if defined( EDITOR_ON )
 
     Editor::EditorCore::ReleaseInstance();

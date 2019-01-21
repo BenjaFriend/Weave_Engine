@@ -80,11 +80,11 @@ private:
         {
             assert( parentObj != nullptr );
 
-            return ( ( parentObj->*func_ptr )( ) );
+            return ( ( parentObj->*callback )( ) );
         }
 
         T* parentObj = nullptr;
-        void ( T::*func_ptr )( );
+        void ( T::*callback )( );
     };
 
     /** Vector of listeners of this dispatcher */

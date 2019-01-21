@@ -45,6 +45,7 @@ public:
 
     void OnMouseMove( WPARAM buttonState, int x, int y );
     void OnMouseWheel( float wheelDelta, int x, int y );
+    virtual void Quit() override;
 
 private:
 
