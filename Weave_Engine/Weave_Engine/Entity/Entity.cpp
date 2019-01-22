@@ -41,7 +41,7 @@ Entity::~Entity()
     componentManager = nullptr;
 }
 
-void Entity::PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection )
+void Entity::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
 {
     assert( EntityMaterial != nullptr );
 

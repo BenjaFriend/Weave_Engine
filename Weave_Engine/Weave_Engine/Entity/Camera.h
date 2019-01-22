@@ -34,7 +34,7 @@ public:
     /// </summary>
     /// <param name="aWidth">The aspect ration width</param>
     /// <param name="aHeight">The aspect ration height</param>
-    void UpdateProjectionMatrix( const unsigned int aWidth, const unsigned int aHeight );
+    void UpdateProjectionMatrix( const float aWidth, const float aHeight );
 
     /// <summary>
     /// Updates the camera's rotation based on the mouse movement
@@ -49,28 +49,13 @@ public:
     ////////////////////////////////////////////////////
 
     /** Returns camera's current position */
-    const DirectX::XMFLOAT3 GetPosition() const;
-
-    /** Returns cameras current direction */
-    const DirectX::XMFLOAT3 GetForwardDirection() const;
-
-    /** Returns camera's current Rotation */
-    const float GetXAxisRotation() const;
-
-    /** Returns the cameras current rotation in the Y Axis */
-    const float GetYAxisRotation() const;
+    const glm::vec3 GetPosition() const;
 
     /** Returns the cameras current view matrix */
-    const DirectX::XMFLOAT4X4 GetViewMatrix() const;
+    const glm::highp_mat4 GetViewMatrix() const;
 
     /** Returns the current projection matrix */
-    const DirectX::XMFLOAT4X4 GetProjectMatrix() const;
-
-    /** Returns the current horizontal rotation speed */
-    const float GetHorizontalRotSpeed() const;
-
-    /** Returns the current vertical rotation speed */
-    const float GetVerticalRotSpeed() const;
+    const glm::highp_mat4 GetProjectMatrix() const;
 
     /// <summary>
     /// Set if the camera should be rotating
@@ -89,41 +74,43 @@ public:
 
 private:
 
-    /** Update the view matrix of the camera */
-    void UpdateViewMatrix( const float aDeltaTime );
+    const glm::vec4 DEFAULT_UP = glm::vec4( 0.f, 1.f, 0.f, 0.f );
+    const glm::vec4 DEFAULT_FORWARD = glm::vec4( 0.f, 0.f, -1.f, 0.f );
+    const glm::vec4 DEFAULT_RIGHT = glm::vec4( 1.f, 1.f, 0.f, 0.f );
+
+    const float MAX_PITCH = glm::pi<float>() / 2.0f;
+    const float SENSITIVITY = 0.01f;
+
+    float PitchAngle;
+    float YawAngle;
 
     /** Current position of the camera */
-    DirectX::XMFLOAT3 Position;
+    glm::vec3 Pos;
 
-    /** Current direction of the camera */
-    DirectX::XMFLOAT3 ForwardDirection;
+    glm::vec3 Forward;
 
-    /** Rotation in the X axis of this camera */
-    float RotationXAxis = 0.f;
+    glm::vec3 Right;
 
-    /** Rotation in the Y axis of this camera */
-    float RotationYAxis = 0.f;
+    glm::vec3 Up;
+
+    glm::highp_mat4 View;
+
+    glm::highp_mat4 Projection;
+
+    float FOV = 60.f * glm::pi<float>() / 180.0f;
+
+    float NearZ = 0.01f;
+
+    float FarZ = 100.0f;
 
     /** Movement speed of the camera */
     float MovementSpeed = 4.0f;
-
-    /** Current View matrix of this camera. Defines the viewer of the scene. */
-    DirectX::XMFLOAT4X4 ViewMatrix;
-
-    /** Current projection matrix of the camera. Defines how the 3D scene is mapped onto 2d Screen */
-    DirectX::XMFLOAT4X4 ProjectionMatrix;
-
-    /** The horizontal rotation speed of the camera */
-    const float HorizontalRotSpeed = 0.005f;
-
-    /** The vertical rotation speed of the camera */
-    const float VerticalRotSpeed = 0.005f;
 
     /** Whether or not the user is using southpaw rotation */
     bool UseSouthpawRotation = false;
 
     /** Keyboard input from the player */
-    DirectX::XMFLOAT3 RelativeInput;
+    glm::vec3 RelativeInput;
 
     /** If true than the camera will rotate */
     bool DoRotation = false;

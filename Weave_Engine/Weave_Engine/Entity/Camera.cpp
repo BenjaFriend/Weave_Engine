@@ -6,12 +6,14 @@ using namespace DirectX;
 
 Camera::Camera()
 {
-    Position = XMFLOAT3( 0.f, 0.f, -5.f );
-    ForwardDirection = XMFLOAT3( 0.f, 0.f, 1.f );		// Default forward vector of forward in the Z axis
-    RelativeInput = XMFLOAT3( 0.f, 0.f, -5.f );
+    Pos = glm::vec3( 0.f, 0.f, -5.f );
+    RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
+    Up = DEFAULT_UP;
+    Forward = DEFAULT_FORWARD;
+    Right = DEFAULT_RIGHT;
 
-    RotationXAxis = -85.f;
-    RotationYAxis = -85.f;
+    PitchAngle = 0;
+    YawAngle = 0;
 
     inputManager = Input::InputManager::GetInstance();
 }
@@ -27,7 +29,6 @@ void Camera::Update( const float aDeltaTime )
     RelativeInput.z = 0.f;
     RelativeInput.y = 0.f;
 
-
     if ( inputManager->IsKeyDown( 'W' ) ) { RelativeInput.z += 1.f; }
     if ( inputManager->IsKeyDown( 'S' ) ) { RelativeInput.z -= 1.f; }
     if ( inputManager->IsKeyDown( 'A' ) ) { RelativeInput.x -= 1.f; }
@@ -42,9 +43,7 @@ void Camera::Update( const float aDeltaTime )
     RelativeInput.y *= aDeltaTime * MovementSpeed;
     RelativeInput.z *= aDeltaTime * MovementSpeed;
 
-    Position.y += RelativeInput.y;
-
-    UpdateViewMatrix( aDeltaTime );
+    Pos += RelativeInput;
 }
 
 void Camera::SetDoRotation( bool aDoRot )
@@ -67,117 +66,45 @@ void Camera::SetMovementSpeed( float aNewVal )
     MovementSpeed = aNewVal;
 }
 
-void Camera::UpdateViewMatrix( const float aDeltaTime )
+void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
-    // Check if we want to invert the rotation axis (southpaw) or not
-    XMVECTOR rot =
-        UseSouthpawRotation
-        ? XMQuaternionRotationRollPitchYaw( RotationXAxis, RotationYAxis, 0.f )
-        : XMQuaternionRotationRollPitchYaw( RotationYAxis, RotationXAxis, 0.f );
+    //calculate view
+    View = glm::transpose( glm::lookAtLH( Pos, Pos + Forward, Up ) );
 
-    XMVECTOR forwardDir = XMVectorSet( 0, 0, 1, 0 );
-    XMVECTOR up = XMVectorSet( 0, 1, 0, 0 );
-
-
-    XMVECTOR CurrentRotation = XMVector3Rotate( forwardDir, rot );
-    // Calculate the direction we should be going left and right
-    XMVECTOR left = XMVector3Cross( CurrentRotation, up );
-
-    // Update the view matrix whenever the camera moves (for now, every frame)
-    XMVECTOR pos = XMVectorSet( Position.x, Position.y, Position.z, 0 );
-
-    pos += CurrentRotation * RelativeInput.z;
-    pos -= left * RelativeInput.x;
-
-    XMMATRIX V = XMMatrixLookToLH(
-        pos,					// The position of the "camera"
-        CurrentRotation,		// Direction the camera is looking
-        up						// "Up" direction in 3D space (prevents roll)
-    );
-
-    // Store the view matrix 
-    XMStoreFloat4x4( &ViewMatrix, XMMatrixTranspose( V ) ); // Transpose for HLSL!
-    // Store our position that may have changed from input
-    XMStoreFloat3( &Position, pos );
-}
-
-void Camera::UpdateProjectionMatrix( const unsigned int aWidth, const unsigned int aHeight )
-{
-    XMMATRIX P = XMMatrixPerspectiveFovLH(
-        0.25f * 3.1415926535f,		// Field of View Angle
-        (float) aWidth / aHeight,	// Aspect ratio
-        0.1f,						// Near clip plane distance
-        100.0f );					// Far clip plane distance
-    XMStoreFloat4x4( &ProjectionMatrix, XMMatrixTranspose( P ) ); // Transpose for HLSL!
+    //calculate proj
+    Projection = glm::transpose( glm::perspectiveFovLH( FOV, aWidth, aHeight, NearZ, FarZ ) );
 }
 
 void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY )
 {
     if ( !DoRotation ) return;
 
-    RotationXAxis += -aDeltaMouseX * HorizontalRotSpeed;	// HorizontalRotSpeed = 0.005f
-    if ( RotationXAxis < -90 )
-    {
-        RotationXAxis = -90;
-    }
-    else if ( RotationXAxis > -80 )
-    {
-        RotationXAxis = -85;
-    }
+    PitchAngle += static_cast< float >( aDeltaMouseY ) * SENSITIVITY;
+    glm::clamp( PitchAngle, -MAX_PITCH, MAX_PITCH );
+    YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY;
 
-    RotationYAxis += aDeltaMouseY * VerticalRotSpeed;	// VerticalRotSpeed = 0.005f
-    if ( RotationYAxis < -90 )
-    {
-        RotationYAxis = -90;
-    }
-    else if ( RotationYAxis > -80 )
-    {
-        RotationYAxis = -85;
-    }
+    //rotate along x and y
+    glm::mat4x4 rotation = glm::eulerAngleYX( YawAngle, PitchAngle );
+    Forward = rotation * DEFAULT_FORWARD;
+    Up = rotation * DEFAULT_UP;
+    Right = glm::cross( Forward, Up );
 }
 
 ////////////////////////////////////////////////////
 // Accessors
 ////////////////////////////////////////////////////
 
-const DirectX::XMFLOAT3 Camera::GetPosition() const
+const glm::vec3 Camera::GetPosition() const
 {
-    return Position;
+    return Pos;
 }
 
-const DirectX::XMFLOAT3 Camera::GetForwardDirection() const
+const glm::highp_mat4 Camera::GetViewMatrix() const
 {
-    return ForwardDirection;
+    return View;
 }
 
-const float Camera::GetXAxisRotation() const
+const glm::highp_mat4 Camera::GetProjectMatrix() const
 {
-    return RotationXAxis;
+    return Projection;
 }
-
-const float Camera::GetYAxisRotation() const
-{
-    return RotationYAxis;
-}
-
-const DirectX::XMFLOAT4X4 Camera::GetViewMatrix() const
-{
-    return ViewMatrix;
-}
-
-const DirectX::XMFLOAT4X4 Camera::GetProjectMatrix() const
-{
-    return ProjectionMatrix;
-}
-
-const float Camera::GetHorizontalRotSpeed() const
-{
-    return HorizontalRotSpeed;
-}
-
-const float Camera::GetVerticalRotSpeed() const
-{
-    return VerticalRotSpeed;
-}
-
-

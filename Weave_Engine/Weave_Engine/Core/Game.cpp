@@ -196,7 +196,7 @@ void Game::InitLights()
 // --------------------------------------------------------
 void Game::CreateMatrices()
 {
-    FlyingCamera->UpdateProjectionMatrix( width, height );
+    FlyingCamera->UpdateProjectionMatrix( ( float ) width, ( float ) height );
 }
 
 // --------------------------------------------------------
@@ -206,7 +206,7 @@ void Game::CreateBasicGeometry()
 {
     // Load in the meshes
     PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
-    
+
     // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -227,13 +227,13 @@ void Game::CreateBasicGeometry()
 
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
-    
-    Material* floorMat = resourceMan->LoadMaterial( 
+
+    Material* floorMat = resourceMan->LoadMaterial(
         "Floor Mat",
         vertexShader,
         pixelShader,
         L"Assets/Textures/floor_albedo.png",
-        L"Assets/Textures/floor_normals.png", 
+        L"Assets/Textures/floor_normals.png",
         L"Assets/Textures/floor_roughness.png",
         L"Assets/Textures/floor_metal.png",
         SamplerID
@@ -242,7 +242,7 @@ void Game::CreateBasicGeometry()
     glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
     Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
-    
+
     floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
     floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
@@ -251,7 +251,7 @@ void Game::CreateBasicGeometry()
     glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
     Entity* secondBox = entityMan->AddEntity(
         CubeMesh, floorMat, newPos, "Box 2" );
-    
+
     secondBox->AddComponent<Physics::BoxCollider>();
 
     // Load in the skybox SRV --------------------------------------------------------
@@ -267,7 +267,7 @@ void Game::OnResize()
     // Handle base-level DX resize stuff
     DXCore::OnResize();
 
-    FlyingCamera->UpdateProjectionMatrix( width, height );
+    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 }
 
 // --------------------------------------------------------
@@ -280,6 +280,7 @@ void Game::Update( float dt, float totalTime )
 
     // Update the camera
     FlyingCamera->Update( dt );
+    FlyingCamera->UpdateProjectionMatrix( width, height );
 
     ScriptMan->Update( dt );
 
@@ -326,7 +327,9 @@ void Game::Draw( float dt, float totalTime )
         if ( CurrentEntity->GetMaterial() != nullptr )
         {
             // Send camera info ---------------------------------------------------------
-            CurrentEntity->GetMaterial()->GetPixelShader()->SetFloat3( "CameraPosition", FlyingCamera->GetPosition() );
+            CurrentEntity->GetMaterial()->GetPixelShader()->SetFloat3(
+                "CameraPosition", FlyingCamera->GetPosition() );
+
             CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
 
             // Draw the entity ---------------------------------------------------------
@@ -570,6 +573,8 @@ void Game::DrawUI()
         ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
 
         ImGui::Separator();
+
+        ImGui::InputFloat3( "Cam Pos", ( float* ) &FlyingCamera->GetPosition() );
 
         ImGui::Separator();
 

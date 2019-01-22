@@ -42,7 +42,7 @@ public:
     /// </summary>
     /// <param name="aView">View matrix</param>
     /// <param name="aProjection">Project matrix</param>
-    void PrepareMaterial( const VEC4x4 & aView, const VEC4x4 & aProjection );
+    void PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection );
 
     // Components ------------------------------
 

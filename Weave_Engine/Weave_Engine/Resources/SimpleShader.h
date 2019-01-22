@@ -85,10 +85,12 @@ public:
     bool SetFloat2( const std::string & name, const DirectX::XMFLOAT2 data );
     bool SetFloat3( const std::string & name, const float data[ 3 ] );
     bool SetFloat3( const std::string & name, const DirectX::XMFLOAT3 data );
+    bool SetFloat3( const std::string & name, const glm::vec3 data );
     bool SetFloat4( const std::string & name, const float data[ 4 ] );
     bool SetFloat4( const std::string & name, const DirectX::XMFLOAT4 data );
     bool SetMatrix4x4( const std::string & name, const float data[ 16 ] );
     bool SetMatrix4x4( const std::string & name, const DirectX::XMFLOAT4X4 data );
+    bool SetMatrix4x4( const std::string name, const glm::highp_mat4 data );
 
     // Setting shader resources
     virtual bool SetShaderResourceView( std::string name, ID3D11ShaderResourceView* srv ) = 0;

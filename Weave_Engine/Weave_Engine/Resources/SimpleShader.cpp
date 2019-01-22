@@ -415,6 +415,11 @@ bool ISimpleShader::SetFloat3( const std::string & name, const DirectX::XMFLOAT3
     return this->SetData( name, &data, sizeof( float ) * 3 );
 }
 
+bool ISimpleShader::SetFloat3( const std::string & name, const glm::vec3 data )
+{
+    return this->SetData( name, &data, sizeof( float ) * 3 );
+}
+
 // --------------------------------------------------------
 // Sets a FLOAT4 variable by name in the local data buffer
 // --------------------------------------------------------
@@ -443,6 +448,11 @@ bool ISimpleShader::SetMatrix4x4( const std::string & name, const float data[ 16
 // Sets a MATRIX (4x4) variable by name in the local data buffer
 // --------------------------------------------------------
 bool ISimpleShader::SetMatrix4x4( const std::string & name, const DirectX::XMFLOAT4X4 data )
+{
+    return this->SetData( name, &data, sizeof( float ) * 16 );
+}
+
+bool ISimpleShader::SetMatrix4x4( const std::string name, const glm::highp_mat4 data )
 {
     return this->SetData( name, &data, sizeof( float ) * 16 );
 }
