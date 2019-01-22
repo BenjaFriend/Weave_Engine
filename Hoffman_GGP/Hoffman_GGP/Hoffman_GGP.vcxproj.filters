@@ -40,15 +40,15 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{c53457fd-b4a5-4dae-b29e-f15774912ba7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{50e15407-d9e6-4d20-910f-bea14f49b7f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\Game.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\InputManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\Main.cpp">
@@ -136,15 +136,15 @@
     <ClCompile Include="Core\SceneManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\Game.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\InputManager.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Camera.h">
@@ -256,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="Utils\Dispatcher.hpp">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

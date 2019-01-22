@@ -8,7 +8,7 @@
 #include <d3d11.h>
 #include <string>
 
-#include "InputManager.h"
+#include "../Input/InputManager.h"
 #include "SceneManager.h"
 
 // We can include the correct library files here
