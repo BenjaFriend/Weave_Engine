@@ -9,6 +9,8 @@
 #include <string>
 
 #include "../Input/InputManager.h"
+#include "../Input/Input_Win.h"
+
 #include "SceneManager.h"
 
 // We can include the correct library files here

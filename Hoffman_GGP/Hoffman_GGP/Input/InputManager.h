@@ -2,6 +2,7 @@
 
 #include "../stdafx.h"
 #include "../Utils/Dispatcher.hpp"
+#include "IInput_Impl.h"
 
 #include <stdio.h>
 #include <unordered_map>
@@ -9,22 +10,6 @@
 
 namespace Input
 {
-    // #MakeCrossPlatform
-    enum InputType
-    {
-        Horizontal,
-        Vertical,
-
-        Fire,
-        FireReleased,
-
-        Look,
-        LookReleased,
-
-        Use,
-
-        Quit
-    };
 
     /// <summary>
     /// Input manager in charge of checking when input is happening
@@ -34,6 +19,23 @@ namespace Input
         typedef void( *input_action_func )( );
 
     public:
+
+        template <typename T>
+        static InputManager* Initalize( )
+        {
+            assert( Instance == nullptr );
+
+            static_assert(
+                std::is_base_of<IInput_Impl, T>::value,
+                "T is not derived from IInput_Impl. InputManager::Initalize<T>"
+                );
+
+            IInput_Impl* impl = new T();
+            
+            Instance = new InputManager( impl );
+
+            return Instance;
+        }
 
         /// <summary>
         /// Getter for the InputManager instance
@@ -81,18 +83,6 @@ namespace Input
 
     protected:
 
-
-        /// <summary>
-        /// Function that will set any bindings necessary for the current platfrom
-        /// </summary>
-        virtual void InitBindings();
-
-        struct InputBinding
-        {
-            UINT8 InputValue;
-            InputType Type;
-        };
-
         /** Vector of input bindings to keys/buttons */
         std::vector<InputBinding> InputBinds;
 
@@ -101,7 +91,7 @@ namespace Input
         /// <summary>
         /// Private constructor so that no objects can be created
         /// </summary>
-        InputManager();
+        InputManager( IInput_Impl* impl );
 
         /// <summary>
         /// Destructor for the input manager
@@ -110,6 +100,9 @@ namespace Input
 
         /** The instance of the InputManager */
         static InputManager* Instance;
+
+        /** The implementation of any methods to that depend on platform */
+        IInput_Impl* Implementation = nullptr;
 
         /** A map of active listeners */
         std::unordered_map<InputType, Dispatcher> actionListeners;

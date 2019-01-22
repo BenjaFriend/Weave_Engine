@@ -306,7 +306,14 @@ HRESULT DXCore::InitDirectX()
 
 #endif
 
-    inputManager = Input::InputManager::GetInstance();
+#if defined ( _WIN32 ) || defined ( _WIN64 )
+    
+    inputManager = Input::InputManager::Initalize<Input::Input_Win>();
+
+#else
+
+
+#endif
 
     // Return the "everything is ok" HRESULT value
     return S_OK;

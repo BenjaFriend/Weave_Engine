@@ -6,21 +6,24 @@ using namespace Input;
 // Static definitions
 InputManager* InputManager::Instance;
 
-InputManager::InputManager()
+InputManager::InputManager( IInput_Impl * impl )
 {
-    InitBindings();
+    impl->InitBindings( InputBinds );
+    Implementation = impl;
 }
 
 InputManager::~InputManager()
 {
+    if ( Implementation != nullptr )
+    {
+        delete Implementation;
+    }
+    Implementation = nullptr;
 }
 
 InputManager * InputManager::GetInstance()
 {
-    if ( Instance == nullptr )
-    {
-        Instance = new InputManager();
-    }
+    assert( Instance != nullptr );
 
     return Instance;
 }
@@ -55,11 +58,6 @@ void InputManager::OnMouseUp( WPARAM buttonState, int x, int y )
 void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
 {
 
-}
-
-void Input::InputManager::InitBindings()
-{
-    InputBinds.push_back( InputBinding{ VK_ESCAPE, InputType::Quit } );
 }
 
 void Input::InputManager::Update( float dt )

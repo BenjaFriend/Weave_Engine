@@ -35,8 +35,6 @@ Game::Game( HINSTANCE hInstance )
 
     vertexShader = 0;
     pixelShader = 0;
-    //EntityCount = 0;
-    FlyingCamera = new Camera();
 
 #if defined( DEBUG ) || defined( _DEBUG )
     // Do we want a console window?  Probably only in debug mode
@@ -90,6 +88,9 @@ void Game::Init()
 
     LightSys = new LightSystem();
     ScriptMan = new Scripting::ScriptManager( device, context );
+
+    FlyingCamera = new Camera();
+
 
 #if defined( EDITOR_ON )
 
