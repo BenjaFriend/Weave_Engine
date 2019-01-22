@@ -4,6 +4,20 @@
 /// for cross platform development
 /// </summary>
 /// <author>Ben Hoffman</author>
+
+// GLM Manual: https://github.com/g-truc/glm/blob/master/manual.md
+#define GLM_FORCE_INLINE
+#define GLM_FORCE_INTRINSICS
+
+// #TODO Experiment with the performance of different precisions
+#define GLM_FORCE_PRECISION_LOWP_FLOAT
+#define GLM_FORCE_PRECISION_LOWP_DOUBLE
+#define GLM_FORCE_PRECISION_LOWP_INT
+#define GLM_FORCE_PRECISION_LOWP_UINT
+
+#include <glm/glm.hpp>
+
+
 #if defined( _WIN32 ) || defined ( _WIN64 )
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
