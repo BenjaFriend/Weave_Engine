@@ -3,6 +3,7 @@
 #include "../Entity/EntityManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ResourceManager.h"
+#include "../Core/SceneManager.h"
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
 #include "../Entity/Camera.h"

@@ -30,7 +30,7 @@ namespace SceneManagement
 
         /// <summary>
         /// Load a scene given a file, and create said entities
-        /// appropriately
+        /// appropriately. Unloads the current scene
         /// </summary>
         /// <param name="aSceneName">The scene file to load</param>
         void LoadScene( FileName & aSceneName );
@@ -51,7 +51,7 @@ namespace SceneManagement
         /// listeners to this function
         /// </summary>
         /// <returns>Dispatcher reference for onScene load</returns>
-        const Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }
+        const Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }  
 
     private:
 
