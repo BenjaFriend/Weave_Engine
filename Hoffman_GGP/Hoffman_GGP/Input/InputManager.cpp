@@ -8,6 +8,7 @@ InputManager* InputManager::Instance;
 
 InputManager::InputManager()
 {
+    InitBindings();
 }
 
 InputManager::~InputManager()
@@ -56,12 +57,19 @@ void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
 
 }
 
+void Input::InputManager::InitBindings()
+{
+    InputBinds.push_back( InputBinding{ VK_ESCAPE, InputType::Quit } );
+}
+
 void Input::InputManager::Update( float dt )
 {
-    // Quit if the escape key is pressed
-    if ( GetAsyncKeyState( VK_ESCAPE ) )
+    for ( const auto & inputVal : InputBinds )
     {
-        SignalInput( InputType::Quit );
+        if ( IsKeyDown( inputVal.InputValue ) )
+        {
+            SignalInput( inputVal.Type );
+        }
     }
 
     // Check any other specific things here

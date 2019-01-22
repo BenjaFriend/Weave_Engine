@@ -79,6 +79,23 @@ namespace Input
 
 #endif  // _WIN32 || _WIN64
 
+    protected:
+
+
+        /// <summary>
+        /// Function that will set any bindings necessary for the current platfrom
+        /// </summary>
+        virtual void InitBindings();
+
+        struct InputBinding
+        {
+            UINT8 InputValue;
+            InputType Type;
+        };
+
+        /** Vector of input bindings to keys/buttons */
+        std::vector<InputBinding> InputBinds;
+
     private:
 
         /// <summary>
