@@ -2,12 +2,10 @@
 
 #include "Transform.h"
 
-using namespace WMath;
-
 Transform::Transform()
 {
-    Position = WVEC3( 0.f, 0.f, 0.f );
-    Scale = WVEC3( 1.f, 1.f, 1.f );
+    Position = glm::vec3( 0.f, 0.f, 0.f );
+    Scale = glm::vec3( 1.f, 1.f, 1.f );
     Rotation = DirectX::XMFLOAT4();
 }
 
@@ -36,7 +34,7 @@ void Transform::SaveObject( nlohmann::json & aOutFile )
 
 void Transform::MoveRelative( const float aX, const float aY, const float aZ )
 {
-    // #TODO Make this actually take into acount the rotation
+    // #TODO Make this actually take into account the rotation
     Position.x += aX;
     Position.y += aY;
     Position.z += aZ;
@@ -49,12 +47,12 @@ void Transform::MoveAbsolute( const float aX, const float aY, const float aZ )
     Position.z += aZ;
 }
 
-const WVEC3 & Transform::GetPosition() const
+const glm::vec3 & Transform::GetPosition() const
 {
     return Position;
 }
 
-void Transform::SetPosition( const WVEC3& aNewPos )
+void Transform::SetPosition( const glm::vec3 & aNewPos )
 {
     Position = aNewPos;
 }
@@ -66,12 +64,12 @@ void Transform::SetPosition( const float aX, const float aY, const float aZ )
     Position.z = aZ;
 }
 
-const WVEC3 & Transform::GetScale() const
+const glm::vec3 & Transform::GetScale() const
 {
     return Scale;
 }
 
-void Transform::SetScale( const WVEC3 & aNewScale )
+void Transform::SetScale( const glm::vec3 & aNewScale )
 {
     Scale = aNewScale;
 }

@@ -53,7 +53,7 @@ Entity* EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName
     return EntityArray [ EntityArray.size() - 1 ];
 }
 
-Entity* EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const WMath::WVEC3 & aPos, std::string aName )
+Entity* EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const glm::vec3 & aPos, std::string aName )
 {
     Entity* tempEnt = new Entity( aMesh, aMat, aName );
     tempEnt->GetTransform()->SetPosition( aPos );

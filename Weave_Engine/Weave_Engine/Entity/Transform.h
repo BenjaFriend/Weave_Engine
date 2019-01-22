@@ -39,13 +39,13 @@ public:
     void MoveAbsolute( const float aX, const float aY, const float aZ );
 
     /** Returns this entity's current position */
-    const WMath::WVEC3 & GetPosition() const;
+    const glm::vec3 & GetPosition() const;
 
     /// <summary>
     /// Set the position of this entity
     /// </summary>
     /// <param name="aNewPos">The new position of this object</param>
-    void SetPosition( const WMath::WVEC3 & aNewPos );
+    void SetPosition( const glm::vec3 & aNewPos );
 
     /// <summary>
     /// Set the position of this entity 
@@ -63,13 +63,13 @@ public:
     /// Get the current scale 
     /// </summary>
     /// <returns>Reference to the current scale</returns>
-    const WMath::WVEC3 & GetScale() const;
+    const glm::vec3 & GetScale() const;
 
     /// <summary>
     /// Set the position of this entity 
     /// </summary>
     /// <param name="aNewScale">The new scale of this object</param>
-    void SetScale( const WMath::WVEC3 & aNewScale );
+    void SetScale( const glm::vec3 & aNewScale );
 
     /// <summary>
     /// Set the scale of the this entity 
@@ -104,10 +104,10 @@ public:
 private:
     
     /** The current position */
-    WMath::WVEC3 Position;
+    glm::vec3 Position;
 
     /** The current scale */
-    WMath::WVEC3 Scale;
+    glm::vec3 Scale;
 
     /** The current rotation*/
     VEC4 Rotation;

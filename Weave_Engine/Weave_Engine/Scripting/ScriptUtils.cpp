@@ -68,11 +68,11 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     // Define the entity types
     aLua.new_usertype<Material>( "Material" );
 
-    aLua.new_usertype<WMath::WVEC3>( "VEC3",
-        sol::constructors<WMath::WVEC3( float x, float y, float z )>(),
-        "x", &WMath::WVEC3::x,
-        "y", &WMath::WVEC3::y,
-        "z", &WMath::WVEC3::z
+    aLua.new_usertype<glm::vec3>( "VEC3",
+        sol::constructors<glm::vec3( float x, float y, float z )>(),
+        "x", &glm::vec3::x,
+        "y", &glm::vec3::y,
+        "z", &glm::vec3::z
         );
 
     aLua.new_usertype<Transform>( "Transform",
