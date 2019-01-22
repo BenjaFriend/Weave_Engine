@@ -15,17 +15,17 @@ public:
 
     PointLight( 
         LightSystem* aRendSys,
-        DirectX::XMFLOAT3 aColor,
-        DirectX::XMFLOAT3 aPos, 
+        glm::vec3 aColor,
+        glm::vec3 aPos, 
         float aIntensity = 1.f, 
         float aRange = 5.f
     );
 
     ~PointLight();
 
-    void SetColor( DirectX::XMFLOAT3 & aColor );
+    void SetColor( glm::vec3 & aColor );
 
-    void SetPosition( DirectX::XMFLOAT3 aPos );
+    void SetPosition( glm::vec3 aPos );
 
     void SetIntensity( float aVal );
 

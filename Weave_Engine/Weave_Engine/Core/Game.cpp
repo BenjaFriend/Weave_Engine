@@ -167,14 +167,14 @@ void Game::LoadShaders()
 
 void Game::InitLights()
 {
-    XMFLOAT3 Red = XMFLOAT3( 1.0f, 0.0f, 0.0f );
-    XMFLOAT3 Blue = XMFLOAT3( 0.0f, 0.0f, 1.0f );
-    XMFLOAT3 White = XMFLOAT3( 1.0f, 1.0f, 1.0f );
+    glm::vec3 Red = glm::vec3( 1.0f, 0.0f, 0.0f );
+    glm::vec3 Blue = glm::vec3( 0.0f, 0.0f, 1.0f );
+    glm::vec3 White = glm::vec3( 1.0f, 1.0f, 1.0f );
 
     DirectionalLightData DirLight1 = {};
-    DirLight1.AmbientColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
-    DirLight1.DiffuseColor = XMFLOAT4( 1.f, 1.f, 1.f, 1.0f );
-    DirLight1.Direction = XMFLOAT3( 1.0f, 0.0f, 0.0f );
+    DirLight1.AmbientColor = glm::vec4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
+    DirLight1.DiffuseColor = glm::vec4( 1.f, 1.f, 1.f, 1.0f );
+    DirLight1.Direction = glm::vec3( 1.0f, 0.0f, 0.0f );
     DirLight1.Intensity = 1.f;
 
 
@@ -184,10 +184,10 @@ void Game::InitLights()
 
     // Add Point Lights
     Entity* pLightEntity = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
-    pLightEntity->AddComponent<PointLight>( LightSys, Red, XMFLOAT3( 0.f, 2.0f, 0.0f ) );
+    pLightEntity->AddComponent<PointLight>( LightSys, Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
 
     Entity* pLightEntity2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
-    pLightEntity2->AddComponent<PointLight>( LightSys, Blue, XMFLOAT3( 0.f, -1.0f, 0.0f ) );
+    pLightEntity2->AddComponent<PointLight>( LightSys, Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -468,7 +468,7 @@ void Game::DrawLightSources()
         vertexShader->SetMatrix4x4( "world", world );
 
         // Set up the pixel shader data
-        XMFLOAT3 finalColor = light.Color;
+        glm::vec3 finalColor = light.Color;
         finalColor.x *= light.Intensity;
         finalColor.y *= light.Intensity;
         finalColor.z *= light.Intensity;

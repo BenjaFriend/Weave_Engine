@@ -6,8 +6,8 @@
 
 PointLight::PointLight(
     LightSystem* aRendSys,
-    DirectX::XMFLOAT3 aColor,
-    DirectX::XMFLOAT3 aPos,
+    glm::vec3 aColor,
+    glm::vec3 aPos,
     float aIntensity,
     float aRange )
 {
@@ -25,12 +25,12 @@ PointLight::~PointLight()
 
 }
 
-void PointLight::SetColor( DirectX::XMFLOAT3 & aColor )
+void PointLight::SetColor( glm::vec3 & aColor )
 {
     LightingData.Color = aColor;
 }
 
-void PointLight::SetPosition( DirectX::XMFLOAT3 aPos )
+void PointLight::SetPosition( glm::vec3 aPos )
 {
     LightingData.Position = aPos;
 }

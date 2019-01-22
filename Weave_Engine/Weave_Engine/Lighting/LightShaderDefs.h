@@ -8,9 +8,9 @@
 
 #if defined( __cplusplus )
 
-#include <DirectXMath.h>
-#define FLOAT4 DirectX::XMFLOAT4
-#define FLOAT3 DirectX::XMFLOAT3
+#include "../MathHelper.h"
+#define FLOAT4 glm::vec4
+#define FLOAT3 glm::vec3
 
 #else 
 
