@@ -6,11 +6,6 @@
 #include "../Resources/SimpleShader.h"
 #include "../ECS/Component.h"
 
-struct ID3D11SamplerState;
-struct ID3D11ShaderResourceView;
-
-using namespace DirectX;
-
 size_t Entity::EntityCount = 0;
 
 Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )

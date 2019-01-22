@@ -25,6 +25,8 @@
 namespace WMath
 {
     typedef glm::vec3               WVEC3;
+    typedef glm::vec2               WVEC2;
+    typedef glm::mat4               WVEC4x4;
 }
 
 #if defined( _WIN32 ) || defined ( _WIN64 )
