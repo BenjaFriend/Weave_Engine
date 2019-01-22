@@ -22,7 +22,7 @@ void Transform::DrawEditorGUI()
 
         ImGui::InputFloat3( "Scale", ( float* ) &Scale );
 
-        ImGui::InputFloat4( "Rotation", ( float* ) &Rotation );
+        ImGui::InputFloat3( "Rotation", ( float* ) &Rotation );
     }
 }
 
