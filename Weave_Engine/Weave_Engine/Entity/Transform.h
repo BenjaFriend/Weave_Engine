@@ -87,19 +87,21 @@ public:
     /// Get the current rotation
     /// </summary>
     /// <returns>Reference to the current rotation</returns>
-    const VEC4 & GetRotation() const;
+    const glm::vec3 & GetRotation() const;
 
     /// <summary>
     /// Set the rotation of this entity 
     /// </summary>
     /// <param name="aNewRot">The new rotation of this object</param>
-    void SetRotation( const VEC4 & aNewRot );
+    void SetRotation( const glm::vec3 & aNewRot );
 
     /// <summary>
     /// Calculate the world matrix for this entity
     /// </summary>
     /// <returns>The calculate world matrix for this entity</returns>
     const VEC4x4 GetWorldMatrix() const;
+
+    
 
 private:
     
@@ -109,8 +111,7 @@ private:
     /** The current scale */
     glm::vec3 Scale;
 
-    /** The current rotation*/
-    VEC4 Rotation;
-
+    /** Euler rotation of this entity */
+    glm::vec3 Rotation;
     
 };

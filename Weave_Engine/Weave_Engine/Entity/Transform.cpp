@@ -4,9 +4,9 @@
 
 Transform::Transform()
 {
-    Position = glm::vec3( 0.f, 0.f, 0.f );
-    Scale = glm::vec3( 1.f, 1.f, 1.f );
-    Rotation = DirectX::XMFLOAT4();
+    Position = glm::vec3( 0.f );
+    Scale = glm::vec3( 1.f );
+    Rotation = glm::vec3( 0.f );
 }
 
 Transform::~Transform()
@@ -18,11 +18,11 @@ void Transform::DrawEditorGUI()
 {
     if ( ImGui::CollapsingHeader( "Transform" ) )
     {
-        ImGui::InputFloat3( "Position", ( float* ) &Position);
+        ImGui::InputFloat3( "Position", ( float* ) &Position );
 
         ImGui::InputFloat3( "Scale", ( float* ) &Scale );
 
-        ImGui::InputFloat4( "Rotation", ( float* ) &Rotation);
+        ImGui::InputFloat4( "Rotation", ( float* ) &Rotation );
     }
 }
 
@@ -81,12 +81,12 @@ void Transform::SetScale( const float aX, const float aY, const float aZ )
     Scale.z = aZ;
 }
 
-const VEC4 & Transform::GetRotation() const
+const glm::vec3 & Transform::GetRotation() const
 {
     return Rotation;
 }
 
-void Transform::SetRotation( const VEC4 & aNewRot )
+void Transform::SetRotation( const glm::vec3 & aNewRot )
 {
     Rotation = aNewRot;
 }
