@@ -20,9 +20,9 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
         return;
 
     // Variables used while reading the file
-    std::vector<XMFLOAT3> positions;     // Positions from the file
-    std::vector<XMFLOAT3> normals;       // Normals from the file
-    std::vector<XMFLOAT2> uvs;           // UVs from the file
+    std::vector<VEC3> positions;     // Positions from the file
+    std::vector<VEC3> normals;       // Normals from the file
+    std::vector<VEC2> uvs;           // UVs from the file
     std::vector<Vertex> verts;           // Verts we're assembling
     std::vector<UINT> indices;           // Indices of these verts
     unsigned int vertCounter = 0;        // Count of vertices/indices
@@ -245,7 +245,7 @@ void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices
     // Reset tangents
     for ( int i = 0; i < numVerts; i++ )
     {
-        verts[ i ].Tangent = XMFLOAT3( 0, 0, 0 );
+        verts[ i ].Tangent = VEC3( 0, 0, 0 );
     }
 
     // Calculate tangents one whole triangle at a time

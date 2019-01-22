@@ -43,7 +43,7 @@ namespace Physics
         /// to the owning object.
         /// </summary>
         /// <returns>VEC3 that is the center of this collider</returns>
-        const VEC3 GetPosition() const;
+        const glm::vec3 GetPosition() const;
 
         void SetExtents( const VEC3 & aVal );
 

@@ -239,7 +239,7 @@ void Game::CreateBasicGeometry()
         SamplerID
     );
 
-    VEC3 floorPos = VEC3( 0.f, -5.f, 0.f );
+    glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
     Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
     
@@ -248,7 +248,7 @@ void Game::CreateBasicGeometry()
 
     floorEntity->GetTransform()->SetScale( VEC3( 5.f, 5.f, 5.f ) );
 
-    VEC3 newPos = VEC3( 0.f, 0.f, 0.f );
+    glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
     Entity* secondBox = entityMan->AddEntity(
         CubeMesh, floorMat, newPos, "Box 2" );
     
@@ -525,7 +525,7 @@ void Game::DrawColliders()
     for ( Physics::BoxCollider* box : colliders )
     {
         const VEC3 & extents = box->GetExtents();
-        const VEC3 & pos = box->GetPosition();
+        const glm::vec3 & pos = box->GetPosition();
 
         XMMATRIX rotMat = XMMatrixIdentity();
         XMMATRIX scaleMat = XMMatrixScaling( extents.x, extents.y, extents.z );

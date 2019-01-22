@@ -71,11 +71,11 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     // Define the entity types
     aLua.new_usertype<Material>( "Material" );
 
-    aLua.new_usertype<VEC3>( "VEC3",
-        sol::constructors<VEC3( float x, float y, float z )>(),
-        "x", &VEC3::x,
-        "y", &VEC3::y,
-        "z", &VEC3::z
+    aLua.new_usertype<glm::vec3>( "VEC3",
+        sol::constructors<glm::vec3( float x, float y, float z )>(),
+        "x", &glm::vec3::x,
+        "y", &glm::vec3::y,
+        "z", &glm::vec3::z
         );
 
     aLua.new_usertype<Transform>( "Transform",
@@ -174,8 +174,8 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     std::string name = aEntityInfo [ "name" ];
     FileName meshName = aEntityInfo [ "mesh" ];
     Material* mat = aEntityInfo [ "material" ];
-    VEC3 pos = {};
-    sol::optional<VEC3> unsafe_pos = aEntityInfo [ "pos" ];
+    glm::vec3 pos = {};
+    sol::optional<glm::vec3> unsafe_pos = aEntityInfo [ "pos" ];
     if ( unsafe_pos != sol::nullopt )
     {
         pos = unsafe_pos.value();

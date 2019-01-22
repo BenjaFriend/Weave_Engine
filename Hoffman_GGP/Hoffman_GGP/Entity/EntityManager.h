@@ -50,7 +50,7 @@ public:
     /// <param name="aMat">Material of this entity</param>
     /// <param name="aPos">The starting position of the entity</param>
     /// <returns></returns>
-    Entity* AddEntity( Mesh* aMesh, Material* aMat, const DirectX::XMFLOAT3 & aPos, std::string aName = "Default Entity" );
+    Entity* AddEntity( Mesh* aMesh, Material* aMat, const glm::vec3 & aPos, std::string aName = "Default Entity" );
 
     /// <summary>
     /// Deletes entity with the given ID

@@ -39,13 +39,13 @@ public:
     void MoveAbsolute( const float aX, const float aY, const float aZ );
 
     /** Returns this entity's current position */
-    const VEC3 & GetPosition() const;
+    const glm::vec3 & GetPosition() const;
 
     /// <summary>
     /// Set the position of this entity
     /// </summary>
     /// <param name="aNewPos">The new position of this object</param>
-    void SetPosition( const VEC3 & aNewPos );
+    void SetPosition( const glm::vec3 & aNewPos );
 
     /// <summary>
     /// Set the position of this entity 
@@ -104,11 +104,15 @@ public:
 private:
     
     /** The current position */
-    VEC3 Position;
+    //VEC3 Position;
+
+    glm::vec3 Position;
 
     /** The current scale */
     VEC3 Scale;
 
     /** The current rotation*/
     VEC4 Rotation;
+
+    
 };
