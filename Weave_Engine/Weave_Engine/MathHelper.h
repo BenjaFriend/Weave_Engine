@@ -21,6 +21,12 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 
+
+namespace WMath
+{
+    typedef glm::vec3               WVEC3;
+}
+
 #if defined( _WIN32 ) || defined ( _WIN64 )
 
 #include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4

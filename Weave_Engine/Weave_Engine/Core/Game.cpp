@@ -87,7 +87,7 @@ void Game::Init()
     ComponentMan = ECS::ComponentManager::GetInstance();
 
     LightSys = new LightSystem();
-    ScriptMan = new Scripting::ScriptManager( device, context );
+    ScriptMan = new Scripting::ScriptManager();
 
     FlyingCamera = new Camera();
 
@@ -239,16 +239,16 @@ void Game::CreateBasicGeometry()
         SamplerID
     );
 
-    glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
+    WMath::WVEC3 floorPos = WMath::WVEC3( 0.f, -5.f, 0.f );
     Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
     
     floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
     floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
-    floorEntity->GetTransform()->SetScale( VEC3( 5.f, 5.f, 5.f ) );
+    floorEntity->GetTransform()->SetScale( WMath::WVEC3( 5.f, 5.f, 5.f ) );
 
-    glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
+    WMath::WVEC3 newPos = glm::vec3( 0.f, 0.f, 0.f );
     Entity* secondBox = entityMan->AddEntity(
         CubeMesh, floorMat, newPos, "Box 2" );
     

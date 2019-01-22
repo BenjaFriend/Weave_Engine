@@ -20,7 +20,7 @@ namespace Scripting
     {
     public:
 
-        ScriptManager( ID3D11Device* aDevice, ID3D11DeviceContext* aContext );
+        ScriptManager();
 
         ~ScriptManager();
 
@@ -104,12 +104,6 @@ namespace Scripting
 
         /** Lua states that should be persistent */
         std::vector<sol::state> LuaStates;
-
-        /** Target device to create shaders/materials on */
-        ID3D11Device* Device;
-
-        /** Target context to create shaders/materials on */
-        ID3D11DeviceContext* Context;
 
         /** Vector of script file paths */
         std::vector<std::string> ScriptPaths;
