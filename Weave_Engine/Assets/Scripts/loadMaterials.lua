@@ -19,9 +19,9 @@ function start()
     count = 0;
     i = 0
 
-    while i < 10 do
+    while i < 2 do
         j = 0
-        while j < 10 do
+        while j < 2 do
             EntityData = {
                 name = "-----Lua Generated " .. count,
                 mesh = "Assets/Models/sphere.obj",

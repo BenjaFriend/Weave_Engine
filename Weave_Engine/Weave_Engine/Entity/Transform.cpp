@@ -7,7 +7,6 @@ Transform::Transform()
     Position = glm::vec3( 0.f );
     Scale = glm::vec3( 1.f );
     Rotation = glm::vec3( 0.f );
-    worldMatrix = glm::identity<glm::mat4>();
 }
 
 Transform::~Transform()
@@ -92,29 +91,15 @@ void Transform::SetRotation( const glm::vec3 & aNewRot )
     Rotation = aNewRot;
 }
 
-const glm::mat4 Transform::GetWorldMatrix() const
+const glm::highp_mat4 Transform::GetWorldMatrix() const
 {
-    glm::mat4 w = glm::translate()
-    DirectX::XMMATRIX ScaleMatrix = DirectX::XMMatrixScaling(
-        Scale.x,
-        Scale.y,
-        Scale.z );
-
-    DirectX::XMMATRIX Rot = DirectX::XMMatrixRotationRollPitchYaw(
-        Rotation.x,
-        Rotation.y,
-        Rotation.z );
-
-    DirectX::XMMATRIX Pos = DirectX::XMMatrixTranslation(
-        Position.x,
-        Position.y,
-        Position.z );
-
-    // Calculate the world matrix
-    DirectX::XMMATRIX WorldMM = ScaleMatrix * Rot * Pos;
-
-    DirectX::XMFLOAT4X4 World4x4;
-    DirectX::XMStoreFloat4x4( &World4x4, DirectX::XMMatrixTranspose( WorldMM ) );	// Don't forget to transpose!
-
-    return World4x4;
+    // World = Scale * rot * pos
+    glm::highp_mat4 worldMat = glm::identity<glm::highp_mat4>();
+    worldMat = glm::translate( worldMat, Position );
+    worldMat = worldMat * glm::yawPitchRoll( Rotation.y, Rotation.x, Rotation.z );
+    worldMat = glm::scale( worldMat, Scale );
+    
+    // We need to transpose the world matrix because of the differences 
+    // between GLM and DX11
+    return glm::transpose( worldMat );
 }

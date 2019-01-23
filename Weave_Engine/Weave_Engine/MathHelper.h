@@ -22,6 +22,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
+#include <glm/gtc/quaternion.hpp>
 
 #if defined( _WIN32 ) || defined ( _WIN64 )
 

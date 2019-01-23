@@ -239,14 +239,14 @@ void Game::CreateBasicGeometry()
         SamplerID
     );
 
-    glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
-    Entity* floorEntity = entityMan->AddEntity(
-        CubeMesh, floorMat, floorPos, "Floor" );
+    //glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
+    //Entity* floorEntity = entityMan->AddEntity(
+    //    CubeMesh, floorMat, floorPos, "Floor" );
 
-    floorEntity->AddComponent<Physics::BoxCollider>( glm::vec3( 5.f, 5.f, 5.f ) );
-    floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
-
-    floorEntity->GetTransform()->SetScale( glm::vec3( 5.f, 5.f, 5.f ) );
+    //floorEntity->AddComponent<Physics::BoxCollider>( glm::vec3( 5.f, 5.f, 5.f ) );
+    //floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
+    //
+    //floorEntity->GetTransform()->SetScale( glm::vec3( 5.f, 5.f, 5.f ) );
 
     glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
     Entity* secondBox = entityMan->AddEntity(

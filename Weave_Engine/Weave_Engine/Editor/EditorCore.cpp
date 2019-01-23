@@ -105,7 +105,7 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
         UINT offset = 0;
 
         // Make the transform for this light
-        VEC4x4 world = SelectedEntity->GetTransform()->GetWorldMatrix();
+        glm::mat4x4 world = SelectedEntity->GetTransform()->GetWorldMatrix();
 
         // Set up vertex shader
         VertexShader->SetMatrix4x4( "world", world );
