@@ -3,8 +3,6 @@
 #include "Mesh.h"
 #include "Vertex.h"
 
-using namespace DirectX;
-
 Mesh::Mesh( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount )
 {
     CreateBuffers( aDevice, aVerts, aNumVerts, aIndecies, aIndexCount );
@@ -299,18 +297,12 @@ void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices
     // Ensure all of the tangents are orthogonal to the normals
     for ( int i = 0; i < numVerts; i++ )
     {
-        // Grab the two vectors
-        //XMVECTOR normal = XMLoadFloat3( &verts[ i ].Normal );
-        //XMVECTOR tangent = XMLoadFloat3( &verts[ i ].Tangent );
-
-        // Use Gram-Schmidt orthogonalize
-        //tangent = XMVector3Normalize(
-        //    tangent - normal * XMVector3Dot( normal, tangent ) );
-
         // Tangent = Normal ( T - N * Dot( N, T ) )
+        glm::vec3 norm = verts [ i ].Normal;
+        glm::vec3 tan = verts [ i ].Tangent;
 
-        // Store the tangent
-        //XMStoreFloat3( &verts[ i ].Tangent, tangent );
+        tan = glm::normalize( tan - norm * glm::dot( norm, tan ) );
+        verts [ i ].Tangent = tan;
     }
 }
 
