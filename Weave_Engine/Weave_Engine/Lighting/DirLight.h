@@ -2,8 +2,6 @@
 
 #include "../stdafx.h"
 
-#include <DirectXMath.h>
-
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 

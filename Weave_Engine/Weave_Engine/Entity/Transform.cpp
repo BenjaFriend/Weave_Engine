@@ -94,7 +94,7 @@ void Transform::SetRotation( const glm::vec3 & aNewRot )
 const glm::highp_mat4 Transform::GetWorldMatrix() const
 {
     // World = Scale * rot * pos
-    glm::highp_mat4 worldMat = glm::identity<glm::highp_mat4>();
+    glm::mat4 worldMat = glm::identity<glm::mat4>();
     worldMat = glm::translate( worldMat, Position );
     worldMat = worldMat * glm::yawPitchRoll( Rotation.y, Rotation.x, Rotation.z );
     worldMat = glm::scale( worldMat, Scale );

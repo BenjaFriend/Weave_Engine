@@ -1,6 +1,5 @@
 #pragma once
 
-#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include <stdio.h>
 #include "../Input/InputManager.h"   // Input
 
@@ -52,10 +51,10 @@ public:
     const glm::vec3 GetPosition() const;
 
     /** Returns the cameras current view matrix */
-    const glm::highp_mat4 GetViewMatrix() const;
+    const glm::mat4 GetViewMatrix() const;
 
     /** Returns the current projection matrix */
-    const glm::highp_mat4 GetProjectMatrix() const;
+    const glm::mat4 GetProjectMatrix() const;
 
     /// <summary>
     /// Set if the camera should be rotating
@@ -93,9 +92,9 @@ private:
 
     glm::vec3 Up;
 
-    glm::highp_mat4 View;
+    glm::mat4 View;
 
-    glm::highp_mat4 Projection;
+    glm::mat4 Projection;
 
     float FOV = 60.f * glm::pi<float>() / 180.0f;
 

@@ -4,7 +4,6 @@
 
 #include "DXCore.h"
 #include "../Resources/SimpleShader.h"
-#include <DirectXMath.h>
 #include <vector>
 #include <thread>
 #include <chrono>

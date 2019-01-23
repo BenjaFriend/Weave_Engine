@@ -99,7 +99,7 @@ public:
     /// Calculate the world matrix for this entity
     /// </summary>
     /// <returns>The calculate world matrix for this entity</returns>
-    const glm::highp_mat4 GetWorldMatrix() const;
+    const glm::mat4 GetWorldMatrix() const;
 
 private:
     

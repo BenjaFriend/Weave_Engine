@@ -2,8 +2,6 @@
 
 #include "Camera.h"
 
-using namespace DirectX;
-
 Camera::Camera()
 {
     Pos = glm::vec3( 0.f, 0.f, -5.f );
@@ -84,7 +82,7 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
     YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY;
 
     //rotate along x and y
-    glm::mat4x4 rotation = glm::eulerAngleYX( YawAngle, PitchAngle );
+    glm::mat4 rotation = glm::eulerAngleYX( YawAngle, PitchAngle );
     Forward = rotation * DEFAULT_FORWARD;
     Up = rotation * DEFAULT_UP;
     Right = glm::cross( Forward, Up );
@@ -99,12 +97,12 @@ const glm::vec3 Camera::GetPosition() const
     return Pos;
 }
 
-const glm::highp_mat4 Camera::GetViewMatrix() const
+const glm::mat4 Camera::GetViewMatrix() const
 {
     return View;
 }
 
-const glm::highp_mat4 Camera::GetProjectMatrix() const
+const glm::mat4 Camera::GetProjectMatrix() const
 {
     return Projection;
 }
