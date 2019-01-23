@@ -4,6 +4,9 @@
 [submodule "Weave_Engine/additional/spdlog"]
 	path = Weave_Engine/additional/spdlog
 	url = git@github.com:gabime/spdlog.git
+[submodule "Weave_Engine/additional/LuaBridge"]
+	path = Weave_Engine/additional/LuaBridge
+	url = git@github.com:vinniefalco/LuaBridge.git
 [submodule "Weave_Engine/additional/sol2"]
 	path = Weave_Engine/additional/sol2
 	url = git@github.com:ThePhD/sol2.git
