@@ -2,7 +2,6 @@
 #include "RigidBody.h"
 
 using namespace Physics;
-using namespace DirectX;
 
 RigidBody::RigidBody( float aMass ) :
     Mass( aMass )
@@ -25,12 +24,20 @@ void RigidBody::SaveObject( nlohmann::json & aOutFile )
     aOutFile [ "unimplemented" ] = 0;
 }
 
-void RigidBody::SetVelocity( const VEC3 & aVel )
+void RigidBody::ApplyForce( const glm::vec3 aForce )
+{
+}
+
+void RigidBody::ApplyAcceleration()
+{
+}
+
+void RigidBody::SetVelocity( const glm::vec3 & aVel )
 {
     Velocity = aVel;
 }
 
-const VEC3 RigidBody::GetVelocity() const
+const glm::vec3 RigidBody::GetVelocity() const
 {
     return Velocity;
 }
