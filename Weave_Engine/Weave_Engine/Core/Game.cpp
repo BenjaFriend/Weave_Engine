@@ -328,9 +328,14 @@ void Game::Draw( float dt, float totalTime )
         {
             // Send camera info ---------------------------------------------------------
             CurrentEntity->GetMaterial()->GetPixelShader()->SetFloat3(
-                "CameraPosition", FlyingCamera->GetPosition() );
+                "CameraPosition", 
+                FlyingCamera->GetPosition()
+            );
 
-            CurrentEntity->PrepareMaterial( FlyingCamera->GetViewMatrix(), FlyingCamera->GetProjectMatrix() );
+            CurrentEntity->PrepareMaterial( 
+                FlyingCamera->GetViewMatrix(), 
+                FlyingCamera->GetProjectMatrix()
+            );
 
             // Draw the entity ---------------------------------------------------------
             EnMesh = CurrentEntity->GetEntityMesh();
@@ -509,7 +514,7 @@ void Game::DrawLightSources()
 
 void Game::DrawColliders()
 {
-    Mesh* cubeMesh = CubeMesh;
+    /*Mesh* cubeMesh = CubeMesh;
     ID3D11Buffer * vb = cubeMesh->GetVertexBuffer();
     ID3D11Buffer * ib = cubeMesh->GetIndexBuffer();
     unsigned int indexCount = cubeMesh->GetIndexCount();
@@ -544,7 +549,7 @@ void Game::DrawColliders()
         // Draw the wire frame point light range
         vertexShader->SetMatrix4x4( "world", world );
 
-        UnlitPixelShader->SetFloat3( "Color", VEC3( 1.0f, 1.0f, 0.0f ) );
+        UnlitPixelShader->SetFloat3( "Color", glm::vec3( 1.0f, 1.0f, 0.0f ) );
 
         // Copy data to the shaders
         vertexShader->CopyAllBufferData();
@@ -558,7 +563,7 @@ void Game::DrawColliders()
     }
 
     // Reset the Rasterizer state
-    context->RSSetState( 0 );
+    context->RSSetState( 0 );*/
 }
 
 void Game::DrawUI()

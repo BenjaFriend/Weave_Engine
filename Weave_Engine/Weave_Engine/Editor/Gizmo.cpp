@@ -3,7 +3,7 @@
 
 using namespace Editor;
 
-Gizmo::Gizmo( Mesh* aMesh, VEC3 aColor )
+Gizmo::Gizmo( Mesh* aMesh, glm::vec3 aColor )
 {
 
 }

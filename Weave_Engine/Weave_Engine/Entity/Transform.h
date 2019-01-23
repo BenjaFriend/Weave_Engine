@@ -99,9 +99,7 @@ public:
     /// Calculate the world matrix for this entity
     /// </summary>
     /// <returns>The calculate world matrix for this entity</returns>
-    const VEC4x4 GetWorldMatrix() const;
-
-    
+    glm::mat4 GetWorldMatrix() const;
 
 private:
     
@@ -113,5 +111,8 @@ private:
 
     /** Euler rotation of this entity */
     glm::vec3 Rotation;
+
+    /** The world matrix of this transform */
+    glm::mat4 worldMatrix;
     
 };

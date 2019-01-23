@@ -43,7 +43,7 @@ void Material::SaveObject( nlohmann::json & aOutFile )
     LOG_WARN( "Implement Material class save!!" );    
 }
 
-void Material::SetShaderValues( const VEC4x4 & aWorld, const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
+void Material::SetShaderValues( const glm::highp_mat4 & aWorld, const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
 {
     VertexShader->SetMatrix4x4( "world", aWorld );
     VertexShader->SetMatrix4x4( "view", aView );

@@ -13,7 +13,7 @@ namespace Editor
     {
     public:
 
-        Gizmo( Mesh* aMesh, VEC3 aColor );
+        Gizmo( Mesh* aMesh, glm::vec3 aColor );
 
         virtual ~Gizmo();
 

@@ -154,7 +154,7 @@ namespace Editor
         FileName SceneFile = L"Scene_test.json";
 
         /** The color that will be draw around the entity that's selected */
-        VEC3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };
+        glm::vec3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };
 
         /** The current gizmos that should be drawn */
         std::vector<Gizmo*> CurrentGizmos;

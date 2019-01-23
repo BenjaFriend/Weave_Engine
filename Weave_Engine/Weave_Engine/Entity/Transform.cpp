@@ -7,6 +7,7 @@ Transform::Transform()
     Position = glm::vec3( 0.f );
     Scale = glm::vec3( 1.f );
     Rotation = glm::vec3( 0.f );
+    worldMatrix = glm::identity<glm::mat4>();
 }
 
 Transform::~Transform()
@@ -91,8 +92,9 @@ void Transform::SetRotation( const glm::vec3 & aNewRot )
     Rotation = aNewRot;
 }
 
-const VEC4x4 Transform::GetWorldMatrix() const
+const glm::mat4 Transform::GetWorldMatrix() const
 {
+    glm::mat4 w = glm::translate()
     DirectX::XMMATRIX ScaleMatrix = DirectX::XMMatrixScaling(
         Scale.x,
         Scale.y,
