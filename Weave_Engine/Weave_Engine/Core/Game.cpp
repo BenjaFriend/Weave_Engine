@@ -243,7 +243,7 @@ void Game::CreateBasicGeometry()
     Entity* floorEntity = entityMan->AddEntity(
         CubeMesh, floorMat, floorPos, "Floor" );
 
-    floorEntity->AddComponent<Physics::BoxCollider>( VEC3( 5.f, 5.f, 5.f ) );
+    floorEntity->AddComponent<Physics::BoxCollider>( glm::vec3( 5.f, 5.f, 5.f ) );
     floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
 
     floorEntity->GetTransform()->SetScale( glm::vec3( 5.f, 5.f, 5.f ) );
@@ -280,7 +280,7 @@ void Game::Update( float dt, float totalTime )
 
     // Update the camera
     FlyingCamera->Update( dt );
-    FlyingCamera->UpdateProjectionMatrix( width, height );
+    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 
     ScriptMan->Update( dt );
 
@@ -527,7 +527,7 @@ void Game::DrawColliders()
     auto colliders = PhysicsMan->GetColliders();
     for ( Physics::BoxCollider* box : colliders )
     {
-        const VEC3 & extents = box->GetExtents();
+        const glm::vec3 & extents = box->GetExtents();
         const glm::vec3 & pos = box->GetPosition();
 
         XMMATRIX rotMat = XMMatrixIdentity();

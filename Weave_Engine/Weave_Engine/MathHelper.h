@@ -29,7 +29,6 @@
 #include <d3d11.h>          // Any directX functionality
 #include <Windows.h>        // Windows callbacks
 
-typedef DirectX::XMFLOAT2           VEC2;
 typedef DirectX::XMFLOAT3           VEC3;
 typedef DirectX::XMFLOAT4           VEC4;
 typedef DirectX::XMFLOAT4X4         VEC4x4;

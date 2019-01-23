@@ -18,7 +18,7 @@ namespace Physics
         /// A box collider component to handle simple box collision 
         /// </summary>
         /// <param name="aExtents">The extents of this object</param>
-        BoxCollider( const VEC3 & aExtents = VEC3( 1.f, 1.f, 1.f ) );
+        BoxCollider( const glm::vec3 & aExtents = glm::vec3( 1.f, 1.f, 1.f ) );
 
         ~BoxCollider();
 
@@ -34,9 +34,9 @@ namespace Physics
         // Accessors
         ////////////////////////////////////////////////////
 
-        void SetCenterOffset( const VEC3 & aVal );
+        void SetCenterOffset( const glm::vec3 & aVal );
 
-        const VEC3 & GetCenterOffset() const;
+        const glm::vec3 & GetCenterOffset() const;
 
         /// <summary>
         /// Get the world position of this box collider with respect 
@@ -45,9 +45,9 @@ namespace Physics
         /// <returns>VEC3 that is the center of this collider</returns>
         const glm::vec3 GetPosition() const;
 
-        void SetExtents( const VEC3 & aVal );
+        void SetExtents( const glm::vec3 & aVal );
 
-        const VEC3 & GetExtents() const;
+        const glm::vec3 & GetExtents() const;
 
         const bool SetIsTrigger() const;
 
@@ -55,9 +55,9 @@ namespace Physics
 
     private:
 
-        VEC3 CenterOffset;
+        glm::vec3 CenterOffset;
 
-        VEC3 Extents;
+        glm::vec3 Extents;
 
         bool IsTrigger = false;
 

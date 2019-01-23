@@ -4,10 +4,10 @@
 
 using namespace Physics;
 
-BoxCollider::BoxCollider( const VEC3 & aExtents )
+BoxCollider::BoxCollider( const glm::vec3 & aExtents )
     : Extents( aExtents )
 {
-    CenterOffset = VEC3( 0.f, 0.f, 0.f );
+    CenterOffset = glm::vec3( 0.f, 0.f, 0.f );
     PhysicsManager::GetInstance()->AddBoxCollider( this );
 }
 
@@ -53,12 +53,12 @@ const bool BoxCollider::Collides( const BoxCollider & aOther )
 
 }
 
-void BoxCollider::SetCenterOffset( const VEC3 & aVal )
+void BoxCollider::SetCenterOffset( const glm::vec3 & aVal )
 {
     CenterOffset = aVal;
 }
 
-const VEC3 & BoxCollider::GetCenterOffset() const
+const glm::vec3 & BoxCollider::GetCenterOffset() const
 {
     return CenterOffset;
 }
@@ -72,12 +72,12 @@ const glm::vec3 Physics::BoxCollider::GetPosition() const
     return worldPos;
 }
 
-void BoxCollider::SetExtents( const VEC3 & aVal )
+void BoxCollider::SetExtents( const glm::vec3 & aVal )
 {
     Extents = aVal;
 }
 
-const VEC3 & BoxCollider::GetExtents() const
+const glm::vec3 & BoxCollider::GetExtents() const
 {
     return Extents;
 }
