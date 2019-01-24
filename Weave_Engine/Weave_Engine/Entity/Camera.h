@@ -69,7 +69,10 @@ public:
     const float GetMovementSpeed() const;
 
     /** Set the movement speed of this camera. Default is 4 */
-    void SetMovementSpeed(float aNewVal);
+    void SetMovementSpeed( float aNewVal );
+
+    void SetSouthPaw( const bool val ) { SouthPaw = val; }
+    const bool GetSouthPaw() const { return SouthPaw; }
 
 private:
 
@@ -82,6 +85,9 @@ private:
 
     float PitchAngle;
     float YawAngle;
+
+    /** Option for south paw controls */
+    bool SouthPaw = false;
 
     /** Current position of the camera */
     glm::vec3 Pos;

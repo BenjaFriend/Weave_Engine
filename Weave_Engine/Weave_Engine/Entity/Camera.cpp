@@ -11,7 +11,7 @@ Camera::Camera()
     Right = DEFAULT_RIGHT;
 
     PitchAngle = 0;
-    YawAngle = 0;
+    YawAngle = 90;
 
     inputManager = Input::InputManager::GetInstance();
 }
@@ -37,9 +37,7 @@ void Camera::Update( const float aDeltaTime )
     if ( GetAsyncKeyState( VK_SPACE ) & 0x80000 ) { RelativeInput.y += 1.f; }
 
     // Scale keyboard input by delta time
-    RelativeInput.x *= aDeltaTime * MovementSpeed;
-    RelativeInput.y *= aDeltaTime * MovementSpeed;
-    RelativeInput.z *= aDeltaTime * MovementSpeed;
+    RelativeInput *= aDeltaTime * MovementSpeed;
 
     Pos += RelativeInput;
 }
@@ -77,9 +75,9 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 {
     if ( !DoRotation ) return;
 
-    PitchAngle += static_cast< float >( aDeltaMouseY ) * SENSITIVITY;
+    PitchAngle += static_cast< float >( aDeltaMouseY ) * SENSITIVITY * ( SouthPaw ? -1.f : 1.f );
     glm::clamp( PitchAngle, -MAX_PITCH, MAX_PITCH );
-    YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY;
+    YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY * ( SouthPaw ? 1.f : -1.f );
 
     //rotate along x and y
     glm::mat4 rotation = glm::eulerAngleYX( YawAngle, PitchAngle );
