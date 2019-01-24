@@ -10,6 +10,8 @@ This engine aims to accomplish the following:
 ## Getting Started
 
 * Visual Studio 2017 with the C++ compiler options  
+* [Clang](http://releases.llvm.org/download.html) 7.0.1 or newer
+* [Clang for Visual Studio](https://marketplace.visualstudio.com/items?itemName=LLVMExtensions.llvm-toolchain)
 
 Init the submodules
 ```
