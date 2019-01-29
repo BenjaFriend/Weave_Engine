@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.0 )
 
 ############### Project Settings ###############
-project( Test_Boost_Cmake )
+project( "Weave_Server" )
 
 # Set Build Dir
 set( CMAKE_BINARY_DIR    "/build" )
@@ -9,7 +9,7 @@ set( CMAKE_BINARY_DIR    "/build" )
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 
 #Sets the output directory
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin" )
 
 ################# Add Boost #####################
 ## TODO: Make this need to be entered from command line instead of in this
