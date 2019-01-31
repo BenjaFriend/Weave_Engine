@@ -2,6 +2,7 @@ cmake_minimum_required( VERSION 3.0 )
 
 ############### Project Settings ###############
 project( "Weave_Server" )
+set( CMAKE_SUPPRESS_REGENERATION true )
 
 # Set Build Dir
 set( CMAKE_BINARY_DIR    "/build" )
@@ -15,8 +16,8 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin" )
 ## TODO: Make this need to be entered from command line instead of in this
 ## cmake file as a static variable
 
-set( BOOST_ROOT         "C:/Program Files/boost/boost_1_67_0/" )
-set( BOOST_LIBRARYDIR   "C:/Program Files/boost/boost_1_67_0/stage/lib/" )
+set( BOOST_ROOT             $ENV{BOOST_ROOT} )
+set( BOOST_LIBRARYDIR       $ENV{BOOST_LIBRARYDIR} )
 set( Boost_USE_STATIC_LIBS  ON )
 
 message( STATUS "Boost Inc  at: ${Boost_INCLUDE_DIR}" )
@@ -33,7 +34,7 @@ endif()
 
 ############### Include Files  #################
 # Glob include folder
-file( GLOB SRC_FILES "src/*.cpp" "src/*.hpp" )
+file( GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.hpp" )
 
 include_directories(
     include
