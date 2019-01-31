@@ -27,7 +27,7 @@ git submodule update --init --recursive;
 In order to use Boost, make sure you have defined the following environment variables:
 
 * `BOOST_ROOT`, the boost root path (Ex: `C:\Program Files\boost\boost_1_67_0`)
-* `BOOST_LIB`, the library path for boost (Ex: `C:\Program Files\boost\boost_1_67_0\stage\lib`)
+* `BOOST_LIBRARYDIR`, the library path for boost (Ex: `C:\Program Files\boost\boost_1_67_0\stage\lib`)
 
 ## Systems currently in place
 
