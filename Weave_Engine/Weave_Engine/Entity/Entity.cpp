@@ -51,9 +51,17 @@ void Entity::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_ma
     EntityMaterial->SetShaderValues( EntityTransform->GetWorldMatrix() , aView, aProjection);
 }
 
-void Entity::SaveObject( nlohmann::json & aOutFile )
+void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
 {
     LOG_TRACE( "Save Object: {}", this->Name );
+
+    // Save this entity's data
+    nlohmann::json entity_data = nlohmann::json::object();
+
+    entity_data [ "Name" ] = this->Name;
+    entity_data [ "IsActive" ] = this->IsActive;
+    entity_data [ "Components" ] = nlohmann::json::array();
+
     // Save each component
     const auto & compMap = this->GetAllComponents();
 
@@ -62,11 +70,17 @@ void Entity::SaveObject( nlohmann::json & aOutFile )
         for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
         {
             ECS::IComponent* theComp = ( compItr->second );
+            
             if ( theComp != nullptr )
             {
-                theComp->SaveObject( aOutFile );
+                theComp->SaveObject( entity_data [ "Components" ] );
             }
         }
+    }
+    // Append this entity to the given entity array
+    if ( aJsonEntityArray.is_array() )
+    {
+        aJsonEntityArray.push_back( entity_data );
     }
 }
 

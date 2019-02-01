@@ -21,7 +21,6 @@ void RigidBody::DrawEditorGUI()
 
 void RigidBody::SaveObject( nlohmann::json & aOutFile )
 {
-    aOutFile [ "unimplemented" ] = 0;
 }
 
 void RigidBody::ApplyForce( const glm::vec3 aForce )

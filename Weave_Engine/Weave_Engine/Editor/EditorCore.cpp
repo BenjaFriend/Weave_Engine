@@ -156,7 +156,7 @@ void EditorCore::DrawUI()
                 {
                     /* Do stuff */
                     LOG_TRACE( "Open file!" );
-                    
+
                 }
                 if ( ImGui::MenuItem( "Save Scene", "Ctrl+S" ) )
                 {
@@ -263,18 +263,18 @@ void EditorCore::SaveScene()
 {
     LOG_TRACE( "Save scene!" );
     nlohmann::json njson;
-    std::vector<std::string> keys;
 
     njson [ "Scene_Name" ] = "Test_Scene_Name";
+    njson [ "Entities" ] = nlohmann::json::array();
 
     Entity* CurrentEntity = nullptr;
 
     for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
-    {    
+    {
         CurrentEntity = entityMan->GetEntity( i );
         if ( CurrentEntity != nullptr )
         {
-            CurrentEntity->SaveObject( njson );
+            CurrentEntity->SaveObject( njson [ "Entities" ] );
         }
     }
 

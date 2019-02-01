@@ -27,7 +27,6 @@ void DirLight::SetLightData( DirectionalLightData aLightData )
 
 void DirLight::SaveObject( nlohmann::json & aOutFile )
 {
-    aOutFile [ "unimplemented" ] = 0;
 }
 
 void DirLight::DrawEditorGUI()

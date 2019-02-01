@@ -28,7 +28,17 @@ void Transform::DrawEditorGUI()
 
 void Transform::SaveObject( nlohmann::json & aOutFile )
 {
+    nlohmann::json comp_data = nlohmann::json::object();
+    comp_data [ COMP_SAVE_KEY ] = ComponentName();
 
+    comp_data [ "Pos" ] [ "X" ] = Position.x;
+    comp_data [ "Pos" ] [ "Y" ] = Position.y;
+    comp_data [ "Pos" ] [ "Z" ] = Position.z;
+
+    if ( aOutFile.is_array() )
+    {
+        aOutFile.push_back( comp_data );
+    }
 }
 
 void Transform::MoveRelative( const float aX, const float aY, const float aZ )
@@ -97,7 +107,7 @@ const glm::highp_mat4 Transform::GetWorldMatrix() const
     worldMat = glm::translate( worldMat, Position );
     worldMat = worldMat * glm::yawPitchRoll( Rotation.y, Rotation.x, Rotation.z );
     worldMat = glm::scale( worldMat, Scale );
-    
+
     // We need to transpose the world matrix because of the differences 
     // between GLM and DX11
     return glm::transpose( worldMat );

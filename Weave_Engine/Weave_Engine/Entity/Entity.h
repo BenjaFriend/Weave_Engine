@@ -86,7 +86,12 @@ public:
         return componentManager->GetAllComponents( this->entID );
     }
 
-    void SaveObject( nlohmann::json& aOutFile );
+    /// <summary>
+    /// Save this entity's data and components into a json array of 
+    /// entities
+    /// </summary>
+    /// <param name="aJsonEntityArray">nlohmann::json::array of entities</param>
+    void SaveObject( nlohmann::json& aJsonEntityArray );
 
 private:
 

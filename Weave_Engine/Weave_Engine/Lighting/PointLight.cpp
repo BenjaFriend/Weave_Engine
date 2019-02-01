@@ -62,7 +62,6 @@ void PointLight::SetDrawRange(bool aVal)
 
 void PointLight::SaveObject( nlohmann::json & aOutFile )
 {
-    aOutFile [ "unimplemented" ] = 0;
 }
 
 void PointLight::DrawEditorGUI()

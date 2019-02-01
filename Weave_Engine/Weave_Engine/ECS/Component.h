@@ -3,6 +3,7 @@
 #include "IComponent.h"
 #include "FamilyTypeID.h"
 
+#define COMP_SAVE_KEY "ComponentName"
 namespace ECS
 {
 
