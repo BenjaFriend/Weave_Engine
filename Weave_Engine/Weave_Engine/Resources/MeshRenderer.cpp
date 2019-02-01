@@ -16,6 +16,9 @@ MeshRenderer::~MeshRenderer()
 void MeshRenderer::DrawEditorGUI()
 {
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
+    // #TODO Have a material / mesh format that we can edit during runtime
+    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ) );
+    ImGui::Text( "Mesh:\t %d", ( CurrentMesh != nullptr ) );
 }
 
 void MeshRenderer::SaveObject( nlohmann::json & aOutFile )

@@ -20,14 +20,9 @@ Transform::~Transform()
 
 void Transform::DrawEditorGUI()
 {
-    if ( ImGui::CollapsingHeader( "Transform" ) )
-    {
-        ImGui::InputFloat3( "Position", ( float* ) &Position );
-
-        ImGui::InputFloat3( "Scale", ( float* ) &Scale );
-
-        ImGui::InputFloat3( "Rotation", ( float* ) &Rotation );
-    }
+    ImGui::InputFloat3( "Position", ( float* ) &Position );
+    ImGui::InputFloat3( "Scale", ( float* ) &Scale );
+    ImGui::InputFloat3( "Rotation", ( float* ) &Rotation );
 }
 
 void Transform::SaveObject( nlohmann::json & aOutFile )
@@ -68,16 +63,6 @@ void Transform::MoveAbsolute( const float aX, const float aY, const float aZ )
     Position.z += aZ;
 }
 
-const glm::vec3 & Transform::GetPosition() const
-{
-    return Position;
-}
-
-void Transform::SetPosition( const glm::vec3 & aNewPos )
-{
-    Position = aNewPos;
-}
-
 void Transform::SetPosition( const float aX, const float aY, const float aZ )
 {
     Position.x = aX;
@@ -85,31 +70,11 @@ void Transform::SetPosition( const float aX, const float aY, const float aZ )
     Position.z = aZ;
 }
 
-const glm::vec3 & Transform::GetScale() const
-{
-    return Scale;
-}
-
-void Transform::SetScale( const glm::vec3 & aNewScale )
-{
-    Scale = aNewScale;
-}
-
-void Transform::SetScale( const float aX, const float aY, const float aZ )
+inline void Transform::SetScale( const float aX, const float aY, const float aZ )
 {
     Scale.x = aX;
     Scale.y = aY;
     Scale.z = aZ;
-}
-
-const glm::vec3 & Transform::GetRotation() const
-{
-    return Rotation;
-}
-
-void Transform::SetRotation( const glm::vec3 & aNewRot )
-{
-    Rotation = aNewRot;
 }
 
 const glm::highp_mat4 Transform::GetWorldMatrix() const
