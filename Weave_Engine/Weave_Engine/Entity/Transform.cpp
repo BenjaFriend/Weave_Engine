@@ -2,6 +2,10 @@
 
 #include "Transform.h"
 
+#define POS_SAVE_KEY        "Pos"
+#define SCALE_SAVE_KEY      "Scale"
+#define ROT_SAVE_KEY        "Rot"
+
 Transform::Transform()
 {
     Position = glm::vec3( 0.f );
@@ -31,9 +35,17 @@ void Transform::SaveObject( nlohmann::json & aOutFile )
     nlohmann::json comp_data = nlohmann::json::object();
     comp_data [ COMP_SAVE_KEY ] = ComponentName();
 
-    comp_data [ "Pos" ] [ "X" ] = Position.x;
-    comp_data [ "Pos" ] [ "Y" ] = Position.y;
-    comp_data [ "Pos" ] [ "Z" ] = Position.z;
+    comp_data [ POS_SAVE_KEY ] [ "X" ] = Position.x;
+    comp_data [ POS_SAVE_KEY ] [ "Y" ] = Position.y;
+    comp_data [ POS_SAVE_KEY ] [ "Z" ] = Position.z;
+
+    comp_data [ SCALE_SAVE_KEY ] [ "X" ] = Scale.x;
+    comp_data [ SCALE_SAVE_KEY ] [ "Y" ] = Scale.y;
+    comp_data [ SCALE_SAVE_KEY ] [ "Z" ] = Scale.z;
+
+    comp_data [ ROT_SAVE_KEY ] [ "X" ] = Rotation.x;
+    comp_data [ ROT_SAVE_KEY ] [ "Y" ] = Rotation.y;
+    comp_data [ ROT_SAVE_KEY ] [ "Z" ] = Rotation.z;
 
     if ( aOutFile.is_array() )
     {

@@ -22,6 +22,9 @@
 
 #include "../MathHelper.h"
 
+#define SCENE_NAME_SAVE_KEY     "Scene_Name"
+#define ENTITY_ARRAY_SAVE_KEY   "Entities"
+
 namespace Editor
 {
 
@@ -108,6 +111,21 @@ namespace Editor
         /// Draw the editor UI
         /// </summary>
         void DrawUI();
+
+        /// <summary>
+        /// Draw the hierarchy of objects in the scene
+        /// </summary>
+        FORCE_INLINE void DrawHierarchy();
+
+        /// <summary>
+        /// Draw the current stats of the scene
+        /// </summary>
+        FORCE_INLINE void DrawStats();
+
+        /// <summary>
+        /// Draw the Inspector elements of the currently selected entity
+        /// </summary>
+        FORCE_INLINE void DrawInspector();
 
         /// <summary>
         /// Draw any gizmos that should be on screen
