@@ -2,6 +2,10 @@
 #include "BoxCollider.h"
 #include "../Entity/EntityManager.h"
 
+#define EXTENTS_SAVE_KEY            "Extents"
+#define CENTER_OFFSET_SAVE_KEY      "CenterOffset"
+#define IS_TRIGGER_SAVE_KEY         "IsTrigger"
+
 using namespace Physics;
 
 BoxCollider::BoxCollider( const glm::vec3 & aExtents )
@@ -23,6 +27,22 @@ void BoxCollider::DrawEditorGUI()
 
 void BoxCollider::SaveObject( nlohmann::json & aOutFile )
 {
+    nlohmann::json comp_data = nlohmann::json::object();
+    comp_data [ COMP_SAVE_KEY ] = ComponentName();
+
+    comp_data [ EXTENTS_SAVE_KEY ] [ "X" ] = Extents.x;
+    comp_data [ EXTENTS_SAVE_KEY ] [ "Y" ] = Extents.y;
+    comp_data [ EXTENTS_SAVE_KEY ] [ "Z" ] = Extents.z;
+
+    comp_data [ CENTER_OFFSET_SAVE_KEY ] [ "X" ] = CenterOffset.x;
+    comp_data [ CENTER_OFFSET_SAVE_KEY ] [ "Y" ] = CenterOffset.y;
+    comp_data [ CENTER_OFFSET_SAVE_KEY ] [ "Z" ] = CenterOffset.z;
+    comp_data [ IS_TRIGGER_SAVE_KEY ] = IsTrigger;
+
+    if ( aOutFile.is_array() )
+    {
+        aOutFile.push_back( comp_data );
+    }
 }
 
 const bool BoxCollider::Collides( const BoxCollider & aOther )
@@ -39,17 +59,10 @@ const bool BoxCollider::Collides( const BoxCollider & aOther )
     otherPos.y += aOther.CenterOffset.y;
     otherPos.z += aOther.CenterOffset.z;
 
-    /*
-      return (a.minX <= b.maxX && a.maxX >= b.minX) &&
-             (a.minY <= b.maxY && a.maxY >= b.minY) &&
-             (a.minZ <= b.maxZ && a.maxZ >= b.minZ);
-
-    */
     return 
         ( ownerPos.x - Extents.x / 2 <= otherPos.x + aOther.Extents.x / 2 && ownerPos.x + Extents.x / 2 >= otherPos.x - aOther.Extents.x / 2 ) &&
         ( ownerPos.y - Extents.y / 2 <= otherPos.y + aOther.Extents.y / 2 && ownerPos.y + Extents.y / 2 >= otherPos.y - aOther.Extents.y / 2 ) && 
         ( ownerPos.z - Extents.z / 2 <= otherPos.z + aOther.Extents.z / 2 && ownerPos.z + Extents.z / 2 >= otherPos.z - aOther.Extents.z / 2 );
-
 }
 
 void BoxCollider::SetCenterOffset( const glm::vec3 & aVal )

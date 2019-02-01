@@ -138,6 +138,9 @@ namespace Editor
         /** Resource manager for handling any editor-specific shaders */
         ResourceManager* resourceMan = nullptr;
 
+        /** The scene manager of this game */
+        SceneManagement::SceneManager* sceneMan = nullptr;
+
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
 

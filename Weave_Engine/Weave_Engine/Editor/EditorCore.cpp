@@ -37,6 +37,7 @@ void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 EditorCore::EditorCore()
 {
     entityMan = EntityManager::GetInstance();
+    sceneMan = SceneManagement::SceneManager::GetInstance();
 
     LoadResources();
 }
@@ -45,6 +46,7 @@ EditorCore::~EditorCore()
 {
     entityMan = nullptr;
     SelectedEntity = nullptr;
+    sceneMan = nullptr;
 
     // Delete all gizmos
     for ( size_t i = 0; i < CurrentGizmos.size(); ++i )
