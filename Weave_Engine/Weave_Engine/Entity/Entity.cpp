@@ -53,8 +53,9 @@ void Entity::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_ma
 
 void Entity::SaveObject( nlohmann::json & aOutFile )
 {
+    LOG_TRACE( "Save Object: {}", this->Name );
     // Save each component
-    auto compMap = this->GetAllComponents();
+    const auto & compMap = this->GetAllComponents();
 
     if ( compMap != nullptr )
     {

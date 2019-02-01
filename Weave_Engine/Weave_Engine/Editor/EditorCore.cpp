@@ -261,19 +261,24 @@ void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aCont
 
 void EditorCore::SaveScene()
 {
+    LOG_TRACE( "Save scene!" );
     nlohmann::json njson;
+    std::vector<std::string> keys;
 
-    njson [ "Scene Name" ] = "Test_Scene";
+    njson [ "Scene_Name" ] = "Test_Scene_Name";
 
-    Entity* CurrentEntity = entityMan->GetEntity( 0 );
+    Entity* CurrentEntity = nullptr;
 
     for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
-    {
+    {    
         CurrentEntity = entityMan->GetEntity( i );
-
-        CurrentEntity->SaveObject( njson );
+        if ( CurrentEntity != nullptr )
+        {
+            CurrentEntity->SaveObject( njson );
+        }
     }
 
+    // Open a file stream to the given scene file
     std::ofstream ofs( SceneFile );
     if ( ofs.is_open() )
     {
@@ -281,7 +286,7 @@ void EditorCore::SaveScene()
     }
     else
     {
-        //LOG_ERROR( "Failed to save scene: {}", SceneFile );
+        LOG_ERROR( "Failed to save scene!" );
     }
     ofs.close();
 }

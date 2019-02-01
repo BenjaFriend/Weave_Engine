@@ -1,10 +1,14 @@
 #pragma once
 
+#include <boost/filesystem.hpp>
+
 #include "../stdafx.h"
 #include "../Utils/Dispatcher.hpp"
 
 namespace SceneManagement
 {
+    namespace fs = boost::filesystem;
+
     /// <summary>
     /// The scene manager will be able to load/unload 
     /// scene files and control the flow of what entities 

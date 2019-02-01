@@ -28,8 +28,7 @@ void Transform::DrawEditorGUI()
 
 void Transform::SaveObject( nlohmann::json & aOutFile )
 {
-    // #TODO Save the pos, rot and scale of this object 
-    aOutFile [ "unimplemented" ] = 0;
+
 }
 
 void Transform::MoveRelative( const float aX, const float aY, const float aZ )

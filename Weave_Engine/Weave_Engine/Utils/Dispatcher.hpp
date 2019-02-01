@@ -36,7 +36,7 @@ public:
     /// </summary>
     void Dispatch() const
     {
-        for ( auto const callback : CurrentListeners )
+        for ( auto const & callback : CurrentListeners )
             ( *callback ) ( );
     }
 
@@ -84,7 +84,7 @@ private:
         }
 
         T* parentObj = nullptr;
-        void ( T::*callback )( );
+        void ( T::*callback )( ) = nullptr;
     };
 
     /** Vector of listeners of this dispatcher */
