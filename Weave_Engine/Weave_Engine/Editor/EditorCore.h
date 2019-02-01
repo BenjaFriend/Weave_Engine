@@ -151,7 +151,7 @@ namespace Editor
         Entity* SelectedEntity = nullptr;
 
         /** The current scene file to save all entities to */
-        FileName SceneFile = L"Scene_test.json";
+        FileName SceneFile = L"Assets/Scenes/Scene_test.json";
 
         /** The color that will be draw around the entity that's selected */
         glm::vec3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };

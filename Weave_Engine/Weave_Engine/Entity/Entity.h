@@ -7,6 +7,12 @@
 #include "Transform.h"
 
 /////////////////////////////////////////////////
+// Savable key definitions 
+#define COMPONENT_ARRAY_SAVE_KEY    "Components"
+#define NAME_SAVE_KEY               "Name"
+#define IS_ACTIVE_SAVE_KEY          "IsActive"
+
+/////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
 class Material;
