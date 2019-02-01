@@ -180,13 +180,12 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
 
     ResourceManager* resMan = ResourceManager::GetInstance();
     Mesh* mesh = resMan->LoadMesh( meshName );
-
+    
     // Create the entity in the entity manager
     Entity* ent = EntityManager::GetInstance()->AddEntity(
-        mesh,
-        mat,
-        pos,
-        name
+        name,
+        pos
     );
+    ent->AddComponent<MeshRenderer>( mat, mesh );
     return ent;
 }

@@ -9,6 +9,7 @@
 #include "../Entity/Transform.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"
+#include "../Resources/MeshRenderer.h"
 
 namespace Scripting
 {

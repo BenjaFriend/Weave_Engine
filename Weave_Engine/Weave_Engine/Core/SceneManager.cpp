@@ -50,5 +50,6 @@ void SceneManager::LoadScene( FileName & aSceneName )
 void SceneManager::UnloadCurrentScene()
 {
     // Unload all entities
+
     // Tell the entity manager to remove all entities
 }

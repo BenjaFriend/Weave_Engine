@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "../Resources/MeshRenderer.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -36,21 +37,21 @@ public:
     static void ReleaseInstance();
 
     /// <summary>
-    /// Adds an entity to the game with the given 
+    /// Adds an entity to the game with no mesh. Adds this entity to the 
+    /// vector of entities
     /// </summary>
-    /// <param name="aMesh">Mesh for this entity</param>
-    /// <param name="aMat">Material of this entity</param>
-    /// <returns>The ID of that entity</returns>
-    Entity* AddEntity( Mesh* aMesh, Material* aMat, std::string aName = "Default Entity" );
+    /// <param name="aName">Name of this entity</param>
+    /// <returns>Pointer to this entity</returns>
+    Entity* AddEntity( std::string aName = "Default Entity" );
 
     /// <summary>
-    /// Adds an entity to the game with the given 
+    /// Adds an entity and sets their position after it is created
     /// </summary>
-    /// <param name="aMesh">Mesh for this entity</param>
-    /// <param name="aMat">Material of this entity</param>
-    /// <param name="aPos">The starting position of the entity</param>
-    /// <returns></returns>
-    Entity* AddEntity( Mesh* aMesh, Material* aMat, const glm::vec3 & aPos, std::string aName = "Default Entity" );
+    /// <param name="aName">Name of this entity</param>
+    /// <param name="aPos">The spawn position</param>
+    /// <returns>Pointer to the entity</returns>
+    Entity* AddEntity( std::string aName, glm::vec3 aPos );
+
 
     /// <summary>
     /// Deletes entity with the given ID

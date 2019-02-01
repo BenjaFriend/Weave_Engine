@@ -91,7 +91,12 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
     // Draw the selected object
     if ( SelectedEntity != nullptr )
     {
-        Mesh* mesh = SelectedEntity->GetEntityMesh();
+        MeshRenderer* MeshRend = SelectedEntity->GetComponent<MeshRenderer>();
+        if ( MeshRend == nullptr )
+        {
+            return;
+        }
+        const Mesh* mesh = MeshRend->GetMesh();
         // If there is no mesh, default to a sphere
         if ( mesh == nullptr )
         {

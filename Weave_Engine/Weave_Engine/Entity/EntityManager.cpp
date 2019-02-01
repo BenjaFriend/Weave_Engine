@@ -7,7 +7,6 @@
 // Singleton requirement
 EntityManager* EntityManager::Instance = nullptr;
 
-
 EntityManager* EntityManager::GetInstance()
 {
     if ( Instance == nullptr )
@@ -47,16 +46,17 @@ void EntityManager::UnloadAllEntities()
     EntityArray.clear();
 }
 
-Entity* EntityManager::AddEntity( Mesh* aMesh, Material* aMat, std::string aName )
+Entity * EntityManager::AddEntity( std::string aName )
 {
-    EntityArray.push_back( new Entity( aMesh, aMat, aName ) );
+    Entity* tempEnt = new Entity( aName );
+    EntityArray.push_back( tempEnt );
     return EntityArray [ EntityArray.size() - 1 ];
 }
 
-Entity* EntityManager::AddEntity( Mesh * aMesh, Material * aMat, const glm::vec3 & aPos, std::string aName )
+Entity * EntityManager::AddEntity( std::string aName, glm::vec3 aPos )
 {
-    Entity* tempEnt = new Entity( aMesh, aMat, aName );
-    tempEnt->GetTransform()->SetPosition( aPos );
+    Entity* tempEnt = new Entity( aName, aPos );
+
     EntityArray.push_back( tempEnt );
     return EntityArray [ EntityArray.size() - 1 ];
 }

@@ -6,6 +6,7 @@
 #include "../Core/SceneManager.h"
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
+#include "../Resources/MeshRenderer.h"
 #include "../Entity/Camera.h"
 #include "Gizmo.h"
 

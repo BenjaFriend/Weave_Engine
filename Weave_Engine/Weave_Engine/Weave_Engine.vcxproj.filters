@@ -139,6 +139,9 @@
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Resources\MeshRenderer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Input\Input_Win.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\MeshRenderer.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
