@@ -55,16 +55,6 @@ Game::~Game()
     skyRastState->Release();
     skyDepthState->Release();
 
-    if ( ScriptMan != nullptr )
-    {
-        delete ScriptMan;
-        ScriptMan = nullptr;
-    }
-
-    EntityManager::ReleaseInstance();
-    Physics::PhysicsManager::ReleaseInstance();
-    ResourceManager::ReleaseInstance();
-
     if ( LightSys != nullptr )
     {
         delete LightSys;
@@ -72,8 +62,6 @@ Game::~Game()
     }
 
     delete FlyingCamera;
-
-    ECS::ComponentManager::ReleaseInstance();
 }
 
 // --------------------------------------------------------
@@ -82,13 +70,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    entityMan = EntityManager::GetInstance();
-    resourceMan = ResourceManager::Initalize( device, context );
-    PhysicsMan = Physics::PhysicsManager::GetInstance();
-    ComponentMan = ECS::ComponentManager::GetInstance();
-
+    
     LightSys = new LightSystem();
-    ScriptMan = new Scripting::ScriptManager();
 
     FlyingCamera = new Camera();
 

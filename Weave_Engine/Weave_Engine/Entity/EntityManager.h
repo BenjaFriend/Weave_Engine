@@ -6,6 +6,8 @@
 
 #include "Entity.h"
 #include "../Resources/MeshRenderer.h"
+#include "../Core/SceneManager.h"
+#include "../Utils/Dispatcher.hpp"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -21,7 +23,6 @@ using Entity_ID = size_t;
 /// <author>Ben Hoffman</author>
 class EntityManager
 {
-
 public:
 
     /// <summary>
@@ -64,7 +65,12 @@ public:
     /// </summary>
     /// <param name="aEntityID">Entity ID to find</param>
     /// <returns>pointer to the entity with this ID</returns>
-    Entity* GetEntity( const Entity_ID aEntityID ) const;
+    FORCE_INLINE Entity* GetEntity( const Entity_ID aEntityID ) const
+    {
+        assert( aEntityID >= 0 && aEntityID < EntityArray.size() );
+
+        return EntityArray [ aEntityID ];
+    }
 
     //////////////////////////////////////////////////////////////////
     // Accessors 

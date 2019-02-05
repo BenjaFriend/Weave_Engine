@@ -12,6 +12,10 @@
 #include "../Input/Input_Win.h"
 
 #include "SceneManager.h"
+#include "../Entity/EntityManager.h"
+#include "../Resources/ResourceManager.h"
+#include "../ECS/ComponentManager.h"
+#include "../Physics/PhysicsManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
@@ -96,6 +100,11 @@ protected:
     Input::InputManager* inputManager = nullptr;
     SceneManagement::SceneManager* sceneManager = nullptr;
     Logger* logger = nullptr;
+    ResourceManager* resourceMan = nullptr;
+    EntityManager* entityMan = nullptr;
+    ECS::ComponentManager* ComponentMan = nullptr;
+    Physics::PhysicsManager* PhysicsMan = nullptr;
+    Scripting::ScriptManager* ScriptMan = nullptr;
 
 #if defined(EDITOR_ON)
 
@@ -118,6 +127,8 @@ private:
     // FPS calculation
     int fpsFrameCount;
     float fpsTimeElapsed;
+
+    void InitSystems();
 
     void UpdateTimer();			// Updates the timer for this frame(
     

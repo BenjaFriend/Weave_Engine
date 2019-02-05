@@ -36,8 +36,10 @@ public:
     /// </summary>
     void Dispatch() const
     {
-        for ( auto const & callback : CurrentListeners )
+        for ( IListener* const callback : CurrentListeners )
+        {
             ( *callback ) ( );
+        }
     }
 
     /// <summary>
@@ -49,6 +51,7 @@ public:
     template <typename T>
     void BindListener( T* aObj, void ( T::*aCallBack )( ) )
     {
+        // #TODO Make this use some kind of memory pool instead of dynamic alloc
         IListener* newListener = new MemberListener<T>( aObj, aCallBack );
         CurrentListeners.push_back( newListener );
     }

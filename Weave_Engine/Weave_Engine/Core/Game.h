@@ -8,12 +8,8 @@
 #include <thread>
 #include <chrono>
 
-#include "../Entity/EntityManager.h"
-#include "../Resources/ResourceManager.h"
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
-#include "../Physics/PhysicsManager.h"
-#include "../ECS/ComponentManager.h"
 #include "../Resources/LightSystem.h"
 
 /////////////////////////////////////////////////
@@ -84,11 +80,6 @@ private:
 
     // Flying camera for initial testing
     Camera* FlyingCamera = nullptr;
-
-    // managers
-    ResourceManager* resourceMan = nullptr;
-    EntityManager* entityMan = nullptr;
-
     Mesh* PointLightMesh = nullptr;
 
     // Keeps track of the old mouse position.  Useful for 
@@ -103,8 +94,6 @@ private:
     bool DrawSkyBox = true;
     bool DebugDrawColliders = true;
 
-    ECS::ComponentManager* ComponentMan = nullptr;
-    Physics::PhysicsManager* PhysicsMan = nullptr;
-    Scripting::ScriptManager* ScriptMan = nullptr;
+    
     LightSystem* LightSys = nullptr;
 };

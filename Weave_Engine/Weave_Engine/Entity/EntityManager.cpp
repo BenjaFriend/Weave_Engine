@@ -27,7 +27,12 @@ void EntityManager::ReleaseInstance()
 
 EntityManager::EntityManager()
 {
+    SceneManagement::SceneManager* sceneMan = SceneManagement::SceneManager::GetInstance();
+    
+    assert( sceneMan != nullptr );
 
+    Dispatcher & dis = sceneMan->OnSceneUnload();
+    dis.BindListener( this, ( &EntityManager::UnloadAllEntities ) );
 }
 
 EntityManager::~EntityManager()
@@ -40,7 +45,8 @@ void EntityManager::UnloadAllEntities()
     // Delete each entity that has been added
     for ( auto it = EntityArray.begin(); it != EntityArray.end(); ++it )
     {
-        delete ( *it );
+        if( *it != nullptr )
+            delete ( *it );
     }
 
     EntityArray.clear();
@@ -71,13 +77,6 @@ void EntityManager::DeleteEntity( const Entity_ID aEntityID )
         // Free the memory of that entity
         delete EntityArray [ aEntityID ];
     }
-}
-
-Entity * EntityManager::GetEntity( const Entity_ID aEntityID ) const
-{
-    assert( aEntityID >= 0 && aEntityID < EntityArray.size() );
-
-    return EntityArray [ aEntityID ];
 }
 
 //////////////////////////////////////////////////////////////////

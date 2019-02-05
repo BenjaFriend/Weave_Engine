@@ -23,8 +23,7 @@
 
 #include "../MathHelper.h"
 
-#define SCENE_NAME_SAVE_KEY     "Scene_Name"
-#define ENTITY_ARRAY_SAVE_KEY   "Entities"
+#include "../Utils/SaveFileDefs.h"
 
 namespace Editor
 {

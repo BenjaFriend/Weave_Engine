@@ -4,6 +4,7 @@
 
 #include "../stdafx.h"
 #include "../Utils/Dispatcher.hpp"
+#include "../Utils/SaveFileDefs.h"
 
 namespace SceneManagement
 {
@@ -55,7 +56,14 @@ namespace SceneManagement
         /// listeners to this function
         /// </summary>
         /// <returns>Dispatcher reference for onScene load</returns>
-        const Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }  
+        Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }  
+
+        /// <summary>
+        /// The dispatcher for OnSceneUnload that you can use to add
+        /// listeners to this function
+        /// </summary>
+        /// <returns>Dispatacher reference for OnUnloadScene</returns>
+        Dispatcher & OnSceneUnload() { return OnSceneUnloadDispatcher; }
 
     private:
 
@@ -69,6 +77,11 @@ namespace SceneManagement
         /** The current scene that is loaded in */
         FileName ActiveScene;
 
+        /** A dispatcher to send events when the scene has loaded */
         Dispatcher OnSceneLoadDispatcher;
+
+        /** A dispatcher that signals when the scene should be unloaded */
+        Dispatcher OnSceneUnloadDispatcher;
+
     };
 }   // namespace SceneManagement
