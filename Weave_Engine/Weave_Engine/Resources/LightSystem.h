@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Core/SceneManager.h"
+
 #include <vector>
 
 /////////////////////////////////////////////////
@@ -48,6 +50,11 @@ public:
     const std::vector<PointLight*> & GetPointLights() const;
 
 private:
+
+    /// <summary>
+    /// Remove all lights from this light system
+    /// </summary>
+    void UnloadAllLights();
 
     /// <summary>
     /// Send all lighting information to the given shaders

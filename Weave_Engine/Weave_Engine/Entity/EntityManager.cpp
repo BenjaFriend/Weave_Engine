@@ -31,8 +31,10 @@ EntityManager::EntityManager()
     
     assert( sceneMan != nullptr );
 
-    Dispatcher & dis = sceneMan->OnSceneUnload();
-    dis.BindListener( this, ( &EntityManager::UnloadAllEntities ) );
+    sceneMan->OnSceneUnload().BindListener( 
+        this, 
+        ( &EntityManager::UnloadAllEntities ) 
+    );
 }
 
 EntityManager::~EntityManager()

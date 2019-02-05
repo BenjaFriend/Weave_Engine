@@ -70,11 +70,9 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    
     LightSys = new LightSystem();
 
     FlyingCamera = new Camera();
-
 
 #if defined( EDITOR_ON )
 

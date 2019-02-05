@@ -171,6 +171,12 @@ void EditorCore::DrawUI()
                     SaveScene();
                 }
                 
+                if ( ImGui::MenuItem( "Unload Scene" ) )
+                {
+                    LOG_TRACE( "Unload Scene!" );
+                    SceneManagement::SceneManager::GetInstance()->UnloadCurrentScene();
+                }
+
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();
