@@ -27,6 +27,14 @@ void ECS::ComponentManager::ReleaseInstance()
 
 ECS::ComponentManager::ComponentManager()
 {
+    SceneManagement::SceneManager* sceneMan = SceneManagement::SceneManager::GetInstance();
+
+    assert( sceneMan != nullptr );
+
+    sceneMan->OnSceneUnload().BindListener(
+        this,
+        ( &ComponentManager::CleanupAllComponents )
+    );
 }
 
 ECS::ComponentManager::~ComponentManager()
@@ -40,6 +48,8 @@ void ECS::ComponentManager::CleanupAllComponents()
 
     for ( ; map_itr != activeComponents.end(); ++map_itr )
     {
+        if ( map_itr->second.size() == 0 ) continue;
+
         auto vec_itr = map_itr->second.begin();
         for ( ; vec_itr != map_itr->second.end(); ++vec_itr )
         {
@@ -48,6 +58,8 @@ void ECS::ComponentManager::CleanupAllComponents()
                 delete vec_itr->second;
             }
         }
+        
+        map_itr->second.clear();
     }
 
     ComponentCount = 0;
