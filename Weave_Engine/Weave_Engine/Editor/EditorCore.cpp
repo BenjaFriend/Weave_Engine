@@ -162,6 +162,7 @@ void EditorCore::DrawUI()
                 if ( ImGui::MenuItem( "Open Scene", "Ctrl+O" ) )
                 {
                     LOG_TRACE( "Open file!" );
+                    LoadScene();
                     // #TODO Set up a load scene file using the scene manager
                 }
 
@@ -313,35 +314,6 @@ void EditorCore::SaveScene()
 
 void EditorCore::LoadScene()
 {
-    std::ifstream ifs( SceneFile );
-    if ( ifs.is_open() )
-    {
-        // Store the info in the scene file in the JSON object
-        nlohmann::json njson;
-        ifs >> njson;
-        nlohmann::json::iterator it = njson [ "Entities" ].begin();
-
-        for ( ; it != njson [ "Entities" ].end(); ++it )
-        {
-            // Key is the name 
-            LOG_TRACE( "Entity: {}\n", it.key() );
-
-            // Create a new entity
-
-            // Value is all the components
-            nlohmann::json::iterator compItr = njson [ "Entities" ] [ it.key() ].begin();
-            for ( ; compItr != njson [ "Entities" ] [ it.key() ].end(); ++compItr )
-            {
-                std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
-                // Add component of this type
-
-            }
-        }
-    }
-    else
-    {
-        //LOG_ERROR( "Failed to load scene: {}", SceneFile );
-    }
-
-    ifs.close();
+    LOG_TRACE( "Editor: Load scene!" );
+    SceneManagement::SceneManager::GetInstance()->LoadScene( SceneFile );
 }

@@ -36,12 +36,42 @@ SceneManager::~SceneManager()
 void SceneManager::LoadScene( FileName & aSceneName )
 {
     // We need to make sure that we unload the current scene first
-    
+
     UnloadCurrentScene();
     // Parse the scene file and load in the given settings / entities
 
+    std::ifstream ifs( aSceneName.c_str() );
 
-    ActiveScene = aSceneName;
+    if ( ifs.is_open() )
+    {
+        // Store the info in the scene file in the JSON object
+        nlohmann::json njson;
+        ifs >> njson;
+
+        ActiveScene = njson [ SCENE_NAME_SAVE_KEY ];
+        LOG_TRACE( "Active Scene: {}", ActiveScene );
+
+        nlohmann::json entityArray = njson [ ENTITY_ARRAY_SAVE_KEY ];
+
+        nlohmann::json::iterator it = entityArray.begin();
+
+        for ( ; it != entityArray.end(); ++it )
+        {
+            // Key is the name 
+            std::string ent_name = ( *it ) [ NAME_SAVE_KEY ];
+            bool ent_active = ( *it ) [ IS_ACTIVE_SAVE_KEY ];
+
+            LOG_TRACE( "Entity name: {} Is Active: {}", ent_name, ent_active );
+        }
+    }
+    else
+    {
+        //LOG_ERROR( "Failed to load scene: {}", SceneFile );
+    }
+
+    ifs.close();
+
+
 
     // Let any listeners know that the scene has been loaded
     OnSceneLoadDispatcher.Dispatch();

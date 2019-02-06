@@ -8,9 +8,7 @@
 
 /////////////////////////////////////////////////
 // Savable key definitions 
-#define COMPONENT_ARRAY_SAVE_KEY    "Components"
-#define NAME_SAVE_KEY               "Name"
-#define IS_ACTIVE_SAVE_KEY          "IsActive"
+#include "../Utils/SaveFileDefs.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

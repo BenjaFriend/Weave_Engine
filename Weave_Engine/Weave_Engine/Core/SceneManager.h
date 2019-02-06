@@ -3,6 +3,8 @@
 #include <boost/filesystem.hpp>
 
 #include "../stdafx.h"
+
+#include "json/json.hpp"
 #include "../Utils/Dispatcher.hpp"
 #include "../Utils/SaveFileDefs.h"
 
@@ -49,7 +51,7 @@ namespace SceneManagement
         /// Get the name of the currently loaded scene
         /// </summary>
         /// <returns>Name of the current scene</returns>
-        const FileName GetActiveScene() const { return ActiveScene; }
+        const std::string GetActiveScene() const { return ActiveScene; }
 
         /// <summary>
         /// The dispatcher for OnSceneLoad that you can use to add 
@@ -75,7 +77,7 @@ namespace SceneManagement
         static SceneManager* Instance;
         
         /** The current scene that is loaded in */
-        FileName ActiveScene;
+        std::string ActiveScene;
 
         /** A dispatcher to send events when the scene has loaded */
         Dispatcher OnSceneLoadDispatcher;
