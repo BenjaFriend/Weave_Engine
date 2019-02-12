@@ -11,6 +11,7 @@
 class Transform : public ECS::Component<Transform>
 {
 public:
+    COMP_NAME( "Transform" );
 
     Transform();
 
@@ -21,12 +22,6 @@ public:
     virtual void DrawEditorGUI() override;
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
-    COMP_NAME( "Transform" );
-
-    //static char const* ClassName() { return "Transform"; }
-
-    //virtual const char* ComponentName() override { return ClassName(); }
 
     /// <summary>
     /// Move the entity relative to the direction it is facing 
