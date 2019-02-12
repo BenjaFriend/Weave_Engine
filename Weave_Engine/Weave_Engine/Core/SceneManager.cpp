@@ -36,10 +36,9 @@ SceneManager::~SceneManager()
 void SceneManager::LoadScene( FileName & aSceneName )
 {
     // We need to make sure that we unload the current scene first
-
     UnloadCurrentScene();
-    // Parse the scene file and load in the given settings / entities
 
+    // Parse the scene file and load in the given settings / entities
     std::ifstream ifs( aSceneName.c_str() );
 
     if ( ifs.is_open() )
@@ -62,6 +61,8 @@ void SceneManager::LoadScene( FileName & aSceneName )
             bool ent_active = ( *it ) [ IS_ACTIVE_SAVE_KEY ];
 
             LOG_TRACE( "Entity name: {} Is Active: {}", ent_name, ent_active );
+            // Load it in with the entity manager! 
+            // This isn't gonna work with components right now
         }
     }
     else

@@ -14,13 +14,19 @@ public:
 
     Transform();
 
+    Transform( nlohmann::json & aInitData );
+
     ~Transform();
 
     virtual void DrawEditorGUI() override;
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
 
-    virtual const char* ComponentName() override { return "Transform"; }
+    COMP_NAME( "Transform" );
+
+    //static char const* ClassName() { return "Transform"; }
+
+    //virtual const char* ComponentName() override { return ClassName(); }
 
     /// <summary>
     /// Move the entity relative to the direction it is facing 

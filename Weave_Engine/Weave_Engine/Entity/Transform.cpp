@@ -13,6 +13,22 @@ Transform::Transform()
     Rotation = glm::vec3( 0.f );
 }
 
+Transform::Transform( nlohmann::json & aInitData )
+{
+    // Maye this works? 
+    Position.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
+    Position.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
+    Position.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
+
+    Scale.x = aInitData [ SCALE_SAVE_KEY ] [ "X" ];
+    Scale.y = aInitData [ SCALE_SAVE_KEY ] [ "Y" ];
+    Scale.z = aInitData [ SCALE_SAVE_KEY ] [ "Z" ];
+
+    Rotation.x = aInitData [ ROT_SAVE_KEY ] [ "X" ];
+    Rotation.y = aInitData [ ROT_SAVE_KEY ] [ "Y" ];
+    Rotation.z = aInitData [ ROT_SAVE_KEY ] [ "Z" ];
+}
+
 Transform::~Transform()
 {
 

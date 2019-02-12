@@ -5,6 +5,7 @@
 
 #include "../stdafx.h"
 #include "../Resources/ISaveable.h"
+#include "../Utils/SaveFileDefs.h"
 
 #if defined( ENABLE_UI )
 
@@ -13,6 +14,12 @@
 #include "imgui/imgui_impl_dx11.h"
 
 #endif
+
+
+#define COMP_NAME( name )                                       \
+    static const char* ClassName() { return name; }             \
+    virtual char const* ComponentName() { return ClassName();  }
+
 
 namespace ECS
 {
@@ -38,7 +45,7 @@ namespace ECS
         /// with this component here
         /// </summary>
         virtual void DrawEditorGUI() = 0;
-        
+
         /// <summary>
         /// Write the data for this component to a file
         /// </summary>
@@ -58,9 +65,9 @@ namespace ECS
 
         inline const bool IsEnabled() const { return this->isEnabled; }
 
-        inline void SetSenabled( bool aEnabledState ) 
-        { 
-            this->isEnabled = aEnabledState; 
+        inline void SetSenabled( bool aEnabledState )
+        {
+            this->isEnabled = aEnabledState;
             ( this->isEnabled ? OnEnable() : OnDisable() );
         }
 
@@ -76,6 +83,8 @@ namespace ECS
         /// <returns>const char* of what this component should be called</returns>
         virtual const char* ComponentName() = 0;
 
+        static IComponent* ReadFromFile( nlohmann::json & aInitData );
+
     protected:
 
         /** The unique ID of this component */
@@ -90,6 +99,33 @@ namespace ECS
         virtual void OnEnable() {}
 
         virtual void OnDisable() {}
+
+
+        class Factory
+        {
+        protected:
+            Factory( std::string const& type );
+        public:
+            virtual IComponent* constructFromFile( nlohmann::json const & source ) const = 0;
+        };
+
+        template <typename Derived>
+        class ConcreteFactory : public Factory
+        {
+        public:
+            ConcreteFactory() : Factory( Derived::className() ) {}
+            virtual IComponent* constructFromFile( nlohmann::json const & source ) const
+            {
+                return new Derived( source );
+            }
+        };
+
+        typedef std::map <std::string, Factory const*> FactoryMap;
+        static FactoryMap & ComponentFactories()
+        {
+            static FactoryMap theOneAndOnly;
+            return theOneAndOnly;
+        }
 
     };  // IComponent
 

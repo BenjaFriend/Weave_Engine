@@ -2,8 +2,8 @@
 
 #include "IComponent.h"
 #include "FamilyTypeID.h"
+#include "../Utils/SaveFileDefs.h"
 
-#define COMP_SAVE_KEY "ComponentName"
 namespace ECS
 {
 

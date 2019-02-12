@@ -6,3 +6,5 @@
 #define COMPONENT_ARRAY_SAVE_KEY    "Components"
 #define NAME_SAVE_KEY               "Name"
 #define IS_ACTIVE_SAVE_KEY          "IsActive"
+
+#define COMP_SAVE_KEY "ComponentName"

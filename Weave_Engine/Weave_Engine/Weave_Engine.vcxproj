@@ -305,6 +305,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Core\SceneManager.cpp" />
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp" />
+    <ClCompile Include="ECS\IComponent.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
     <ClCompile Include="Entity\Camera.cpp" />
