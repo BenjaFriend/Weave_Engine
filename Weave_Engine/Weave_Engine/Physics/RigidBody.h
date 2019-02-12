@@ -23,7 +23,7 @@ namespace Physics
 
         virtual void SaveObject( nlohmann::json & aOutFile ) override;
 
-        virtual const char* ComponentName() { return "RigidBody"; }
+        COMP_NAME( "RigidBody" );
 
         /// <summary>
         /// Apply a force to this entity

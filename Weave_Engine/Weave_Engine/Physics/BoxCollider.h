@@ -26,7 +26,7 @@ namespace Physics
 
         virtual void SaveObject( nlohmann::json & aOutFile ) override;
 
-        virtual const char* ComponentName() { return "BoxCollider"; }
+        COMP_NAME( "BoxCollider" );
 
         const bool Collides( const BoxCollider & aOther );
 

@@ -31,7 +31,7 @@ public:
     /// <param name="aLightData">The lighting data for this dir light</param>
     void SetLightData( DirectionalLightData aLightData );
 
-    virtual const char* ComponentName() { return "Dir Light"; }
+    COMP_NAME( "Dir Light" );
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
 

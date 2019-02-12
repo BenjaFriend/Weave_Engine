@@ -35,7 +35,7 @@ public:
 
     void SetDrawRange(bool aDrawRange);
 
-    virtual const char* ComponentName() { return "PointLight"; }
+    COMP_NAME( "PointLight" );
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
 

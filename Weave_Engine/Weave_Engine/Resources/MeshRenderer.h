@@ -24,7 +24,7 @@ public:
 
     virtual void SaveObject( nlohmann::json & aOutFile ) override;
 
-    virtual const char* ComponentName() override { return "MeshRenderer"; }
+    COMP_NAME( "MeshRenderer" );
 
     /// <summary>
     /// Sets the material's shader data and activates the shaders
