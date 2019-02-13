@@ -58,7 +58,7 @@ Entity * EntityManager::AddEntity( std::string aName )
 {
     Entity* tempEnt = new Entity( aName );
     EntityArray.push_back( tempEnt );
-    return EntityArray [ EntityArray.size() - 1 ];
+    return tempEnt;
 }
 
 Entity * EntityManager::AddEntity( std::string aName, glm::vec3 aPos )
@@ -66,19 +66,30 @@ Entity * EntityManager::AddEntity( std::string aName, glm::vec3 aPos )
     Entity* tempEnt = new Entity( aName, aPos );
 
     EntityArray.push_back( tempEnt );
-    return EntityArray [ EntityArray.size() - 1 ];
+    return tempEnt;
 }
 
-void EntityManager::DeleteEntity( const Entity_ID aEntityID )
+Entity * EntityManager::AddEntityFromfile( nlohmann::json const & aFile )
 {
-    if ( aEntityID >= 0 && aEntityID < EntityArray.size() )
+    Entity* tempEnt = new Entity( aFile );
+    EntityArray.push_back( tempEnt );
+    return tempEnt;
+}
+
+void EntityManager::DeleteEntity( Entity * aEntity )
+{
+    if ( aEntity == nullptr ) return;
+    // Remove this entity from the vector
+    for ( size_t i = 0; i < EntityArray.size(); ++i )
     {
-        Entity* tempEnt = EntityArray [ aEntityID ];
-        // Remove the entity from the vector
-        EntityArray.erase( EntityArray.begin() + aEntityID );
-        // Free the memory of that entity
-        delete EntityArray [ aEntityID ];
+        if ( EntityArray [ i ] == aEntity )
+        {
+            EntityArray.erase( EntityArray.begin() + i );
+        }
     }
+
+    delete aEntity;
+    aEntity = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////

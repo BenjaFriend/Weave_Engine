@@ -3,7 +3,7 @@
 #include "../stdafx.h"
 
 #include <vector>
-
+#include "json/json.hpp"
 #include "Entity.h"
 #include "../Resources/MeshRenderer.h"
 #include "../Core/SceneManager.h"
@@ -53,12 +53,18 @@ public:
     /// <returns>Pointer to the entity</returns>
     Entity* AddEntity( std::string aName, glm::vec3 aPos );
 
+    /// <summary>
+    /// Load in an entity from some file information
+    /// </summary>
+    /// <param name="aFile"></param>
+    /// <returns></returns>
+    Entity* AddEntityFromfile( nlohmann::json const & aFile );
 
     /// <summary>
     /// Deletes entity with the given ID
     /// </summary>
     /// <param name="aEntityID">ID of the entity to delete</param>
-    void DeleteEntity( const Entity_ID aEntityID );
+    void DeleteEntity( Entity * aEntity );
 
     /// <summary>
     /// Gets a pointer to an entity with this ID number
