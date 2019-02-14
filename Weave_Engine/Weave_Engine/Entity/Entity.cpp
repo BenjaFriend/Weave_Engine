@@ -27,6 +27,22 @@ Entity::Entity( std::string aName, glm::vec3 aPos )
     EntityTransform->SetPosition( aPos );
 }
 
+Entity::Entity( nlohmann::json const & aFile )
+{
+    Name = aFile [ NAME_SAVE_KEY ];
+    IsActive = aFile [ IS_ACTIVE_SAVE_KEY ];
+
+    entID = EntityCount++;
+
+    componentManager = ECS::ComponentManager::GetInstance();
+
+    // #TODO: Load components
+    nlohmann::json comp_data = aFile [ COMPONENT_ARRAY_SAVE_KEY ];
+
+    EntityTransform = this->AddComponent<Transform>( comp_data [ Transform::ClassName() ] );
+    LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
+}
+
 Entity::Entity()
 {
     IsActive = true;
@@ -43,6 +59,7 @@ Entity::~Entity()
 {
     EntityTransform = nullptr;
     componentManager = nullptr;
+    --EntityCount;
 }
 
 void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
@@ -54,7 +71,7 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
 
     entity_data [ NAME_SAVE_KEY ] = this->Name;
     entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
-    entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
+    entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::object();
 
     // Save each component
     const auto & compMap = this->GetAllComponents();

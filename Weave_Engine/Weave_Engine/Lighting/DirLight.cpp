@@ -28,12 +28,11 @@ void DirLight::SetLightData( DirectionalLightData aLightData )
 void DirLight::SaveObject( nlohmann::json & aOutFile )
 {
     nlohmann::json comp_data = nlohmann::json::object();
-    comp_data [ COMP_SAVE_KEY ] = ComponentName();
 
-    if ( aOutFile.is_array() )
-    {
-        aOutFile.push_back( comp_data );
-    }
+    comp_data [ "TestData" ] = "Hello this is fake data for the dir light";
+
+
+    aOutFile [ ClassName() ] = comp_data;
 }
 
 void DirLight::DrawEditorGUI()

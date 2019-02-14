@@ -42,6 +42,12 @@ public:
     Entity( std::string aName, glm::vec3 aPos );
 
     /// <summary>
+    /// Create this entity bsaed off of a scene file data set
+    /// </summary>
+    /// <param name="aFile">The set of data about this entity</param>
+    Entity( nlohmann::json const & aFile );
+
+    /// <summary>
     /// Default constructor for this entity
     /// </summary>
     Entity();

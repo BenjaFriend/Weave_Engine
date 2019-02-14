@@ -1,6 +1,9 @@
 #include "../stdafx.h"
 #include "SceneManager.h"
 
+#include "../Entity/EntityManager.h"
+
+
 using namespace SceneManagement;
 SceneManager* SceneManager::Instance = nullptr;
 
@@ -41,6 +44,8 @@ void SceneManager::LoadScene( FileName & aSceneName )
     // Parse the scene file and load in the given settings / entities
     std::ifstream ifs( aSceneName.c_str() );
 
+    EntityManager* entMan = EntityManager::GetInstance();
+
     if ( ifs.is_open() )
     {
         // Store the info in the scene file in the JSON object
@@ -56,13 +61,8 @@ void SceneManager::LoadScene( FileName & aSceneName )
 
         for ( ; it != entityArray.end(); ++it )
         {
-            // Key is the name 
-            std::string ent_name = ( *it ) [ NAME_SAVE_KEY ];
-            bool ent_active = ( *it ) [ IS_ACTIVE_SAVE_KEY ];
-
-            LOG_TRACE( "Entity name: {} Is Active: {}", ent_name, ent_active );
             // Load it in with the entity manager! 
-            // This isn't gonna work with components right now
+            entMan->AddEntityFromfile( *it );
         }
     }
     else
@@ -82,4 +82,5 @@ void SceneManager::UnloadCurrentScene()
 {
     // Unload all entities
     OnSceneUnloadDispatcher.Dispatch();
+    
 }

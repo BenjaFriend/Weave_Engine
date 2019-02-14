@@ -3,7 +3,7 @@
 #include "IComponent.h"
 
 using namespace ECS;
-
+/*
 IComponent::Factory::Factory( std::string const & type )
 {
     std::pair <FactoryMap::iterator, bool> results
@@ -21,4 +21,4 @@ IComponent* IComponent::ReadFromFile( nlohmann::json & comp_data )
         return nullptr;
     }
     return factory->second->constructFromFile( comp_data );
-}
+}*/

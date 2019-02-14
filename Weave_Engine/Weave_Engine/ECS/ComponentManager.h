@@ -54,7 +54,7 @@ namespace ECS
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
             // Make sure that this component doesn't exist already
-            assert( this->activeComponents [ aEntityID ] [ CTID ] == nullptr );
+            //assert( this->activeComponents [ aEntityID ] [ CTID ] == nullptr );
 
             IComponent* newComponent = new T( std::forward<ARGS>( args )... );
 
@@ -98,6 +98,7 @@ namespace ECS
 
             delete ( activeComponents [ aEntityID ] [ CTID ] );
             activeComponents [ aEntityID ] [ CTID ] = nullptr;
+            --ComponentCount;
         }
 
     private:

@@ -8,6 +8,10 @@
 #include "../Utils/Dispatcher.hpp"
 #include "../Utils/SaveFileDefs.h"
 
+/////////////////////////////////////////////////
+// Forward Declarations
+class EntityManager;
+
 namespace SceneManagement
 {
     namespace fs = boost::filesystem;
@@ -34,7 +38,7 @@ namespace SceneManagement
         /// Unloads all current scene assets
         /// </summary>
         static void ReleaseInstance();
-
+        
         /// <summary>
         /// Load a scene given a file, and create said entities
         /// appropriately. Unloads the current scene

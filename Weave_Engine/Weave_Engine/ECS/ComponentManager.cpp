@@ -44,23 +44,23 @@ ECS::ComponentManager::~ComponentManager()
 
 void ECS::ComponentManager::CleanupAllComponents()
 {
-    auto map_itr = activeComponents.begin();
-
-    for ( ; map_itr != activeComponents.end(); ++map_itr )
+    LOG_TRACE( "Remove all componenets!" );
+    std::unordered_map<EntityID, ComponentMap>::iterator entity_itr = activeComponents.begin();
+    // For every entity in the component map
+    while ( entity_itr != activeComponents.end() )
     {
-        if ( map_itr->second.size() == 0 ) continue;
-
-        auto vec_itr = map_itr->second.begin();
-        for ( ; vec_itr != map_itr->second.end(); ++vec_itr )
+        ECS::ComponentMap::iterator comp_itr = entity_itr->second.begin();
+        // Delete every component on this entity
+        while ( comp_itr != entity_itr->second.end() )
         {
-            if ( ( vec_itr->second ) != nullptr )
-            {
-                delete vec_itr->second;
-            }
+            if ( comp_itr->second != nullptr )
+                delete comp_itr->second;
+            ++comp_itr;
         }
-        
-        map_itr->second.clear();
+        entity_itr->second.clear();
+        ++entity_itr;
     }
 
+    activeComponents.clear();
     ComponentCount = 0;
 }

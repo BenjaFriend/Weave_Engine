@@ -101,7 +101,7 @@ namespace ECS
         virtual void OnDisable() {}
 
 
-        class Factory
+        /*class Factory
         {
         protected:
             Factory( std::string const& type );
@@ -113,7 +113,7 @@ namespace ECS
         class ConcreteFactory : public Factory
         {
         public:
-            ConcreteFactory() : Factory( Derived::className() ) {}
+            ConcreteFactory() : Factory( Derived::ClassName() ) {}
             virtual IComponent* constructFromFile( nlohmann::json const & source ) const
             {
                 return new Derived( source );
@@ -125,7 +125,7 @@ namespace ECS
         {
             static FactoryMap theOneAndOnly;
             return theOneAndOnly;
-        }
+        }*/
 
     };  // IComponent
 
