@@ -17,10 +17,10 @@
 #endif
 
 
-#define COMP_NAME( name )                                       \
-    static const char* ClassName() { return name; }             \
-    virtual char const* ComponentName() { return ClassName();  }
-
+#define COMP_NAME( name )                                        \
+    static const char* ClassName() { return #name; }             \
+    virtual char const* ComponentName() { return ClassName();  } \
+    static IComponent::ConcreteFactory< name > CompFactory;
 
 namespace ECS
 {
@@ -99,7 +99,7 @@ namespace ECS
         /// <returns>const char* of what this component should be called</returns>
         virtual const char* ComponentName() = 0;
 
-        //static IComponent* ReadFromFile( nlohmann::json & aInitData );
+        static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
     protected:
 
@@ -119,7 +119,7 @@ namespace ECS
         virtual void OnDisable() {}
 
 
-        /*class Factory
+        class Factory
         {
         protected:
             Factory( std::string const& type );
@@ -143,7 +143,7 @@ namespace ECS
         {
             static FactoryMap theOneAndOnly;
             return theOneAndOnly;
-        }*/
+        }
 
     };  // IComponent
 

@@ -14,6 +14,8 @@ namespace Physics
     {
     public:
 
+        COMP_NAME( BoxCollider );
+
         /// <summary>
         /// A box collider component to handle simple box collision 
         /// </summary>
@@ -23,10 +25,6 @@ namespace Physics
         ~BoxCollider();
 
         virtual void DrawEditorGUI() override;
-
-        virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
-        COMP_NAME( "BoxCollider" );
 
         const bool Collides( const BoxCollider & aOther );
 
@@ -52,6 +50,10 @@ namespace Physics
         const bool SetIsTrigger() const;
 
         void SetIsTrigger( bool aVal );
+
+    protected:
+
+        virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     private:
 

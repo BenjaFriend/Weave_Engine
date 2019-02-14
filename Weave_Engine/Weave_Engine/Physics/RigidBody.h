@@ -15,15 +15,13 @@ namespace Physics
     {
     public:
 
+        COMP_NAME( RigidBody );
+
         RigidBody( float aMass );
 
         ~RigidBody();
 
         virtual void DrawEditorGUI() override;
-
-        virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
-        COMP_NAME( "RigidBody" );
 
         /// <summary>
         /// Apply a force to this entity
@@ -49,6 +47,10 @@ namespace Physics
         void SetMass( const float aMass );
 
         const EPhysicsLayer GetPhysicsLayer() const;
+
+    protected:
+
+        virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     private:
 

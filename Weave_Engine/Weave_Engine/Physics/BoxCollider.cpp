@@ -25,11 +25,8 @@ void BoxCollider::DrawEditorGUI()
     ImGui::InputFloat3( "Extents", ( float* ) &Extents );
 }
 
-void BoxCollider::SaveObject( nlohmann::json & aOutFile )
+void BoxCollider::SaveComponentData( nlohmann::json & comp_data )
 {
-    nlohmann::json comp_data = nlohmann::json::object();
-    comp_data [ COMP_SAVE_KEY ] = ComponentName();
-
     comp_data [ EXTENTS_SAVE_KEY ] [ "X" ] = Extents.x;
     comp_data [ EXTENTS_SAVE_KEY ] [ "Y" ] = Extents.y;
     comp_data [ EXTENTS_SAVE_KEY ] [ "Z" ] = Extents.z;
@@ -38,11 +35,6 @@ void BoxCollider::SaveObject( nlohmann::json & aOutFile )
     comp_data [ CENTER_OFFSET_SAVE_KEY ] [ "Y" ] = CenterOffset.y;
     comp_data [ CENTER_OFFSET_SAVE_KEY ] [ "Z" ] = CenterOffset.z;
     comp_data [ IS_TRIGGER_SAVE_KEY ] = IsTrigger;
-
-    if ( aOutFile.is_array() )
-    {
-        aOutFile.push_back( comp_data );
-    }
 }
 
 const bool BoxCollider::Collides( const BoxCollider & aOther )

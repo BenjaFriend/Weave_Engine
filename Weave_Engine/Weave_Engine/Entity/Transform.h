@@ -11,7 +11,8 @@
 class Transform : public ECS::Component<Transform>
 {
 public:
-    COMP_NAME( "Transform" );
+
+    COMP_NAME( Transform );
 
     Transform();
 

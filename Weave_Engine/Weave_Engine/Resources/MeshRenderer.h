@@ -16,7 +16,7 @@ class MeshRenderer : public ECS::Component<MeshRenderer>
 {
 public:
 
-    COMP_NAME( "MeshRenderer" );
+    COMP_NAME( MeshRenderer );
 
     MeshRenderer( Material* aMat, Mesh* aMesh );
 
