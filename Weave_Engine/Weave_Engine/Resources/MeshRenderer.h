@@ -16,15 +16,13 @@ class MeshRenderer : public ECS::Component<MeshRenderer>
 {
 public:
 
+    COMP_NAME( "MeshRenderer" );
+
     MeshRenderer( Material* aMat, Mesh* aMesh );
 
     ~MeshRenderer();
 
     virtual void DrawEditorGUI() override;
-
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
-    COMP_NAME( "MeshRenderer" );
 
     /// <summary>
     /// Sets the material's shader data and activates the shaders
@@ -42,6 +40,10 @@ public:
 
     inline Mesh* GetMesh() const { return CurrentMesh; }
     inline void SetMesh( Mesh* aMesh ) { CurrentMesh = aMesh; }
+
+protected:
+
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
 private:
 

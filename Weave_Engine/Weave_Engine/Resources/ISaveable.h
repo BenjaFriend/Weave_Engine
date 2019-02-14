@@ -15,6 +15,6 @@ public:
     /// Outputs this objects data to the given out file stream
     /// </summary>
     /// <param name="aOutFile">File to send this data to</param>
-    virtual void SaveObject( nlohmann::json& aOutFile ) = 0;
+    virtual void SaveObject( nlohmann::json& aOutFile ) {}
     
 };

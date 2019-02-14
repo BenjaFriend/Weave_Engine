@@ -21,8 +21,6 @@ public:
 
     virtual void DrawEditorGUI() override;
 
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
     /// <summary>
     /// Move the entity relative to the direction it is facing 
     /// </summary>
@@ -101,6 +99,10 @@ public:
     /// </summary>
     /// <returns>The calculate world matrix for this entity</returns>
     const glm::mat4 GetWorldMatrix() const;
+
+protected:
+
+    virtual void SaveComponentData( nlohmann::json & aCompData ) override;
 
 private:
 

@@ -11,6 +11,8 @@ class PointLight : public ECS::Component<PointLight>
 {
 public:
 
+    COMP_NAME( "PointLight" );
+
     PointLight( 
         LightSystem* aRendSys,
         glm::vec3 aColor,
@@ -35,11 +37,11 @@ public:
 
     void SetDrawRange(bool aDrawRange);
 
-    COMP_NAME( "PointLight" );
-
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
     virtual void DrawEditorGUI() override;
+
+protected:
+
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
 private:
 

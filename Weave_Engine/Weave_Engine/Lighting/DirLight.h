@@ -33,7 +33,7 @@ public:
 
     COMP_NAME( "Dir Light" );
 
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     virtual void DrawEditorGUI() override;
 

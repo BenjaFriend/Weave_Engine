@@ -41,10 +41,8 @@ void Transform::DrawEditorGUI()
     ImGui::InputFloat3( "Rotation", ( float* ) &Rotation );
 }
 
-void Transform::SaveObject( nlohmann::json & aOutFile )
+void Transform::SaveComponentData( nlohmann::json & comp_data )
 {
-    nlohmann::json comp_data = nlohmann::json::object();
-
     comp_data [ POS_SAVE_KEY ] [ "X" ] = Position.x;
     comp_data [ POS_SAVE_KEY ] [ "Y" ] = Position.y;
     comp_data [ POS_SAVE_KEY ] [ "Z" ] = Position.z;
@@ -56,8 +54,6 @@ void Transform::SaveObject( nlohmann::json & aOutFile )
     comp_data [ ROT_SAVE_KEY ] [ "X" ] = Rotation.x;
     comp_data [ ROT_SAVE_KEY ] [ "Y" ] = Rotation.y;
     comp_data [ ROT_SAVE_KEY ] [ "Z" ] = Rotation.z;
-
-    aOutFile [ ClassName() ] = comp_data;
 }
 
 void Transform::MoveRelative( const float aX, const float aY, const float aZ )

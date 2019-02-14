@@ -6,6 +6,7 @@
 #include "../stdafx.h"
 #include "../Resources/ISaveable.h"
 #include "../Utils/SaveFileDefs.h"
+#include "json/json.hpp"
 
 #if defined( ENABLE_UI )
 
@@ -50,7 +51,22 @@ namespace ECS
         /// Write the data for this component to a file
         /// </summary>
         /// <param name="aOutFile">The file stream to write to</param>
-        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;
+        virtual void SaveObject( nlohmann::json & aEntComponentArray )
+        {
+            nlohmann::json comp_data = nlohmann::json::object();
+            comp_data [ COMP_SAVE_KEY ] = ComponentName();
+
+            SaveComponentData( comp_data );
+
+            if ( aEntComponentArray.is_array() )
+            {
+                aEntComponentArray.push_back( comp_data );
+            }
+            else
+            {
+                LOG_WARN( "Could not save component data to the array!" );
+            }
+        }
 
         ////////////////////////////////////////////////////    
         // Operators 
@@ -65,7 +81,7 @@ namespace ECS
 
         inline const bool IsEnabled() const { return this->isEnabled; }
 
-        inline void SetSenabled( bool aEnabledState )
+        inline void SetEnabled( bool aEnabledState )
         {
             this->isEnabled = aEnabledState;
             ( this->isEnabled ? OnEnable() : OnDisable() );
@@ -83,9 +99,11 @@ namespace ECS
         /// <returns>const char* of what this component should be called</returns>
         virtual const char* ComponentName() = 0;
 
-        static IComponent* ReadFromFile( nlohmann::json & aInitData );
+        //static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
     protected:
+
+        virtual void SaveComponentData( nlohmann::json & aCompDataObj ) {}
 
         /** The unique ID of this component */
         ComponentID id;

@@ -2,6 +2,9 @@
 
 #include "MeshRenderer.h"
 
+#define MAT_SAVE_KEY    "Material"
+#define MESH_SAVE_KEY   "Mesh"
+
 MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
     : CurrentMaterial( aMat ), CurrentMesh( aMesh )
 {
@@ -21,8 +24,9 @@ void MeshRenderer::DrawEditorGUI()
     ImGui::Text( "Mesh:\t %d", ( CurrentMesh != nullptr ) );
 }
 
-void MeshRenderer::SaveObject( nlohmann::json & aOutFile )
+void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
 {
+
 }
 
 void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )

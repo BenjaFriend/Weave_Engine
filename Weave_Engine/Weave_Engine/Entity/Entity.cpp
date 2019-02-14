@@ -71,7 +71,7 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
 
     entity_data [ NAME_SAVE_KEY ] = this->Name;
     entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
-    entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::object();
+    entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
 
     // Save each component
     const auto & compMap = this->GetAllComponents();

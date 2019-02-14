@@ -30,8 +30,6 @@ namespace ECS
 
         virtual const char* ComponentName() = 0;
 
-        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;        
-
     };  // Component
 
     // This private member only exists to force the compiler to create an instance of Component T,
