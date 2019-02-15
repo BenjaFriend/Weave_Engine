@@ -6,6 +6,8 @@
 #define SCALE_SAVE_KEY      "Scale"
 #define ROT_SAVE_KEY        "Rot"
 
+static ECS::IComponent::ConcreteFactory< Transform > CompFactory = {};
+
 Transform::Transform()
 {
     Position = glm::vec3( 0.f );
@@ -13,7 +15,7 @@ Transform::Transform()
     Rotation = glm::vec3( 0.f );
 }
 
-Transform::Transform( nlohmann::json & aInitData )
+Transform::Transform( nlohmann::json const & aInitData )
 {
     // Maye this works? 
     Position.x = aInitData [ POS_SAVE_KEY ] [ "X" ];

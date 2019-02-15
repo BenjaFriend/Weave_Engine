@@ -23,7 +23,7 @@ namespace ECS
         virtual ~Component() {}
 
 
-        ComponentTypeId GetStaticComponentTypeID() const
+        virtual ComponentTypeId GetStaticComponentTypeID() const override
         {
             return STATIC_COMPONENT_TYPE_ID;
         }

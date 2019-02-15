@@ -81,6 +81,15 @@ namespace ECS
             LOG_TRACE( "Load Component: {}", compType );
             IComponent* newComp = IComponent::ReadFromFile( aCompData );
 
+            if ( newComp == nullptr ) return false;
+
+            newComp->owner = aEntityID;
+            newComp->id = ComponentCount;
+
+            ++ComponentCount;
+            const ComponentTypeId CTID = newComp->GetStaticComponentTypeID();
+            this->activeComponents [ aEntityID ] [ CTID ] = newComp;
+
             return true;
         }
 

@@ -20,7 +20,6 @@
 #define COMP_NAME( name )                                        \
     static const char* ClassName() { return #name; }             \
     virtual char const* ComponentName() { return ClassName();  } \
-    static IComponent::ConcreteFactory< name > CompFactory;
 
 namespace ECS
 {
@@ -40,6 +39,8 @@ namespace ECS
         IComponent() {}
 
         virtual ~IComponent() {}
+
+        virtual ComponentTypeId GetStaticComponentTypeID() const = 0;
 
         /// <summary>
         /// Natively draw any IMGUI fields that are to be used
@@ -101,24 +102,6 @@ namespace ECS
 
         static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
-    protected:
-
-        virtual void SaveComponentData( nlohmann::json & aCompDataObj ) {}
-
-        /** The unique ID of this component */
-        ComponentID id;
-
-        /** If this component is enabled or not */
-        bool isEnabled = true;
-
-        /** The owner of this component */
-        EntityID owner;
-
-        virtual void OnEnable() {}
-
-        virtual void OnDisable() {}
-
-
         class Factory
         {
         protected:
@@ -144,6 +127,26 @@ namespace ECS
             static FactoryMap theOneAndOnly;
             return theOneAndOnly;
         }
+
+    protected:
+
+        virtual void SaveComponentData( nlohmann::json & aCompDataObj ) {}
+
+        /** The unique ID of this component */
+        ComponentID id;
+
+        /** If this component is enabled or not */
+        bool isEnabled = true;
+
+        /** The owner of this component */
+        EntityID owner;
+
+        virtual void OnEnable() {}
+
+        virtual void OnDisable() {}
+
+
+        
 
     };  // IComponent
 

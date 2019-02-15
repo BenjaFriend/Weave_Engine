@@ -46,8 +46,8 @@ Entity::Entity( nlohmann::json const & aFile )
         componentManager->AddComponent( entID, *compItr );
         ++compItr;
     }
+    EntityTransform = this->GetComponent<Transform>();
 
-    //EntityTransform = this->AddComponent<Transform>( comp_data [ Transform::ClassName() ] );
     LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
 }
 
