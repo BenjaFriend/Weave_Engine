@@ -52,6 +52,15 @@ namespace SceneManagement
         void UnloadCurrentScene();
 
         /// <summary>
+        /// Save the current scene 
+        /// </summary>
+        /// <param name="aSceneFile"></param>
+        void SaveScene( FileName & aSceneFile )
+        {
+
+        }
+
+        /// <summary>
         /// Get the name of the currently loaded scene
         /// </summary>
         /// <returns>Name of the current scene</returns>

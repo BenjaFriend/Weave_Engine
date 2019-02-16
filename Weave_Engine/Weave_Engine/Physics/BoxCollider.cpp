@@ -6,6 +6,8 @@
 #define CENTER_OFFSET_SAVE_KEY      "CenterOffset"
 #define IS_TRIGGER_SAVE_KEY         "IsTrigger"
 
+COMPONENT_INIT( Physics::BoxCollider )
+
 using namespace Physics;
 
 BoxCollider::BoxCollider( const glm::vec3 & aExtents )
@@ -13,6 +15,11 @@ BoxCollider::BoxCollider( const glm::vec3 & aExtents )
 {
     CenterOffset = glm::vec3( 0.f, 0.f, 0.f );
     PhysicsManager::GetInstance()->AddBoxCollider( this );
+}
+
+Physics::BoxCollider::BoxCollider( nlohmann::json const & aInitData )
+{
+    LOG_WARN( "Box collider SaveFrom file not yet implemted!" );
 }
 
 BoxCollider::~BoxCollider()

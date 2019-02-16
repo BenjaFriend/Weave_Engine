@@ -20,6 +20,8 @@ public:
 
     MeshRenderer( Material* aMat, Mesh* aMesh );
 
+    MeshRenderer( nlohmann::json const & aInitData );
+
     ~MeshRenderer();
 
     virtual void DrawEditorGUI() override;

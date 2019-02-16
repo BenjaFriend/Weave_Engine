@@ -30,6 +30,7 @@ namespace Editor
 
     /// <summary>
     /// Core functionality of the editor for editing a scene
+    /// Including most IMGUI application
     /// </summary>
     /// <author>Ben Hoffman</author>
     class EditorCore
@@ -54,6 +55,13 @@ namespace Editor
         /// <param name="dt">Delta Time of this frame</param>
         void Update( float dt );
 
+        /// <summary>
+        /// Draw any editor gizmos, editor UI, and highlight
+        /// the currently selected entity
+        /// </summary>
+        /// <param name="dt">Delta time</param>
+        /// <param name="aDevice">DX11 device</param>
+        /// <param name="aContext">DX11 context</param>
         void Draw(
             float dt,
             ID3D11Device* aDevice,
@@ -62,38 +70,40 @@ namespace Editor
 
         /// <summary>
         /// Save all entities to a scene json file 
+        /// The files is based on the current scene file from the editor window
         /// </summary>
         void SaveScene();
 
         /// <summary>
-        /// Loads entities from the scene json file 
+        /// Loads entities from the scene json file based on the currently
+        /// selected scene file name
         /// </summary>
         void LoadScene();
-
-        /// <summary>
-        /// Get the currently selected entity by by the user
-        /// </summary>
-        /// <returns>Pointer to the selected entity</returns>
-        Entity* GetSelectedEntity() const { return SelectedEntity; }
 
         //////////////////////////////////////////////////////////////////
         // Accessors 
         //////////////////////////////////////////////////////////////////
 
-        const bool GetDrawGizmos() const { return DoGizmoDraw; }
-        void SetDrawGizmos( const bool aDrawGizmos );
+        /// <summary>
+        /// Get the currently selected entity by by the user
+        /// </summary>
+        /// <returns>Pointer to the selected entity</returns>
+        FORCE_INLINE Entity* GetSelectedEntity() const { return SelectedEntity; }
 
-        const bool GetDrawSkybox() const { return DrawSkyBox; }
-        void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
+        FORCE_INLINE const bool GetDrawGizmos() const { return DoGizmoDraw; }
+        FORCE_INLINE void SetDrawGizmos( const bool aDrawGizmos );
 
-        const bool GetDrawColliders() const { return DebugDrawColliders; }
-        void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
+        FORCE_INLINE const bool GetDrawSkybox() const { return DrawSkyBox; }
+        FORCE_INLINE void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
 
-        void SetSceneFile( const FileName & aFileName );
-        const FileName & GetSceneFileName() const { return SceneFile; }
+        FORCE_INLINE const bool GetDrawColliders() const { return DebugDrawColliders; }
+        FORCE_INLINE void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
 
-        void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
-        Camera* GetCamera()const { return CurrentCamera; }
+        FORCE_INLINE void SetSceneFile( const FileName & aFileName );
+        FORCE_INLINE const FileName & GetSceneFileName() const { return SceneFile; }
+
+        FORCE_INLINE void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
+        FORCE_INLINE Camera* GetCamera()const { return CurrentCamera; }
 
     private:
 

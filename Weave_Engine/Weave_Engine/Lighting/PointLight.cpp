@@ -27,6 +27,11 @@ PointLight::PointLight(
     aRendSys->AddPointLight( this );
 }
 
+PointLight::PointLight( nlohmann::json const & aInitData )
+{
+    LOG_WARN( "Point light load from scene file not yet implemetned!" );
+}
+
 PointLight::~PointLight()
 {
 

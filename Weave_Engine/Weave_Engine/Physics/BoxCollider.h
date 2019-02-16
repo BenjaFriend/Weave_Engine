@@ -22,6 +22,8 @@ namespace Physics
         /// <param name="aExtents">The extents of this object</param>
         BoxCollider( const glm::vec3 & aExtents = glm::vec3( 1.f, 1.f, 1.f ) );
 
+        BoxCollider( nlohmann::json const & aInitData );
+
         ~BoxCollider();
 
         virtual void DrawEditorGUI() override;

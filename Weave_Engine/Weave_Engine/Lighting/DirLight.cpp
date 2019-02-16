@@ -17,6 +17,11 @@ DirLight::DirLight( LightSystem* aRendSys, DirectionalLightData aLightData )
     aRendSys->AddDirLight( this );
 }
 
+DirLight::DirLight( nlohmann::json const & aInitData )
+{
+    LOG_WARN( "DIR LIGHT SAVE NOT IMPLEMENTED" );
+}
+
 DirLight::~DirLight()
 {
 }
@@ -31,7 +36,7 @@ void DirLight::SetLightData( DirectionalLightData aLightData )
     LightingData = aLightData;
 }
 
-void DirLight::SaveComponentData( nlohmann::json const & comp_data )
+void DirLight::SaveComponentData( nlohmann::json & comp_data )
 {
     comp_data [ INTENSITY_SAVE_KEY ] = LightingData.Intensity;
 

@@ -21,6 +21,8 @@ public:
         float aRange = 5.f
     );
 
+    PointLight( nlohmann::json const & aInitData );
+
     ~PointLight();
 
     void SetColor( glm::vec3 & aColor );

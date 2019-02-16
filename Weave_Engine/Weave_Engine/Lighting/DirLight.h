@@ -19,6 +19,8 @@ public:
 
     DirLight( LightSystem* aRendSys, DirectionalLightData aLightData );
 
+    DirLight( nlohmann::json const & aInitData );
+
     ~DirLight();
 
     /// <summary>
@@ -33,7 +35,7 @@ public:
     /// <param name="aLightData">The lighting data for this dir light</param>
     void SetLightData( DirectionalLightData aLightData );
 
-    virtual void SaveComponentData( nlohmann::json const & aOutFile ) override;
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     virtual void DrawEditorGUI() override;
 

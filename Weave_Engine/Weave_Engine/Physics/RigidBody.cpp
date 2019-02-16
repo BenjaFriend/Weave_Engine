@@ -4,6 +4,8 @@
 #define MASS_SAVE_KEY   "Mass"
 #define LAYER_SAVE_KEY  "PhysicsLayer"
 
+COMPONENT_INIT( Physics::RigidBody )
+
 using namespace Physics;
 
 RigidBody::RigidBody( float aMass ) :
@@ -11,6 +13,11 @@ RigidBody::RigidBody( float aMass ) :
 {
     Acceleration = { 0.f, 0.f, 0.f };
     Velocity = { 0.f, 0.f, 0.f };
+}
+
+Physics::RigidBody::RigidBody( nlohmann::json const & aInitData )
+{
+    LOG_WARN( "Rigid body load from scene file not yet implemented!" );
 }
 
 RigidBody::~RigidBody()

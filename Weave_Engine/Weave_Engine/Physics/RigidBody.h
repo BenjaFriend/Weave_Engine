@@ -19,6 +19,8 @@ namespace Physics
 
         RigidBody( float aMass );
 
+        RigidBody( nlohmann::json const & aInitData );
+
         ~RigidBody();
 
         virtual void DrawEditorGUI() override;

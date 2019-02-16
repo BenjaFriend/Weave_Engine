@@ -12,6 +12,11 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
 {
 }
 
+MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
+{
+    LOG_WARN( "Mesh renderer load from scene not yet implemented!" );
+}
+
 MeshRenderer::~MeshRenderer()
 {
     CurrentMaterial = nullptr;
