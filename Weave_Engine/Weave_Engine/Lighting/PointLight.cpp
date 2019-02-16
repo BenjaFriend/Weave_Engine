@@ -9,6 +9,7 @@
 #define RANGE_SAVE_KEY      "Range"
 #define POS_SAVE_KEY        "Pos"
 
+COMPONENT_INIT( PointLight )
 
 PointLight::PointLight(
     LightSystem* aRendSys,

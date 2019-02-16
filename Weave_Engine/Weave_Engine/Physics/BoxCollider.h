@@ -14,7 +14,7 @@ namespace Physics
     {
     public:
 
-        COMP_NAME( BoxCollider );
+        COMPONENT( BoxCollider );
 
         /// <summary>
         /// A box collider component to handle simple box collision 

@@ -5,6 +5,8 @@
 #define MAT_SAVE_KEY    "Material"
 #define MESH_SAVE_KEY   "Mesh"
 
+COMPONENT_INIT( MeshRenderer )
+
 MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
     : CurrentMaterial( aMat ), CurrentMesh( aMesh )
 {

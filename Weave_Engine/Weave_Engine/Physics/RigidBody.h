@@ -15,7 +15,7 @@ namespace Physics
     {
     public:
 
-        COMP_NAME( RigidBody );
+        COMPONENT( RigidBody );
 
         RigidBody( float aMass );
 

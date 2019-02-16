@@ -20,6 +20,11 @@ namespace ECS
 
         Component() {}
 
+        Component( nlohmann::json const & aInitData )
+        {
+            LOG_WARN( "Component does not implement scene file constructor!" );
+        }
+
         virtual ~Component() {}
 
 

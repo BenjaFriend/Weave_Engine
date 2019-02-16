@@ -9,6 +9,8 @@
 #define INTENSITY_SAVE_KEY  "Intensity"
 #define DIR_SAVE_KEY        "Direction"
 
+COMPONENT_INIT( DirLight )
+
 DirLight::DirLight( LightSystem* aRendSys, DirectionalLightData aLightData )
     : LightingData( aLightData )
 {
@@ -29,7 +31,7 @@ void DirLight::SetLightData( DirectionalLightData aLightData )
     LightingData = aLightData;
 }
 
-void DirLight::SaveComponentData( nlohmann::json & comp_data )
+void DirLight::SaveComponentData( nlohmann::json const & comp_data )
 {
     comp_data [ INTENSITY_SAVE_KEY ] = LightingData.Intensity;
 

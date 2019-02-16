@@ -6,7 +6,7 @@
 #define SCALE_SAVE_KEY      "Scale"
 #define ROT_SAVE_KEY        "Rot"
 
-static ECS::IComponent::ConcreteFactory< Transform > CompFactory = {};
+COMPONENT_INIT( Transform )
 
 Transform::Transform()
 {

@@ -16,10 +16,21 @@
 
 #endif
 
+/// <summary>
+/// Add miscellaneous component meta data to a component class
+/// </summary>
+#define COMPONENT( name )                                               \
+    static const char* ClassName() { return #name; }                    \
+    virtual char const* ComponentName() { return ClassName();  }        \
+    const static ECS::IComponent::ConcreteFactory< name > CompFactory; 
 
-#define COMP_NAME( name )                                        \
-    static const char* ClassName() { return #name; }             \
-    virtual char const* ComponentName() { return ClassName();  } \
+/// <summary>
+/// Initalize misc. static members of the component in the CPP file, so that
+/// they are added to the proper factory patterns at compile time. 
+/// </summary>
+#define  COMPONENT_INIT( name )                                         \
+    const static ECS::IComponent::ConcreteFactory< name > CompFactory = {};
+
 
 namespace ECS
 {

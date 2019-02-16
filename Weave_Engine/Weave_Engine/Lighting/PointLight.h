@@ -11,7 +11,7 @@ class PointLight : public ECS::Component<PointLight>
 {
 public:
 
-    COMP_NAME( PointLight );
+    COMPONENT( PointLight );
 
     PointLight( 
         LightSystem* aRendSys,

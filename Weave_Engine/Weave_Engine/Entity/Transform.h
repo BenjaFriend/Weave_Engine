@@ -12,8 +12,7 @@ class Transform : public ECS::Component<Transform>
 {
 public:
 
-    COMP_NAME( Transform );
-    static ECS::IComponent::ConcreteFactory< Transform > CompFactory;
+    COMPONENT( Transform );
 
     Transform();
 
