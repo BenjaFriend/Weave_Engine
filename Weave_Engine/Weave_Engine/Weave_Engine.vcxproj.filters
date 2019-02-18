@@ -63,9 +63,6 @@
     <ClCompile Include="Entity\Entity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\EntityManager.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Resources\Mesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -163,9 +160,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\EntityManager.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Mesh.h">

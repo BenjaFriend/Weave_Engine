@@ -1,9 +1,7 @@
 #include "../stdafx.h"
+
 #include "Scene.h"
-
-#include "../Resources/Materials/Material.h"
-#include "../Resources/Mesh.h"
-
+#include "../Entity/Entity.h"
 using namespace SceneManagement;
 
 Scene::Scene()
@@ -16,14 +14,14 @@ Scene::~Scene()
     UnloadAllEntities();
 }
 
-FORCE_INLINE Entity * Scene::AddEntity( std::string aName )
+Entity * Scene::AddEntity( std::string aName )
 {
     Entity* tempEnt = new Entity( aName );
     EntityArray.push_back( tempEnt );
     return tempEnt;
 }
 
-FORCE_INLINE Entity * Scene::AddEntity( std::string aName, glm::vec3 aPos )
+Entity * Scene::AddEntity( std::string aName, glm::vec3 aPos )
 {
     Entity* tempEnt = new Entity( aName, aPos );
 
@@ -31,14 +29,14 @@ FORCE_INLINE Entity * Scene::AddEntity( std::string aName, glm::vec3 aPos )
     return tempEnt;
 }
 
-FORCE_INLINE Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
+Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
 {
     Entity* tempEnt = new Entity( aFile );
     EntityArray.push_back( tempEnt );
     return tempEnt;
 }
 
-FORCE_INLINE void Scene::DeleteEntity( Entity * aEntity )
+void Scene::DeleteEntity( Entity * aEntity )
 {
     if ( aEntity == nullptr ) return;
     // Remove this entity from the vector

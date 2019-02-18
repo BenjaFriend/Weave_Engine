@@ -309,7 +309,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Editor\Gizmo.cpp" />
     <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
-    <ClCompile Include="Entity\EntityManager.cpp" />
     <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
@@ -358,7 +357,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Editor\Gizmo.h" />
     <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Entity.h" />
-    <ClInclude Include="Entity\EntityManager.h" />
     <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Input\IInput_Impl.h" />
     <ClInclude Include="Input\InputManager.h" />

@@ -161,14 +161,14 @@ void Game::InitLights()
 
 
     // Add Dir Lights
-    Entity* dirLightEntity = entityMan->AddEntity( "Dir Light 1" );
+    Entity* dirLightEntity = sceneManager->GetActiveScene()->AddEntity( "Dir Light 1" );
     dirLightEntity->AddComponent<DirLight>( LightSys, DirLight1 );
 
     // Add Point Lights
-    Entity* pLightEntity = entityMan->AddEntity( "Point Light 1" );
+    Entity* pLightEntity = sceneManager->GetActiveScene()->AddEntity( "Point Light 1" );
     pLightEntity->AddComponent<PointLight>( LightSys, Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
 
-    Entity* pLightEntity2 = entityMan->AddEntity( "Point Light 2" );
+    Entity* pLightEntity2 = sceneManager->GetActiveScene()->AddEntity( "Point Light 2" );
     pLightEntity2->AddComponent<PointLight>( LightSys, Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
 }
 
@@ -222,7 +222,8 @@ void Game::CreateBasicGeometry()
     );
 
     glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
-    Entity* secondBox = entityMan->AddEntity( "Box 2" );
+
+    Entity* secondBox = sceneManager->GetActiveScene()->AddEntity( "Box 2" );
     
 
 
@@ -344,7 +345,7 @@ void Game::Draw( float dt, float totalTime )
                 EnMat->GetPixelShader()
             );
         }
-
+        
     }   // end Entity loop
 
     // Draw the Sky box -------------------------------------

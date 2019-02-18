@@ -9,10 +9,6 @@
 #include "../Utils/SaveFileDefs.h"
 #include "Scene.h"
 
-/////////////////////////////////////////////////
-// Forward Declarations
-class EntityManager;
-
 namespace SceneManagement
 {
     namespace fs = boost::filesystem;
@@ -65,21 +61,21 @@ namespace SceneManagement
         /// Get the name of the currently loaded scene
         /// </summary>
         /// <returns>Name of the current scene</returns>
-        Scene* GetActiveScene() const { return ActiveScene; }
+        FORCE_INLINE Scene* GetActiveScene() const { return ActiveScene; }
 
         /// <summary>
         /// The dispatcher for OnSceneLoad that you can use to add 
         /// listeners to this function
         /// </summary>
         /// <returns>Dispatcher reference for onScene load</returns>
-        Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }  
+        FORCE_INLINE Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }
 
         /// <summary>
         /// The dispatcher for OnSceneUnload that you can use to add
         /// listeners to this function
         /// </summary>
         /// <returns>Dispatacher reference for OnUnloadScene</returns>
-        Dispatcher & OnSceneUnload() { return OnSceneUnloadDispatcher; }
+        FORCE_INLINE Dispatcher & OnSceneUnload() { return OnSceneUnloadDispatcher; }
 
     private:
 

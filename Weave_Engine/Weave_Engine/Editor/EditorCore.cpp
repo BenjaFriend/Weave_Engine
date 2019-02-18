@@ -36,7 +36,6 @@ void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 
 EditorCore::EditorCore()
 {
-    entityMan = EntityManager::GetInstance();
     sceneMan = SceneManagement::SceneManager::GetInstance();
 
     LoadResources();
@@ -44,7 +43,6 @@ EditorCore::EditorCore()
 
 EditorCore::~EditorCore()
 {
-    entityMan = nullptr;
     SelectedEntity = nullptr;
     sceneMan = nullptr;
 
@@ -202,10 +200,11 @@ inline void EditorCore::DrawHierarchy()
     ImGui::Begin( "Hierarchy" );
 
     Entity* CurrentEntity = nullptr;
-
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entityMan->GetEntity( i );
+        CurrentEntity = entArray[ i ];
 
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
@@ -290,9 +289,12 @@ void EditorCore::SaveScene()
 
     Entity* CurrentEntity = nullptr;
 
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entityMan->GetEntity( i );
+        CurrentEntity = entArray [ i ];
         if ( CurrentEntity != nullptr )
         {
             CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );

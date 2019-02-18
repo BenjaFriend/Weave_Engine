@@ -4,7 +4,8 @@
 #include <sol.hpp>
 #include <filesystem>   // std::filesystem::directory_iterator
 
-#include "../Entity/EntityManager.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Transform.h"
 #include "../Resources/ResourceManager.h"

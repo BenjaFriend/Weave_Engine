@@ -4,6 +4,8 @@
 
 #include "../ECS/Component.h"
 #include "PhysicsManager.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 
 namespace Physics
 {

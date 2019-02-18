@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 #include "BoxCollider.h"
-#include "../Entity/EntityManager.h"
+#include "../Entity/Entity.h"
 
 #define EXTENTS_SAVE_KEY            "Extents"
 #define CENTER_OFFSET_SAVE_KEY      "CenterOffset"
@@ -46,8 +46,12 @@ void BoxCollider::SaveComponentData( nlohmann::json & comp_data )
 
 const bool BoxCollider::Collides( const BoxCollider & aOther )
 {
-    glm::vec3 ownerPos = EntityManager::GetInstance()->GetEntity( owner )->GetTransform()->GetPosition();
-    glm::vec3 otherPos = EntityManager::GetInstance()->GetEntity( aOther.GetOwner() )->GetTransform()->GetPosition();
+    SceneManagement::Scene* scene = SceneManagement::SceneManager::GetInstance()->GetActiveScene();
+    Entity* owningEnt = scene->GetEntity( owner );
+    Entity* otherEnt = scene->GetEntity( aOther.GetOwner() );
+
+    glm::vec3 ownerPos = owningEnt->GetTransform()->GetPosition();
+    glm::vec3 otherPos = otherEnt->GetTransform()->GetPosition();
 
     // Account for the offset of the collider
     ownerPos.x += this->CenterOffset.x;
@@ -58,9 +62,9 @@ const bool BoxCollider::Collides( const BoxCollider & aOther )
     otherPos.y += aOther.CenterOffset.y;
     otherPos.z += aOther.CenterOffset.z;
 
-    return 
+    return
         ( ownerPos.x - Extents.x / 2 <= otherPos.x + aOther.Extents.x / 2 && ownerPos.x + Extents.x / 2 >= otherPos.x - aOther.Extents.x / 2 ) &&
-        ( ownerPos.y - Extents.y / 2 <= otherPos.y + aOther.Extents.y / 2 && ownerPos.y + Extents.y / 2 >= otherPos.y - aOther.Extents.y / 2 ) && 
+        ( ownerPos.y - Extents.y / 2 <= otherPos.y + aOther.Extents.y / 2 && ownerPos.y + Extents.y / 2 >= otherPos.y - aOther.Extents.y / 2 ) &&
         ( ownerPos.z - Extents.z / 2 <= otherPos.z + aOther.Extents.z / 2 && ownerPos.z + Extents.z / 2 >= otherPos.z - aOther.Extents.z / 2 );
 }
 
@@ -76,7 +80,11 @@ const glm::vec3 & BoxCollider::GetCenterOffset() const
 
 const glm::vec3 Physics::BoxCollider::GetPosition() const
 {
-    glm::vec3 worldPos = EntityManager::GetInstance()->GetEntity( owner )->GetTransform()->GetPosition();
+    SceneManagement::Scene* scene = SceneManagement::SceneManager::GetInstance()->GetActiveScene();
+    Entity* ent = scene->GetEntity( owner );
+
+    glm::vec3 worldPos = ent->GetTransform()->GetPosition();
+
     worldPos.x += CenterOffset.x;
     worldPos.y += CenterOffset.y;
     worldPos.z += CenterOffset.z;

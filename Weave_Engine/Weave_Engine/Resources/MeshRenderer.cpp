@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 
 #include "MeshRenderer.h"
+#include "../Entity/Entity.h"
 
 #define MAT_SAVE_KEY    "Material"
 #define MESH_SAVE_KEY   "Mesh"
@@ -43,8 +44,12 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
     // Render all meshes that are a part of this entity
     // in the future I want to experiment with different meshes/material 
     // settings
-    if( ParentTransform == nullptr )
-        ParentTransform = EntityManager::GetInstance()->GetEntity( owner )->GetTransform();
+    if ( ParentTransform == nullptr )
+    {
+        ParentTransform =
+            SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( owner )->GetTransform();
+
+    }
 
     CurrentMaterial->SetShaderValues( 
         ParentTransform->GetWorldMatrix(), 

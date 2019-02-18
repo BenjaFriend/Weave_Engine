@@ -182,10 +182,9 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     Mesh* mesh = resMan->LoadMesh( meshName );
     
     // Create the entity in the entity manager
-    Entity* ent = EntityManager::GetInstance()->AddEntity(
-        name,
-        pos
-    );
+    Entity* ent = 
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
+
     ent->AddComponent<MeshRenderer>( mat, mesh );
-    return ent;
+    return nullptr;
 }

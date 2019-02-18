@@ -1,9 +1,6 @@
 #include "../stdafx.h"
 #include "SceneManager.h"
 
-#include "../Entity/EntityManager.h"
-
-
 using namespace SceneManagement;
 SceneManager* SceneManager::Instance = nullptr;
 
@@ -27,12 +24,17 @@ void SceneManager::ReleaseInstance()
 SceneManager::SceneManager()
 {
     LOG_TRACE( "Created scene manager!" );
+    ActiveScene = new Scene();
 }
 
 SceneManager::~SceneManager()
 {
     UnloadCurrentScene();
-
+    if ( ActiveScene != nullptr )
+    {
+        delete ActiveScene;
+        ActiveScene = nullptr;
+    }
     // Remove any listeners to the scene management
 }
 
@@ -44,16 +46,14 @@ void SceneManager::LoadScene( FileName & aSceneName )
     // Parse the scene file and load in the given settings / entities
     std::ifstream ifs( aSceneName.c_str() );
 
-    EntityManager* entMan = EntityManager::GetInstance();
-
     if ( ifs.is_open() )
     {
         // Store the info in the scene file in the JSON object
         nlohmann::json njson;
         ifs >> njson;
 
-        ActiveScene = njson [ SCENE_NAME_SAVE_KEY ];
-        LOG_TRACE( "Active Scene: {}", ActiveScene );
+        //ActiveScene = njson [ SCENE_NAME_SAVE_KEY ];
+        //LOG_TRACE( "Active Scene: {}", ActiveScene );
 
         nlohmann::json entityArray = njson [ ENTITY_ARRAY_SAVE_KEY ];
 
@@ -62,7 +62,7 @@ void SceneManager::LoadScene( FileName & aSceneName )
         for ( ; it != entityArray.end(); ++it )
         {
             // Load it in with the entity manager! 
-            entMan->AddEntityFromfile( *it );
+            ActiveScene->AddEntityFromfile( *it );
         }
     }
     else

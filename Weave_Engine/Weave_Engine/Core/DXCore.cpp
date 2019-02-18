@@ -91,7 +91,6 @@ DXCore::~DXCore()
     sceneManager = nullptr;
     ResourceManager::ReleaseInstance();
 
-    EntityManager::ReleaseInstance();
     ECS::ComponentManager::ReleaseInstance();
     if ( ScriptMan != nullptr )
     {
@@ -458,7 +457,6 @@ void DXCore::InitSystems()
 #else
 #endif
     
-    entityMan = EntityManager::GetInstance();
     ComponentMan = ECS::ComponentManager::GetInstance();
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ScriptMan = new Scripting::ScriptManager();

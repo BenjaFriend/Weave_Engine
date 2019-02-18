@@ -13,7 +13,6 @@
 
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
-//#include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
@@ -102,7 +101,6 @@ protected:
     SceneManagement::SceneManager* sceneManager = nullptr;
     Logger* logger = nullptr;
     ResourceManager* resourceMan = nullptr;
-    EntityManager* entityMan = nullptr;
     ECS::ComponentManager* ComponentMan = nullptr;
     Physics::PhysicsManager* PhysicsMan = nullptr;
     Scripting::ScriptManager* ScriptMan = nullptr;

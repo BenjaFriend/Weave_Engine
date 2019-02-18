@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity/EntityManager.h"
+#include "../Entity/Entity.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Scenes/SceneManager.h"
@@ -174,9 +174,6 @@ namespace Editor
 
         /** Flag to draw colliders or not */
         bool DebugDrawColliders = true;
-
-        /** Entity manager pointer for editing entity data */
-        EntityManager* entityMan = nullptr;
 
         /** The entity that the user wants to change */
         Entity* SelectedEntity = nullptr;
