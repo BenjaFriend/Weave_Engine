@@ -43,6 +43,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{50e15407-d9e6-4d20-910f-bea14f49b7f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{30eb033b-b279-4bd3-ade1-00d4996df988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -133,9 +136,6 @@
     <ClCompile Include="Entity\Transform.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Core\SceneManager.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -144,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="ECS\IComponent.cpp">
       <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneManager.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,9 +263,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="Core\SceneManager.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\Dispatcher.hpp">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -277,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="Utils\SaveFileDefs.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneManager.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

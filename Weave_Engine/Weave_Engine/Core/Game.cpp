@@ -296,9 +296,13 @@ void Game::Draw( float dt, float totalTime )
     Entity* CurrentEntity = nullptr;
     UINT IndexCount = 0;
 
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    SceneManagement::Scene* CurScene = sceneManager->GetActiveScene();
+
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entityMan->GetEntity( i );
+        CurrentEntity = entArray [ i ];
 
         if ( !CurrentEntity->GetIsActive() ) continue;
 

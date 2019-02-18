@@ -6,7 +6,7 @@
 #include "json/json.hpp"
 #include "Entity.h"
 #include "../Resources/MeshRenderer.h"
-#include "../Core/SceneManager.h"
+#include "../Scenes/SceneManager.h"
 #include "../Utils/Dispatcher.hpp"
 
 /////////////////////////////////////////////////

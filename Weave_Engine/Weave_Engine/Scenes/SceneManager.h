@@ -7,6 +7,7 @@
 #include "json/json.hpp"
 #include "../Utils/Dispatcher.hpp"
 #include "../Utils/SaveFileDefs.h"
+#include "Scene.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -64,7 +65,7 @@ namespace SceneManagement
         /// Get the name of the currently loaded scene
         /// </summary>
         /// <returns>Name of the current scene</returns>
-        const std::string GetActiveScene() const { return ActiveScene; }
+        Scene* GetActiveScene() const { return ActiveScene; }
 
         /// <summary>
         /// The dispatcher for OnSceneLoad that you can use to add 
@@ -89,14 +90,13 @@ namespace SceneManagement
         /** Static instance of the scene manager */
         static SceneManager* Instance;
         
-        /** The current scene that is loaded in */
-        std::string ActiveScene;
-
         /** A dispatcher to send events when the scene has loaded */
         Dispatcher OnSceneLoadDispatcher;
 
         /** A dispatcher that signals when the scene should be unloaded */
         Dispatcher OnSceneUnloadDispatcher;
+
+        Scene * ActiveScene = nullptr;
 
     };
 }   // namespace SceneManagement

@@ -11,8 +11,9 @@
 #include "../Input/InputManager.h"
 #include "../Input/Input_Win.h"
 
-#include "SceneManager.h"
-#include "../Entity/EntityManager.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
+//#include "../Entity/EntityManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
