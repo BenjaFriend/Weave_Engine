@@ -124,9 +124,6 @@
     <ClCompile Include="Editor\EditorCore.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\LightSystem.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Editor\Gizmo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
@@ -246,9 +243,6 @@
     </ClInclude>
     <ClInclude Include="Editor\EditorCore.h">
       <Filter>Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources\LightSystem.h">
-      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="Editor\Gizmo.h">
       <Filter>Editor</Filter>

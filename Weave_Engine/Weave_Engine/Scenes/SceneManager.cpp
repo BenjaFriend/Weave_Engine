@@ -52,8 +52,9 @@ void SceneManager::LoadScene( FileName & aSceneName )
         nlohmann::json njson;
         ifs >> njson;
 
-        //ActiveScene = njson [ SCENE_NAME_SAVE_KEY ];
-        //LOG_TRACE( "Active Scene: {}", ActiveScene );
+        std::string sceneName = njson [ SCENE_NAME_SAVE_KEY ];
+        LOG_TRACE( "SceneName: {}", sceneName );
+        ActiveScene->SetSceneName( sceneName );
 
         nlohmann::json entityArray = njson [ ENTITY_ARRAY_SAVE_KEY ];
 
@@ -71,8 +72,6 @@ void SceneManager::LoadScene( FileName & aSceneName )
     }
 
     ifs.close();
-
-
 
     // Let any listeners know that the scene has been loaded
     OnSceneLoadDispatcher.Dispatch();

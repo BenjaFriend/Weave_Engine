@@ -12,7 +12,6 @@
 COMPONENT_INIT( PointLight )
 
 PointLight::PointLight(
-    LightSystem* aRendSys,
     glm::vec3 aColor,
     glm::vec3 aPos,
     float aIntensity,
@@ -24,7 +23,7 @@ PointLight::PointLight(
     LightingData.Intensity = aIntensity;
     LightingData.Range = aRange;
 
-    aRendSys->AddPointLight( this );
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddPointLight( this );
 }
 
 PointLight::PointLight( nlohmann::json const & aInitData )

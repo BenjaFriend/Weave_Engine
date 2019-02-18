@@ -10,7 +10,6 @@
 
 #include "../Lighting/LightShaderDefs.h"
 #include "../Physics/Collisions.h"
-#include "../Resources/LightSystem.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -93,7 +92,4 @@ private:
     bool DrawLightGizmos = true;
     bool DrawSkyBox = true;
     bool DebugDrawColliders = true;
-
-    
-    LightSystem* LightSys = nullptr;
 };

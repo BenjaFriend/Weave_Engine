@@ -5,8 +5,6 @@
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 
-class LightSystem;
-
 class PointLight : public ECS::Component<PointLight>
 {
 public:
@@ -14,7 +12,6 @@ public:
     COMPONENT( PointLight );
 
     PointLight( 
-        LightSystem* aRendSys,
         glm::vec3 aColor,
         glm::vec3 aPos, 
         float aIntensity = 1.f, 

@@ -35,7 +35,7 @@ namespace SceneManagement
         /// Unloads all current scene assets
         /// </summary>
         static void ReleaseInstance();
-        
+
         /// <summary>
         /// Load a scene given a file, and create said entities
         /// appropriately. Unloads the current scene
@@ -85,7 +85,7 @@ namespace SceneManagement
 
         /** Static instance of the scene manager */
         static SceneManager* Instance;
-        
+
         /** A dispatcher to send events when the scene has loaded */
         Dispatcher OnSceneLoadDispatcher;
 

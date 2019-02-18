@@ -5,6 +5,10 @@
 
 #include "../Resources/Materials/Material.h"
 #include "../Resources/Mesh.h"
+#include "../Resources/SimpleShader.h"
+#include "../Lighting/LightShaderDefs.h"
+#include "../Lighting/PointLight.h"
+#include "../Lighting/DirLight.h"
 
 class Entity;
 
@@ -54,6 +58,25 @@ namespace SceneManagement
         /// <param name="aEntityID">ID of the entity to delete</param>
         void DeleteEntity( Entity * aEntity );
 
+        /// <summary>
+        /// Set data about this 
+        /// </summary>
+        /// <param name="aVertShader">The vert shader to use</param>
+        /// <param name="aPixShader"></param>
+        void SetShaderInfo( SimpleVertexShader* aVertShader, SimplePixelShader* aPixShader );
+
+        /// <summary>
+        /// Add a directional light to this system
+        /// </summary>
+        /// <param name="aDirLight">The dir light to be added</param>
+        void AddDirLight( DirLight * aDirLight );
+
+        /// <summary>
+        /// Add a point light to this render system
+        /// </summary>
+        /// <param name="aPointLight">The point light to be added</param>
+        void AddPointLight( PointLight * aPointLight );
+
         FORCE_INLINE const std::vector<Entity*> & GetEntityArray() { return EntityArray; }
 
         /// <summary>
@@ -68,7 +91,13 @@ namespace SceneManagement
         /// <returns>Reference to the current scene</returns>
         FORCE_INLINE const std::string & GetSceneName() const { return SceneName; }
 
-        Entity* GetEntity( Entity_ID aID ) { return EntityArray [ aID ]; }
+        FORCE_INLINE void SetSceneName( std::string aName ) { SceneName = aName; }
+
+        FORCE_INLINE Entity* GetEntity( Entity_ID aID ) { return EntityArray [ aID ]; }
+
+        FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
+
+        FORCE_INLINE const std::vector<PointLight*> & GetPointLights() const { return PointLights; }
 
     private:
 
@@ -78,10 +107,26 @@ namespace SceneManagement
         /// </summary>
         void UnloadAllEntities();
 
+        /// <summary>
+        /// Remove all lights from this light system
+        /// </summary>
+        void UnloadAllLights();
+
+        /// <summary>
+        /// Send all lighting information to the given shaders
+        /// </summary>
+        /// <param name="aPixShader">Pixel shader to send lighting info to</param>
+        void SetLightData( SimplePixelShader* aPixShader );
+
+
         /** This scene's name */
         std::string SceneName = "DEFAULT_SCENE";
 
         /** Keep track of all entities in the scene */
         std::vector<Entity*> EntityArray;
+
+        std::vector<DirLight*> DirLights;
+
+        std::vector<PointLight*> PointLights;
     };
 }

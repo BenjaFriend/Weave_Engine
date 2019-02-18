@@ -2,7 +2,8 @@
 
 #include "DirLight.h"
 
-#include "../Resources/LightSystem.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 
 #define AMBIENT_COLOR__SAVE_KEY      "AmbientColor"
 #define DIFFUSE_COLOR__SAVE_KEY      "DiffuseColor"
@@ -11,10 +12,10 @@
 
 COMPONENT_INIT( DirLight )
 
-DirLight::DirLight( LightSystem* aRendSys, DirectionalLightData aLightData )
+DirLight::DirLight( DirectionalLightData aLightData )
     : LightingData( aLightData )
 {
-    aRendSys->AddDirLight( this );
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddDirLight( this );
 }
 
 DirLight::DirLight( nlohmann::json const & aInitData )

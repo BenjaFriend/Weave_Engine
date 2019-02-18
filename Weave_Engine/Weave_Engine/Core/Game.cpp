@@ -55,12 +55,6 @@ Game::~Game()
     skyRastState->Release();
     skyDepthState->Release();
 
-    if ( LightSys != nullptr )
-    {
-        delete LightSys;
-        LightSys = nullptr;
-    }
-
     delete FlyingCamera;
 }
 
@@ -70,8 +64,6 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    LightSys = new LightSystem();
-
     FlyingCamera = new Camera();
 
 #if defined( EDITOR_ON )
@@ -162,14 +154,14 @@ void Game::InitLights()
 
     // Add Dir Lights
     Entity* dirLightEntity = sceneManager->GetActiveScene()->AddEntity( "Dir Light 1" );
-    dirLightEntity->AddComponent<DirLight>( LightSys, DirLight1 );
+    dirLightEntity->AddComponent<DirLight>( DirLight1 );
 
     // Add Point Lights
     Entity* pLightEntity = sceneManager->GetActiveScene()->AddEntity( "Point Light 1" );
-    pLightEntity->AddComponent<PointLight>( LightSys, Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
+    pLightEntity->AddComponent<PointLight>( Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
 
     Entity* pLightEntity2 = sceneManager->GetActiveScene()->AddEntity( "Point Light 2" );
-    pLightEntity2->AddComponent<PointLight>( LightSys, Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
+    pLightEntity2->AddComponent<PointLight>( Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -340,7 +332,7 @@ void Game::Draw( float dt, float totalTime )
             // Finally do the actual drawing
             context->DrawIndexed( IndexCount, 0, 0 );
 
-            LightSys->SetShaderInfo(
+            CurScene->SetShaderInfo(
                 EnMat->GetVertexShader(),
                 EnMat->GetPixelShader()
             );
@@ -440,7 +432,7 @@ void Game::DrawLightSources()
     UINT stride = sizeof( Vertex );
     UINT offset = 0;
 
-    auto PointLights = LightSys->GetPointLights();
+    auto PointLights = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetPointLights();
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {
