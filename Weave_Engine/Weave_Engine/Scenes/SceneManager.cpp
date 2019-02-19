@@ -54,6 +54,7 @@ void SceneManager::LoadScene( FileName & aSceneName )
 
         std::string sceneName = njson [ SCENE_NAME_SAVE_KEY ];
         LOG_TRACE( "SceneName: {}", sceneName );
+     
         ActiveScene->SetSceneName( sceneName );
 
         nlohmann::json entityArray = njson [ ENTITY_ARRAY_SAVE_KEY ];
@@ -79,6 +80,8 @@ void SceneManager::LoadScene( FileName & aSceneName )
 
 void SceneManager::UnloadCurrentScene()
 {
+    ActiveScene->ResetScene();
+
     // Unload all entities
     OnSceneUnloadDispatcher.Dispatch();
     

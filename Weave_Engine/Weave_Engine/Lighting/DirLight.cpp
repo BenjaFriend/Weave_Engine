@@ -20,7 +20,23 @@ DirLight::DirLight( DirectionalLightData aLightData )
 
 DirLight::DirLight( nlohmann::json const & aInitData )
 {
-    LOG_WARN( "DIR LIGHT SAVE NOT IMPLEMENTED" );
+    LightingData = {};
+
+    LightingData.Intensity = aInitData [ INTENSITY_SAVE_KEY ];
+
+    LightingData.Direction.x = aInitData [ DIR_SAVE_KEY ] [ "X" ];
+    LightingData.Direction.y = aInitData [ DIR_SAVE_KEY ] [ "Y" ];
+    LightingData.Direction.z = aInitData [ DIR_SAVE_KEY ] [ "Z" ];
+
+    LightingData.DiffuseColor.x = aInitData [ DIFFUSE_COLOR__SAVE_KEY ] [ "X" ];
+    LightingData.DiffuseColor.y = aInitData [ DIFFUSE_COLOR__SAVE_KEY ] [ "Y" ];
+    LightingData.DiffuseColor.z = aInitData [ DIFFUSE_COLOR__SAVE_KEY ] [ "Z" ];
+
+    LightingData.AmbientColor.x = aInitData [ AMBIENT_COLOR__SAVE_KEY ] [ "X" ];
+    LightingData.AmbientColor.y = aInitData [ AMBIENT_COLOR__SAVE_KEY ] [ "Y" ];
+    LightingData.AmbientColor.z = aInitData [ AMBIENT_COLOR__SAVE_KEY ] [ "Z" ];
+
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddDirLight( this );
 }
 
 DirLight::~DirLight()

@@ -19,7 +19,15 @@ BoxCollider::BoxCollider( const glm::vec3 & aExtents )
 
 Physics::BoxCollider::BoxCollider( nlohmann::json const & aInitData )
 {
-    LOG_WARN( "Box collider SaveFrom file not yet implemted!" );
+    Extents.x = aInitData [ EXTENTS_SAVE_KEY ] [ "X" ];
+    Extents.y = aInitData [ EXTENTS_SAVE_KEY ] [ "Y" ];
+    Extents.z = aInitData [ EXTENTS_SAVE_KEY ] [ "Z" ];
+
+    CenterOffset.x = aInitData [ CENTER_OFFSET_SAVE_KEY ] [ "X" ];
+    CenterOffset.y = aInitData [ CENTER_OFFSET_SAVE_KEY ] [ "Y" ];
+    CenterOffset.z = aInitData [ CENTER_OFFSET_SAVE_KEY ] [ "Z" ];
+    IsTrigger = aInitData [ IS_TRIGGER_SAVE_KEY ];
+    PhysicsManager::GetInstance()->AddBoxCollider( this );
 }
 
 BoxCollider::~BoxCollider()

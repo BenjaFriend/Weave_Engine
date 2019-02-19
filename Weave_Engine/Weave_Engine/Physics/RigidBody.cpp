@@ -17,7 +17,10 @@ RigidBody::RigidBody( float aMass ) :
 
 Physics::RigidBody::RigidBody( nlohmann::json const & aInitData )
 {
-    LOG_WARN( "Rigid body load from scene file not yet implemented!" );
+    Acceleration = { 0.f, 0.f, 0.f };
+    Velocity = { 0.f, 0.f, 0.f };
+    Mass = aInitData [ MASS_SAVE_KEY ];
+    Layer = aInitData [ LAYER_SAVE_KEY ];
 }
 
 RigidBody::~RigidBody()

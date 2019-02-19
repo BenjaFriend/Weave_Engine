@@ -245,7 +245,7 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-    PhysicsMan->Update( dt );
+    //PhysicsMan->Update( dt );
 
     // Update the camera
     FlyingCamera->Update( dt );

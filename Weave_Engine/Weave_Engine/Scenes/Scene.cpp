@@ -94,6 +94,7 @@ void Scene::ResetScene()
 {
     UnloadAllEntities();
     UnloadAllLights();
+    SceneName = "DEFAULT_SCENE";
 }
 
 void Scene::SetLightData( SimplePixelShader* aPixShader )

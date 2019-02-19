@@ -1,8 +1,8 @@
 #include "../stdafx.h"
 
 #include "PointLight.h"
-
-#include "../Resources/LightSystem.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 
 #define COLOR_SAVE_KEY      "Color"
 #define INTENSITY_SAVE_KEY  "Intensity"
@@ -28,7 +28,19 @@ PointLight::PointLight(
 
 PointLight::PointLight( nlohmann::json const & aInitData )
 {
-    LOG_WARN( "Point light load from scene file not yet implemetned!" );
+    LightingData = {};
+    LightingData.Intensity = aInitData [ INTENSITY_SAVE_KEY ];
+    LightingData.Range = aInitData [ RANGE_SAVE_KEY ];
+    
+    LightingData.Color.r = aInitData [ COLOR_SAVE_KEY ] [ "R" ];
+    LightingData.Color.g = aInitData [ COLOR_SAVE_KEY ] [ "G" ];
+    LightingData.Color.b = aInitData [ COLOR_SAVE_KEY ] [ "B" ];
+    
+    LightingData.Position.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
+    LightingData.Position.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
+    LightingData.Position.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
+
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddPointLight( this );
 }
 
 PointLight::~PointLight()
