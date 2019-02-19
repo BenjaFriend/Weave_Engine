@@ -1,5 +1,4 @@
 {
-
 	"MaterialName" : "Bronze Material File",
     "VS" : "VertexShader.cso",
 	"PS" : "PixelShader.cso",
@@ -7,5 +6,4 @@
 	"norm" : "Assets/Textures/bronze_normals.png",
 	"roughness" : "Assets/Textures/bronze_roughness.png",
 	"metal" : "Assets/Textures/bronze_metal.png"
-
 }

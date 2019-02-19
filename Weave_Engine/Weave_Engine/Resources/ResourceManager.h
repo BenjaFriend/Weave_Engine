@@ -167,17 +167,6 @@ public:
     /// <returns>pointer to the sampler state with the given ID</returns>
     ID3D11SamplerState* GetSampler( const Sampler_ID aID );
 
-    Material* LoadMaterial(
-        const Material_ID aName,
-        SimpleVertexShader* aVertexShader,
-        SimplePixelShader* aPixelShader,
-        const SRV_ID aDiffSrvID,
-        const SRV_ID aNormSrvID,
-        const SRV_ID aRoughnessSrvID,
-        const SRV_ID aMetalSrvID,
-        const Sampler_ID aSamplerID
-    );
-
     Material * LoadMaterial( const FileName aMatFileName );
 
     /// <summary>

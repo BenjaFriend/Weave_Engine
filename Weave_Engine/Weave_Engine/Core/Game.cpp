@@ -195,25 +195,12 @@ void Game::CreateBasicGeometry()
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
-    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Bronze.wmat" );
-
-    Material* floorMat = resourceMan->LoadMaterial(
-        "Floor Mat",
-        vertexShader,
-        pixelShader,
-        L"Assets/Textures/floor_albedo.png",
-        L"Assets/Textures/floor_normals.png",
-        L"Assets/Textures/floor_roughness.png",
-        L"Assets/Textures/floor_metal.png",
-        SamplerID
-    );
+    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Cobblestone.wmat" );
 
     glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
 
     Entity* secondBox = sceneManager->GetActiveScene()->AddEntity( "Box 2" );
     
-
-
     secondBox->AddComponent<MeshRenderer>( fileLoadedMat, CubeMesh );
 
     secondBox->AddComponent<Physics::BoxCollider>();

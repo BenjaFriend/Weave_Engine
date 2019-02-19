@@ -27,7 +27,6 @@ void Scripting::ScriptManager::OnClick()
 {
     for ( auto it : OnClickCallbacks )
         it();
-    LOG_TRACE( "Script click callback!" );
 }
 
 void ScriptManager::LoadScripts()
@@ -62,7 +61,8 @@ void ScriptManager::LoadScript( const char * aFile )
 
 void ScriptManager::DefineLuaTypes( sol::state & aLua )
 {
-    aLua.set_function( "LoadMaterial", &Scripting::ScriptManager::LoadMaterial, this );
+    ResourceManager * resMan = ResourceManager::GetInstance();
+    aLua.set_function( "LoadMaterial", &ResourceManager::LoadMaterial, resMan );
     aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
 
     // Define the entity types
@@ -131,38 +131,6 @@ void ScriptManager::RunLuaFunction(
         // Run that function
         unsafe_Func.value()( );
     }
-}
-
-/** Called from Lua */
-Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
-{
-    Material_ID name = aMatInfo [ "name" ];
-    FileName vsName = aMatInfo [ MAT_VS_SAVE_KEY ];
-    FileName psName = aMatInfo [ MAT_PS_SAVE_KEY ];
-    FileName albedo = aMatInfo [ MAT_ALBEDO_SAVE_KEY ];
-    FileName norm = aMatInfo [ MAT_NORMAL_SAVE_KEY ];
-    FileName roughness = aMatInfo [ MAT_ROUGHNESS_SAVE_KEY ];
-    FileName metal = aMatInfo [ MAT_METAL_SAVE_KEY ];
-
-    ResourceManager* resourceMan = ResourceManager::GetInstance();
-
-    SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
-        vsName );
-
-    SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
-        psName );
-
-    assert( ps && vs );
-
-    return resourceMan->LoadMaterial(
-        name,
-        vs,
-        ps,
-        albedo,
-        norm,
-        roughness,
-        metal,
-        0 );   // Use default sampler
 }
 
 /** Called from Lua */

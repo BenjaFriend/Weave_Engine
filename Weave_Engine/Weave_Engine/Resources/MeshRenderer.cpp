@@ -15,7 +15,6 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
 
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
-    LOG_WARN( "Mesh renderer load from scene not yet implemented!" );
     ResourceManager* resMan = ResourceManager::GetInstance();
 
     // Load mesh
@@ -25,7 +24,7 @@ MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 
     // Load Material
     std::string matFileName = aInitData [ MAT_FILE_SAVE_KEY ];
-    FileName MatWsTemp( mshFile.begin(), mshFile.end() );
+    FileName MatWsTemp( matFileName.begin(), matFileName.end() );
     CurrentMaterial = resMan->LoadMaterial( MatWsTemp );
 }
 
@@ -50,6 +49,7 @@ void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
     assert( CurrentMesh != nullptr && CurrentMaterial != nullptr );
 
     aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
+    aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
 }
 
 void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )

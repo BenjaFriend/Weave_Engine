@@ -212,39 +212,6 @@ ID3D11SamplerState * ResourceManager::GetSampler( const Sampler_ID aID )
     return Samplers [ aID ];
 }
 
-Material* ResourceManager::LoadMaterial(
-    const Material_ID aName,
-    SimpleVertexShader* aVertexShader,
-    SimplePixelShader* aPixelShader,
-    const SRV_ID aDiffSrvID,
-    const SRV_ID aNormSrvID,
-    const SRV_ID aRoughnessSrvID,
-    const SRV_ID aMetalSrvID,
-    const Sampler_ID aSamplerID
-)
-{
-    // If this material already exists, than just return that 
-    if ( Materials.find( aName ) != Materials.end() )
-    {
-        return Materials [ aName ];
-    }
-
-    // #TODO: Only create this material if does not yet exist
-    Material* newMat = new Material(
-        aVertexShader,
-        aPixelShader,
-        LoadSRV( aDiffSrvID ), 
-        LoadSRV ( aNormSrvID ),
-        LoadSRV ( aRoughnessSrvID ),
-        LoadSRV ( aMetalSrvID ),
-        Samplers [ aSamplerID ]
-    );
-
-    Materials [ aName ] = newMat;
-    LOG_TRACE( "Loaded new material: {}", aName );
-    return newMat;
-}
-
 Material * ResourceManager::LoadMaterial( const FileName aMatFileName )
 {
     // Open JSON file via file stream
@@ -257,6 +224,15 @@ Material * ResourceManager::LoadMaterial( const FileName aMatFileName )
         ifs >> njson;
 
         Material_ID name = njson [ MAT_NAME_SAVE_KEY ];
+        // If this material already exists, than just return that 
+        if ( Materials.find( name ) != Materials.end() )
+        {
+            ifs.close();
+
+            return Materials [ name ];
+        }
+        // Grab refs to the textures, and convert them to WStrings if
+        // necessary
         std::string vsName = njson [ MAT_VS_SAVE_KEY ];
         FileName VSWsTmp( vsName.begin(), vsName.end() );
 
@@ -275,21 +251,29 @@ Material * ResourceManager::LoadMaterial( const FileName aMatFileName )
         std::string metal = njson [ MAT_METAL_SAVE_KEY ];
         FileName metalWsTmp( metal.begin(), metal.end() );
 
+        // Load the shaders
         SimpleVertexShader* vs = LoadShader<SimpleVertexShader>(
             VSWsTmp );
 
         SimplePixelShader* ps = LoadShader<SimplePixelShader>(
             PSWsTmp );
 
-        return LoadMaterial(
-            name,
+        // Create the material
+        Material * mat = new Material(
             vs,
             ps,
-            albedoWsTmp,
-            normWsTmp,
-            roughWsTmp,
-            metalWsTmp,
-            0 );   // Use default sampler
+            LoadSRV( albedoWsTmp ),
+            LoadSRV( normWsTmp ),
+            LoadSRV( roughWsTmp ),
+            LoadSRV( metalWsTmp ),
+            Samplers [ 0 ], // use default sampler
+            aMatFileName
+        );
+        // Put the material in the mat map
+        Materials [ name ] = mat;
+        LOG_TRACE( "Loaded new material: {}", name );
+
+        return mat;
     }
     else
     {

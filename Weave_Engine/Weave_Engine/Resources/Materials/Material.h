@@ -32,7 +32,8 @@ public:
         ID3D11ShaderResourceView* aNormalSRV,
         ID3D11ShaderResourceView* aRoughnessSRV,
         ID3D11ShaderResourceView* aMetalSRV,
-        ID3D11SamplerState* aSampler );
+        ID3D11SamplerState* aSampler,
+        FileName aMeshFileName );
 
     /** Destructor of the material */
     virtual ~Material();
@@ -92,6 +93,12 @@ public:
     /** Return this material's sampler state */
     ID3D11SamplerState* GetSamplerState() const;
 
+    FORCE_INLINE const std::string GetMeshFileName() const 
+    {
+        std::string name( MaterialFileName.begin(), MaterialFileName.end() );
+        return name;
+    }
+
 protected:
 
     /// <summary>
@@ -120,5 +127,8 @@ protected:
 
     /** The sampler for this material's texture */
     ID3D11SamplerState* Sampler = nullptr;
+
+    /** The file name that was used to create this material */
+    FileName MaterialFileName;
 };
 
