@@ -10,7 +10,8 @@ Material::Material(
     ID3D11ShaderResourceView* aNormalSRV,
     ID3D11ShaderResourceView* aRoughnessSRV,
     ID3D11ShaderResourceView* aMetalSRV,
-    ID3D11SamplerState* aSampler
+    ID3D11SamplerState* aSampler,
+    FileName aMatFilename
 )
     : VertexShader( aVertShader ),
     PixelShader( aPixShader ),
@@ -18,7 +19,8 @@ Material::Material(
     NormalSRV( aNormalSRV ),
     RoughnessSRV( aRoughnessSRV ),
     MetalSRV( aMetalSRV ),
-    Sampler( aSampler )
+    Sampler( aSampler ),
+    MaterialFileName( aMatFilename )
 {
     // TODO: Make the vertex and pixel shader pointers smart pointers or use 
     // some basic ref counting
@@ -41,6 +43,7 @@ void Material::SaveObject( nlohmann::json & aOutFile )
 {
     // Out the file names of any shaders that we have
     LOG_WARN( "Implement Material class save!!" );    
+
 }
 
 void Material::SetShaderValues( const glm::mat4 & aWorld, const glm::mat4 & aView, const glm::mat4 & aProjection )

@@ -43,6 +43,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{50e15407-d9e6-4d20-910f-bea14f49b7f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{30eb033b-b279-4bd3-ade1-00d4996df988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -58,9 +61,6 @@
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Entity\Entity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\EntityManager.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Resources\Mesh.cpp">
@@ -124,20 +124,26 @@
     <ClCompile Include="Editor\EditorCore.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\LightSystem.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Editor\Gizmo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Entity\Transform.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Core\SceneManager.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\MeshRenderer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\IComponent.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneManager.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +157,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\EntityManager.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Mesh.h">
@@ -241,9 +244,6 @@
     <ClInclude Include="Editor\EditorCore.h">
       <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\LightSystem.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Editor\Gizmo.h">
       <Filter>Editor</Filter>
     </ClInclude>
@@ -251,9 +251,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="Core\SceneManager.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\Dispatcher.hpp">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -265,6 +262,18 @@
     </ClInclude>
     <ClInclude Include="Input\Input_Win.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\MeshRenderer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\SaveFileDefs.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneManager.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,5 +307,6 @@
     <None Include="..\Assets\Scripts\loadMaterials.lua">
       <Filter>Scripting\Lua_src</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

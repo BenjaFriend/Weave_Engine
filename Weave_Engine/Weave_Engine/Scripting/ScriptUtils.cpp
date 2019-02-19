@@ -27,7 +27,6 @@ void Scripting::ScriptManager::OnClick()
 {
     for ( auto it : OnClickCallbacks )
         it();
-    LOG_TRACE( "Script click callback!" );
 }
 
 void ScriptManager::LoadScripts()
@@ -62,7 +61,8 @@ void ScriptManager::LoadScript( const char * aFile )
 
 void ScriptManager::DefineLuaTypes( sol::state & aLua )
 {
-    aLua.set_function( "LoadMaterial", &Scripting::ScriptManager::LoadMaterial, this );
+    ResourceManager * resMan = ResourceManager::GetInstance();
+    aLua.set_function( "LoadMaterial", &ResourceManager::LoadMaterial, resMan );
     aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
 
     // Define the entity types
@@ -134,38 +134,6 @@ void ScriptManager::RunLuaFunction(
 }
 
 /** Called from Lua */
-Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
-{
-    Material_ID name = aMatInfo [ "name" ];
-    FileName vsName = aMatInfo [ "VS" ];
-    FileName psName = aMatInfo [ "PS" ];
-    FileName albedo = aMatInfo [ "albedo" ];
-    FileName norm = aMatInfo [ "norm" ];
-    FileName roughness = aMatInfo [ "roughness" ];
-    FileName metal = aMatInfo [ "metal" ];
-
-    ResourceManager* resourceMan = ResourceManager::GetInstance();
-
-    SimpleVertexShader* vs = resourceMan->LoadShader<SimpleVertexShader>(
-        vsName );
-
-    SimplePixelShader* ps = resourceMan->LoadShader<SimplePixelShader>(
-        psName );
-
-    assert( ps && vs );
-
-    return resourceMan->LoadMaterial(
-        name,
-        vs,
-        ps,
-        albedo,
-        norm,
-        roughness,
-        metal,
-        0 );   // Use default sampler
-}
-
-/** Called from Lua */
 Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
 {
     std::string name = aEntityInfo [ "name" ];
@@ -180,13 +148,11 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
 
     ResourceManager* resMan = ResourceManager::GetInstance();
     Mesh* mesh = resMan->LoadMesh( meshName );
-
+    
     // Create the entity in the entity manager
-    Entity* ent = EntityManager::GetInstance()->AddEntity(
-        mesh,
-        mat,
-        pos,
-        name
-    );
-    return ent;
+    Entity* ent = 
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
+
+    ent->AddComponent<MeshRenderer>( mat, mesh );
+    return nullptr;
 }

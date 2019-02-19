@@ -38,11 +38,13 @@
 
 // Windows uses wide chars for their file names
 typedef std::wstring                FileName;
+#define FORCE_INLINE                __forceinline
 
 #else 
 
 // Using other another graphics library
 typedef std::string                FileName;
+#define FORCE_INLINE                __forceinline
 
 #endif
 

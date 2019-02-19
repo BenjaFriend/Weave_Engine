@@ -36,15 +36,16 @@ void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 
 EditorCore::EditorCore()
 {
-    entityMan = EntityManager::GetInstance();
+    sceneMan = SceneManagement::SceneManager::GetInstance();
+    sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
 
     LoadResources();
 }
 
 EditorCore::~EditorCore()
 {
-    entityMan = nullptr;
     SelectedEntity = nullptr;
+    sceneMan = nullptr;
 
     // Delete all gizmos
     for ( size_t i = 0; i < CurrentGizmos.size(); ++i )
@@ -89,7 +90,12 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
     // Draw the selected object
     if ( SelectedEntity != nullptr )
     {
-        Mesh* mesh = SelectedEntity->GetEntityMesh();
+        MeshRenderer* MeshRend = SelectedEntity->GetComponent<MeshRenderer>();
+        if ( MeshRend == nullptr )
+        {
+            return;
+        }
+        const Mesh* mesh = MeshRend->GetMesh();
         // If there is no mesh, default to a sphere
         if ( mesh == nullptr )
         {
@@ -145,7 +151,7 @@ void EditorCore::DrawUI()
     // Draw the file menu ----------------------
     {
         bool isOpen = true;
-        ImGui::Begin( "My First Tool", &isOpen, corner );
+        ImGui::Begin( "File Options", &isOpen, corner );
         ImGui::SetWindowPos( ImVec2( 0, 0 ), true );
 
         if ( ImGui::BeginMenuBar() )
@@ -154,17 +160,22 @@ void EditorCore::DrawUI()
             {
                 if ( ImGui::MenuItem( "Open Scene", "Ctrl+O" ) )
                 {
-                    /* Do stuff */
                     LOG_TRACE( "Open file!" );
-                    
+                    LoadScene();
+                    // #TODO Set up a load scene file using the scene manager
                 }
-                if ( ImGui::MenuItem( "Save Scene", "Ctrl+S" ) )
+
+                if ( ImGui::MenuItem( "Save Scene ...", "Ctrl+S" ) )
                 {
-                    /* Do stuff */
                     LOG_TRACE( "Save file!" );
                     SaveScene();
                 }
-
+                
+                if ( ImGui::MenuItem( "Unload Scene" ) )
+                {
+                    LOG_TRACE( "Unload Scene!" );
+                    SceneManagement::SceneManager::GetInstance()->UnloadCurrentScene();
+                }
 
                 ImGui::EndMenu();
             }
@@ -174,81 +185,91 @@ void EditorCore::DrawUI()
     }
 
     // Stats and Info ---------------------------
-    {
-        ImGui::Begin( "Info" );
-        ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
-
-        ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
-        ImGui::Separator();
-
-        ImGui::Text( "R.Click - Rotate" );
-        ImGui::Text( "WASD    - Move" );
-        ImGui::Text( "Space   - Go Up" );
-        ImGui::Text( "X       - Go Down" );
-
-        ImGui::End();
-    }
+    DrawStats();
 
     // Draw the hierarchy of objects --------------------------
-    {
-        ImGui::Begin( "Hierarchy" );
-
-        Entity* CurrentEntity = nullptr;
-
-        for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
-        {
-            CurrentEntity = entityMan->GetEntity( i );
-
-            if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
-            {
-                SelectedEntity = CurrentEntity;
-            }
-            ImGui::Separator();
-        }
-
-        ImGui::End();
-    }
+    DrawHierarchy();
 
     // Inspector --------------------------
+    DrawInspector();
+
+#endif
+}
+
+inline void EditorCore::DrawHierarchy()
+{
+    ImGui::Begin( "Hierarchy" );
+
+    Entity* CurrentEntity = nullptr;
+    SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        if ( SelectedEntity != nullptr )
+        CurrentEntity = entArray[ i ];
+
+        if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
-            ImGui::Begin( "Inspector" );
+            SelectedEntity = CurrentEntity;
+        }
+        ImGui::Separator();
+    }
 
-            bool isActive = SelectedEntity->GetIsActive();
-            ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
+    ImGui::End();
+}
 
-            char newNameBuf [ 256 ];
-            strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
-            ImGui::InputText( "Name", newNameBuf, 256 );
+FORCE_INLINE void Editor::EditorCore::DrawStats()
+{
+    ImGui::Begin( "Info" );
+    ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
 
-            SelectedEntity->SetName( newNameBuf );
-            SelectedEntity->SetIsActive( isActive );
+    ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
+    ImGui::Separator();
 
-            // Loop through each of this entity's components
-            auto compMap = SelectedEntity->GetAllComponents();
-            if ( compMap != nullptr )
+    ImGui::Text( "R.Click - Rotate" );
+    ImGui::Text( "WASD    - Move" );
+    ImGui::Text( "Space   - Go Up" );
+    ImGui::Text( "X       - Go Down" );
+
+    ImGui::End();
+}
+
+FORCE_INLINE void Editor::EditorCore::DrawInspector()
+{
+    if ( SelectedEntity == nullptr ) return;
+
+    ImGui::Begin( "Inspector" );
+
+    bool isActive = SelectedEntity->GetIsActive();
+    ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
+
+    char newNameBuf [ 256 ];
+    strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
+    ImGui::InputText( "Name", newNameBuf, 256 );
+
+    SelectedEntity->SetName( newNameBuf );
+    SelectedEntity->SetIsActive( isActive );
+
+    // Loop through each of this entity's components
+    auto compMap = SelectedEntity->GetAllComponents();
+    if ( compMap != nullptr )
+    {
+        for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+        {
+            ImGui::Separator();
+
+            ECS::IComponent* theComp = ( compItr->second );
+            if ( theComp != nullptr )
             {
-                for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+                if ( ImGui::CollapsingHeader( theComp->ComponentName() ) )
                 {
-                    ImGui::Separator();
-
-                    ECS::IComponent* theComp = ( compItr->second );
-                    if ( theComp != nullptr )
-                    {
-                        if ( ImGui::CollapsingHeader( theComp->ComponentName() ) )
-                        {
-                            theComp->DrawEditorGUI();
-                        }
-                    }
+                    theComp->DrawEditorGUI();
                 }
             }
-
-            ImGui::End();
         }
     }
 
-#endif
+    ImGui::End();
+
 }
 
 void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
@@ -259,21 +280,34 @@ void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aCont
     }
 }
 
+void Editor::EditorCore::ResetScene()
+{
+    SelectedEntity = nullptr;
+}
+
 void EditorCore::SaveScene()
 {
+    LOG_TRACE( "Save scene!" );
     nlohmann::json njson;
 
-    njson [ "Scene Name" ] = "Test_Scene";
+    njson [ SCENE_NAME_SAVE_KEY ] = "Test_Scene_Name";
+    njson [ ENTITY_ARRAY_SAVE_KEY ] = nlohmann::json::array();
 
-    Entity* CurrentEntity = entityMan->GetEntity( 0 );
+    Entity* CurrentEntity = nullptr;
 
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entityMan->GetEntity( i );
-
-        CurrentEntity->SaveObject( njson );
+        CurrentEntity = entArray [ i ];
+        if ( CurrentEntity != nullptr )
+        {
+            CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );
+        }
     }
 
+    // Open a file stream to the given scene file
     std::ofstream ofs( SceneFile );
     if ( ofs.is_open() )
     {
@@ -281,42 +315,13 @@ void EditorCore::SaveScene()
     }
     else
     {
-        //LOG_ERROR( "Failed to save scene: {}", SceneFile );
+        LOG_ERROR( "Failed to save scene!" );
     }
     ofs.close();
 }
 
 void EditorCore::LoadScene()
 {
-    std::ifstream ifs( SceneFile );
-    if ( ifs.is_open() )
-    {
-        // Store the info in the scene file in the JSON object
-        nlohmann::json njson;
-        ifs >> njson;
-        nlohmann::json::iterator it = njson [ "Entities" ].begin();
-
-        for ( ; it != njson [ "Entities" ].end(); ++it )
-        {
-            // Key is the name 
-            LOG_TRACE( "Entity: {}\n", it.key() );
-
-            // Create a new entity
-
-            // Value is all the components
-            nlohmann::json::iterator compItr = njson [ "Entities" ] [ it.key() ].begin();
-            for ( ; compItr != njson [ "Entities" ] [ it.key() ].end(); ++compItr )
-            {
-                std::cout << "Comp: " << compItr.key() << " :: " << compItr.value() << "\n";
-                // Add component of this type
-
-            }
-        }
-    }
-    else
-    {
-        //LOG_ERROR( "Failed to load scene: {}", SceneFile );
-    }
-
-    ifs.close();
+    LOG_TRACE( "Editor: Load scene!" );
+    SceneManagement::SceneManager::GetInstance()->LoadScene( SceneFile );
 }

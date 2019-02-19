@@ -87,10 +87,18 @@ DXCore::~DXCore()
     if ( context ) { context->Release(); }
     if ( device ) { device->Release(); }
 
-    Logger::ReleaseInstance();
-    logger = nullptr;
     SceneManagement::SceneManager::ReleaseInstance();
     sceneManager = nullptr;
+    ResourceManager::ReleaseInstance();
+
+    ECS::ComponentManager::ReleaseInstance();
+    if ( ScriptMan != nullptr )
+    {
+        delete ScriptMan;
+        ScriptMan = nullptr;
+    }
+    Physics::PhysicsManager::ReleaseInstance();
+
 
     Input::InputManager::ReleaseInstance();
     inputManager = nullptr;
@@ -101,6 +109,9 @@ DXCore::~DXCore()
     editor = nullptr;
 
 #endif
+
+    Logger::ReleaseInstance();
+    logger = nullptr;
 }
 
 // --------------------------------------------------------
@@ -175,11 +186,6 @@ HRESULT DXCore::InitWindow()
     // The window exists but is not visible yet
     // We need to tell Windows to show it, and how to show it
     ShowWindow( hWnd, SW_SHOW );
-
-    logger = Logger::GetInstance();
-    LOG_TRACE( "Logger initlaized!" );
-
-    sceneManager = SceneManagement::SceneManager::GetInstance();
 
     // Return an "everything is ok" HRESULT value
     return S_OK;
@@ -306,14 +312,7 @@ HRESULT DXCore::InitDirectX()
 
 #endif
 
-#if defined ( _WIN32 ) || defined ( _WIN64 )
-    
-    inputManager = Input::InputManager::Initalize<Input::Input_Win>();
-
-#else
-
-
-#endif
+    InitSystems();
 
     // Return the "everything is ok" HRESULT value
     return S_OK;
@@ -445,6 +444,24 @@ void DXCore::Quit()
 }
 
 
+void DXCore::InitSystems()
+{
+    logger = Logger::GetInstance();
+    LOG_TRACE( "Logger initlaized!" );
+
+    sceneManager = SceneManagement::SceneManager::GetInstance();
+    resourceMan = ResourceManager::Initalize( device, context );
+    
+#if defined ( _WIN32 ) || defined ( _WIN64 )
+    inputManager = Input::InputManager::Initalize<Input::Input_Win>();
+#else
+#endif
+    
+    ComponentMan = ECS::ComponentManager::GetInstance();
+    PhysicsMan = Physics::PhysicsManager::GetInstance();
+    ScriptMan = new Scripting::ScriptManager();
+}
+
 // --------------------------------------------------------
 // Uses high resolution time stamps to get very accurate
 // timing information, and calculates useful time stats
@@ -459,10 +476,10 @@ void DXCore::UpdateTimer()
     // Calculate delta time and clamp to zero
     //  - Could go negative if CPU goes into power save mode 
     //    or the process itself gets moved to another core
-    deltaTime = __max( ( float ) ( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
+    deltaTime = __max( static_cast< float >( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
 
     // Calculate the total time from start to now
-    totalTime = ( float ) ( ( currentTime - startTime ) * perfCounterSeconds );
+    totalTime = static_cast< float >( ( ( currentTime - startTime ) * perfCounterSeconds ) );
 
     // Save current time for next frame
     previousTime = currentTime;

@@ -4,11 +4,13 @@
 #include <sol.hpp>
 #include <filesystem>   // std::filesystem::directory_iterator
 
-#include "../Entity/EntityManager.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Transform.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"
+#include "../Resources/MeshRenderer.h"
 
 namespace Scripting
 {
@@ -81,13 +83,6 @@ namespace Scripting
         /// <param name="lua">Lua state to run the function in</param>
         /// <param name="aFuncName">Name of the function to run</param>
         void RunLuaFunction( const sol::state & lua, const char* aFuncName );
-
-        /// <summary>
-        /// Load in a material with the given table of info about it
-        /// </summary>
-        /// <param name="aMatInfo">Info about the material</param>
-        /// <returns>Pointer to the loaded material</returns>
-        Material* LoadMaterial( const sol::table & aMatInfo );
 
         /// <summary>
         /// Load in an entity with the given info about it from a table

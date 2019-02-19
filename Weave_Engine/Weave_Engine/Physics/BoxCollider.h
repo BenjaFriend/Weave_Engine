@@ -4,6 +4,8 @@
 
 #include "../ECS/Component.h"
 #include "PhysicsManager.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 
 namespace Physics
 {
@@ -14,19 +16,19 @@ namespace Physics
     {
     public:
 
+        COMPONENT( BoxCollider );
+
         /// <summary>
         /// A box collider component to handle simple box collision 
         /// </summary>
         /// <param name="aExtents">The extents of this object</param>
         BoxCollider( const glm::vec3 & aExtents = glm::vec3( 1.f, 1.f, 1.f ) );
 
+        BoxCollider( nlohmann::json const & aInitData );
+
         ~BoxCollider();
 
         virtual void DrawEditorGUI() override;
-
-        virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
-        virtual const char* ComponentName() { return "BoxCollider"; }
 
         const bool Collides( const BoxCollider & aOther );
 
@@ -52,6 +54,10 @@ namespace Physics
         const bool SetIsTrigger() const;
 
         void SetIsTrigger( bool aVal );
+
+    protected:
+
+        virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     private:
 

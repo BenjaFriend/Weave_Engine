@@ -1,0 +1,74 @@
+#include "../stdafx.h"
+
+#include "MeshRenderer.h"
+#include "../Entity/Entity.h"
+
+#define MAT_SAVE_KEY    "Material"
+#define MESH_SAVE_KEY   "Mesh"
+
+COMPONENT_INIT( MeshRenderer )
+
+MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
+    : CurrentMaterial( aMat ), CurrentMesh( aMesh )
+{
+}
+
+MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
+{
+    ResourceManager* resMan = ResourceManager::GetInstance();
+
+    // Load mesh
+    std::string mshFile = aInitData [ MESH_SAVE_KEY ];
+    FileName MeshWsTmp( mshFile.begin(), mshFile.end() );
+    CurrentMesh = resMan->LoadMesh( MeshWsTmp );
+
+    // Load Material
+    std::string matFileName = aInitData [ MAT_FILE_SAVE_KEY ];
+    FileName MatWsTemp( matFileName.begin(), matFileName.end() );
+    CurrentMaterial = resMan->LoadMaterial( MatWsTemp );
+}
+
+MeshRenderer::~MeshRenderer()
+{
+    CurrentMaterial = nullptr;
+    CurrentMesh = nullptr;
+}
+
+void MeshRenderer::DrawEditorGUI()
+{
+    ImGui::Checkbox( "Is Enabled", &this->isEnabled );
+    // #TODO Have a material / mesh format that we can edit during runtime
+
+    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ? "Available" : "NULL" ) );
+
+    ImGui::Text( "Mesh:\t %s", ( CurrentMesh != nullptr ? "Available" : "NULL" ) );
+}
+
+void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
+{
+    assert( CurrentMesh != nullptr && CurrentMaterial != nullptr );
+
+    aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
+    aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
+}
+
+void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
+{
+    assert( CurrentMaterial != nullptr );
+
+    // Render all meshes that are a part of this entity
+    // in the future I want to experiment with different meshes/material 
+    // settings
+    if ( ParentTransform == nullptr )
+    {
+        ParentTransform =
+            SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( owner )->GetTransform();
+
+    }
+
+    CurrentMaterial->SetShaderValues(
+        ParentTransform->GetWorldMatrix(),
+        aView,
+        aProjection
+    );
+}

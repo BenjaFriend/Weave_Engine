@@ -1,6 +1,11 @@
 #include "../stdafx.h"
 #include "RigidBody.h"
 
+#define MASS_SAVE_KEY   "Mass"
+#define LAYER_SAVE_KEY  "PhysicsLayer"
+
+COMPONENT_INIT( Physics::RigidBody )
+
 using namespace Physics;
 
 RigidBody::RigidBody( float aMass ) :
@@ -8,6 +13,14 @@ RigidBody::RigidBody( float aMass ) :
 {
     Acceleration = { 0.f, 0.f, 0.f };
     Velocity = { 0.f, 0.f, 0.f };
+}
+
+Physics::RigidBody::RigidBody( nlohmann::json const & aInitData )
+{
+    Acceleration = { 0.f, 0.f, 0.f };
+    Velocity = { 0.f, 0.f, 0.f };
+    Mass = aInitData [ MASS_SAVE_KEY ];
+    Layer = aInitData [ LAYER_SAVE_KEY ];
 }
 
 RigidBody::~RigidBody()
@@ -19,9 +32,10 @@ void RigidBody::DrawEditorGUI()
     ImGui::InputFloat( "Mass", &Mass );
 }
 
-void RigidBody::SaveObject( nlohmann::json & aOutFile )
+void RigidBody::SaveComponentData( nlohmann::json & aCompData )
 {
-    aOutFile [ "unimplemented" ] = 0;
+    aCompData [ MASS_SAVE_KEY ] = Mass;
+    aCompData [ LAYER_SAVE_KEY ] = Layer;
 }
 
 void RigidBody::ApplyForce( const glm::vec3 aForce )

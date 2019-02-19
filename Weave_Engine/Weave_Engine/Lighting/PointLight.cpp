@@ -1,11 +1,17 @@
 #include "../stdafx.h"
 
 #include "PointLight.h"
+#include "../Scenes/SceneManager.h"
+#include "../Scenes/Scene.h"
 
-#include "../Resources/LightSystem.h"
+#define COLOR_SAVE_KEY      "Color"
+#define INTENSITY_SAVE_KEY  "Intensity"
+#define RANGE_SAVE_KEY      "Range"
+#define POS_SAVE_KEY        "Pos"
+
+COMPONENT_INIT( PointLight )
 
 PointLight::PointLight(
-    LightSystem* aRendSys,
     glm::vec3 aColor,
     glm::vec3 aPos,
     float aIntensity,
@@ -17,7 +23,24 @@ PointLight::PointLight(
     LightingData.Intensity = aIntensity;
     LightingData.Range = aRange;
 
-    aRendSys->AddPointLight( this );
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddPointLight( this );
+}
+
+PointLight::PointLight( nlohmann::json const & aInitData )
+{
+    LightingData = {};
+    LightingData.Intensity = aInitData [ INTENSITY_SAVE_KEY ];
+    LightingData.Range = aInitData [ RANGE_SAVE_KEY ];
+    
+    LightingData.Color.r = aInitData [ COLOR_SAVE_KEY ] [ "R" ];
+    LightingData.Color.g = aInitData [ COLOR_SAVE_KEY ] [ "G" ];
+    LightingData.Color.b = aInitData [ COLOR_SAVE_KEY ] [ "B" ];
+    
+    LightingData.Position.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
+    LightingData.Position.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
+    LightingData.Position.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
+
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddPointLight( this );
 }
 
 PointLight::~PointLight()
@@ -60,9 +83,18 @@ void PointLight::SetDrawRange(bool aVal)
     DrawRange = aVal;
 }
 
-void PointLight::SaveObject( nlohmann::json & aOutFile )
+void PointLight::SaveComponentData( nlohmann::json & comp_data )
 {
-    aOutFile [ "unimplemented" ] = 0;
+    comp_data [ INTENSITY_SAVE_KEY ] = LightingData.Intensity;
+    comp_data [ RANGE_SAVE_KEY ] = LightingData.Range;
+
+    comp_data [ COLOR_SAVE_KEY ] [ "R" ] = LightingData.Color.r;
+    comp_data [ COLOR_SAVE_KEY ] [ "G" ] = LightingData.Color.g;
+    comp_data [ COLOR_SAVE_KEY ] [ "B"] = LightingData.Color.b;
+
+    comp_data [ POS_SAVE_KEY ] [ "X" ] = LightingData.Position.x;
+    comp_data [ POS_SAVE_KEY ] [ "Y" ] = LightingData.Position.y;
+    comp_data [ POS_SAVE_KEY ] [ "Z" ] = LightingData.Position.z;
 }
 
 void PointLight::DrawEditorGUI()

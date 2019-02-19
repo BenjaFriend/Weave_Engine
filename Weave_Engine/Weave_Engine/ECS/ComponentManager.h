@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
+#include "../Scenes/SceneManager.h"
 #include "IComponent.h"
 
 namespace ECS
@@ -50,18 +51,46 @@ namespace ECS
         template<class T, class ...ARGS>
         T* AddComponent( EntityID aEntityID, ARGS&&... args )
         {
-            IComponent* newComponent = new T( std::forward<ARGS>( args )... );
-
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+
+            // Make sure that this component doesn't exist already
+            assert( this->activeComponents [ aEntityID ] [ CTID ] == nullptr );
+
+            IComponent* newComponent = new T( std::forward<ARGS>( args )... );
 
             newComponent->owner = aEntityID;
             newComponent->id = ComponentCount;
 
             ++ComponentCount;
 
-            this->activeComponents[ aEntityID ][ CTID ] = newComponent;
+            // Map the component
+            this->activeComponents [ aEntityID ] [ CTID ] = newComponent;
 
             return static_cast< T* >( newComponent );
+        }
+
+        /// <summary>
+        /// Add a component to the given entity from a json data object
+        /// </summary>
+        /// <param name="aEntityID">The entity to add to</param>
+        /// <param name="aCompData">The json component data for creating a </param>
+        /// <returns>Returns true if successfully added</returns>
+        bool AddComponent( EntityID aEntityID, nlohmann::json & aCompData )
+        {
+            std::string compType = aCompData [ COMP_SAVE_KEY ];
+            LOG_TRACE( "Load Component: {}", compType );
+            IComponent* newComp = IComponent::ReadFromFile( aCompData );
+
+            if ( newComp == nullptr ) return false;
+
+            newComp->owner = aEntityID;
+            newComp->id = ComponentCount;
+
+            ++ComponentCount;
+            const ComponentTypeId CTID = newComp->GetStaticComponentTypeID();
+            this->activeComponents [ aEntityID ] [ CTID ] = newComp;
+
+            return true;
         }
 
         template <class T>
@@ -69,11 +98,11 @@ namespace ECS
         {
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
-            return static_cast< T* >( activeComponents[ aEntityID ][ CTID ] );
+            return static_cast< T* >( activeComponents [ aEntityID ] [ CTID ] );
         }
 
         const ComponentMap * GetAllComponents( const EntityID aEntityID ) const
-        {            
+        {
             auto itr = activeComponents.find( aEntityID );
             if ( itr == activeComponents.end() )
             {
@@ -91,8 +120,9 @@ namespace ECS
         {
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
-            delete ( activeComponents[ aEntityID ][ CTID ] );
-            activeComponents[ aEntityID ][ CTID ] = nullptr;
+            delete ( activeComponents [ aEntityID ] [ CTID ] );
+            activeComponents [ aEntityID ] [ CTID ] = nullptr;
+            --ComponentCount;
         }
 
     private:

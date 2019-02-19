@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "../Resources/Vertex.h"
 #include "../Resources/Mesh.h"
+#include "../Resources/MeshRenderer.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
 #include "../Resources/Materials/Material.h"
@@ -54,25 +55,7 @@ Game::~Game()
     skyRastState->Release();
     skyDepthState->Release();
 
-    if ( ScriptMan != nullptr )
-    {
-        delete ScriptMan;
-        ScriptMan = nullptr;
-    }
-
-    EntityManager::ReleaseInstance();
-    Physics::PhysicsManager::ReleaseInstance();
-    ResourceManager::ReleaseInstance();
-
-    if ( LightSys != nullptr )
-    {
-        delete LightSys;
-        LightSys = nullptr;
-    }
-
     delete FlyingCamera;
-
-    ECS::ComponentManager::ReleaseInstance();
 }
 
 // --------------------------------------------------------
@@ -81,16 +64,7 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    entityMan = EntityManager::GetInstance();
-    resourceMan = ResourceManager::Initalize( device, context );
-    PhysicsMan = Physics::PhysicsManager::GetInstance();
-    ComponentMan = ECS::ComponentManager::GetInstance();
-
-    LightSys = new LightSystem();
-    ScriptMan = new Scripting::ScriptManager();
-
     FlyingCamera = new Camera();
-
 
 #if defined( EDITOR_ON )
 
@@ -179,15 +153,15 @@ void Game::InitLights()
 
 
     // Add Dir Lights
-    Entity* dirLightEntity = entityMan->AddEntity( nullptr, nullptr, "Dir Light 1" );
-    dirLightEntity->AddComponent<DirLight>( LightSys, DirLight1 );
+    Entity* dirLightEntity = sceneManager->GetActiveScene()->AddEntity( "Dir Light 1" );
+    dirLightEntity->AddComponent<DirLight>( DirLight1 );
 
     // Add Point Lights
-    Entity* pLightEntity = entityMan->AddEntity( nullptr, nullptr, "Point Light 1" );
-    pLightEntity->AddComponent<PointLight>( LightSys, Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
+    Entity* pLightEntity = sceneManager->GetActiveScene()->AddEntity( "Point Light 1" );
+    pLightEntity->AddComponent<PointLight>( Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
 
-    Entity* pLightEntity2 = entityMan->AddEntity( nullptr, nullptr, "Point Light 2" );
-    pLightEntity2->AddComponent<PointLight>( LightSys, Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
+    Entity* pLightEntity2 = sceneManager->GetActiveScene()->AddEntity( "Point Light 2" );
+    pLightEntity2->AddComponent<PointLight>( Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -218,39 +192,16 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-    // Create entity
-
-    // Give it a mesh
-        // The mesh will default to unlit pink material
-
-    // Set that meshes' material
-
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
-    Material* floorMat = resourceMan->LoadMaterial(
-        "Floor Mat",
-        vertexShader,
-        pixelShader,
-        L"Assets/Textures/floor_albedo.png",
-        L"Assets/Textures/floor_normals.png",
-        L"Assets/Textures/floor_roughness.png",
-        L"Assets/Textures/floor_metal.png",
-        SamplerID
-    );
-
-    //glm::vec3 floorPos = glm::vec3( 0.f, -5.f, 0.f );
-    //Entity* floorEntity = entityMan->AddEntity(
-    //    CubeMesh, floorMat, floorPos, "Floor" );
-
-    //floorEntity->AddComponent<Physics::BoxCollider>( glm::vec3( 5.f, 5.f, 5.f ) );
-    //floorEntity->AddComponent<Physics::RigidBody>( 2.0f );
-    //
-    //floorEntity->GetTransform()->SetScale( glm::vec3( 5.f, 5.f, 5.f ) );
+    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Cobblestone.wmat" );
 
     glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
-    Entity* secondBox = entityMan->AddEntity(
-        CubeMesh, floorMat, newPos, "Box 2" );
+
+    Entity* secondBox = sceneManager->GetActiveScene()->AddEntity( "Box 2" );
+    
+    secondBox->AddComponent<MeshRenderer>( fileLoadedMat, CubeMesh );
 
     secondBox->AddComponent<Physics::BoxCollider>();
 
@@ -276,7 +227,7 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-    PhysicsMan->Update( dt );
+    //PhysicsMan->Update( dt );
 
     // Update the camera
     FlyingCamera->Update( dt );
@@ -312,49 +263,64 @@ void Game::Draw( float dt, float totalTime )
     UINT stride = sizeof( Vertex );
     UINT offset = 0;
 
-    Mesh* EnMesh = nullptr;
+    const Mesh* EnMesh = nullptr;
+    Material* EnMat = nullptr;
+    MeshRenderer* MeshRend = nullptr;
     ID3D11Buffer* VertBuff = nullptr;
     ID3D11Buffer* IndexBuf = nullptr;
-    UINT IndexCount = 0;
     Entity* CurrentEntity = nullptr;
+    UINT IndexCount = 0;
 
-    for ( size_t i = 0; i < entityMan->GetEntityCount(); ++i )
+    SceneManagement::Scene* CurScene = sceneManager->GetActiveScene();
+
+    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+
+    for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entityMan->GetEntity( i );
+        CurrentEntity = entArray [ i ];
 
         if ( !CurrentEntity->GetIsActive() ) continue;
 
-        if ( CurrentEntity->GetMaterial() != nullptr )
+        MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
+        if ( MeshRend != nullptr )
         {
+            EnMat = MeshRend->GetMaterial();
+
+            if ( EnMat == nullptr ) continue;
+
             // Send camera info ---------------------------------------------------------
-            CurrentEntity->GetMaterial()->GetPixelShader()->SetFloat3(
-                "CameraPosition", 
+            EnMat->GetPixelShader()->SetFloat3(
+                "CameraPosition",
                 FlyingCamera->GetPosition()
             );
 
-            CurrentEntity->PrepareMaterial( 
-                FlyingCamera->GetViewMatrix(), 
+            MeshRend->PrepareMaterial(
+                FlyingCamera->GetViewMatrix(),
                 FlyingCamera->GetProjectMatrix()
             );
 
             // Draw the entity ---------------------------------------------------------
-            EnMesh = CurrentEntity->GetEntityMesh();
+            EnMesh = MeshRend->GetMesh();
+            if ( EnMesh == nullptr ) continue;
+
             IndexBuf = EnMesh->GetIndexBuffer();
             VertBuff = EnMesh->GetVertexBuffer();
             IndexCount = EnMesh->GetIndexCount();
+
             // Set the buffer information
             context->IASetVertexBuffers( 0, 1, &VertBuff, &stride, &offset );
             context->IASetIndexBuffer( IndexBuf, DXGI_FORMAT_R32_UINT, 0 );
 
             // Finally do the actual drawing
             context->DrawIndexed( IndexCount, 0, 0 );
-        }
-    }   // end Entity loop
 
-    LightSys->SetShaderInfo(
-        CurrentEntity->GetMaterial()->GetVertexShader(),
-        CurrentEntity->GetMaterial()->GetPixelShader()
-    );
+            CurScene->SetShaderInfo(
+                EnMat->GetVertexShader(),
+                EnMat->GetPixelShader()
+            );
+        }
+        
+    }   // end Entity loop
 
     // Draw the Sky box -------------------------------------
 
@@ -448,7 +414,7 @@ void Game::DrawLightSources()
     UINT stride = sizeof( Vertex );
     UINT offset = 0;
 
-    auto PointLights = LightSys->GetPointLights();
+    auto PointLights = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetPointLights();
 
     for ( size_t i = 0; i < PointLights.size(); ++i )
     {

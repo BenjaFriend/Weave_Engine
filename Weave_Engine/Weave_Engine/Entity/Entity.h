@@ -7,6 +7,10 @@
 #include "Transform.h"
 
 /////////////////////////////////////////////////
+// Savable key definitions 
+#include "../Utils/SaveFileDefs.h"
+
+/////////////////////////////////////////////////
 // Forward Declarations
 class Mesh;
 class Material;
@@ -24,11 +28,24 @@ class Entity : ISaveable
 public:
 
     /// <summary>
-    /// Constructor for this entity
+    /// Creates an empty game object with the given name
     /// </summary>
-    /// <param name="aMesh">A pointer to this entity's mesh</param>
-    /// <param name="aMat">A material for this entity to use</param>
-    Entity( Mesh * aMesh, Material* aMat, std::string aName );
+    /// <param name="aName">Name of this entity</param>
+    Entity( std::string aName );
+
+    /// <summary>
+    /// Creates an empty game object with the given name at the 
+    /// given position
+    /// </summary>
+    /// <param name="aName">Name of this entity</param>
+    /// <param name="aPos">Position of this entity</param>
+    Entity( std::string aName, glm::vec3 aPos );
+
+    /// <summary>
+    /// Create this entity bsaed off of a scene file data set
+    /// </summary>
+    /// <param name="aFile">The set of data about this entity</param>
+    Entity( nlohmann::json const & aFile );
 
     /// <summary>
     /// Default constructor for this entity
@@ -36,13 +53,6 @@ public:
     Entity();
 
     ~Entity();
-
-    /// <summary>
-    /// Sets the material's shader data and activates the shaders
-    /// </summary>
-    /// <param name="aView">View matrix</param>
-    /// <param name="aProjection">Project matrix</param>
-    void PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection );
 
     // Components ------------------------------
 
@@ -86,19 +96,17 @@ public:
         return componentManager->GetAllComponents( this->entID );
     }
 
-    void SaveObject( nlohmann::json& aOutFile );
+    /// <summary>
+    /// Save this entity's data and components into a json array of 
+    /// entities
+    /// </summary>
+    /// <param name="aJsonEntityArray">nlohmann::json::array of entities</param>
+    void SaveObject( nlohmann::json& aJsonEntityArray );
 
 private:
 
     /** The transform of the entity */
     Transform* EntityTransform = nullptr;
-
-    // TODO: Make this a smart pointer at some point
-    /** This entity's mesh. Just use a reference to a pointer so that we can do instance meshes */
-    Mesh* EntityMesh = nullptr;
-
-    /** This entity's material */
-    Material* EntityMaterial = nullptr;
 
     /** Flag for if this entity is active or not */
     bool IsActive;
@@ -116,12 +124,6 @@ private:
     // Accessors
     ////////////////////////////////////////////////////
 public:
-
-    /** Returns this entity's mesh */
-    Mesh * GetEntityMesh() const;
-
-    /** Returns this entity's material */
-    const Material* GetMaterial() const;
 
     /** Get the current transform of this object */
     Transform* GetTransform() const { return EntityTransform; }

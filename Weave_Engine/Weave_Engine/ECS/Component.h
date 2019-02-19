@@ -2,6 +2,7 @@
 
 #include "IComponent.h"
 #include "FamilyTypeID.h"
+#include "../Utils/SaveFileDefs.h"
 
 namespace ECS
 {
@@ -19,17 +20,20 @@ namespace ECS
 
         Component() {}
 
+        Component( nlohmann::json const & aInitData )
+        {
+            LOG_WARN( "Component does not implement scene file constructor!" );
+        }
+
         virtual ~Component() {}
 
 
-        ComponentTypeId GetStaticComponentTypeID() const
+        virtual ComponentTypeId GetStaticComponentTypeID() const override
         {
             return STATIC_COMPONENT_TYPE_ID;
         }
 
         virtual const char* ComponentName() = 0;
-
-        virtual void SaveObject( nlohmann::json & aOutFile ) = 0;        
 
     };  // Component
 

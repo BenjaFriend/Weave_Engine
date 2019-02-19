@@ -47,6 +47,12 @@ public:
     /** Number of indices are in the index buffer */
     const UINT GetIndexCount() const;
 
+    FORCE_INLINE const std::string GetMeshFileName() const 
+    {  
+        std::string s( MeshFileName.begin(), MeshFileName.end() );
+        return s;
+    }
+
 private:
 
     void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices, int numIndices );
@@ -73,5 +79,7 @@ private:
     /// <param name="aIndexCount">Number of indecies this msh has</param>
     void CreateBuffers( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount );
 
+    /** The file name of that was used to load this mesh */
+    FileName MeshFileName;
 };
 

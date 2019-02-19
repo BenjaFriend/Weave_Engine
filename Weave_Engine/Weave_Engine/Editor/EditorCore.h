@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../Entity/EntityManager.h"
+#include "../Entity/Entity.h"
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ResourceManager.h"
-#include "../Core/SceneManager.h"
+#include "../Scenes/SceneManager.h"
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
+#include "../Resources/MeshRenderer.h"
 #include "../Entity/Camera.h"
 #include "Gizmo.h"
 
@@ -22,11 +23,14 @@
 
 #include "../MathHelper.h"
 
+#include "../Utils/SaveFileDefs.h"
+
 namespace Editor
 {
 
     /// <summary>
     /// Core functionality of the editor for editing a scene
+    /// Including most IMGUI application
     /// </summary>
     /// <author>Ben Hoffman</author>
     class EditorCore
@@ -51,6 +55,13 @@ namespace Editor
         /// <param name="dt">Delta Time of this frame</param>
         void Update( float dt );
 
+        /// <summary>
+        /// Draw any editor gizmos, editor UI, and highlight
+        /// the currently selected entity
+        /// </summary>
+        /// <param name="dt">Delta time</param>
+        /// <param name="aDevice">DX11 device</param>
+        /// <param name="aContext">DX11 context</param>
         void Draw(
             float dt,
             ID3D11Device* aDevice,
@@ -59,38 +70,40 @@ namespace Editor
 
         /// <summary>
         /// Save all entities to a scene json file 
+        /// The files is based on the current scene file from the editor window
         /// </summary>
         void SaveScene();
 
         /// <summary>
-        /// Loads entities from the scene json file 
+        /// Loads entities from the scene json file based on the currently
+        /// selected scene file name
         /// </summary>
         void LoadScene();
-
-        /// <summary>
-        /// Get the currently selected entity by by the user
-        /// </summary>
-        /// <returns>Pointer to the selected entity</returns>
-        Entity* GetSelectedEntity() const { return SelectedEntity; }
 
         //////////////////////////////////////////////////////////////////
         // Accessors 
         //////////////////////////////////////////////////////////////////
 
-        const bool GetDrawGizmos() const { return DoGizmoDraw; }
-        void SetDrawGizmos( const bool aDrawGizmos );
+        /// <summary>
+        /// Get the currently selected entity by by the user
+        /// </summary>
+        /// <returns>Pointer to the selected entity</returns>
+        FORCE_INLINE Entity* GetSelectedEntity() const { return SelectedEntity; }
 
-        const bool GetDrawSkybox() const { return DrawSkyBox; }
-        void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
+        FORCE_INLINE const bool GetDrawGizmos() const { return DoGizmoDraw; }
+        FORCE_INLINE void SetDrawGizmos( const bool aDrawGizmos );
 
-        const bool GetDrawColliders() const { return DebugDrawColliders; }
-        void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
+        FORCE_INLINE const bool GetDrawSkybox() const { return DrawSkyBox; }
+        FORCE_INLINE void SetDrawSkybox( const bool aDrawBox ) { DrawSkyBox = aDrawBox; }
 
-        void SetSceneFile( const FileName & aFileName );
-        const FileName & GetSceneFileName() const { return SceneFile; }
+        FORCE_INLINE const bool GetDrawColliders() const { return DebugDrawColliders; }
+        FORCE_INLINE void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
 
-        void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
-        Camera* GetCamera()const { return CurrentCamera; }
+        FORCE_INLINE void SetSceneFile( const FileName & aFileName );
+        FORCE_INLINE const FileName & GetSceneFileName() const { return SceneFile; }
+
+        FORCE_INLINE void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
+        FORCE_INLINE Camera* GetCamera()const { return CurrentCamera; }
 
     private:
 
@@ -110,15 +123,38 @@ namespace Editor
         void DrawUI();
 
         /// <summary>
+        /// Draw the hierarchy of objects in the scene
+        /// </summary>
+        FORCE_INLINE void DrawHierarchy();
+
+        /// <summary>
+        /// Draw the current stats of the scene
+        /// </summary>
+        FORCE_INLINE void DrawStats();
+
+        /// <summary>
+        /// Draw the Inspector elements of the currently selected entity
+        /// </summary>
+        FORCE_INLINE void DrawInspector();
+
+        /// <summary>
         /// Draw any gizmos that should be on screen
         /// </summary>
         void DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext );
+
+        /// <summary>
+        /// Behavior that should happen when the scene is reset
+        /// </summary>
+        void ResetScene();
 
         /** Static instance of the editor */
         static EditorCore* Instance;
 
         /** Resource manager for handling any editor-specific shaders */
         ResourceManager* resourceMan = nullptr;
+
+        /** The scene manager of this game */
+        SceneManagement::SceneManager* sceneMan = nullptr;
 
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
@@ -144,14 +180,11 @@ namespace Editor
         /** Flag to draw colliders or not */
         bool DebugDrawColliders = true;
 
-        /** Entity manager pointer for editing entity data */
-        EntityManager* entityMan = nullptr;
-
         /** The entity that the user wants to change */
         Entity* SelectedEntity = nullptr;
 
         /** The current scene file to save all entities to */
-        FileName SceneFile = L"Scene_test.json";
+        FileName SceneFile = L"Assets/Scenes/Scene_test.json";
 
         /** The color that will be draw around the entity that's selected */
         glm::vec3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };

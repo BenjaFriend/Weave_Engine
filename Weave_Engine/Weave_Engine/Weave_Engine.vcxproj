@@ -302,14 +302,13 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Logger.cpp" />
     <ClCompile Include="Core\Main.cpp" />
-    <ClCompile Include="Core\SceneManager.cpp" />
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp" />
+    <ClCompile Include="ECS\IComponent.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
     <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
-    <ClCompile Include="Entity\EntityManager.cpp" />
     <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
@@ -320,9 +319,11 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Resources\Materials\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
-    <ClCompile Include="Resources\LightSystem.cpp" />
+    <ClCompile Include="Resources\MeshRenderer.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Resources\SimpleShader.cpp" />
+    <ClCompile Include="Scenes\Scene.cpp" />
+    <ClCompile Include="Scenes\SceneManager.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -347,7 +348,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Core\Logger.h" />
-    <ClInclude Include="Core\SceneManager.h" />
     <ClInclude Include="ECS\Component.h" />
     <ClInclude Include="ECS\ComponentManager.h" />
     <ClInclude Include="ECS\FamilyTypeID.h" />
@@ -356,7 +356,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Editor\Gizmo.h" />
     <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Entity.h" />
-    <ClInclude Include="Entity\EntityManager.h" />
     <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Input\IInput_Impl.h" />
     <ClInclude Include="Input\InputManager.h" />
@@ -372,13 +371,16 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />
-    <ClInclude Include="Resources\LightSystem.h" />
+    <ClInclude Include="Resources\MeshRenderer.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\SimpleShader.h" />
     <ClInclude Include="Resources\Vertex.h" />
+    <ClInclude Include="Scenes\Scene.h" />
+    <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Dispatcher.hpp" />
+    <ClInclude Include="Utils\SaveFileDefs.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Editor_Outline.hlsl">
@@ -449,6 +451,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
   <ItemGroup>
     <None Include="..\Assets\Scripts\loadMaterials.lua" />
     <None Include="..\Assets\Scripts\test.lua" />
+    <None Include="cpp.hint" />
     <None Include="Lighting.hlsli" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -8,9 +8,9 @@
 
 size_t Entity::EntityCount = 0;
 
-Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
-    : EntityMesh( aMesh ), EntityMaterial( aMat ), Name( aName )
-{    
+Entity::Entity( std::string aName )
+    : Name( aName )
+{
     IsActive = true;
 
     entID = EntityCount++;
@@ -19,6 +19,36 @@ Entity::Entity( Mesh* aMesh, Material* aMat, std::string aName )
 
     // Give entity component a transform 
     EntityTransform = this->AddComponent<Transform>();
+}
+
+Entity::Entity( std::string aName, glm::vec3 aPos )
+    : Entity( aName )
+{
+    EntityTransform->SetPosition( aPos );
+}
+
+Entity::Entity( nlohmann::json const & aFile )
+{
+    Name = aFile [ NAME_SAVE_KEY ];
+    IsActive = aFile [ IS_ACTIVE_SAVE_KEY ];
+
+    entID = EntityCount++;
+
+    componentManager = ECS::ComponentManager::GetInstance();
+
+    // #TODO: Load components
+    nlohmann::json comp_data = aFile [ COMPONENT_ARRAY_SAVE_KEY ];
+
+    nlohmann::json::iterator compItr = comp_data.begin();
+
+    while ( compItr != comp_data.end() )
+    {
+        componentManager->AddComponent( entID, *compItr );
+        ++compItr;
+    }
+    EntityTransform = this->GetComponent<Transform>();
+
+    LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
 }
 
 Entity::Entity()
@@ -36,52 +66,46 @@ Entity::Entity()
 Entity::~Entity()
 {
     EntityTransform = nullptr;
-    EntityMesh = nullptr;
-    EntityMaterial = nullptr;
     componentManager = nullptr;
+    --EntityCount;
 }
 
-void Entity::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
+void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
 {
-    assert( EntityMaterial != nullptr );
+    LOG_TRACE( "Save Object: {}", this->Name );
 
-    // Render all meshes that are a part of this entity
-    // in the future I want to experiment with different meshes/material 
-    // settings
-    EntityMaterial->SetShaderValues( EntityTransform->GetWorldMatrix() , aView, aProjection);
-}
+    // Save this entity's data
+    nlohmann::json entity_data = nlohmann::json::object();
 
-void Entity::SaveObject( nlohmann::json & aOutFile )
-{
+    entity_data [ NAME_SAVE_KEY ] = this->Name;
+    entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
+    entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
+
     // Save each component
-    auto compMap = this->GetAllComponents();
+    const auto & compMap = this->GetAllComponents();
 
     if ( compMap != nullptr )
     {
         for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
         {
             ECS::IComponent* theComp = ( compItr->second );
+
             if ( theComp != nullptr )
             {
-                theComp->SaveObject( aOutFile );
+                theComp->SaveObject( entity_data [ COMPONENT_ARRAY_SAVE_KEY ] );
             }
         }
+    }
+    // Append this entity to the given entity array
+    if ( aJsonEntityArray.is_array() )
+    {
+        aJsonEntityArray.push_back( entity_data );
     }
 }
 
 ////////////////////////////////////////////////////
 // Accessors
 ////////////////////////////////////////////////////
-
-Mesh * Entity::GetEntityMesh() const
-{
-    return EntityMesh;
-}
-
-const Material* Entity::GetMaterial() const
-{
-    return EntityMaterial;
-}
 
 void Entity::SetIsActive( const bool aStatus )
 {

@@ -15,7 +15,11 @@ class DirLight : public ECS::Component<DirLight>
 {
 public:
 
-    DirLight( LightSystem* aRendSys, DirectionalLightData aLightData );
+    COMPONENT( DirLight );
+
+    DirLight( DirectionalLightData aLightData );
+
+    DirLight( nlohmann::json const & aInitData );
 
     ~DirLight();
 
@@ -31,9 +35,7 @@ public:
     /// <param name="aLightData">The lighting data for this dir light</param>
     void SetLightData( DirectionalLightData aLightData );
 
-    virtual const char* ComponentName() { return "Dir Light"; }
-
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
     virtual void DrawEditorGUI() override;
 

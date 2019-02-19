@@ -5,19 +5,20 @@
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"
 
-class LightSystem;
-
 class PointLight : public ECS::Component<PointLight>
 {
 public:
 
+    COMPONENT( PointLight );
+
     PointLight( 
-        LightSystem* aRendSys,
         glm::vec3 aColor,
         glm::vec3 aPos, 
         float aIntensity = 1.f, 
         float aRange = 5.f
     );
+
+    PointLight( nlohmann::json const & aInitData );
 
     ~PointLight();
 
@@ -35,11 +36,11 @@ public:
 
     void SetDrawRange(bool aDrawRange);
 
-    virtual const char* ComponentName() { return "PointLight"; }
-
-    virtual void SaveObject( nlohmann::json & aOutFile ) override;
-
     virtual void DrawEditorGUI() override;
+
+protected:
+
+    virtual void SaveComponentData( nlohmann::json & aOutFile ) override;
 
 private:
 

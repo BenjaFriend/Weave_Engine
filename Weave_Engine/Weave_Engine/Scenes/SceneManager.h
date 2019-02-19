@@ -1,10 +1,18 @@
 #pragma once
 
+#include <boost/filesystem.hpp>
+
 #include "../stdafx.h"
+
+#include "json/json.hpp"
 #include "../Utils/Dispatcher.hpp"
+#include "../Utils/SaveFileDefs.h"
+#include "Scene.h"
 
 namespace SceneManagement
 {
+    namespace fs = boost::filesystem;
+
     /// <summary>
     /// The scene manager will be able to load/unload 
     /// scene files and control the flow of what entities 
@@ -41,17 +49,30 @@ namespace SceneManagement
         void UnloadCurrentScene();
 
         /// <summary>
+        /// Save the current scene 
+        /// </summary>
+        /// <param name="aSceneFile"></param>
+        void SaveScene( FileName & aSceneFile );
+
+        /// <summary>
         /// Get the name of the currently loaded scene
         /// </summary>
         /// <returns>Name of the current scene</returns>
-        const FileName GetActiveScene() const { return ActiveScene; }
+        FORCE_INLINE Scene* GetActiveScene() const { return ActiveScene; }
 
         /// <summary>
         /// The dispatcher for OnSceneLoad that you can use to add 
         /// listeners to this function
         /// </summary>
         /// <returns>Dispatcher reference for onScene load</returns>
-        const Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }  
+        FORCE_INLINE Dispatcher & OnSceneLoad() { return OnSceneLoadDispatcher; }
+
+        /// <summary>
+        /// The dispatcher for OnSceneUnload that you can use to add
+        /// listeners to this function
+        /// </summary>
+        /// <returns>Dispatacher reference for OnUnloadScene</returns>
+        FORCE_INLINE Dispatcher & OnSceneUnload() { return OnSceneUnloadDispatcher; }
 
     private:
 
@@ -61,10 +82,14 @@ namespace SceneManagement
 
         /** Static instance of the scene manager */
         static SceneManager* Instance;
-        
-        /** The current scene that is loaded in */
-        FileName ActiveScene;
 
+        /** A dispatcher to send events when the scene has loaded */
         Dispatcher OnSceneLoadDispatcher;
+
+        /** A dispatcher that signals when the scene should be unloaded */
+        Dispatcher OnSceneUnloadDispatcher;
+
+        Scene * ActiveScene = nullptr;
+
     };
 }   // namespace SceneManagement
