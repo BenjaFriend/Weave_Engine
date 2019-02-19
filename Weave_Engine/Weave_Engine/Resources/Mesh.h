@@ -73,5 +73,7 @@ private:
     /// <param name="aIndexCount">Number of indecies this msh has</param>
     void CreateBuffers( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndecies, UINT aIndexCount );
 
+    /** The file name of that was used to load this mesh */
+    FileName MeshFileName;
 };
 

@@ -192,13 +192,6 @@ void Game::CreateBasicGeometry()
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
 
-    // Create entity
-
-    // Give it a mesh
-        // The mesh will default to unlit pink material
-
-    // Set that meshes' material
-
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 

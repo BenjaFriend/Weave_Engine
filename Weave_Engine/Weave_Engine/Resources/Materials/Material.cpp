@@ -41,6 +41,7 @@ void Material::SaveObject( nlohmann::json & aOutFile )
 {
     // Out the file names of any shaders that we have
     LOG_WARN( "Implement Material class save!!" );    
+
 }
 
 void Material::SetShaderValues( const glm::mat4 & aWorld, const glm::mat4 & aView, const glm::mat4 & aProjection )
