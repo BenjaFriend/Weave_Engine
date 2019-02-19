@@ -1,0 +1,314 @@
+{
+    "Entities": [
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
+                    "Mesh": "Assets/Models/cube.obj"
+                },
+                {
+                    "CenterOffset": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "ComponentName": "BoxCollider",
+                    "Extents": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "IsTrigger": false
+                }
+            ],
+            "IsActive": true,
+            "Name": "Box 2"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "AmbientColor": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "ComponentName": "DirLight",
+                    "DiffuseColor": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Direction": {
+                        "X": 1.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Intensity": 1.0
+                }
+            ],
+            "IsActive": true,
+            "Name": "Dir Light 1"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "Color": {
+                        "B": 0.0,
+                        "G": 0.0,
+                        "R": 1.0
+                    },
+                    "ComponentName": "PointLight",
+                    "Intensity": 1.0,
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 2.0,
+                        "Z": 0.0
+                    },
+                    "Range": 5.0
+                }
+            ],
+            "IsActive": true,
+            "Name": "Point Light 1"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "Color": {
+                        "B": 1.0,
+                        "G": 0.0,
+                        "R": 0.0
+                    },
+                    "ComponentName": "PointLight",
+                    "Intensity": 1.0,
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": -1.0,
+                        "Z": 0.0
+                    },
+                    "Range": 5.0
+                }
+            ],
+            "IsActive": true,
+            "Name": "Point Light 2"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Bronze.wmat",
+                    "Mesh": "Assets/Models/sphere.obj"
+                }
+            ],
+            "IsActive": true,
+            "Name": "-----Lua Generated 0"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 1.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Bronze.wmat",
+                    "Mesh": "Assets/Models/sphere.obj"
+                }
+            ],
+            "IsActive": true,
+            "Name": "-----Lua Generated 1"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 1.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Bronze.wmat",
+                    "Mesh": "Assets/Models/sphere.obj"
+                }
+            ],
+            "IsActive": true,
+            "Name": "-----Lua Generated 2"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Bronze.wmat",
+                    "Mesh": "Assets/Models/sphere.obj"
+                }
+            ],
+            "IsActive": true,
+            "Name": "-----Lua Generated 3"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 2.0,
+                        "Y": 5.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
+                    "Mesh": "Assets/Models/sphere.obj"
+                }
+            ],
+            "IsActive": true,
+            "Name": "This REALLLLL"
+        }
+    ],
+    "Scene_Name": "Test_Scene_Name"
+}
