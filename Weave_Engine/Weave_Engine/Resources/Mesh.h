@@ -47,6 +47,8 @@ public:
     /** Number of indices are in the index buffer */
     const UINT GetIndexCount() const;
 
+    FORCE_INLINE const FileName GetMeshFileName() const { return MeshFileName; }
+
 private:
 
     void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices, int numIndices );

@@ -7,6 +7,7 @@
 #include "../Entity/Transform.h"
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
+#include "../Resources/ResourceManager.h"
 
 /// <summary>
 /// A mesh renderer is a component that when added to an entity

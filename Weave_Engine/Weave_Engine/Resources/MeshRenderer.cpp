@@ -16,6 +16,10 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
     LOG_WARN( "Mesh renderer load from scene not yet implemented!" );
+    ResourceManager* resMan = ResourceManager::GetInstance();
+    FileName mshFile = aInitData [ MESH_SAVE_KEY ];
+    CurrentMesh = resMan->LoadMesh( mshFile );
+
 }
 
 MeshRenderer::~MeshRenderer()
@@ -28,13 +32,17 @@ void MeshRenderer::DrawEditorGUI()
 {
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
     // #TODO Have a material / mesh format that we can edit during runtime
-    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ) );
-    ImGui::Text( "Mesh:\t %d", ( CurrentMesh != nullptr ) );
+
+    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ? "Available" : "NULL" ) );
+
+    ImGui::Text( "Mesh:\t %s", ( CurrentMesh != nullptr ? "Available" : "NULL" ) );
 }
 
 void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
 {
+    assert( CurrentMesh != nullptr && CurrentMaterial != nullptr );
 
+    aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
 }
 
 void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
@@ -51,9 +59,9 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
 
     }
 
-    CurrentMaterial->SetShaderValues( 
-        ParentTransform->GetWorldMatrix(), 
+    CurrentMaterial->SetShaderValues(
+        ParentTransform->GetWorldMatrix(),
         aView,
-        aProjection 
+        aProjection
     );
 }

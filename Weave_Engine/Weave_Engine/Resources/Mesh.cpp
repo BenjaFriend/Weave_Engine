@@ -9,6 +9,7 @@ Mesh::Mesh( ID3D11Device* aDevice, Vertex* aVerts, UINT aNumVerts, UINT* aIndeci
 }
 
 Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
+    : MeshFileName( objFile )
 {
     // File input object
     std::ifstream obj( objFile );

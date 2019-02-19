@@ -37,6 +37,7 @@ void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 EditorCore::EditorCore()
 {
     sceneMan = SceneManagement::SceneManager::GetInstance();
+    sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
 
     LoadResources();
 }
@@ -277,6 +278,11 @@ void EditorCore::DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aCont
     {
 
     }
+}
+
+void Editor::EditorCore::ResetScene()
+{
+    SelectedEntity = nullptr;
 }
 
 void EditorCore::SaveScene()

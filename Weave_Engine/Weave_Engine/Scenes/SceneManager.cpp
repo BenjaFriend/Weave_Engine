@@ -86,3 +86,8 @@ void SceneManager::UnloadCurrentScene()
     OnSceneUnloadDispatcher.Dispatch();
     
 }
+
+void SceneManager::SaveScene( FileName & aSceneFile )
+{
+
+}

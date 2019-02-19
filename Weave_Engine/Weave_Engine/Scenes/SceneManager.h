@@ -52,10 +52,7 @@ namespace SceneManagement
         /// Save the current scene 
         /// </summary>
         /// <param name="aSceneFile"></param>
-        void SaveScene( FileName & aSceneFile )
-        {
-
-        }
+        void SaveScene( FileName & aSceneFile );
 
         /// <summary>
         /// Get the name of the currently loaded scene

@@ -142,6 +142,11 @@ namespace Editor
         /// </summary>
         void DrawGizmos( ID3D11Device * aDevice, ID3D11DeviceContext * aContext );
 
+        /// <summary>
+        /// Behavior that should happen when the scene is reset
+        /// </summary>
+        void ResetScene();
+
         /** Static instance of the editor */
         static EditorCore* Instance;
 
