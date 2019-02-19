@@ -90,6 +90,12 @@ void Scene::AddPointLight( PointLight * aPointLight )
     PointLights.push_back( aPointLight );
 }
 
+void Scene::ResetScene()
+{
+    UnloadAllEntities();
+    UnloadAllLights();
+}
+
 void Scene::SetLightData( SimplePixelShader* aPixShader )
 {
     // Send dir lights -------------------------------

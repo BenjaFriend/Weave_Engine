@@ -77,6 +77,11 @@ namespace SceneManagement
         /// <param name="aPointLight">The point light to be added</param>
         void AddPointLight( PointLight * aPointLight );
 
+        /// <summary>
+        /// Remove all entities and lights in the current scene
+        /// </summary>
+        void ResetScene();
+
         FORCE_INLINE const std::vector<Entity*> & GetEntityArray() { return EntityArray; }
 
         /// <summary>
