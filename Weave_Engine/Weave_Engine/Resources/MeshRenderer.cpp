@@ -17,9 +17,16 @@ MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
     LOG_WARN( "Mesh renderer load from scene not yet implemented!" );
     ResourceManager* resMan = ResourceManager::GetInstance();
-    FileName mshFile = aInitData [ MESH_SAVE_KEY ];
-    CurrentMesh = resMan->LoadMesh( mshFile );
 
+    // Load mesh
+    std::string mshFile = aInitData [ MESH_SAVE_KEY ];
+    FileName MeshWsTmp( mshFile.begin(), mshFile.end() );
+    CurrentMesh = resMan->LoadMesh( MeshWsTmp );
+
+    // Load Material
+    std::string matFileName = aInitData [ MAT_FILE_SAVE_KEY ];
+    FileName MatWsTemp( mshFile.begin(), mshFile.end() );
+    CurrentMaterial = resMan->LoadMaterial( MatWsTemp );
 }
 
 MeshRenderer::~MeshRenderer()

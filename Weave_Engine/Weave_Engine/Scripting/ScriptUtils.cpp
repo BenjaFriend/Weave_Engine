@@ -137,12 +137,12 @@ void ScriptManager::RunLuaFunction(
 Material* ScriptManager::LoadMaterial( const sol::table & aMatInfo )
 {
     Material_ID name = aMatInfo [ "name" ];
-    FileName vsName = aMatInfo [ "VS" ];
-    FileName psName = aMatInfo [ "PS" ];
-    FileName albedo = aMatInfo [ "albedo" ];
-    FileName norm = aMatInfo [ "norm" ];
-    FileName roughness = aMatInfo [ "roughness" ];
-    FileName metal = aMatInfo [ "metal" ];
+    FileName vsName = aMatInfo [ MAT_VS_SAVE_KEY ];
+    FileName psName = aMatInfo [ MAT_PS_SAVE_KEY ];
+    FileName albedo = aMatInfo [ MAT_ALBEDO_SAVE_KEY ];
+    FileName norm = aMatInfo [ MAT_NORMAL_SAVE_KEY ];
+    FileName roughness = aMatInfo [ MAT_ROUGHNESS_SAVE_KEY ];
+    FileName metal = aMatInfo [ MAT_METAL_SAVE_KEY ];
 
     ResourceManager* resourceMan = ResourceManager::GetInstance();
 

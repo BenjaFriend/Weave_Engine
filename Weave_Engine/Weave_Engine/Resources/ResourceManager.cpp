@@ -245,6 +245,62 @@ Material* ResourceManager::LoadMaterial(
     return newMat;
 }
 
+Material * ResourceManager::LoadMaterial( const FileName aMatFileName )
+{
+    // Open JSON file via file stream
+    std::ifstream ifs( aMatFileName.c_str() );
+
+    if ( ifs.is_open() )
+    {
+        // Store the info in the scene file in the JSON object
+        nlohmann::json njson;
+        ifs >> njson;
+
+        Material_ID name = njson [ MAT_NAME_SAVE_KEY ];
+        std::string vsName = njson [ MAT_VS_SAVE_KEY ];
+        FileName VSWsTmp( vsName.begin(), vsName.end() );
+
+        std::string psName = njson [ MAT_PS_SAVE_KEY ];
+        FileName PSWsTmp( psName.begin(), psName.end() );
+
+        std::string albedo = njson [ MAT_ALBEDO_SAVE_KEY ];
+        FileName albedoWsTmp( albedo.begin(), albedo.end() );
+
+        std::string norm = njson [ MAT_NORMAL_SAVE_KEY ];
+        FileName normWsTmp( norm.begin(), norm.end() );
+
+        std::string roughness = njson [ MAT_ROUGHNESS_SAVE_KEY ];
+        FileName roughWsTmp( roughness.begin(), roughness.end() );
+
+        std::string metal = njson [ MAT_METAL_SAVE_KEY ];
+        FileName metalWsTmp( metal.begin(), metal.end() );
+
+        SimpleVertexShader* vs = LoadShader<SimpleVertexShader>(
+            VSWsTmp );
+
+        SimplePixelShader* ps = LoadShader<SimplePixelShader>(
+            PSWsTmp );
+
+        return LoadMaterial(
+            name,
+            vs,
+            ps,
+            albedoWsTmp,
+            normWsTmp,
+            roughWsTmp,
+            metalWsTmp,
+            0 );   // Use default sampler
+    }
+    else
+    {
+        return nullptr;
+    }
+
+    ifs.close();
+
+    return nullptr;
+}
+
 Material* ResourceManager::GetMaterial( const Material_ID aID )
 {
     if ( Materials.find( aID ) != Materials.end() )

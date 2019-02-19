@@ -195,6 +195,8 @@ void Game::CreateBasicGeometry()
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
+    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Bronze.wmat" );
+
     Material* floorMat = resourceMan->LoadMaterial(
         "Floor Mat",
         vertexShader,
@@ -212,7 +214,7 @@ void Game::CreateBasicGeometry()
     
 
 
-    secondBox->AddComponent<MeshRenderer>( floorMat, CubeMesh );
+    secondBox->AddComponent<MeshRenderer>( fileLoadedMat, CubeMesh );
 
     secondBox->AddComponent<Physics::BoxCollider>();
 

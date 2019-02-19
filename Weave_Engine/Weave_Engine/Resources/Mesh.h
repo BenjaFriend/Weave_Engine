@@ -47,7 +47,11 @@ public:
     /** Number of indices are in the index buffer */
     const UINT GetIndexCount() const;
 
-    FORCE_INLINE const FileName GetMeshFileName() const { return MeshFileName; }
+    FORCE_INLINE const std::string GetMeshFileName() const 
+    {  
+        std::string s( MeshFileName.begin(), MeshFileName.end() );
+        return s;
+    }
 
 private:
 

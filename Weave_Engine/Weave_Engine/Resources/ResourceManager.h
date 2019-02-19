@@ -18,6 +18,7 @@
 
 #include "SimpleShader.h"
 #include "Mesh.h"
+#include "../Utils/SaveFileDefs.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -176,6 +177,8 @@ public:
         const SRV_ID aMetalSrvID,
         const Sampler_ID aSamplerID
     );
+
+    Material * LoadMaterial( const FileName aMatFileName );
 
     /// <summary>
     /// Get a pointer to the given material with this ID
