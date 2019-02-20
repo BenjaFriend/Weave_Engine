@@ -449,8 +449,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Assets\Scripts\loadMaterials.lua" />
-    <None Include="..\Assets\Scripts\test.lua" />
+    <None Include="..\Assets\Scripts\loadLevel.lua" />
     <None Include="cpp.hint" />
     <None Include="Lighting.hlsli" />
     <None Include="packages.config" />

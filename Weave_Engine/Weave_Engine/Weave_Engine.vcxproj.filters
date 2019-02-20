@@ -300,13 +300,10 @@
     <None Include="Lighting.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Assets\Scripts\test.lua">
-      <Filter>Scripting\Lua_src</Filter>
-    </None>
     <None Include="packages.config" />
-    <None Include="..\Assets\Scripts\loadMaterials.lua">
+    <None Include="cpp.hint" />
+    <None Include="..\Assets\Scripts\loadLevel.lua">
       <Filter>Scripting\Lua_src</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

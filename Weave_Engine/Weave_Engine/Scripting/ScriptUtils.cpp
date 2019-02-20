@@ -152,7 +152,7 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     // Create the entity in the entity manager
     Entity* ent = 
         SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
-
+    if ( ent == nullptr ) return nullptr;
     ent->AddComponent<MeshRenderer>( mat, mesh );
-    return nullptr;
+    return ent;
 }

@@ -195,16 +195,6 @@ void Game::CreateBasicGeometry()
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
-    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Cobblestone.wmat" );
-
-    glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
-
-    Entity* secondBox = sceneManager->GetActiveScene()->AddEntity( "Box 2" );
-    
-    secondBox->AddComponent<MeshRenderer>( fileLoadedMat, CubeMesh );
-
-    secondBox->AddComponent<Physics::BoxCollider>();
-
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( L"Assets/Textures/SunnyCubeMap.dds" );
 }
