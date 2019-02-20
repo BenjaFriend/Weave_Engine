@@ -67,6 +67,18 @@ void Camera::SetMovementSpeed( float aNewVal )
     MovementSpeed = aNewVal;
 }
 
+void Camera::DrawEditorGUI()
+{
+	ImGui::InputFloat("FOV", &FOV);
+	ImGui::InputFloat("NearZ", &NearZ);
+	ImGui::InputFloat("FarZ", &FarZ);
+}
+
+const char * Camera::ComponentName()
+{
+	return "Camera";
+}
+
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
     //calculate view

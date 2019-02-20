@@ -54,8 +54,6 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
-
-    delete FlyingCamera;
 }
 
 // --------------------------------------------------------
@@ -64,7 +62,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    FlyingCamera = new Camera();
+	CameraEntity = sceneManager->GetActiveScene()->AddEntity("Flying Camera");
+	FlyingCamera = CameraEntity->AddComponent<Camera>();
 
 #if defined( EDITOR_ON )
 

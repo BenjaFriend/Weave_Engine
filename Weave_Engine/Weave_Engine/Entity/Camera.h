@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include "../ECS/Component.h"
 #include "../Input/InputManager.h"   // Input
 
 /////////////////////////////////////////////////
@@ -12,7 +13,7 @@
 /// as well as some player input.
 /// </summary>
 /// <author>Ben Hoffman</author>
-class Camera
+class Camera : public ECS::Component<Camera>
 {
 public:
 
@@ -122,4 +123,8 @@ private:
 
     /** Pointer to input manager */
     Input::InputManager* inputManager = nullptr;
+
+	// Inherited via Component
+	virtual void DrawEditorGUI() override;
+	virtual const char * ComponentName() override;
 };

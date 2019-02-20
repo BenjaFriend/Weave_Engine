@@ -64,6 +64,7 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     ResourceManager * resMan = ResourceManager::GetInstance();
     aLua.set_function( "LoadMaterial", &ResourceManager::LoadMaterial, resMan );
     aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
+	aLua.set_function( "Print", &Scripting::ScriptManager::Log_Print, this);
 
     // Define the entity types
     aLua.new_usertype<Material>( "Material" );
@@ -93,6 +94,8 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
         "GetIsActive", &Entity::GetIsActive,
         "GetTransform", &Entity::GetTransform
         );
+
+	aLua.new_usertype<Camera>("Camera");
 }
 
 void ScriptManager::ReadDirectory(
@@ -139,6 +142,7 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     std::string name = aEntityInfo [ "name" ];
     FileName meshName = aEntityInfo [ "mesh" ];
     Material* mat = aEntityInfo [ "material" ];
+
     glm::vec3 pos = {};
     sol::optional<glm::vec3> unsafe_pos = aEntityInfo [ "pos" ];
     if ( unsafe_pos != sol::nullopt )
@@ -153,6 +157,14 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
     Entity* ent = 
         SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
 
-    ent->AddComponent<MeshRenderer>( mat, mesh );
-    return nullptr;
+	if (mat != nullptr && mesh != nullptr)
+	{
+		ent->AddComponent<MeshRenderer>(mat, mesh);
+	}
+    return ent;
+}
+
+void ScriptManager::Log_Print(std::string msg)
+{
+	LOG_TRACE("{}", msg);
 }
