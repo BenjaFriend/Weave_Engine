@@ -14,6 +14,10 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
     // File input object
     std::ifstream obj( objFile );
 
+    std::string fileName( objFile.begin(), objFile.end() );
+
+    DoTheIportThing( fileName );
+
     // Check for successful open
     if ( !obj.is_open() )
         return;
@@ -25,7 +29,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
     std::vector<Vertex> verts;           // Verts we're assembling
     std::vector<UINT> indices;           // Indices of these verts
     unsigned int vertCounter = 0;        // Count of vertices/indices
-    char chars[ 100 ];                     // String for line reading
+    char chars [ 100 ];                     // String for line reading
 
                                            // Still have data left?
     while ( obj.good() )
@@ -34,7 +38,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
         obj.getline( chars, 100 );
 
         // Check the type of line
-        if ( chars[ 0 ] == 'v' && chars[ 1 ] == 'n' )
+        if ( chars [ 0 ] == 'v' && chars [ 1 ] == 'n' )
         {
             // Read the 3 numbers directly into an XMFLOAT3
             glm::vec3 norm;
@@ -46,7 +50,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
             // Add to the list of normals
             normals.push_back( norm );
         }
-        else if ( chars[ 0 ] == 'v' && chars[ 1 ] == 't' )
+        else if ( chars [ 0 ] == 'v' && chars [ 1 ] == 't' )
         {
             // Read the 2 numbers directly into an XMFLOAT2
             glm::vec2 uv;
@@ -58,7 +62,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
             // Add to the list of uv's
             uvs.push_back( uv );
         }
-        else if ( chars[ 0 ] == 'v' )
+        else if ( chars [ 0 ] == 'v' )
         {
             // Read the 3 numbers directly into an XMFLOAT3
             glm::vec3 pos;
@@ -70,36 +74,36 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
             // Add to the positions
             positions.push_back( pos );
         }
-        else if ( chars[ 0 ] == 'f' )
+        else if ( chars [ 0 ] == 'f' )
         {
             // Read the face indices into an array
-            unsigned int i[ 12 ];
+            unsigned int i [ 12 ];
             int facesRead = sscanf_s(
                 chars,
                 "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d",
-                &i[ 0 ], &i[ 1 ], &i[ 2 ],
-                &i[ 3 ], &i[ 4 ], &i[ 5 ],
-                &i[ 6 ], &i[ 7 ], &i[ 8 ],
-                &i[ 9 ], &i[ 10 ], &i[ 11 ] );
+                &i [ 0 ], &i [ 1 ], &i [ 2 ],
+                &i [ 3 ], &i [ 4 ], &i [ 5 ],
+                &i [ 6 ], &i [ 7 ], &i [ 8 ],
+                &i [ 9 ], &i [ 10 ], &i [ 11 ] );
 
             // - Create the verts by looking up
             //    corresponding data from vectors
             // - OBJ File indices are 1-based, so
             //    they need to be adusted
             Vertex v1;
-            v1.Position = positions[ i[ 0 ] - 1 ];
-            v1.UV = uvs[ i[ 1 ] - 1 ];
-            v1.Normal = normals[ i[ 2 ] - 1 ];
+            v1.Position = positions [ i [ 0 ] - 1 ];
+            v1.UV = uvs [ i [ 1 ] - 1 ];
+            v1.Normal = normals [ i [ 2 ] - 1 ];
 
             Vertex v2;
-            v2.Position = positions[ i[ 3 ] - 1 ];
-            v2.UV = uvs[ i[ 4 ] - 1 ];
-            v2.Normal = normals[ i[ 5 ] - 1 ];
+            v2.Position = positions [ i [ 3 ] - 1 ];
+            v2.UV = uvs [ i [ 4 ] - 1 ];
+            v2.Normal = normals [ i [ 5 ] - 1 ];
 
             Vertex v3;
-            v3.Position = positions[ i[ 6 ] - 1 ];
-            v3.UV = uvs[ i[ 7 ] - 1 ];
-            v3.Normal = normals[ i[ 8 ] - 1 ];
+            v3.Position = positions [ i [ 6 ] - 1 ];
+            v3.UV = uvs [ i [ 7 ] - 1 ];
+            v3.Normal = normals [ i [ 8 ] - 1 ];
 
             // The model is most likely in a right-handed space,
             // especially if it came from Maya.  We want to convert
@@ -142,9 +146,9 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
             {
                 // Make the last vertex
                 Vertex v4;
-                v4.Position = positions[ i[ 9 ] - 1 ];
-                v4.UV = uvs[ i[ 10 ] - 1 ];
-                v4.Normal = normals[ i[ 11 ] - 1 ];
+                v4.Position = positions [ i [ 9 ] - 1 ];
+                v4.UV = uvs [ i [ 10 ] - 1 ];
+                v4.Normal = normals [ i [ 11 ] - 1 ];
 
                 // Flip the UV, Z pos and normal
                 v4.UV.y = 1.0f - v4.UV.y;
@@ -179,7 +183,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
     //    an index buffer in this case?  Sure!  Though, if your mesh class assumes you have
     //    one, you'll need to write some extra code to handle cases when you don't.
 
-    CreateBuffers( aDevice, &verts[ 0 ], vertCounter, &indices[ 0 ], vertCounter );
+    CreateBuffers( aDevice, &verts [ 0 ], vertCounter, &indices [ 0 ], vertCounter );
 
 }
 
@@ -244,19 +248,19 @@ void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices
     // Reset tangents
     for ( int i = 0; i < numVerts; i++ )
     {
-        verts[ i ].Tangent = glm::vec3( 0, 0, 0 );
+        verts [ i ].Tangent = glm::vec3( 0, 0, 0 );
     }
 
     // Calculate tangents one whole triangle at a time
     for ( int i = 0; i < numVerts;)
     {
         // Grab indices and vertices of first triangle
-        unsigned int i1 = indices[ i++ ];
-        unsigned int i2 = indices[ i++ ];
-        unsigned int i3 = indices[ i++ ];
-        Vertex* v1 = &verts[ i1 ];
-        Vertex* v2 = &verts[ i2 ];
-        Vertex* v3 = &verts[ i3 ];
+        unsigned int i1 = indices [ i++ ];
+        unsigned int i2 = indices [ i++ ];
+        unsigned int i3 = indices [ i++ ];
+        Vertex* v1 = &verts [ i1 ];
+        Vertex* v2 = &verts [ i2 ];
+        Vertex* v3 = &verts [ i3 ];
 
         // Calculate vectors relative to triangle positions
         float x1 = v2->Position.x - v1->Position.x;
@@ -305,6 +309,66 @@ void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices
         tan = glm::normalize( tan - norm * glm::dot( norm, tan ) );
         verts [ i ].Tangent = tan;
     }
+}
+
+void Mesh::DoTheIportThing( const std::string & aFile )
+{
+    LOG_TRACE( "Load asset: {}", aFile );
+    const aiScene* scene = aiImportFile( aFile.c_str(),
+        aiProcess_CalcTangentSpace |
+        aiProcess_Triangulate |
+        aiProcess_JoinIdenticalVertices |
+        aiProcess_SortByPType |
+        aiProcess_GenSmoothNormals );
+
+    if ( !scene )
+    {
+        LOG_ERROR( "Could not import file: {}", aiGetErrorString() );
+        return;
+    }
+
+    if ( scene->HasMeshes() )
+    {
+        for ( size_t i = 0; i < scene->mNumMeshes; ++i )
+        {
+            const aiMesh* curMesh = scene->mMeshes [ i ];
+            assert( curMesh != nullptr );
+            std::vector<Vertex> Verts;
+            std::vector<UINT> Indices;
+
+            const aiVector3D Zero3D( 0.0f, 0.0f, 0.0f );
+            for ( size_t j = 0; j < curMesh->mNumVertices; ++j )
+            {
+                const aiVector3D* pPos = &( curMesh->mVertices [ j ] );
+                const aiVector3D* pNormal = &( curMesh->mNormals [ i ] );
+                const aiVector3D* pTexCoord = curMesh->HasTextureCoords( 0 ) ? &( curMesh->mTextureCoords [ 0 ] [ i ] ) : &Zero3D;
+                Vertex v = {};
+                v.Normal.x = pNormal->x;
+                v.Normal.y = pNormal->y;
+                v.Normal.z = pNormal->z;
+
+                v.UV.x = pTexCoord->x;
+                v.UV.y = pTexCoord->y;
+
+                v.Position.x = pPos->x;
+                v.Position.y = pPos->y;
+                v.Position.z = pPos->z;
+                Verts.push_back( v );
+            }
+
+            for ( size_t j = 0; j < curMesh->mNumFaces; ++j )
+            {
+                const aiFace& Face = curMesh->mFaces [ i ];
+                assert( Face.mNumIndices == 3 );
+                Indices.push_back( Face.mIndices [ 0 ] );
+                Indices.push_back( Face.mIndices [ 1 ] );
+                Indices.push_back( Face.mIndices [ 2 ] );
+            }
+        }
+    }
+
+    aiReleaseImport( scene );
+    LOG_TRACE( "Done import!" );
 }
 
 //////////////////////////////////////////////////////////////////

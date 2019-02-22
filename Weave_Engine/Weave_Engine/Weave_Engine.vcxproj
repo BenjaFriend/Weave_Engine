@@ -181,7 +181,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     </PreLinkEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp.lib;lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>xcopy /e /h /y /i "$(SolutionDir)Assets" "$(OutDir)Assets"</Command>
@@ -248,7 +248,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp.lib;lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copy the assets of the game to the output directory</Message>
