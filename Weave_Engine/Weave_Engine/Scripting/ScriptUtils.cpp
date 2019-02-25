@@ -139,9 +139,29 @@ void ScriptManager::RunLuaFunction(
 /** Called from Lua */
 Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
 {
-    std::string name = aEntityInfo [ "name" ];
-    FileName meshName = aEntityInfo [ "mesh" ];
-    Material* mat = aEntityInfo [ "material" ];
+    std::string name = "DEFAULT LUA NAME -- ";
+    
+    sol::optional<std::string> unsafe_entName = aEntityInfo [ "name" ];
+    if ( unsafe_entName != sol::nullopt )
+    {
+        name = unsafe_entName.value();
+    }
+
+    // Load in Mesh name
+    FileName meshName = {};
+    sol::optional<FileName> unsafe_meshName = aEntityInfo [ "mesh" ];
+    if ( unsafe_meshName != sol::nullopt )
+    {
+        meshName = unsafe_meshName.value();
+    }
+
+    // Load in material
+    Material* mat = nullptr; 
+    sol::optional<Material*> unsafe_mat = aEntityInfo [ "material" ];
+    if ( unsafe_mat != sol::nullopt )
+    {
+        mat = unsafe_mat.value();
+    }
 
     glm::vec3 pos = {};
     sol::optional<glm::vec3> unsafe_pos = aEntityInfo [ "pos" ];
