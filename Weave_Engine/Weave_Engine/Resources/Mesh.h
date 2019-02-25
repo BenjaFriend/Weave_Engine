@@ -5,7 +5,6 @@
 #include <iostream> // std::ifstream
 #include <fstream>  // std::ifstream
 
-//#include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/cimport.h>        // Plain-C interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
@@ -62,7 +61,7 @@ private:
 
     void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices, int numIndices );
 
-    void DoTheIportThing( const std::string & aFile );
+    void DoTheIportThing( const std::string & aFile, ID3D11Device * aDevice );
 
     /** The vertex buffer for this mesh class */
     ID3D11Buffer * VertexBuffer = nullptr;

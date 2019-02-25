@@ -16,7 +16,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
 
     std::string fileName( objFile.begin(), objFile.end() );
 
-    DoTheIportThing( fileName );
+    DoTheIportThing( fileName, aDevice );
 
     // Check for successful open
     if ( !obj.is_open() )
@@ -31,7 +31,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
     unsigned int vertCounter = 0;        // Count of vertices/indices
     char chars [ 100 ];                     // String for line reading
 
-                                           // Still have data left?
+                                       // Still have data left?
     while ( obj.good() )
     {
         // Get the line (100 characters should be more than enough)
@@ -170,7 +170,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
 
     // Close the file and create the actual buffers
     obj.close();
-
+    
 
     // - At this point, "verts" is a vector of Vertex structs, and can be used
     //    directly to create a vertex buffer:  &verts[0] is the address of the first vert
@@ -183,7 +183,7 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
     //    an index buffer in this case?  Sure!  Though, if your mesh class assumes you have
     //    one, you'll need to write some extra code to handle cases when you don't.
 
-    CreateBuffers( aDevice, &verts [ 0 ], vertCounter, &indices [ 0 ], vertCounter );
+    //CreateBuffers( aDevice, &verts [ 0 ], vertCounter, &indices [ 0 ], vertCounter );
 
 }
 
@@ -311,15 +311,17 @@ void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices
     }
 }
 
-void Mesh::DoTheIportThing( const std::string & aFile )
+void Mesh::DoTheIportThing( const std::string & aFile, ID3D11Device * aDevice )
 {
+    unsigned int vertCounter = 0;        // Count of vertices/indices
+
     LOG_TRACE( "Load asset: {}", aFile );
     const aiScene* scene = aiImportFile( aFile.c_str(),
         aiProcess_CalcTangentSpace |
-        aiProcess_Triangulate |
-        aiProcess_JoinIdenticalVertices |
+        aiProcess_ImproveCacheLocality |
         aiProcess_SortByPType |
-        aiProcess_GenSmoothNormals );
+        aiProcess_GenSmoothNormals
+    );
 
     if ( !scene )
     {
@@ -360,10 +362,14 @@ void Mesh::DoTheIportThing( const std::string & aFile )
             {
                 const aiFace& Face = curMesh->mFaces [ i ];
                 assert( Face.mNumIndices == 3 );
-                Indices.push_back( Face.mIndices [ 0 ] );
-                Indices.push_back( Face.mIndices [ 1 ] );
-                Indices.push_back( Face.mIndices [ 2 ] );
+                //Indices.push_back( Face.mIndices [ 0 ] ); vertCounter++;
+                //Indices.push_back( Face.mIndices [ 1 ] ); vertCounter++;
+                //Indices.push_back( Face.mIndices [ 2 ] ); vertCounter++;
+                Indices.push_back( vertCounter ); vertCounter++;
+                Indices.push_back( vertCounter ); vertCounter++;
+                Indices.push_back( vertCounter ); vertCounter++;
             }
+            CreateBuffers( aDevice, &Verts [ 0 ], vertCounter, &Indices [ 0 ], vertCounter );
         }
     }
 
