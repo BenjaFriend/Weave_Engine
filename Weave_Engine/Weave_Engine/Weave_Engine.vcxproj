@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{EE668F6A-773C-44FD-ACEE-26F997AF51E2}</ProjectGuid>
     <RootNamespace>DX11Starter</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -120,7 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;C:\Program Files\boost\boost_1_67_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -144,7 +144,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       </Message>
     </PreLinkEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;C:\Program Files\boost\boost_1_67_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
@@ -156,7 +156,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;C:\Program Files\boost\boost_1_67_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -180,7 +180,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       </Message>
     </PreLinkEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;C:\Program Files\boost\boost_1_67_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
@@ -194,7 +194,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;C:\Program Files\boost\boost_1_67_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -207,7 +207,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;C:\Program Files\boost\boost_1_67_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -234,7 +234,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;C:\Program Files\boost\boost_1_67_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -247,7 +247,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;C:\Program Files\boost\boost_1_67_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -449,7 +449,6 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Assets\Scripts\FlyingCamera.lua" />
     <None Include="..\Assets\Scripts\loadMaterials.lua" />
     <None Include="..\Assets\Scripts\test.lua" />
     <None Include="cpp.hint" />
