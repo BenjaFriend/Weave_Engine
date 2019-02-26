@@ -1,6 +1,9 @@
 #include "../stdafx.h"
 
 #include "Camera.h"
+#include "Transform.h"
+#include "../Entity/Entity.h"
+#include "../Scenes/SceneManager.h"
 
 Camera::Camera()
 {
@@ -81,6 +84,8 @@ const char * Camera::ComponentName()
 
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
+	Pos = GetPosition();
+
     //calculate view
     View = glm::transpose( glm::lookAtLH( Pos, Pos + Forward, Up ) );
 
@@ -109,7 +114,15 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 
 const glm::vec3 Camera::GetPosition() const
 {
-    return Pos;
+	Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity(GetOwner());
+	Transform* transform = entity->GetTransform();
+	LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+	return transform->GetPosition();
+}
+
+void Camera::SetPosition(glm::vec3 position)
+{
+	Pos = position;
 }
 
 const glm::mat4 Camera::GetViewMatrix() const

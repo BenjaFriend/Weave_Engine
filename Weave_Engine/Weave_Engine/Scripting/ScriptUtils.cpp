@@ -1,170 +1,208 @@
 #include "../stdafx.h"
 
 #include "ScriptUtils.h"
+#include "../Input/InputManager.h"
+#include "../ECS/ComponentManager.h"
+#include "../Scenes/SceneManager.h"
 
 using namespace Scripting;
 
-ScriptManager::ScriptManager( )
+ScriptManager::ScriptManager()
 {
 }
 
 ScriptManager::~ScriptManager()
 {
-    UpdateTicks.clear();
-    OnClickCallbacks.clear();
-    LuaStates.clear();
+	UpdateTicks.clear();
+	OnClickCallbacks.clear();
+	LuaStates.clear();
 }
 
-void ScriptManager::Update( float deltaTime )
+void ScriptManager::Update(float deltaTime)
 {
-    for ( auto it : UpdateTicks )
-    {
-        it( deltaTime );
-    }
+	for (auto it : UpdateTicks)
+	{
+		it(deltaTime);
+	}
 }
 
 void Scripting::ScriptManager::OnClick()
 {
-    for ( auto it : OnClickCallbacks )
-        it();
+	for (auto it : OnClickCallbacks)
+		it();
 }
 
 void ScriptManager::LoadScripts()
 {
-    ReadDirectory( "Assets/Scripts/", ScriptPaths );
+	ReadDirectory("Assets/Scripts/", ScriptPaths);
 
-    for ( auto it : ScriptPaths )
-    {
-        LoadScript( ( it ).c_str() );
-    }
+	for (auto it : ScriptPaths)
+	{
+		LoadScript((it).c_str());
+	}
 }
 
-void ScriptManager::LoadScript( const char * aFile )
+void ScriptManager::LoadScript(const char * aFile)
 {
-    sol::state lua;
-    lua.open_libraries( sol::lib::base );
+	sol::state lua;
+	lua.open_libraries(sol::lib::base);
 
-    // Set lua types
-    DefineLuaTypes( lua );
+	// Set lua types
+	DefineLuaTypes(lua);
 
-    // Load in this script...
-    lua.script_file( aFile );
+	// Load in this script...
+	lua.script_file(aFile);
 
-    RunLuaFunction( lua, "start" );
+	RunLuaFunction(lua, "start");
 
-    AddCallback( lua, "update", UpdateTicks );
-    AddCallback( lua, "onClick", OnClickCallbacks );
+	AddCallback(lua, "update", UpdateTicks);
+	AddCallback(lua, "onClick", OnClickCallbacks);
 
-    LuaStates.push_back( std::move( lua ) );
-    LOG_TRACE( "Loaded Lua script: {}", aFile );
+	LuaStates.push_back(std::move(lua));
+	LOG_TRACE("Loaded Lua script: {}", aFile);
 }
 
-void ScriptManager::DefineLuaTypes( sol::state & aLua )
+void ScriptManager::DefineLuaTypes(sol::state & aLua)
 {
-    ResourceManager * resMan = ResourceManager::GetInstance();
-    aLua.set_function( "LoadMaterial", &ResourceManager::LoadMaterial, resMan );
-    aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
-	aLua.set_function( "Print", &Scripting::ScriptManager::Log_Print, this);
+	aLua.set_function("Print", &Scripting::ScriptManager::Log_Print, this);
 
-    // Define the entity types
-    aLua.new_usertype<Material>( "Material" );
+	ResourceManager * resMan = ResourceManager::GetInstance();
+	aLua.set_function("LoadMaterial", &ResourceManager::LoadMaterial, resMan);
+	aLua.set_function("CreateEntity", &Scripting::ScriptManager::CreateEntity, this);
 
-    aLua.new_usertype<glm::vec3>( "VEC3",
-        sol::constructors<glm::vec3( float x, float y, float z )>(),
-        "x", &glm::vec3::x,
-        "y", &glm::vec3::y,
-        "z", &glm::vec3::z
-        );
+	Input::InputManager* inpMan = Input::InputManager::GetInstance();
+	aLua.set_function("IsKeyDown", &Input::InputManager::IsKeyDown, inpMan);
+	aLua.set_function("MoveCamera", &Scripting::ScriptManager::MoveCamera, this);
 
-    aLua.new_usertype<Transform>( "Transform",
-        "GetPosition", &Transform::GetPosition,
-        "SetPosX", &Transform::SetPosX,
-        "SetPosY", &Transform::SetPosY,
-        "SetPosZ", &Transform::SetPosZ,
-        "GetScale", &Transform::GetScale,
-        "SetScaleX", &Transform::SetScaleX,
-        "SetScaleY", &Transform::SetScaleY,
-        "SetScaleZ", &Transform::SetScaleZ
-        );
+	// Define the entity types
+	aLua.new_usertype<Material>("Material");
 
-    aLua.new_usertype<Entity>( "Entity",
-        "GetName", &Entity::GetName,
-        "SetName", &Entity::SetName,
-        "SetIsActive", &Entity::SetIsActive,
-        "GetIsActive", &Entity::GetIsActive,
-        "GetTransform", &Entity::GetTransform
-        );
+	aLua.new_usertype<glm::vec3>("VEC3",
+		sol::constructors<glm::vec3(float x, float y, float z)>(),
+		"x", &glm::vec3::x,
+		"y", &glm::vec3::y,
+		"z", &glm::vec3::z
+		);
 
-	aLua.new_usertype<Camera>("Camera");
+	aLua.new_usertype<Transform>("Transform",
+		"GetPosition", &Transform::GetPosition,
+		"SetPosX", &Transform::SetPosX,
+		"SetPosY", &Transform::SetPosY,
+		"SetPosZ", &Transform::SetPosZ,
+		"GetScale", &Transform::GetScale,
+		"SetScaleX", &Transform::SetScaleX,
+		"SetScaleY", &Transform::SetScaleY,
+		"SetScaleZ", &Transform::SetScaleZ
+		);
+
+	aLua.new_usertype<Entity>("Entity",
+		"GetName", &Entity::GetName,
+		"SetName", &Entity::SetName,
+		"SetIsActive", &Entity::SetIsActive,
+		"GetIsActive", &Entity::GetIsActive,
+		"GetTransform", &Entity::GetTransform
+		);
 }
 
 void ScriptManager::ReadDirectory(
-    const std::string & dirName,
-    std::vector<std::string>& aPathVec )
+	const std::string & dirName,
+	std::vector<std::string>& aPathVec)
 {
-    namespace fs = std::filesystem;
+	namespace fs = std::filesystem;
 
-    for ( const auto & entry : fs::directory_iterator( dirName ) )
-    {
-        aPathVec.push_back( entry.path().generic_string() );
-    }
+	for (const auto & entry : fs::directory_iterator(dirName))
+	{
+		aPathVec.push_back(entry.path().generic_string());
+	}
 }
 
 void ScriptManager::AddCallback(
-    const sol::state & lua,
-    const char * aFuncName,
-    std::vector<sol::function>& aCallbackVec )
+	const sol::state & lua,
+	const char * aFuncName,
+	std::vector<sol::function>& aCallbackVec)
 {
-    // Store the function for later if there is one
-    sol::optional <sol::function> unsafe_func = lua [ aFuncName ];
-    if ( unsafe_func != sol::nullopt )
-    {
-        sol::function& safe_func = unsafe_func.value();
-        aCallbackVec.emplace_back( safe_func );
-    }
+	// Store the function for later if there is one
+	sol::optional <sol::function> unsafe_func = lua[aFuncName];
+	if (unsafe_func != sol::nullopt)
+	{
+		sol::function& safe_func = unsafe_func.value();
+		aCallbackVec.emplace_back(safe_func);
+	}
 }
 
 void ScriptManager::RunLuaFunction(
-    const sol::state & lua,
-    const char * aFuncName )
+	const sol::state & lua,
+	const char * aFuncName)
 {
-    sol::optional <sol::function> unsafe_Func = lua [ aFuncName ];
-    if ( unsafe_Func != sol::nullopt )
-    {
-        // Run that function
-        unsafe_Func.value()( );
-    }
+	sol::optional <sol::function> unsafe_Func = lua[aFuncName];
+	if (unsafe_Func != sol::nullopt)
+	{
+		// Run that function
+		unsafe_Func.value()();
+	}
 }
 
 /** Called from Lua */
-Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
+Entity* ScriptManager::CreateEntity(const sol::table & aEntityInfo)
 {
-    std::string name = aEntityInfo [ "name" ];
-    FileName meshName = aEntityInfo [ "mesh" ];
-    Material* mat = aEntityInfo [ "material" ];
+	std::string name = "DEFAULT LUA NAME -- ";
 
-    glm::vec3 pos = {};
-    sol::optional<glm::vec3> unsafe_pos = aEntityInfo [ "pos" ];
-    if ( unsafe_pos != sol::nullopt )
-    {
-        pos = unsafe_pos.value();
-    }
+	sol::optional<std::string> unsafe_entName = aEntityInfo["name"];
+	if (unsafe_entName != sol::nullopt)
+	{
+		name = unsafe_entName.value();
+	}
 
-    ResourceManager* resMan = ResourceManager::GetInstance();
-    Mesh* mesh = resMan->LoadMesh( meshName );
-    
-    // Create the entity in the entity manager
-    Entity* ent = 
-        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
+	// Load in Mesh name
+	FileName meshName = {};
+	sol::optional<FileName> unsafe_meshName = aEntityInfo["mesh"];
+	if (unsafe_meshName != sol::nullopt)
+	{
+		meshName = unsafe_meshName.value();
+	}
+
+	// Load in material
+	Material* mat = nullptr;
+	sol::optional<Material*> unsafe_mat = aEntityInfo["material"];
+	if (unsafe_mat != sol::nullopt)
+	{
+		mat = unsafe_mat.value();
+	}
+
+	glm::vec3 pos = {};
+	sol::optional<glm::vec3> unsafe_pos = aEntityInfo["pos"];
+	if (unsafe_pos != sol::nullopt)
+	{
+		pos = unsafe_pos.value();
+	}
+
+	ResourceManager* resMan = ResourceManager::GetInstance();
+	Mesh* mesh = resMan->LoadMesh(meshName);
+
+	// Create the entity in the entity manager
+	Entity* ent =
+		SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity(name, pos);
 
 	if (mat != nullptr && mesh != nullptr)
 	{
 		ent->AddComponent<MeshRenderer>(mat, mesh);
 	}
-    return ent;
+	return ent;
 }
 
 void ScriptManager::Log_Print(std::string msg)
 {
 	LOG_TRACE("{}", msg);
+}
+
+void Scripting::ScriptManager::MoveCamera(glm::vec3 move)
+{
+	static Camera* camera = reinterpret_cast<Camera*>(ECS::ComponentManager::GetInstance()->FindComponentOfType<Camera>());
+	static Entity* cameraEnt = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity(camera->GetOwner());
+	static Transform* transform = cameraEnt->GetTransform();
+
+	transform->MoveRelative(move.x, move.y, move.z);
+	camera->SetPosition(transform->GetPosition());
+
+	//LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
 }
