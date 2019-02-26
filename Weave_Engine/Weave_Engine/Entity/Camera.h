@@ -69,6 +69,8 @@ public:
     /** Returns the camera's current movements speed */
     const float GetMovementSpeed() const;
 
+	void SetPosition(glm::vec3);
+
     /** Set the movement speed of this camera. Default is 4 */
     void SetMovementSpeed( float aNewVal );
 
