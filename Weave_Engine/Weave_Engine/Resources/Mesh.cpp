@@ -137,9 +137,9 @@ Mesh::Mesh( ID3D11Device* aDevice, FileName objFile )
             verts.push_back( v2 );
 
             // Add three more indices
-            indices.push_back( vertCounter ); vertCounter += 1;
-            indices.push_back( vertCounter ); vertCounter += 1;
-            indices.push_back( vertCounter ); vertCounter += 1;
+            indices.push_back( vertCounter ); 
+            indices.push_back( vertCounter ); 
+            indices.push_back( vertCounter ); 
 
             // Was there a 4th face?
             if ( facesRead == 12 )
@@ -317,10 +317,12 @@ void Mesh::DoTheIportThing( const std::string & aFile, ID3D11Device * aDevice )
 
     LOG_TRACE( "Load asset: {}", aFile );
     const aiScene* scene = aiImportFile( aFile.c_str(),
-        aiProcess_CalcTangentSpace |
         aiProcess_ImproveCacheLocality |
         aiProcess_SortByPType |
-        aiProcess_GenSmoothNormals
+        //aiProcess_Triangulate |
+        aiProcess_FixInfacingNormals |
+        aiProcess_GenSmoothNormals |
+        aiProcess_GenUVCoords
     );
 
     if ( !scene )
@@ -342,8 +344,8 @@ void Mesh::DoTheIportThing( const std::string & aFile, ID3D11Device * aDevice )
             for ( size_t j = 0; j < curMesh->mNumVertices; ++j )
             {
                 const aiVector3D* pPos = &( curMesh->mVertices [ j ] );
-                const aiVector3D* pNormal = &( curMesh->mNormals [ i ] );
-                const aiVector3D* pTexCoord = curMesh->HasTextureCoords( 0 ) ? &( curMesh->mTextureCoords [ 0 ] [ i ] ) : &Zero3D;
+                const aiVector3D* pNormal = &( curMesh->mNormals [ j ] );
+                const aiVector3D* pTexCoord = curMesh->HasTextureCoords( 0 ) ? &( curMesh->mTextureCoords [ 0 ] [ j ] ) : &Zero3D;
                 Vertex v = {};
                 v.Normal.x = pNormal->x;
                 v.Normal.y = pNormal->y;
@@ -365,9 +367,9 @@ void Mesh::DoTheIportThing( const std::string & aFile, ID3D11Device * aDevice )
                 //Indices.push_back( Face.mIndices [ 0 ] ); vertCounter++;
                 //Indices.push_back( Face.mIndices [ 1 ] ); vertCounter++;
                 //Indices.push_back( Face.mIndices [ 2 ] ); vertCounter++;
-                Indices.push_back( vertCounter ); vertCounter++;
-                Indices.push_back( vertCounter ); vertCounter++;
-                Indices.push_back( vertCounter ); vertCounter++;
+                Indices.push_back( vertCounter++ );
+                Indices.push_back( vertCounter++ );
+                Indices.push_back( vertCounter++ );
             }
             CreateBuffers( aDevice, &Verts [ 0 ], vertCounter, &Indices [ 0 ], vertCounter );
         }
