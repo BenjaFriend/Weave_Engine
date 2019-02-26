@@ -308,5 +308,8 @@
       <Filter>Scripting\Lua_src</Filter>
     </None>
     <None Include="cpp.hint" />
+    <None Include="..\Assets\Scripts\FlyingCamera.lua">
+      <Filter>Scripting\Lua_src</Filter>
+    </None>
   </ItemGroup>
 </Project>

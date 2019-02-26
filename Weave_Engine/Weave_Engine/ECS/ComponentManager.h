@@ -101,6 +101,24 @@ namespace ECS
             return static_cast< T* >( activeComponents [ aEntityID ] [ CTID ] );
         }
 
+		template <class T>
+		T* FindComponentOfType()
+		{
+			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+
+			std::unordered_map<EntityID, ComponentMap>::iterator it;
+
+			for (it = activeComponents.begin(); it != activeComponents.end(); ++it)
+			{
+				if (it->second.find(CTID) != it->second.end())
+				{
+					return reinterpret_cast<T*>(it->second[CTID]);
+				}
+			}
+
+			return nullptr;
+		}
+
         const ComponentMap * GetAllComponents( const EntityID aEntityID ) const
         {
             auto itr = activeComponents.find( aEntityID );

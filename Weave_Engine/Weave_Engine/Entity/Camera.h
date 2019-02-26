@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include "../ECS/Component.h"
 #include "../Input/InputManager.h"   // Input
 
 /////////////////////////////////////////////////
@@ -12,7 +13,7 @@
 /// as well as some player input.
 /// </summary>
 /// <author>Ben Hoffman</author>
-class Camera
+class Camera : public ECS::Component<Camera>
 {
 public:
 
@@ -68,6 +69,8 @@ public:
     /** Returns the camera's current movements speed */
     const float GetMovementSpeed() const;
 
+	void SetPosition(glm::vec3);
+
     /** Set the movement speed of this camera. Default is 4 */
     void SetMovementSpeed( float aNewVal );
 
@@ -122,4 +125,8 @@ private:
 
     /** Pointer to input manager */
     Input::InputManager* inputManager = nullptr;
+
+	// Inherited via Component
+	virtual void DrawEditorGUI() override;
+	virtual const char * ComponentName() override;
 };
