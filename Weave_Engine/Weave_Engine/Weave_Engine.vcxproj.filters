@@ -305,5 +305,12 @@
     <None Include="..\Assets\Scripts\loadLevel.lua">
       <Filter>Scripting\Lua_src</Filter>
     </None>
+<<<<<<< HEAD
+=======
+    <None Include="cpp.hint" />
+    <None Include="..\Assets\Scripts\FlyingCamera.lua">
+      <Filter>Scripting\Lua_src</Filter>
+    </None>
+>>>>>>> master
   </ItemGroup>
 </Project>

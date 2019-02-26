@@ -8,6 +8,7 @@
 #include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Transform.h"
+#include "../Entity/Camera.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"
 #include "../Resources/MeshRenderer.h"
@@ -90,6 +91,10 @@ namespace Scripting
         /// <param name="aEntityInfo">Sol table from Lua</param>
         /// <returns>Pointer to the created entity</returns>
         Entity* CreateEntity( const sol::table & aEntityInfo );
+
+		void Log_Print(std::string msg);
+
+		void MoveCamera(glm::vec3 move);
 
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;

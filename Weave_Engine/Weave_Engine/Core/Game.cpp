@@ -54,8 +54,6 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
-
-    delete FlyingCamera;
 }
 
 // --------------------------------------------------------
@@ -64,7 +62,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    FlyingCamera = new Camera();
+	CameraEntity = sceneManager->GetActiveScene()->AddEntity("Flying Camera");
+	FlyingCamera = CameraEntity->AddComponent<Camera>();
 
 #if defined( EDITOR_ON )
 
@@ -281,7 +280,7 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                FlyingCamera->GetPosition()
+                CameraEntity->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(
@@ -535,7 +534,7 @@ void Game::DrawUI()
 
         ImGui::Separator();
 
-        ImGui::InputFloat3( "Cam Pos", ( float* ) &FlyingCamera->GetPosition() );
+        ImGui::InputFloat3( "Cam Pos", ( float* ) &CameraEntity->GetTransform()->GetPosition() );
 
         ImGui::Separator();
 

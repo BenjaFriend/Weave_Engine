@@ -69,7 +69,14 @@ Mesh* ResourceManager::LoadMesh( const FileName & aFileName )
 
     Mesh* newMesh = new Mesh( currentDevice, aFileName );
 
-    Meshes [ aFileName ] = newMesh;
+	if (newMesh->GetIndexBuffer() != nullptr && newMesh->GetVertexBuffer() != nullptr)
+	{
+		Meshes[aFileName] = newMesh;
+	}
+	else
+	{
+		delete newMesh;
+	}
     
     return newMesh;
 }
