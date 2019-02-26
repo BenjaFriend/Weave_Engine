@@ -98,7 +98,7 @@ namespace SceneManagement
 
         FORCE_INLINE void SetSceneName( std::string aName ) { SceneName = aName; }
 
-        FORCE_INLINE Entity* GetEntity( Entity_ID aID ) { return EntityArray [ aID ]; }
+        FORCE_INLINE Entity* GetEntity( Entity_ID aID ) { if ( aID < 0 || aID > EntityArray.size() ) return nullptr;  return EntityArray [ aID ]; }
 
         FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
 

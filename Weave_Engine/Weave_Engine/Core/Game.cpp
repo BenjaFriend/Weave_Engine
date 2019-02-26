@@ -62,8 +62,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	CameraEntity = sceneManager->GetActiveScene()->AddEntity("Flying Camera");
-	FlyingCamera = CameraEntity->AddComponent<Camera>();
+    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Flying Camera" );
+    FlyingCamera = CameraEntity->AddComponent<Camera>();
 
 #if defined( EDITOR_ON )
 
@@ -219,9 +219,11 @@ void Game::Update( float dt, float totalTime )
     //PhysicsMan->Update( dt );
 
     // Update the camera
-    FlyingCamera->Update( dt );
-    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
-
+    if ( FlyingCamera != nullptr )
+    {
+        FlyingCamera->Update( dt );
+        FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    }
     ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )
@@ -245,7 +247,11 @@ void Game::Draw( float dt, float totalTime )
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
         1.0f,
         0 );
-
+    if ( FlyingCamera == nullptr )
+    {
+        LOG_WARN( "The camera is null!" );
+        return;
+    }
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
     //    have different geometry.
@@ -308,7 +314,7 @@ void Game::Draw( float dt, float totalTime )
                 EnMat->GetPixelShader()
             );
         }
-        
+
     }   // end Entity loop
 
     // Draw the Sky box -------------------------------------
@@ -531,10 +537,6 @@ void Game::DrawUI()
         ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
 
         ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
-
-        ImGui::Separator();
-
-        ImGui::InputFloat3( "Cam Pos", ( float* ) &CameraEntity->GetTransform()->GetPosition() );
 
         ImGui::Separator();
 

@@ -65,6 +65,8 @@ Entity::Entity()
 // virtual destructor
 Entity::~Entity()
 {
+    // Remove my components
+    componentManager->RemoveAllEntityComponents( entID );
     EntityTransform = nullptr;
     componentManager = nullptr;
     --EntityCount;

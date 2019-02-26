@@ -170,7 +170,7 @@ void EditorCore::DrawUI()
                     LOG_TRACE( "Save file!" );
                     SaveScene();
                 }
-                
+
                 if ( ImGui::MenuItem( "Unload Scene" ) )
                 {
                     LOG_TRACE( "Unload Scene!" );
@@ -205,7 +205,7 @@ inline void EditorCore::DrawHierarchy()
     const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
     for ( size_t i = 0; i < entArray.size(); ++i )
     {
-        CurrentEntity = entArray[ i ];
+        CurrentEntity = entArray [ i ];
 
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
@@ -245,6 +245,14 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
     char newNameBuf [ 256 ];
     strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
     ImGui::InputText( "Name", newNameBuf, 256 );
+
+    if ( ImGui::Button( "Delete" ) )
+    {
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->DeleteEntity( SelectedEntity );
+        SelectedEntity = nullptr;
+        ImGui::End();
+        return;
+    }
 
     SelectedEntity->SetName( newNameBuf );
     SelectedEntity->SetIsActive( isActive );

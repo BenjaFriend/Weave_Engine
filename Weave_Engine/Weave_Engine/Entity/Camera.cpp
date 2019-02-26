@@ -116,7 +116,7 @@ void Camera::DrawEditorGUI()
 
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
-    Pos = GetPosition();
+    Pos = this->GetPosition();
 
     //calculate view
     View = glm::transpose( glm::lookAtLH( Pos, Pos + Forward, Up ) );
@@ -146,7 +146,10 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 
 const glm::vec3 Camera::GetPosition() const
 {
-    Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( GetOwner() );
+    ECS::EntityID own = GetOwner();
+
+    Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( own );
+    if ( entity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
     Transform* transform = entity->GetTransform();
     //LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
     return transform->GetPosition();

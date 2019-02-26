@@ -54,7 +54,11 @@ void ECS::ComponentManager::CleanupAllComponents()
         while ( comp_itr != entity_itr->second.end() )
         {
             if ( comp_itr->second != nullptr )
+            {
                 delete comp_itr->second;
+                comp_itr->second = nullptr;
+            }
+                
             ++comp_itr;
         }
         entity_itr->second.clear();
