@@ -58,7 +58,7 @@ void ECS::ComponentManager::CleanupAllComponents()
                 delete comp_itr->second;
                 comp_itr->second = nullptr;
             }
-                
+
             ++comp_itr;
         }
         entity_itr->second.clear();
@@ -67,4 +67,26 @@ void ECS::ComponentManager::CleanupAllComponents()
 
     activeComponents.clear();
     ComponentCount = 0;
+}
+
+void ComponentManager::RemoveAllEntityComponents( const EntityID aEntityID )
+{
+    if ( activeComponents.find( aEntityID ) == activeComponents.end() ) return;
+
+    ECS::ComponentMap::iterator comp_itr = activeComponents [ aEntityID ].begin();
+    // Delete every component on this entity
+    while ( comp_itr != activeComponents [ aEntityID ].end() )
+    {
+        if ( comp_itr->second != nullptr )
+        {
+            delete comp_itr->second;
+            comp_itr->second = nullptr;
+            --ComponentCount;
+        }
+
+        ++comp_itr;
+    }
+
+    activeComponents [ aEntityID ].clear();
+    activeComponents.erase( aEntityID );
 }

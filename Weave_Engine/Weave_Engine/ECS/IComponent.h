@@ -49,8 +49,6 @@ namespace ECS
 
         IComponent() {}
 
-        virtual ~IComponent() {}
-
         virtual ComponentTypeId GetStaticComponentTypeID() const = 0;
 
         /// <summary>
@@ -140,6 +138,8 @@ namespace ECS
         }
 
     protected:
+
+        virtual ~IComponent() {}
 
         virtual void SaveComponentData( nlohmann::json & aCompDataObj ) {}
 

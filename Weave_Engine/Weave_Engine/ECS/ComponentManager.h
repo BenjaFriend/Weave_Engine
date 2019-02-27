@@ -148,27 +148,7 @@ namespace ECS
         /// entity from this map 
         /// </summary>
         /// <param name="aEntityID"></param>
-        void RemoveAllEntityComponents( const EntityID aEntityID )
-        {
-            if ( activeComponents.find( aEntityID ) == activeComponents.end() ) return;
-
-            ECS::ComponentMap::iterator comp_itr = activeComponents [ aEntityID ].begin();
-            // Delete every component on this entity
-            while ( comp_itr != activeComponents [ aEntityID ].end() )
-            {
-                if ( comp_itr->second != nullptr )
-                {
-                    delete comp_itr->second;
-                    comp_itr->second = nullptr;
-                    --ComponentCount;
-                }
-
-                ++comp_itr;
-            }
-
-            activeComponents [ aEntityID ].clear();
-            activeComponents.erase( aEntityID );
-        }
+        void RemoveAllEntityComponents( const EntityID aEntityID );
 
     private:
 
