@@ -62,8 +62,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	CameraEntity = sceneManager->GetActiveScene()->AddEntity("Flying Camera");
-	FlyingCamera = CameraEntity->AddComponent<Camera>();
+    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Flying Camera" );
+    FlyingCamera = CameraEntity->AddComponent<Camera>();
 
 #if defined( EDITOR_ON )
 
@@ -194,16 +194,6 @@ void Game::CreateBasicGeometry()
     // Load floor --------------------------------------------------------
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
-    Material* fileLoadedMat = resourceMan->LoadMaterial( L"Assets/Materials/Cobblestone.wmat" );
-
-    glm::vec3 newPos = glm::vec3( 0.f, 0.f, 0.f );
-
-    Entity* secondBox = sceneManager->GetActiveScene()->AddEntity( "Box 2" );
-    
-    secondBox->AddComponent<MeshRenderer>( fileLoadedMat, CubeMesh );
-
-    secondBox->AddComponent<Physics::BoxCollider>();
-
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( L"Assets/Textures/SunnyCubeMap.dds" );
 }
@@ -229,9 +219,11 @@ void Game::Update( float dt, float totalTime )
     //PhysicsMan->Update( dt );
 
     // Update the camera
-    FlyingCamera->Update( dt );
-    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
-
+    if ( FlyingCamera != nullptr )
+    {
+        FlyingCamera->Update( dt );
+        FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    }
     ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )
@@ -255,7 +247,11 @@ void Game::Draw( float dt, float totalTime )
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
         1.0f,
         0 );
-
+    if ( FlyingCamera == nullptr )
+    {
+        LOG_WARN( "The camera is null!" );
+        return;
+    }
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
     //    have different geometry.
@@ -318,7 +314,7 @@ void Game::Draw( float dt, float totalTime )
                 EnMat->GetPixelShader()
             );
         }
-        
+
     }   // end Entity loop
 
     // Draw the Sky box -------------------------------------
@@ -541,10 +537,6 @@ void Game::DrawUI()
         ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
 
         ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
-
-        ImGui::Separator();
-
-        ImGui::InputFloat3( "Cam Pos", ( float* ) &CameraEntity->GetTransform()->GetPosition() );
 
         ImGui::Separator();
 

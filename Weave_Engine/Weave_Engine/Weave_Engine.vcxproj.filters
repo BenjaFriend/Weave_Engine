@@ -145,6 +145,9 @@
     <ClCompile Include="Scenes\Scene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Core\CameraManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -275,6 +278,9 @@
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Core\CameraManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
@@ -300,16 +306,8 @@
     <None Include="Lighting.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Assets\Scripts\test.lua">
-      <Filter>Scripting\Lua_src</Filter>
-    </None>
     <None Include="packages.config" />
-    <None Include="..\Assets\Scripts\loadMaterials.lua">
-      <Filter>Scripting\Lua_src</Filter>
-    </None>
     <None Include="cpp.hint" />
-    <None Include="..\Assets\Scripts\FlyingCamera.lua">
-      <Filter>Scripting\Lua_src</Filter>
-    </None>
+    <None Include="..\Assets\Scripts\loadLevel.lua" />
   </ItemGroup>
 </Project>

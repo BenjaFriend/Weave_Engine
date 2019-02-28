@@ -25,15 +25,16 @@ namespace ECS
             LOG_WARN( "Component does not implement scene file constructor!" );
         }
 
-        virtual ~Component() {}
-
-
         virtual ComponentTypeId GetStaticComponentTypeID() const override
         {
             return STATIC_COMPONENT_TYPE_ID;
         }
 
         virtual const char* ComponentName() = 0;
+
+    protected:
+
+        virtual ~Component() {}
 
     };  // Component
 

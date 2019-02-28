@@ -80,11 +80,11 @@ void SceneManager::LoadScene( FileName & aSceneName )
 
 void SceneManager::UnloadCurrentScene()
 {
-    ActiveScene->ResetScene();
-
+    LOG_TRACE( "Unload Current Scene" );
     // Unload all entities
     OnSceneUnloadDispatcher.Dispatch();
-    
+    ActiveScene->ResetScene();
+    LOG_TRACE( "Done unloading current scene!" );
 }
 
 void SceneManager::SaveScene( FileName & aSceneFile )

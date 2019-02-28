@@ -126,7 +126,7 @@ private:
 public:
 
     /** Get the current transform of this object */
-    Transform* GetTransform() const { return EntityTransform; }
+    FORCE_INLINE Transform* GetTransform() const { return EntityTransform; }
 
     /// <summary>
     /// Sets if this entity is active or not

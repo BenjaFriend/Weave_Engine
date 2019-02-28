@@ -15,13 +15,16 @@
 /// <author>Ben Hoffman</author>
 class Camera : public ECS::Component<Camera>
 {
+    friend class CameraManager;
+
 public:
+
+    COMPONENT( Camera );
 
     /** Constructor; initalize matricies */
     Camera();
 
-    /** Destructor for camera class */
-    ~Camera();
+    Camera( nlohmann::json const & aInitData );
 
     /// <summary>
     /// Update camera matrices appropriately. 
@@ -77,6 +80,13 @@ public:
     void SetSouthPaw( const bool val ) { SouthPaw = val; }
     const bool GetSouthPaw() const { return SouthPaw; }
 
+protected:
+
+    /** Destructor for camera class */
+    ~Camera();
+
+    virtual void SaveComponentData( nlohmann::json & aCompData ) override;
+
 private:
 
     const glm::vec4 DEFAULT_UP = glm::vec4( 0.f, 1.f, 0.f, 0.f );
@@ -128,5 +138,4 @@ private:
 
 	// Inherited via Component
 	virtual void DrawEditorGUI() override;
-	virtual const char * ComponentName() override;
 };

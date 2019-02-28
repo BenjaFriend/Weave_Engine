@@ -5,9 +5,37 @@
 #include "../Entity/Entity.h"
 #include "../Scenes/SceneManager.h"
 
+COMPONENT_INIT( Camera )
+
+#define POS_SAVE_KEY            "Pos"
+#define FORWARD_SAVE_KEY        "Forward"
+#define RIGHT_SAVE_KEY          "Right"
+#define UP_SAVE_KEY             "Up"
+#define YAW_ANGLE_SAVE_KEY      "Yaw"
+#define PITCH_ANGLE_SAVE_KEY    "Pitch"
+
 Camera::Camera()
 {
     Pos = glm::vec3( 0.f, 0.f, -5.f );
+    RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
+    Up = DEFAULT_UP;
+    Forward = DEFAULT_FORWARD;
+    Right = DEFAULT_RIGHT;
+
+    PitchAngle = 0;
+    YawAngle = 90;
+
+    inputManager = Input::InputManager::GetInstance();
+}
+
+Camera::Camera( nlohmann::json const & aInitData )
+{
+    Pos = {};
+    Pos.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
+    Pos.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
+    Pos.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
+
+
     RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
     Up = DEFAULT_UP;
     Forward = DEFAULT_FORWARD;
@@ -33,7 +61,7 @@ void Camera::Update( const float aDeltaTime )
     // Forward and back
     if ( inputManager->IsKeyDown( 'W' ) ) { RelativeInput.z += 1.f; }
     if ( inputManager->IsKeyDown( 'S' ) ) { RelativeInput.z -= 1.f; }
-    
+
     // Left/Right
     if ( inputManager->IsKeyDown( 'A' ) ) { RelativeInput.x += 1.f; }
     if ( inputManager->IsKeyDown( 'D' ) ) { RelativeInput.x -= 1.f; }
@@ -70,21 +98,25 @@ void Camera::SetMovementSpeed( float aNewVal )
     MovementSpeed = aNewVal;
 }
 
-void Camera::DrawEditorGUI()
+void Camera::SaveComponentData( nlohmann::json & aCompData )
 {
-	ImGui::InputFloat("FOV", &FOV);
-	ImGui::InputFloat("NearZ", &NearZ);
-	ImGui::InputFloat("FarZ", &FarZ);
+
+    aCompData [ POS_SAVE_KEY ] [ "X" ] = Pos.x;
+    aCompData [ POS_SAVE_KEY ] [ "Y" ] = Pos.y;
+    aCompData [ POS_SAVE_KEY ] [ "Z" ] = Pos.z;
+
 }
 
-const char * Camera::ComponentName()
+void Camera::DrawEditorGUI()
 {
-	return "Camera";
+    ImGui::InputFloat( "FOV", &FOV );
+    ImGui::InputFloat( "NearZ", &NearZ );
+    ImGui::InputFloat( "FarZ", &FarZ );
 }
 
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
-	Pos = GetPosition();
+    Pos = this->GetPosition();
 
     //calculate view
     View = glm::transpose( glm::lookAtLH( Pos, Pos + Forward, Up ) );
@@ -114,15 +146,18 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 
 const glm::vec3 Camera::GetPosition() const
 {
-	Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity(GetOwner());
-	Transform* transform = entity->GetTransform();
-	LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
-	return transform->GetPosition();
+    ECS::EntityID own = GetOwner();
+
+    Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( own );
+    if ( entity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
+    Transform* transform = entity->GetTransform();
+    //LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+    return transform->GetPosition();
 }
 
-void Camera::SetPosition(glm::vec3 position)
+void Camera::SetPosition( glm::vec3 position )
 {
-	Pos = position;
+    Pos = position;
 }
 
 const glm::mat4 Camera::GetViewMatrix() const

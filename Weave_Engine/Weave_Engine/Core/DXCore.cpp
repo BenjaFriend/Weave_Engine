@@ -110,6 +110,8 @@ DXCore::~DXCore()
 
 #endif
 
+    CameraManager::ReleaseInstance();
+
     Logger::ReleaseInstance();
     logger = nullptr;
 }
@@ -458,6 +460,7 @@ void DXCore::InitSystems()
 #endif
     
     ComponentMan = ECS::ComponentManager::GetInstance();
+    CameraMan = CameraManager::GetInstance();
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ScriptMan = new Scripting::ScriptManager();
 }

@@ -143,6 +143,13 @@ namespace ECS
             --ComponentCount;
         }
 
+        /// <summary>
+        ///  Remove all the components that are on this eneity, and remove the 
+        /// entity from this map 
+        /// </summary>
+        /// <param name="aEntityID"></param>
+        void RemoveAllEntityComponents( const EntityID aEntityID );
+
     private:
 
         ComponentManager();

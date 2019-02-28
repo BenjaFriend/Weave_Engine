@@ -16,6 +16,7 @@
 #include "../Resources/ResourceManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
+#include "CameraManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
@@ -104,6 +105,7 @@ protected:
     ECS::ComponentManager* ComponentMan = nullptr;
     Physics::PhysicsManager* PhysicsMan = nullptr;
     Scripting::ScriptManager* ScriptMan = nullptr;
+    CameraManager* CameraMan = nullptr;
 
 #if defined(EDITOR_ON)
 

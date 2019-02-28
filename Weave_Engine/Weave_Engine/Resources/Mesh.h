@@ -5,6 +5,10 @@
 #include <iostream> // std::ifstream
 #include <fstream>  // std::ifstream
 
+#include <assimp/cimport.h>        // Plain-C interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+
 /////////////////////////////////////////////////
 // Forward Declarations
 struct Vertex;

@@ -10,52 +10,9 @@
                         "Z": 0.0
                     },
                     "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
-                    "Mesh": "Assets/Models/cube.obj"
-                },
-                {
-                    "CenterOffset": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "ComponentName": "BoxCollider",
-                    "Extents": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    },
-                    "IsTrigger": false
-                }
-            ],
-            "IsActive": true,
-            "Name": "Box 2"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
+                        "X": 45.0,
+                        "Y": 40.0,
+                        "Z": 45.0
                     },
                     "Scale": {
                         "X": 1.0,
@@ -76,9 +33,9 @@
                         "Z": 1.0
                     },
                     "Direction": {
-                        "X": 1.0,
-                        "Y": 0.0,
-                        "Z": 0.0
+                        "X": 49.0,
+                        "Y": -332.0,
+                        "Z": 166.0
                     },
                     "Intensity": 1.0
                 }
@@ -130,7 +87,7 @@
                 {
                     "ComponentName": "Transform",
                     "Pos": {
-                        "X": 0.0,
+                        "X": -15.0,
                         "Y": 0.0,
                         "Z": 0.0
                     },
@@ -154,9 +111,9 @@
                     "ComponentName": "PointLight",
                     "Intensity": 1.0,
                     "Pos": {
-                        "X": 0.0,
+                        "X": 5.0,
                         "Y": -1.0,
-                        "Z": 0.0
+                        "Z": 5.0
                     },
                     "Range": 5.0
                 }
@@ -170,7 +127,7 @@
                     "ComponentName": "Transform",
                     "Pos": {
                         "X": 0.0,
-                        "Y": 0.0,
+                        "Y": -1.0,
                         "Z": 0.0
                     },
                     "Rot": {
@@ -179,135 +136,19 @@
                         "Z": 0.0
                     },
                     "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Bronze.wmat",
-                    "Mesh": "Assets/Models/sphere.obj"
-                }
-            ],
-            "IsActive": true,
-            "Name": "-----Lua Generated 0"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 0.0,
-                        "Y": 1.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Bronze.wmat",
-                    "Mesh": "Assets/Models/sphere.obj"
-                }
-            ],
-            "IsActive": true,
-            "Name": "-----Lua Generated 1"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 1.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Bronze.wmat",
-                    "Mesh": "Assets/Models/sphere.obj"
-                }
-            ],
-            "IsActive": true,
-            "Name": "-----Lua Generated 2"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Bronze.wmat",
-                    "Mesh": "Assets/Models/sphere.obj"
-                }
-            ],
-            "IsActive": true,
-            "Name": "-----Lua Generated 3"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 2.0,
-                        "Y": 5.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
+                        "X": 25.0,
+                        "Y": 0.10000000149011612,
+                        "Z": 25.0
                     }
                 },
                 {
                     "ComponentName": "MeshRenderer",
                     "MaterialFile": "Assets/Materials/Cobblestone.wmat",
-                    "Mesh": "Assets/Models/sphere.obj"
+                    "Mesh": "Assets/Models/cube.obj"
                 }
             ],
             "IsActive": true,
-            "Name": "This REALLLLL"
+            "Name": "Floor Boi"
         }
     ],
     "Scene_Name": "Test_Scene_Name"

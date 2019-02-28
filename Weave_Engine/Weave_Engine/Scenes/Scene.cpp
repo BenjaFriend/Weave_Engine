@@ -5,7 +5,7 @@
 using namespace SceneManagement;
 
 Scene::Scene()
-{ 
+{
 }
 
 Scene::~Scene()
@@ -59,7 +59,10 @@ void Scene::UnloadAllEntities()
     for ( auto it = EntityArray.begin(); it != EntityArray.end(); ++it )
     {
         if ( *it != nullptr )
+        {
             delete ( *it );
+            ( *it ) = nullptr;
+        }
     }
 
     EntityArray.clear();
@@ -95,6 +98,7 @@ void Scene::ResetScene()
     UnloadAllEntities();
     UnloadAllLights();
     SceneName = "DEFAULT_SCENE";
+    LOG_TRACE( "Reset Scene!" );
 }
 
 void Scene::SetLightData( SimplePixelShader* aPixShader )
