@@ -27,14 +27,6 @@ void ECS::ComponentManager::ReleaseInstance()
 
 ECS::ComponentManager::ComponentManager()
 {
-    SceneManagement::SceneManager* sceneMan = SceneManagement::SceneManager::GetInstance();
-
-    assert( sceneMan != nullptr );
-
-    sceneMan->OnSceneUnload().BindListener(
-        this,
-        ( &ComponentManager::CleanupAllComponents )
-    );
 }
 
 ECS::ComponentManager::~ComponentManager()

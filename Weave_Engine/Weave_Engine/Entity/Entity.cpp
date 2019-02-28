@@ -12,7 +12,7 @@ Entity::Entity( std::string aName )
     : Name( aName )
 {
     IsActive = true;
-
+    IsDestroyableOnLoad = true;
     entID = EntityCount++;
 
     componentManager = ECS::ComponentManager::GetInstance();

@@ -120,6 +120,9 @@ private:
     /** handles the adding/removing of components for this entity */
     ECS::ComponentManager * componentManager = nullptr;
 
+    /** If true, then this entity will get destroyed when  */
+    UINT32 IsDestroyableOnLoad : 1;
+
     ////////////////////////////////////////////////////
     // Accessors
     ////////////////////////////////////////////////////
@@ -127,6 +130,15 @@ public:
 
     /** Get the current transform of this object */
     FORCE_INLINE Transform* GetTransform() const { return EntityTransform; }
+
+    /// <summary>
+    /// If an entity is destroyable on load, then it will be deleted during a 
+    /// scene change. If not, then it will remain persistent throughout scenes
+    /// </summary>
+    /// <returns>True if destroyable</returns>
+    FORCE_INLINE const bool GetIsDestroyableOnLoad() const { return IsDestroyableOnLoad; }
+
+    FORCE_INLINE void SetIsDestroyableOnLoad( const bool aVal ) { IsDestroyableOnLoad = aVal; }
 
     /// <summary>
     /// Sets if this entity is active or not

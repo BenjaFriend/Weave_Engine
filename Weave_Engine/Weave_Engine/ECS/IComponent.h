@@ -111,6 +111,8 @@ namespace ECS
 
         static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
+        // Basic component Factory pattern for components to be added
+        // via JSON data
         class Factory
         {
         protected:

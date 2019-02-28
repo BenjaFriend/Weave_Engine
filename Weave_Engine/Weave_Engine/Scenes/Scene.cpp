@@ -10,7 +10,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    UnloadAllEntities();
+    UnloadAllEntities( true );
     UnloadAllLights();
 }
 
@@ -53,19 +53,31 @@ void Scene::DeleteEntity( Entity * aEntity )
     aEntity = nullptr;
 }
 
-void Scene::UnloadAllEntities()
+void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 {
     // Delete each entity that has been added
     for ( auto it = EntityArray.begin(); it != EntityArray.end(); ++it )
     {
         if ( *it != nullptr )
         {
-            delete ( *it );
-            ( *it ) = nullptr;
+            if ( ( *it )->GetIsDestroyableOnLoad() || aOverrideDestroyOnLoad )
+            {
+                delete ( *it );
+                ( *it ) = nullptr;
+                // Need to remove this from the entity vector
+            }
         }
     }
+    // Problem Wheaton
+    //EntityArray.clear();
+}
 
-    EntityArray.clear();
+void Scene::ResetScene()
+{
+    UnloadAllEntities( false );
+    UnloadAllLights();
+    SceneName = "DEFAULT_SCENE";
+    LOG_TRACE( "Reset Scene!" );
 }
 
 // Lighting ----------------------------------------------
@@ -91,14 +103,6 @@ void Scene::AddDirLight( DirLight * aDirLight )
 void Scene::AddPointLight( PointLight * aPointLight )
 {
     PointLights.push_back( aPointLight );
-}
-
-void Scene::ResetScene()
-{
-    UnloadAllEntities();
-    UnloadAllLights();
-    SceneName = "DEFAULT_SCENE";
-    LOG_TRACE( "Reset Scene!" );
 }
 
 void Scene::SetLightData( SimplePixelShader* aPixShader )

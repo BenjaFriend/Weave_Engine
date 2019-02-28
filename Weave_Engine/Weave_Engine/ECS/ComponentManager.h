@@ -3,7 +3,6 @@
 #include <vector>
 #include <unordered_map>
 
-#include "../Scenes/SceneManager.h"
 #include "IComponent.h"
 
 namespace ECS

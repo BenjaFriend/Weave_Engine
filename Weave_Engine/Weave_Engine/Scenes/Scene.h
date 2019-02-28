@@ -110,7 +110,8 @@ namespace SceneManagement
         /// Removes all currently loaded entities from the array 
         /// and deletes them
         /// </summary>
-        void UnloadAllEntities();
+        /// <param name="aOverrideDestroyOnLoad"></param>
+        void UnloadAllEntities( bool aOverrideDestroyOnLoad );
 
         /// <summary>
         /// Remove all lights from this light system
@@ -122,7 +123,6 @@ namespace SceneManagement
         /// </summary>
         /// <param name="aPixShader">Pixel shader to send lighting info to</param>
         void SetLightData( SimplePixelShader* aPixShader );
-
 
         /** This scene's name */
         std::string SceneName = "DEFAULT_SCENE";

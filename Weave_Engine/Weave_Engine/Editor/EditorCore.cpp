@@ -206,7 +206,7 @@ inline void EditorCore::DrawHierarchy()
     for ( size_t i = 0; i < entArray.size(); ++i )
     {
         CurrentEntity = entArray [ i ];
-
+        if ( CurrentEntity == nullptr ) continue;
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
             SelectedEntity = CurrentEntity;

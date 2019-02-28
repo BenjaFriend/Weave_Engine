@@ -72,7 +72,7 @@ public:
     /** Returns the camera's current movements speed */
     const float GetMovementSpeed() const;
 
-	void SetPosition(glm::vec3);
+    void SetPosition( glm::vec3 );
 
     /** Set the movement speed of this camera. Default is 4 */
     void SetMovementSpeed( float aNewVal );
@@ -136,6 +136,6 @@ private:
     /** Pointer to input manager */
     Input::InputManager* inputManager = nullptr;
 
-	// Inherited via Component
-	virtual void DrawEditorGUI() override;
+    // Inherited via Component
+    virtual void DrawEditorGUI() override;
 };

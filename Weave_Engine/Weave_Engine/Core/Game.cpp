@@ -62,7 +62,10 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
+    //FlyingCamera = CameraMan->AddCamera();
+    //assert( FlyingCamera != nullptr );
     CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Flying Camera" );
+    CameraEntity->SetIsDestroyableOnLoad( false );
     FlyingCamera = CameraEntity->AddComponent<Camera>();
 
 #if defined( EDITOR_ON )
@@ -273,7 +276,7 @@ void Game::Draw( float dt, float totalTime )
     for ( size_t i = 0; i < entArray.size(); ++i )
     {
         CurrentEntity = entArray [ i ];
-
+        if ( CurrentEntity == nullptr ) continue;
         if ( !CurrentEntity->GetIsActive() ) continue;
 
         MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
