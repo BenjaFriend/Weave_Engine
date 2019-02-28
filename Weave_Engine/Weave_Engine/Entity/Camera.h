@@ -15,6 +15,8 @@
 /// <author>Ben Hoffman</author>
 class Camera : public ECS::Component<Camera>
 {
+    friend class CameraManager;
+
 public:
 
     COMPONENT( Camera );
@@ -23,9 +25,6 @@ public:
     Camera();
 
     Camera( nlohmann::json const & aInitData );
-
-    /** Destructor for camera class */
-    ~Camera();
 
     /// <summary>
     /// Update camera matrices appropriately. 
@@ -82,6 +81,9 @@ public:
     const bool GetSouthPaw() const { return SouthPaw; }
 
 protected:
+
+    /** Destructor for camera class */
+    ~Camera();
 
     virtual void SaveComponentData( nlohmann::json & aCompData ) override;
 

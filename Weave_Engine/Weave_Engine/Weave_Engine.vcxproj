@@ -298,6 +298,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Core\CameraManager.cpp" />
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Logger.cpp" />
@@ -345,6 +346,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
     <ClInclude Include="..\additional\imgui\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
+    <ClInclude Include="Core\CameraManager.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Core\Logger.h" />
