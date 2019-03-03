@@ -54,6 +54,7 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
+    FlyingCamera = nullptr;
 }
 
 // --------------------------------------------------------
@@ -218,11 +219,9 @@ void Game::Update( float dt, float totalTime )
     inputManager->Update( dt );
 
     // Update the camera
-    if ( FlyingCamera != nullptr )
-    {
-        FlyingCamera->Update( dt );
-        FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
-    }
+    FlyingCamera->Update( dt );
+    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    
     ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )

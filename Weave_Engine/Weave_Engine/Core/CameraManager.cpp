@@ -31,11 +31,7 @@ CameraManager::~CameraManager()
 {
     LOG_TRACE( "Camera man dtor" );
     
-    if ( DebugCamera != nullptr )
-    {
-        delete DebugCamera;
-    }
-    
+    SAFE_DELETE( DebugCameraEntity );
     DebugCamera = nullptr;
 }
 
