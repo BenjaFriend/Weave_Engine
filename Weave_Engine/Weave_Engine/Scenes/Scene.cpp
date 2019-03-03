@@ -7,9 +7,11 @@ using namespace SceneManagement;
 Scene::Scene()
 {
     EntityArray_Raw = new Entity [ MAX_ENTITY_COUNT ];
+    // Initalize the entity array
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
         EntityArray_Raw [ i ].SetIsActive( false );
+        EntityArray_Raw [ i ].SetIsValid( false );
     }
 }
 
@@ -54,7 +56,7 @@ Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
     return newEnt;
 }
 
-void Scene::DeleteEntity( Entity * aEntity )
+void Scene::ResetEntity( Entity * aEntity )
 {
     if ( aEntity == nullptr ) return;
     aEntity->SetIsValid( false );

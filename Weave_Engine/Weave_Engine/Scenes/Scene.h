@@ -48,7 +48,7 @@ namespace SceneManagement
         /// Deletes entity with the given ID
         /// </summary>
         /// <param name="aEntityID">ID of the entity to delete</param>
-        void DeleteEntity( Entity * aEntity );
+        void ResetEntity( Entity * aEntity );
 
         /// <summary>
         /// Set data about this 

@@ -249,7 +249,7 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
 
     if ( ImGui::Button( "Delete" ) )
     {
-        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->DeleteEntity( SelectedEntity );
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->ResetEntity( SelectedEntity );
         SelectedEntity = nullptr;
         ImGui::End();
         return;
