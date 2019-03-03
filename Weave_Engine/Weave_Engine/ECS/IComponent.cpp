@@ -20,5 +20,5 @@ IComponent* IComponent::ReadFromFile( nlohmann::json & comp_data )
         LOG_ERROR( "Unknown component type! {}", compType );
         return nullptr;
     }
-    return factory->second->constructFromFile( comp_data );
+    return factory->second->ConstructFromFile( comp_data );
 }

@@ -1,5 +1,8 @@
 #pragma once 
 
+#include <unordered_map>
+
+#include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
 
 /// <summary>
@@ -13,13 +16,29 @@ class CameraManager
 
 public:
 
+    /// <summary>
+    /// Get a reference to this camera manager static instance
+    /// </summary>
+    /// <returns>Pointer to the camera manager</returns>
     static CameraManager* GetInstance();
 
+    /// <summary>
+    /// Release this static instance of the camera manager
+    /// </summary>
     static void ReleaseInstance();
 
-    Camera* AddCamera();
+    /// <summary>
+    /// Add a camera to the scene that can be used for 
+    /// </summary>
+    /// <param name="aName">The name of this camera</param>
+    /// <returns>Pointer to the added camera</returns>
+    Camera* AddCamera( const std::string aName );
 
-    //const Camera* GetActiveCamera() const;
+    /// <summary>
+    /// Get the current camera being used to render the scene
+    /// </summary>
+    /// <returns>Pointer to the active camera</returns>
+    FORCE_INLINE Camera* GetActiveCamera() const { return ActiveCamera; }
 
 private:
 
@@ -29,6 +48,8 @@ private:
 
     static CameraManager* Instance;
 
+    Camera* ActiveCamera = nullptr;
+    Entity* CameraEntity = nullptr;
 
-
+    //std::unordered_map < std::string, Camera* > CurrentCameras;
 };

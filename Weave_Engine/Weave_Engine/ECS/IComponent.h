@@ -118,7 +118,7 @@ namespace ECS
         protected:
             Factory( std::string const& type );
         public:
-            virtual IComponent* constructFromFile( nlohmann::json const & source ) const = 0;
+            virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const = 0;
         };
 
         template <typename Derived>
@@ -126,8 +126,9 @@ namespace ECS
         {
         public:
             ConcreteFactory() : Factory( Derived::ClassName() ) {}
-            virtual IComponent* constructFromFile( nlohmann::json const & source ) const
+            virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const
             {
+
                 return new Derived( source );
             }
         };

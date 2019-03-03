@@ -1,75 +1,79 @@
 #include "../stdafx.h"
 
 #include "Scene.h"
-#include "../Entity/Entity.h"
+
 using namespace SceneManagement;
 
 Scene::Scene()
 {
+    EntityArray_Raw = new Entity [ MAX_ENTITY_COUNT ];
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        EntityArray_Raw [ i ].SetIsActive( false );
+    }
 }
 
 Scene::~Scene()
 {
     UnloadAllEntities( true );
     UnloadAllLights();
+    if ( EntityArray_Raw != nullptr )
+    {
+        delete [] EntityArray_Raw;
+        EntityArray_Raw = nullptr;
+    }
 }
 
 // Entity -----------------------------------------------
+
 Entity * Scene::AddEntity( std::string aName )
 {
-    Entity* tempEnt = new Entity( aName );
-    EntityArray.push_back( tempEnt );
-    return tempEnt;
-}
+    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
 
-Entity * Scene::AddEntity( std::string aName, glm::vec3 aPos )
-{
-    Entity* tempEnt = new Entity( aName, aPos );
+    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
+    newEnt->SetName( aName );
+    newEnt->GetTransform()->SetPosition( glm::vec3( 0.f ) );
+    newEnt->SetIsActive( true );
+    newEnt->SetIsValid( true );
+    LOG_TRACE( "Add raw entity! {}", aName );
 
-    EntityArray.push_back( tempEnt );
-    return tempEnt;
+    return newEnt;
 }
 
 Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
 {
-    Entity* tempEnt = new Entity( aFile );
-    EntityArray.push_back( tempEnt );
-    return tempEnt;
+    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
+
+    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
+
+    newEnt->SetIsValid( true );
+    newEnt->ConstructFromFile( aFile );
+
+    LOG_TRACE( "Add raw entity from file! {}", newEnt->GetName() );
+
+    return newEnt;
 }
 
 void Scene::DeleteEntity( Entity * aEntity )
 {
     if ( aEntity == nullptr ) return;
-    // Remove this entity from the vector
-    for ( size_t i = 0; i < EntityArray.size(); ++i )
-    {
-        if ( EntityArray [ i ] == aEntity )
-        {
-            EntityArray.erase( EntityArray.begin() + i );
-        }
-    }
-
-    delete aEntity;
-    aEntity = nullptr;
+    aEntity->SetIsValid( false );
+    aEntity->RemoveAllComponents();
 }
 
 void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 {
     // Delete each entity that has been added
-    for ( auto it = EntityArray.begin(); it != EntityArray.end(); ++it )
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( *it != nullptr )
+        if ( &EntityArray_Raw [ i ] != nullptr &&
+            EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
+            aOverrideDestroyOnLoad )
         {
-            if ( ( *it )->GetIsDestroyableOnLoad() || aOverrideDestroyOnLoad )
-            {
-                delete ( *it );
-                ( *it ) = nullptr;
-                // Need to remove this from the entity vector
-            }
+            EntityArray_Raw [ i ].SetIsValid( false );
         }
     }
-    // Problem Wheaton
-    //EntityArray.clear();
+    LastCreatedEntity = 1;
 }
 
 void Scene::ResetScene()

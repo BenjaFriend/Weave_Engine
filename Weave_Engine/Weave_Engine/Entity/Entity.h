@@ -42,17 +42,17 @@ public:
     Entity( std::string aName, glm::vec3 aPos );
 
     /// <summary>
-    /// Create this entity bsaed off of a scene file data set
-    /// </summary>
-    /// <param name="aFile">The set of data about this entity</param>
-    Entity( nlohmann::json const & aFile );
-
-    /// <summary>
     /// Default constructor for this entity
     /// </summary>
     Entity();
 
     ~Entity();
+
+    /// <summary>
+    /// Create this entity based off of a scene file data set
+    /// </summary>
+    /// <param name="aFile">The set of data about this entity</param>
+    Entity* ConstructFromFile( nlohmann::json const & aFile );
 
     // Components ------------------------------
 
@@ -96,6 +96,8 @@ public:
         return componentManager->GetAllComponents( this->entID );
     }
 
+    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( entID ); }
+
     /// <summary>
     /// Save this entity's data and components into a json array of 
     /// entities
@@ -123,6 +125,9 @@ private:
     /** If true, then this entity will get destroyed when  */
     UINT32 IsDestroyableOnLoad : 1;
 
+    /** If true, then this entity has been initialized and is valid in the memory pool */
+    UINT32 IsValid : 1;
+
     ////////////////////////////////////////////////////
     // Accessors
     ////////////////////////////////////////////////////
@@ -139,6 +144,10 @@ public:
     FORCE_INLINE const bool GetIsDestroyableOnLoad() const { return IsDestroyableOnLoad; }
 
     FORCE_INLINE void SetIsDestroyableOnLoad( const bool aVal ) { IsDestroyableOnLoad = aVal; }
+
+    FORCE_INLINE const bool GetIsValid() const { return IsValid; }
+
+    FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
 
     /// <summary>
     /// Sets if this entity is active or not

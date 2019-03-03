@@ -62,11 +62,11 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    //FlyingCamera = CameraMan->AddCamera();
-    //assert( FlyingCamera != nullptr );
-    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Flying Camera" );
-    CameraEntity->SetIsDestroyableOnLoad( false );
+    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Default boi cam" );
     FlyingCamera = CameraEntity->AddComponent<Camera>();
+    //FlyingCamera = CameraMan->AddCamera();
+    assert( FlyingCamera != nullptr );
+    //FlyingCamera = CameraMan->GetActiveCamera();
 
 #if defined( EDITOR_ON )
 
@@ -219,7 +219,6 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-    //PhysicsMan->Update( dt );
 
     // Update the camera
     if ( FlyingCamera != nullptr )
@@ -271,13 +270,12 @@ void Game::Draw( float dt, float totalTime )
 
     SceneManagement::Scene* CurScene = sceneManager->GetActiveScene();
 
-    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+    Entity* entArray = CurScene->GetEntityArray();
 
-    for ( size_t i = 0; i < entArray.size(); ++i )
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        CurrentEntity = entArray [ i ];
-        if ( CurrentEntity == nullptr ) continue;
-        if ( !CurrentEntity->GetIsActive() ) continue;
+        CurrentEntity = &entArray [ i ];
+        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsActive() || !CurrentEntity->GetIsValid() ) continue;
 
         MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
         if ( MeshRend != nullptr )

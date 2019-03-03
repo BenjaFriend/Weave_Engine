@@ -181,7 +181,8 @@ Entity* ScriptManager::CreateEntity( const sol::table & aEntityInfo )
 
     // Create the entity in the entity manager
     Entity* ent =
-        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name, pos );
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddEntity( name );
+    ent->GetTransform()->SetPosition( pos );
 
     if ( mat != nullptr && mesh != nullptr )
     {
