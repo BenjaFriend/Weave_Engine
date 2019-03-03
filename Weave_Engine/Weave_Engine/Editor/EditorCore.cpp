@@ -179,6 +179,18 @@ void EditorCore::DrawUI()
 
                 ImGui::EndMenu();
             }
+
+            if ( ImGui::BeginMenu( "Entity" ) )
+            {
+                if ( ImGui::MenuItem( "Add Game Object" ) )
+                {
+                    LOG_TRACE( "Add Game Object!" );
+                    sceneMan->GetActiveScene()->AddEntity();
+                }         
+
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMenuBar();
         }
         ImGui::End();
