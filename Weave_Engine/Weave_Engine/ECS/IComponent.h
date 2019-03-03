@@ -31,13 +31,13 @@
 #define  COMPONENT_INIT( name )                                         \
     const static ECS::IComponent::ConcreteFactory< name > CompFactory = {};
 
-
+class Entity;
 namespace ECS
 {
     using ComponentID = size_t;
     using ComponentTypeId = size_t;
     using EntityID = size_t;
-
+    
     /// <summary>
     /// Base component interface for all components in ECS
     /// </summary>
@@ -103,6 +103,8 @@ namespace ECS
         /// <returns>Entity ID of the owning entity</returns>
         const EntityID& GetOwner() const { return this->owner; }
 
+        const Entity* GetEntity() const { return OwningEntity; }
+
         /// <summary>
         /// Get the human-readable name of this component
         /// </summary>
@@ -111,12 +113,14 @@ namespace ECS
 
         static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
+        // Basic component Factory pattern for components to be added
+        // via JSON data
         class Factory
         {
         protected:
             Factory( std::string const& type );
         public:
-            virtual IComponent* constructFromFile( nlohmann::json const & source ) const = 0;
+            virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const = 0;
         };
 
         template <typename Derived>
@@ -124,8 +128,9 @@ namespace ECS
         {
         public:
             ConcreteFactory() : Factory( Derived::ClassName() ) {}
-            virtual IComponent* constructFromFile( nlohmann::json const & source ) const
+            virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const
             {
+
                 return new Derived( source );
             }
         };
@@ -152,12 +157,14 @@ namespace ECS
         /** The owner of this component */
         EntityID owner;
 
+        Entity* OwningEntity = nullptr;
+
         virtual void OnEnable() {}
 
         virtual void OnDisable() {}
 
 
-        
+
 
     };  // IComponent
 

@@ -90,6 +90,7 @@ DXCore::~DXCore()
     SceneManagement::SceneManager::ReleaseInstance();
     sceneManager = nullptr;
     ResourceManager::ReleaseInstance();
+    CameraManager::ReleaseInstance();
 
     ECS::ComponentManager::ReleaseInstance();
     if ( ScriptMan != nullptr )
@@ -110,7 +111,6 @@ DXCore::~DXCore()
 
 #endif
 
-    CameraManager::ReleaseInstance();
 
     Logger::ReleaseInstance();
     logger = nullptr;

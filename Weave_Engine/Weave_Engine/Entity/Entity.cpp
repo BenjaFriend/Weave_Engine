@@ -12,7 +12,7 @@ Entity::Entity( std::string aName )
     : Name( aName )
 {
     IsActive = true;
-
+    IsDestroyableOnLoad = true;
     entID = EntityCount++;
 
     componentManager = ECS::ComponentManager::GetInstance();
@@ -25,30 +25,6 @@ Entity::Entity( std::string aName, glm::vec3 aPos )
     : Entity( aName )
 {
     EntityTransform->SetPosition( aPos );
-}
-
-Entity::Entity( nlohmann::json const & aFile )
-{
-    Name = aFile [ NAME_SAVE_KEY ];
-    IsActive = aFile [ IS_ACTIVE_SAVE_KEY ];
-
-    entID = EntityCount++;
-
-    componentManager = ECS::ComponentManager::GetInstance();
-
-    // #TODO: Load components
-    nlohmann::json comp_data = aFile [ COMPONENT_ARRAY_SAVE_KEY ];
-
-    nlohmann::json::iterator compItr = comp_data.begin();
-
-    while ( compItr != comp_data.end() )
-    {
-        componentManager->AddComponent( entID, *compItr );
-        ++compItr;
-    }
-    EntityTransform = this->GetComponent<Transform>();
-
-    LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
 }
 
 Entity::Entity()
@@ -66,10 +42,33 @@ Entity::Entity()
 Entity::~Entity()
 {
     // Remove my components
-    componentManager->RemoveAllEntityComponents( entID );
+    RemoveAllComponents();
     EntityTransform = nullptr;
     componentManager = nullptr;
     --EntityCount;
+}
+
+Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
+{
+    RemoveAllComponents();
+
+    Name = aFile [ NAME_SAVE_KEY ];
+    IsActive = aFile [ IS_ACTIVE_SAVE_KEY ];
+    IsDestroyableOnLoad = aFile [ IS_DESTROY_ON_LOAD ];
+    nlohmann::json comp_data = aFile [ COMPONENT_ARRAY_SAVE_KEY ];
+
+    nlohmann::json::iterator compItr = comp_data.begin();
+
+    while ( compItr != comp_data.end() )
+    {
+        componentManager->AddComponent( this, *compItr );
+        ++compItr;
+    }
+    EntityTransform = this->GetComponent<Transform>();
+
+    LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
+
+    return this;
 }
 
 void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
@@ -81,6 +80,7 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
 
     entity_data [ NAME_SAVE_KEY ] = this->Name;
     entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
+    entity_data [ IS_DESTROY_ON_LOAD ] = ( bool ) this->IsDestroyableOnLoad;
     entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
 
     // Save each component

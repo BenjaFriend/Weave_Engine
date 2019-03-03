@@ -54,6 +54,7 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
+    FlyingCamera = nullptr;
 }
 
 // --------------------------------------------------------
@@ -62,8 +63,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Flying Camera" );
-    FlyingCamera = CameraEntity->AddComponent<Camera>();
+    FlyingCamera = CameraMan->GetActiveCamera();
+    assert( FlyingCamera != nullptr );
 
 #if defined( EDITOR_ON )
 
@@ -216,14 +217,11 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-    //PhysicsMan->Update( dt );
 
     // Update the camera
-    if ( FlyingCamera != nullptr )
-    {
-        FlyingCamera->Update( dt );
-        FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
-    }
+    FlyingCamera->Update( dt );
+    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    
     ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )
@@ -247,11 +245,9 @@ void Game::Draw( float dt, float totalTime )
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
         1.0f,
         0 );
-    if ( FlyingCamera == nullptr )
-    {
-        LOG_WARN( "The camera is null!" );
-        return;
-    }
+
+    assert( FlyingCamera != nullptr );
+    
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
     //    have different geometry.
@@ -268,13 +264,12 @@ void Game::Draw( float dt, float totalTime )
 
     SceneManagement::Scene* CurScene = sceneManager->GetActiveScene();
 
-    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+    Entity* entArray = CurScene->GetEntityArray();
 
-    for ( size_t i = 0; i < entArray.size(); ++i )
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        CurrentEntity = entArray [ i ];
-
-        if ( !CurrentEntity->GetIsActive() ) continue;
+        CurrentEntity = &entArray [ i ];
+        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsActive() || !CurrentEntity->GetIsValid() ) continue;
 
         MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
         if ( MeshRend != nullptr )
@@ -286,7 +281,7 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                CameraEntity->GetTransform()->GetPosition()
+                FlyingCamera->GetEntity()->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(
