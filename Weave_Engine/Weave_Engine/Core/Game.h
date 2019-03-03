@@ -78,7 +78,6 @@ private:
     float BackgroundColor [ 4 ] = { 0.45f, 0.55f, 0.60f, 1.00f };
 
     // Flying camera for initial testing
-    Entity* CameraEntity = nullptr;
 	Camera* FlyingCamera = nullptr;
     Mesh* PointLightMesh = nullptr;
 

@@ -61,7 +61,7 @@ Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
 
     while ( compItr != comp_data.end() )
     {
-        componentManager->AddComponent( entID, *compItr );
+        componentManager->AddComponent( this, *compItr );
         ++compItr;
     }
     EntityTransform = this->GetComponent<Transform>();

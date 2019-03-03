@@ -23,38 +23,46 @@ CameraManager::CameraManager()
 {
     LOG_TRACE( "Camera man created" );
     // Create a camera by default
-    AddCamera( "Default_Editor_Cam" );
+    CreateDebugCamera();
+    
 }
 
 CameraManager::~CameraManager()
 {
     LOG_TRACE( "Camera man dtor" );
     
-    // Delete all cameras
-    //if ( CameraEntity != nullptr )
-    //{
-    //    delete CameraEntity;
-    //    CameraEntity = nullptr;
-    //    ActiveCamera = nullptr;
-    //}
+    if ( DebugCamera != nullptr )
+    {
+        delete DebugCamera;
+    }
+    
+    DebugCamera = nullptr;
+}
+
+void CameraManager::CreateDebugCamera()
+{
+    // Create an entity 
+    // This should not happen here
+    DebugCameraEntity = new Entity( "Default_Editor_Cam" );
+    DebugCameraEntity->SetIsDestroyableOnLoad( false );
+    
+    // Add a camera component
+    DebugCamera = DebugCameraEntity->AddComponent<Camera>();
+    if ( ActiveCamera == nullptr )
+    {
+        ActiveCamera = DebugCamera;
+    }
 }
 
 Camera* CameraManager::AddCamera( const std::string aName )
 {
     // Create an entity 
-    //Entity* CameraEnt = new Entity( aName );
-    //CameraEnt->SetIsDestroyableOnLoad( false );
-    //
-    //// Add a camera component
-    //Camera* CamComp = CameraEnt->AddComponent<Camera>();
-    //
-    ////if ( CameraEntity == nullptr )
-    ////{
-    ////    CameraEntity = CameraEnt;
-    ////    ActiveCamera = CamComp;
-    ////}
-    //
-    ////CurrentCameras.emplace( aName, CamComp );
-
-    return nullptr;
+    // This should not happen here
+    Entity* CameraEnt = new Entity( aName );
+    CameraEnt->SetIsDestroyableOnLoad( false );
+    
+    // Add a camera component
+    Camera* CamComp = CameraEnt->AddComponent<Camera>();
+    
+    return CamComp;
 }

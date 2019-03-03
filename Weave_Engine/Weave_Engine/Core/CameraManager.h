@@ -40,6 +40,8 @@ public:
     /// <returns>Pointer to the active camera</returns>
     FORCE_INLINE Camera* GetActiveCamera() const { return ActiveCamera; }
 
+    FORCE_INLINE Camera* GetDebugCamera() const { return DebugCamera; }
+
 private:
 
     CameraManager();
@@ -48,6 +50,11 @@ private:
 
     static CameraManager* Instance;
 
+    void CreateDebugCamera();
+
+    Camera* DebugCamera = nullptr;
+    Entity* DebugCameraEntity = nullptr;
+    
     Camera* ActiveCamera = nullptr;
     Entity* CameraEntity = nullptr;
 

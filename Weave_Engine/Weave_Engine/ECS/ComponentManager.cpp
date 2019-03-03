@@ -25,6 +25,29 @@ void ECS::ComponentManager::ReleaseInstance()
     }
 }
 
+bool ECS::ComponentManager::AddComponent( Entity * aEntity, nlohmann::json & aCompData )
+{
+    assert( aEntity != nullptr );
+    const ECS::EntityID aEntityID = aEntity->GetID();
+
+    std::string compType = aCompData [ COMP_SAVE_KEY ];
+    LOG_TRACE( "Load Component: {}", compType );
+
+    IComponent* newComp = IComponent::ReadFromFile( aCompData );
+
+    if ( newComp == nullptr ) return false;
+
+    newComp->owner = aEntityID;
+    newComp->OwningEntity = aEntity;
+    newComp->id = ComponentCount;
+
+    ++ComponentCount;
+    const ComponentTypeId CTID = newComp->GetStaticComponentTypeID();
+    this->activeComponents [ aEntityID ] [ CTID ] = newComp;
+
+    return true;
+}
+
 ECS::ComponentManager::ComponentManager()
 {
 }

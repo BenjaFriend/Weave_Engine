@@ -62,11 +62,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    CameraEntity = sceneManager->GetActiveScene()->AddEntity( "Default boi cam" );
-    FlyingCamera = CameraEntity->AddComponent<Camera>();
-    //FlyingCamera = CameraMan->AddCamera();
+    FlyingCamera = CameraMan->GetActiveCamera();
     assert( FlyingCamera != nullptr );
-    //FlyingCamera = CameraMan->GetActiveCamera();
 
 #if defined( EDITOR_ON )
 
@@ -249,11 +246,9 @@ void Game::Draw( float dt, float totalTime )
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
         1.0f,
         0 );
-    if ( FlyingCamera == nullptr )
-    {
-        LOG_WARN( "The camera is null!" );
-        return;
-    }
+
+    assert( FlyingCamera != nullptr );
+    
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
     //    have different geometry.
@@ -287,7 +282,7 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                CameraEntity->GetTransform()->GetPosition()
+                FlyingCamera->GetEntity()->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(

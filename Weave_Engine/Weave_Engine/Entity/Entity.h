@@ -77,7 +77,7 @@ public:
     {
         return
             this->componentManager->AddComponent<T>(
-                this->entID,
+                this,
                 std::forward<P>( param )...
                 );
     }
@@ -148,6 +148,8 @@ public:
     FORCE_INLINE const bool GetIsValid() const { return IsValid; }
 
     FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
+
+    FORCE_INLINE const ECS::EntityID GetID() const { return this->entID; }
 
     /// <summary>
     /// Sets if this entity is active or not

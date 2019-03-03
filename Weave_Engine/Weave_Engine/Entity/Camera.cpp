@@ -3,7 +3,6 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "../Entity/Entity.h"
-#include "../Scenes/SceneManager.h"
 
 COMPONENT_INIT( Camera )
 
@@ -146,11 +145,8 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 
 const glm::vec3 Camera::GetPosition() const
 {
-    ECS::EntityID own = GetOwner();
-
-    Entity* entity = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( own );
-    if ( entity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
-    Transform* transform = entity->GetTransform();
+    if ( OwningEntity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
+    Transform* transform = OwningEntity->GetTransform();
     //LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
     return transform->GetPosition();
 }

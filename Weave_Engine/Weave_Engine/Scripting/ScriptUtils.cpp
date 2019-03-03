@@ -196,15 +196,12 @@ void ScriptManager::Log_Print( std::string msg )
     LOG_TRACE( "{}", msg );
 }
 
-void Scripting::ScriptManager::MoveCamera( glm::vec3 move )
+void ScriptManager::MoveCamera( glm::vec3 move )
 {
-    static Camera* camera = reinterpret_cast< Camera* >( ECS::ComponentManager::GetInstance()->FindComponentOfType<Camera>() );
-    if ( camera == nullptr ) return;
-    static Entity* cameraEnt = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( camera->GetOwner() );
-    static Transform* transform = cameraEnt->GetTransform();
+    Camera* cam = CameraManager::GetInstance()->GetActiveCamera();
+    assert( cam != nullptr );
+    Transform* transform = cam->GetEntity()->GetTransform();
 
     transform->MoveRelative( move.x, move.y, move.z );
-    camera->SetPosition( transform->GetPosition() );
-
-    //LOG_TRACE("{}, {}, {}", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+    cam->SetPosition( transform->GetPosition() );
 }

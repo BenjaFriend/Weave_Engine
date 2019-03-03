@@ -5,6 +5,7 @@
 #include <filesystem>   // std::filesystem::directory_iterator
 
 #include "../Scenes/SceneManager.h"
+#include "../Core/CameraManager.h"
 #include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Transform.h"
