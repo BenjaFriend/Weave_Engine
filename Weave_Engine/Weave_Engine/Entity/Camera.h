@@ -6,6 +6,7 @@
 
 /////////////////////////////////////////////////
 // Forward Declarations
+class CameraManager;
 
 /// <summary>
 /// Camera class capable of rendering entities, 

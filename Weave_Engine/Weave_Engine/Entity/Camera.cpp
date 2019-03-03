@@ -43,7 +43,7 @@ Camera::Camera( nlohmann::json const & aInitData )
     PitchAngle = 0;
     YawAngle = 90;
 
-    inputManager = Input::InputManager::GetInstance();
+    inputManager = Input::InputManager::GetInstance();    
 }
 
 Camera::~Camera()

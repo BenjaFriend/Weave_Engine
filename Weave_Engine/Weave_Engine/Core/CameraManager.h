@@ -2,8 +2,10 @@
 
 #include <unordered_map>
 
-#include "../Entity/Entity.h"
-#include "../Entity/Camera.h"
+/////////////////////////////////////////////////
+// Forward Declarations
+class Camera;
+class Entity;
 
 /// <summary>
 /// the camera manager is in charge of making sure that there is always a 
@@ -33,7 +35,7 @@ public:
     /// <param name="aName">The name of this camera</param>
     /// <returns>Pointer to the added camera</returns>
     Camera* AddCamera( const std::string aName );
-
+    
     /// <summary>
     /// Get the current camera being used to render the scene
     /// </summary>
@@ -58,5 +60,5 @@ private:
     Camera* ActiveCamera = nullptr;
     Entity* CameraEntity = nullptr;
 
-    //std::unordered_map < std::string, Camera* > CurrentCameras;
+    std::unordered_map < std::string, Camera* > CurrentCameras;
 };

@@ -1,8 +1,9 @@
 #include "../stdafx.h"
 
 #include "CameraManager.h"
+#include "../Entity/Entity.h"
+#include "../Entity/Camera.h"
 
-// #TODO: Implement the camera manager
 CameraManager* CameraManager::Instance = nullptr;
 
 CameraManager* CameraManager::GetInstance()
@@ -33,6 +34,7 @@ CameraManager::~CameraManager()
     
     SAFE_DELETE( DebugCameraEntity );
     DebugCamera = nullptr;
+    CurrentCameras.clear();
 }
 
 void CameraManager::CreateDebugCamera()
