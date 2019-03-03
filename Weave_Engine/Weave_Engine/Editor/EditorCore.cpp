@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 
 #include "EditorCore.h"
+#include "../ECS/IComponent.h"
 
 using namespace Editor;
 
@@ -266,6 +267,28 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
         ImGui::End();
         return;
     }
+
+    if ( ImGui::CollapsingHeader( "Add Component" ) )
+    {
+        const auto & componentTypes = ECS::IComponent::ComponentFactories();
+
+        for ( const auto & compType : componentTypes )
+        {
+            std::string name = compType.first.c_str();
+            char buf [ 64 ] = "\0";
+            sprintf( buf, "Type: %s", compType.first.c_str() );
+
+            if ( ImGui::Button( buf ) )
+            {
+                LOG_TRACE( "Add comp type {}", name );
+
+            }
+        }
+
+    }
+        
+            
+
 
     SelectedEntity->SetName( newNameBuf );
     SelectedEntity->SetIsActive( isActive );
