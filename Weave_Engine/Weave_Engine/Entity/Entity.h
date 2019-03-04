@@ -5,9 +5,6 @@
 #include "../ECS/ComponentManager.h"
 #include "../Resources/ISaveable.h"
 #include "Transform.h"
-
-/////////////////////////////////////////////////
-// Savable key definitions 
 #include "../Utils/SaveFileDefs.h"
 
 /////////////////////////////////////////////////
@@ -17,7 +14,7 @@ class Material;
 class Component;
 
 /// <summary>
-///  Represents a game entity and their transformations.
+///  Represents a game entity and provides access to their components
 /// </summary>
 /// <author>Ben Hoffman</author>
 class Entity : ISaveable
@@ -28,23 +25,15 @@ class Entity : ISaveable
 public:
 
     /// <summary>
+    /// Default constructor for this entity
+    /// </summary>
+    Entity();
+
+    /// <summary>
     /// Creates an empty game object with the given name
     /// </summary>
     /// <param name="aName">Name of this entity</param>
     Entity( std::string aName );
-
-    /// <summary>
-    /// Creates an empty game object with the given name at the 
-    /// given position
-    /// </summary>
-    /// <param name="aName">Name of this entity</param>
-    /// <param name="aPos">Position of this entity</param>
-    Entity( std::string aName, glm::vec3 aPos );
-
-    /// <summary>
-    /// Default constructor for this entity
-    /// </summary>
-    Entity();
 
     ~Entity();
 
@@ -91,7 +80,7 @@ public:
         this->componentManager->RemoveComponent<T>( this->entID );
     }
 
-    const ECS::ComponentMap * GetAllComponents() const
+    FORCE_INLINE const ECS::ComponentMap * GetAllComponents() const
     {
         return componentManager->GetAllComponents( this->entID );
     }
@@ -107,26 +96,26 @@ public:
 
 private:
 
+    /** handles the adding/removing of components for this entity */
+    ECS::ComponentManager * componentManager = nullptr;
+
     /** The transform of the entity */
     Transform* EntityTransform = nullptr;
-
-    /** Flag for if this entity is active or not */
-    bool IsActive;
-
-    /** The name of this object */
-    std::string Name = "Default Entity";
 
     /** The unique ID of this entity */
     ECS::EntityID entID;
 
-    /** handles the adding/removing of components for this entity */
-    ECS::ComponentManager * componentManager = nullptr;
+    /** Flag for if this entity is active or not */
+    UINT32 IsActive : 1;
 
     /** If true, then this entity will get destroyed when  */
     UINT32 IsDestroyableOnLoad : 1;
 
     /** If true, then this entity has been initialized and is valid in the memory pool */
     UINT32 IsValid : 1;
+
+    /** The name of this object */
+    std::string Name = "Default Entity";
 
     ////////////////////////////////////////////////////
     // Accessors
@@ -155,24 +144,24 @@ public:
     /// Sets if this entity is active or not
     /// </summary>
     /// <param name="aStatus">True if active, false if in-active</param>
-    void SetIsActive( const bool aStatus );
+    FORCE_INLINE void SetIsActive( const bool aStatus ) { IsActive = aStatus; }
 
     /// <summary>
     /// Get if this entity is active or not
     /// </summary>
     /// <returns>True if active, false if in-active</returns>
-    const bool GetIsActive() const;
+    FORCE_INLINE const bool GetIsActive() const { return IsActive; }
 
     /// <summary>
     /// Get this entity's name
     /// </summary>
     /// <returns>Reference to the name of this entity</returns>
-    const std::string & GetName() const;
+    FORCE_INLINE const std::string & GetName() const { return Name; }
 
     /// <summary>
     /// Set the name of this entity
     /// </summary>
     /// <param name="newName">The new name of this entity</param>
-    void SetName( std::string newName );
+    FORCE_INLINE void SetName( std::string newName ) { Name = newName; }
 
 };

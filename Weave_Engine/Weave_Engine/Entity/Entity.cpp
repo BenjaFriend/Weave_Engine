@@ -14,16 +14,6 @@ Entity::Entity( std::string aName )
     Name = aName;
 }
 
-Entity::Entity( std::string aName, glm::vec3 aPos )
-    : Entity( aName )
-{
-    if ( EntityTransform == nullptr )
-    {
-        EntityTransform = this->AddComponent<Transform>();
-    }
-    EntityTransform->SetPosition( aPos );
-}
-
 Entity::Entity()
 {
     IsActive = true;
@@ -81,7 +71,7 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
     nlohmann::json entity_data = nlohmann::json::object();
 
     entity_data [ NAME_SAVE_KEY ] = this->Name;
-    entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
+    entity_data [ IS_ACTIVE_SAVE_KEY ] = ( bool ) this->IsActive;
     entity_data [ IS_DESTROY_ON_LOAD ] = ( bool ) this->IsDestroyableOnLoad;
     entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
 
@@ -105,28 +95,4 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
     {
         aJsonEntityArray.push_back( entity_data );
     }
-}
-
-////////////////////////////////////////////////////
-// Accessors
-////////////////////////////////////////////////////
-
-void Entity::SetIsActive( const bool aStatus )
-{
-    IsActive = aStatus;
-}
-
-const bool Entity::GetIsActive() const
-{
-    return IsActive;
-}
-
-const std::string & Entity::GetName() const
-{
-    return Name;
-}
-
-void Entity::SetName( std::string newName )
-{
-    Name = newName;
 }
