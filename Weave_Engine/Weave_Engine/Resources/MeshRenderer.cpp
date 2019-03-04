@@ -52,10 +52,24 @@ void MeshRenderer::DrawEditorGUI()
 
 void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
 {
-    assert( CurrentMesh != nullptr && CurrentMaterial != nullptr );
-
-    aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
-    aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
+    // Save mesh
+    if ( CurrentMesh != nullptr )
+    {
+        aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
+    }
+    else
+    {
+        aOutFile [ MESH_SAVE_KEY ] = "NULL_MESH";
+    }
+    // Save material
+    if ( CurrentMaterial != nullptr )
+    {
+        aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
+    }
+    else
+    {
+        aOutFile [ MAT_FILE_SAVE_KEY ] = "NULL_MAT";
+    }
 }
 
 void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )

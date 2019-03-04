@@ -9,33 +9,35 @@
 size_t Entity::EntityCount = 0;
 
 Entity::Entity( std::string aName )
-    : Name( aName )
+    : Entity()
 {
-    IsActive = true;
-    IsDestroyableOnLoad = true;
-    entID = EntityCount++;
-
-    componentManager = ECS::ComponentManager::GetInstance();
-
-    // Give entity component a transform 
-    EntityTransform = this->AddComponent<Transform>();
+    Name = aName;
 }
 
 Entity::Entity( std::string aName, glm::vec3 aPos )
     : Entity( aName )
 {
+    if ( EntityTransform == nullptr )
+    {
+        EntityTransform = this->AddComponent<Transform>();
+    }
     EntityTransform->SetPosition( aPos );
 }
 
 Entity::Entity()
 {
     IsActive = true;
+    IsValid = false;
+    IsDestroyableOnLoad = true;
 
     entID = EntityCount++;
     componentManager = ECS::ComponentManager::GetInstance();
 
     // Give entity component a transform 
-    EntityTransform = this->AddComponent<Transform>();
+    if ( EntityTransform == nullptr )
+    {
+        EntityTransform = this->AddComponent<Transform>();
+    }
 }
 
 // virtual destructor

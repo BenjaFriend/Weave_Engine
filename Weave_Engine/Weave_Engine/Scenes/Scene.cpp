@@ -10,7 +10,6 @@ Scene::Scene()
     // Initalize the entity array
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntityArray_Raw [ i ].SetIsActive( false );
         EntityArray_Raw [ i ].SetIsValid( false );
     }
 }
@@ -32,11 +31,14 @@ Entity * Scene::AddEntity( std::string aName )
 {
     assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
 
+    // TODO: Loop until there is a non-valid entity
+
     Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
     newEnt->SetName( aName );
     newEnt->GetTransform()->SetPosition( glm::vec3( 0.f ) );
     newEnt->SetIsActive( true );
     newEnt->SetIsValid( true );
+
     LOG_TRACE( "Add raw entity! {}", aName );
 
     return newEnt;
@@ -68,13 +70,15 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
     // Delete each entity that has been added
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( &EntityArray_Raw [ i ] != nullptr &&
-            EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
-            aOverrideDestroyOnLoad )
+        if ( &EntityArray_Raw [ i ] != nullptr )
         {
-            EntityArray_Raw [ i ].SetIsValid( false );
+            if ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() || aOverrideDestroyOnLoad )
+            {
+                ResetEntity( &EntityArray_Raw [ i ] );
+            }
         }
     }
+    // Reset last created entity
     LastCreatedEntity = 1;
 }
 

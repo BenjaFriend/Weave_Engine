@@ -284,11 +284,7 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
                 compMan->AddComponentFromEditor( SelectedEntity, name );
             }
         }
-
-    }
-        
-            
-
+    }          
 
     SelectedEntity->SetName( newNameBuf );
     SelectedEntity->SetIsActive( isActive );
