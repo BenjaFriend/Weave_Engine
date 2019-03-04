@@ -25,8 +25,14 @@ set( BOOST_ROOT             $ENV{BOOST_ROOT} )
 set( BOOST_LIBRARYDIR       $ENV{BOOST_LIBRARYDIR} )
 set( Boost_USE_STATIC_LIBS  ON )
 
-message( STATUS "Boost Inc  at: ${Boost_INCLUDE_DIR}" )
-message( STATUS "Boost Libs at: ${BOOST_LIBRARYDIR}" )
+message( STATUS "BOOST_ROOT         at: ${BOOST_ROOT}" )
+message( STATUS "Boost_INCLUDE_DIR  at: ${Boost_INCLUDE_DIR}" )
+message( STATUS "BOOST_LIBRARYDIR   at: ${BOOST_LIBRARYDIR}" )
+message( STATUS "Boost_LIBRARIES    at: ${BOOST_LIBRARYDIR}" )
+
+
+#target_link_libraries( main ${Boost_LIBRARIES} )
+
 
 FIND_PACKAGE( Boost )
 
@@ -59,17 +65,15 @@ endif()
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )
 
 ### Setup visual studio source groups / filters ###
-file( GLOB_RECURSE _source_list *.cpp* *.h* *.hpp* )
-
-foreach( _source IN ITEMS ${_source_list} )
-
-	get_filename_component( _source_path "${_source}" PATH )
-    string( REPLACE "${CMAKE_SOURCE_DIR}" "" _group_path "${_source_path}" )
-    string( REPLACE "/" "\\" _group_path "${_group_path}" )
-    source_group( "${_group_path}" FILES "${_source}" )
-
-endforeach()
-
+file( GLOB_RECURSE _source_list src/*.cpp* src/*.h* src/*.hpp*   include/*.cpp* include/*.h* include/*.hpp* )
+if( MSVC )
+    foreach( _source IN ITEMS ${_source_list} )
+    	get_filename_component( _source_path "${_source}" PATH )
+        string( REPLACE "${CMAKE_SOURCE_DIR}" "" _group_path "${_source_path}" )
+        string( REPLACE "/" "\\" _group_path "${_group_path}" )
+        source_group( "${_group_path}" FILES "${_source}" )
+    endforeach()
+endif()
 ################# Add Exe ######################
 message ( STATUS "\tMY  Flags:" ${MY_COMPILER_FLAGS} )
 message ( STATUS "\tcxx Flags:" ${CMAKE_CXX_FLAGS} )
