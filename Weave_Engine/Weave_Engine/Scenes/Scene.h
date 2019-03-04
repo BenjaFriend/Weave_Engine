@@ -9,13 +9,13 @@
 #include "../Lighting/LightShaderDefs.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
-
-class Entity;
+#include "../stdafx.h"
+#include "../Entity/Entity.h"
 
 namespace SceneManagement
 {
 
-    using Entity_ID = size_t;
+    using Entity_ID = UINT64;
 
     /// <summary>
     /// A scene data structure for controlling what things are currently 
@@ -38,14 +38,6 @@ namespace SceneManagement
         Entity* AddEntity( std::string aName = "Default Entity" );
 
         /// <summary>
-        /// Adds an entity and sets their position after it is created
-        /// </summary>
-        /// <param name="aName">Name of this entity</param>
-        /// <param name="aPos">The spawn position</param>
-        /// <returns>Pointer to the entity</returns>
-        Entity* AddEntity( std::string aName, glm::vec3 aPos );
-
-        /// <summary>
         /// Load in an entity from some file information
         /// </summary>
         /// <param name="aFile"></param>
@@ -56,7 +48,7 @@ namespace SceneManagement
         /// Deletes entity with the given ID
         /// </summary>
         /// <param name="aEntityID">ID of the entity to delete</param>
-        void DeleteEntity( Entity * aEntity );
+        void ResetEntity( Entity * aEntity );
 
         /// <summary>
         /// Set data about this 
@@ -82,13 +74,7 @@ namespace SceneManagement
         /// </summary>
         void ResetScene();
 
-        FORCE_INLINE const std::vector<Entity*> & GetEntityArray() { return EntityArray; }
-
-        /// <summary>
-        /// Get the current count of entities
-        /// </summary>
-        /// <returns>number of entities in the scene</returns>
-        FORCE_INLINE const size_t GetEntityCount() const { return EntityArray.size(); }
+        FORCE_INLINE Entity* GetEntityArray() const { return EntityArray_Raw; }
 
         /// <summary>
         /// Get this scene's name
@@ -98,7 +84,12 @@ namespace SceneManagement
 
         FORCE_INLINE void SetSceneName( std::string aName ) { SceneName = aName; }
 
-        FORCE_INLINE Entity* GetEntity( Entity_ID aID ) { if ( aID < 0 || aID > EntityArray.size() ) return nullptr;  return EntityArray [ aID ]; }
+        FORCE_INLINE Entity* GetEntity( Entity_ID aID )
+        {
+            if ( aID < 0 || aID > MAX_ENTITY_COUNT ) return nullptr;
+            
+            return &EntityArray_Raw [ aID ];    
+        }
 
         FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
 
@@ -110,7 +101,8 @@ namespace SceneManagement
         /// Removes all currently loaded entities from the array 
         /// and deletes them
         /// </summary>
-        void UnloadAllEntities();
+        /// <param name="aOverrideDestroyOnLoad"></param>
+        void UnloadAllEntities( bool aOverrideDestroyOnLoad = false );
 
         /// <summary>
         /// Remove all lights from this light system
@@ -123,12 +115,13 @@ namespace SceneManagement
         /// <param name="aPixShader">Pixel shader to send lighting info to</param>
         void SetLightData( SimplePixelShader* aPixShader );
 
-
         /** This scene's name */
         std::string SceneName = "DEFAULT_SCENE";
 
-        /** Keep track of all entities in the scene */
-        std::vector<Entity*> EntityArray;
+        /** A raw array of entity data */
+        Entity* EntityArray_Raw = nullptr;
+
+        UINT64 LastCreatedEntity = 0;
 
         std::vector<DirLight*> DirLights;
 

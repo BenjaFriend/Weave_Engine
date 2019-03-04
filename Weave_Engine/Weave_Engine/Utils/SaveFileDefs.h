@@ -12,6 +12,7 @@
 #define NAME_SAVE_KEY               "Name"
 #define IS_ACTIVE_SAVE_KEY          "IsActive"
 #define COMP_SAVE_KEY               "ComponentName"
+#define IS_DESTROY_ON_LOAD          "DestroyOnLoad"
 
 // Material
 #define MAT_FILE_SAVE_KEY           "MaterialFile"

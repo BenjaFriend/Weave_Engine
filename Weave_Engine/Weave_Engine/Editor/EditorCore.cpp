@@ -202,11 +202,12 @@ inline void EditorCore::DrawHierarchy()
 
     Entity* CurrentEntity = nullptr;
     SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
-    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
-    for ( size_t i = 0; i < entArray.size(); ++i )
-    {
-        CurrentEntity = entArray [ i ];
+    Entity* entArray = CurScene->GetEntityArray();
 
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        CurrentEntity = &entArray [ i ];
+        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsValid() ) continue;
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
             SelectedEntity = CurrentEntity;
@@ -248,7 +249,7 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
 
     if ( ImGui::Button( "Delete" ) )
     {
-        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->DeleteEntity( SelectedEntity );
+        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->ResetEntity( SelectedEntity );
         SelectedEntity = nullptr;
         ImGui::End();
         return;
@@ -304,12 +305,12 @@ void EditorCore::SaveScene()
     Entity* CurrentEntity = nullptr;
 
     SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
-    const std::vector<Entity*> & entArray = CurScene->GetEntityArray();
+    Entity* entArray = CurScene->GetEntityArray();
 
-    for ( size_t i = 0; i < entArray.size(); ++i )
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        CurrentEntity = entArray [ i ];
-        if ( CurrentEntity != nullptr )
+        CurrentEntity = &entArray [ i ];
+        if ( CurrentEntity != nullptr && CurrentEntity->GetIsValid() )
         {
             CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );
         }
