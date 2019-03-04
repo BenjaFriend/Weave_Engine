@@ -111,27 +111,52 @@ namespace ECS
         /// <returns>const char* of what this component should be called</returns>
         virtual const char* ComponentName() = 0;
 
+        /// <summary>
+        /// Construct this component at runtime from a scene serialization file
+        /// </summary>
+        /// <param name="aInitData">The initalization data for this component</param>
+        /// <returns>Pointer to the newly constructed component</returns>
         static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
-        // Basic component Factory pattern for components to be added
-        // via JSON data
+        /// <summary>
+        /// Construct this component at runtime from the editor
+        /// </summary>
+        /// <param name="aCompName">The class name of this component</param>
+        /// <returns>Pointer to newly constructed component</returns>
+        static IComponent* ReadFromEditor( const std::string & aCompName );
+
+#pragma region Component Factory
+        /// <summary>
+        /// Base factory class for components to be added at runtime. 
+        /// </summary>
         class Factory
         {
         protected:
             Factory( std::string const& type );
         public:
             virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const = 0;
+            virtual IComponent* ConstructFromEditor() const = 0;
         };
 
+        /// <summary>
+        /// A component factory that will create a new factory based on it's class name 
+        /// for use with the editor and scene serialization. 
+        /// </summary>
         template <typename Derived>
         class ConcreteFactory : public Factory
         {
         public:
+
             ConcreteFactory() : Factory( Derived::ClassName() ) {}
+
             virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const
             {
-
                 return new Derived( source );
+            }
+
+            virtual IComponent* ConstructFromEditor()const
+            {
+                return new Derived();
             }
         };
 
@@ -141,6 +166,7 @@ namespace ECS
             static FactoryMap theOneAndOnly;
             return theOneAndOnly;
         }
+#pragma endregion 
 
     protected:
 

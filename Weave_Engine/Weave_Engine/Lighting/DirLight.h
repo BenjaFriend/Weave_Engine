@@ -17,6 +17,8 @@ public:
 
     COMPONENT( DirLight );
 
+    DirLight();
+
     DirLight( DirectionalLightData aLightData );
 
     DirLight( nlohmann::json const & aInitData );

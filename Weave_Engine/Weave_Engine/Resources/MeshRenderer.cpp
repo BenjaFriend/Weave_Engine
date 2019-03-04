@@ -8,6 +8,12 @@
 
 COMPONENT_INIT( MeshRenderer )
 
+MeshRenderer::MeshRenderer()
+{
+    CurrentMaterial = nullptr;
+    CurrentMesh = nullptr;
+}
+
 MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
     : CurrentMaterial( aMat ), CurrentMesh( aMesh )
 {

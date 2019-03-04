@@ -39,7 +39,7 @@ EditorCore::EditorCore()
 {
     sceneMan = SceneManagement::SceneManager::GetInstance();
     sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
-
+    compMan = ECS::ComponentManager::GetInstance();
     LoadResources();
 }
 
@@ -276,12 +276,12 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
         {
             std::string name = compType.first.c_str();
             char buf [ 64 ] = "\0";
-            sprintf( buf, "Type: %s", compType.first.c_str() );
+            sprintf_s( buf, "Type: %s", compType.first.c_str() );
 
             if ( ImGui::Button( buf ) )
             {
                 LOG_TRACE( "Add comp type {}", name );
-
+                compMan->AddComponentFromEditor( SelectedEntity, name );
             }
         }
 

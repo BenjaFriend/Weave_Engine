@@ -20,6 +20,8 @@ public:
 
     COMPONENT( MeshRenderer );
 
+    MeshRenderer();
+
     MeshRenderer( Material* aMat, Mesh* aMesh );
 
     MeshRenderer( nlohmann::json const & aInitData );

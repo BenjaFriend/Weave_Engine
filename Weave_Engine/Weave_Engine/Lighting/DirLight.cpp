@@ -12,6 +12,13 @@
 
 COMPONENT_INIT( DirLight )
 
+DirLight::DirLight()
+{
+    LightingData = {};
+    
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddDirLight( this );
+}
+
 DirLight::DirLight( DirectionalLightData aLightData )
     : LightingData( aLightData )
 {

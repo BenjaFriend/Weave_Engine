@@ -11,6 +11,13 @@
 
 COMPONENT_INIT( PointLight )
 
+PointLight::PointLight()
+{
+    LightingData = {};
+
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddPointLight( this );
+}
+
 PointLight::PointLight(
     glm::vec3 aColor,
     glm::vec3 aPos,

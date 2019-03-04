@@ -17,7 +17,7 @@ namespace Physics
 
         COMPONENT( RigidBody );
 
-        RigidBody( float aMass );
+        RigidBody();
 
         RigidBody( nlohmann::json const & aInitData );
 

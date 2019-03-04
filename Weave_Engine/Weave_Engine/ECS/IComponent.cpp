@@ -23,3 +23,14 @@ IComponent* IComponent::ReadFromFile( nlohmann::json & comp_data )
     }
     return factory->second->ConstructFromFile( comp_data );
 }
+
+IComponent * ECS::IComponent::ReadFromEditor( const std::string & aCompName )
+{
+    FactoryMap::const_iterator factory = ComponentFactories().find( aCompName );
+    if ( factory == ComponentFactories().end() )
+    {
+        LOG_ERROR( "Unknown component type! {}", aCompName );
+        return nullptr;
+    }
+    return factory->second->ConstructFromEditor();
+}
