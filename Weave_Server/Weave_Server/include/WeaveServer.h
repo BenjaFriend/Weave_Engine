@@ -1,11 +1,12 @@
 #pragma once
 
 #include <iostream>
-#include <atomic>
+#include <thread>
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/asio.hpp>
 #include <boost/regex.hpp>
+#include <boost/bind.hpp>
 
 #include "Room.h"
 
@@ -35,7 +36,11 @@ class WeaveServer
 public:
 
     WeaveServer( SERVER_INIT_DESC aDesc );
-    
+
+    /** Remove the copy ctor and operator */
+    WeaveServer( const WeaveServer & ) = delete;
+    WeaveServer & operator=( const WeaveServer & ) =delete;
+
     ~WeaveServer();
 
     /**
@@ -51,6 +56,15 @@ private:
     /** Any necessary updates to the rooms */
     void Tick();
 
+    /** The IO service for sockets */
+    boost::asio::io_service io_service;
+
+    /** The server socket */
+    boost::asio::ip::udp::socket ListenSocket;
+
+    /** The running thread of waiting for data */
+    std::thread runningThread;
+
     /** The max number of rooms that this server can have */
     unsigned int MaxRooms = 4;
 
@@ -59,15 +73,11 @@ private:
 
     /** The default port to send data back to the clients on  */
     unsigned short ResponsePort = DEF_RESPONSE_PORT;
-
-    // Listen socket
-
-    // Send socket
-
-    /** Atomic flag to check if we are done */
-    std::atomic<bool> isDone;
     
     /** Pointer to the room objects */
     Room* Rooms = nullptr;
+
+    // Lock-less queue of messages that are incoming
+
 
 };

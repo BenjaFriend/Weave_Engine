@@ -3,6 +3,8 @@
 #include <thread>       // std::thread
 #include <memory>       // std::unique_ptr
 
+#include <boost/asio.hpp>
+
 #include "WeaveServer.h"
 
 #define HELP_FLAG              "-h"
@@ -23,10 +25,8 @@ int main( int argc, char* argv[] )
 
     std::unique_ptr< WeaveServer > Server =
         std::make_unique< WeaveServer > ( serverDesc );
-
-    size_t res = Server->Run();
-
-    std::cout << "Program exit! " << res << std::endl;
+    
+    std::cout << "Program exit! " << std::endl;
 
     return 0;
 }
