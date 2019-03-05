@@ -1,15 +1,11 @@
 #include <iostream>
-#include <iterator>
-#include <algorithm>
-#include <string>
-#include <thread>
+#include <string>       // std::string
+#include <thread>       // std::thread
+#include <memory>       // std::unique_ptr
 
-#include "Test_Include.h"
-#include "Funcs.h"
+#include "WeaveServer.h"
 
-#include <boost/lambda/lambda.hpp>
-#include <boost/asio.hpp>
-#include <boost/regex.hpp>
+#define HELP_FLAG              "-h"
 
 int main( int argc, char* argv[] )
 {
@@ -18,7 +14,17 @@ int main( int argc, char* argv[] )
         std::cout << "There is only one argument at argv[0]"
         << argv[ 0 ] << std::endl;
     }
+
+    // TODO: Parse args for server config
+
     std::cout << "Hello world! Initalize asio and boost please!" << std::endl;
-    TestFunc();
+
+    std::unique_ptr< WeaveServer > Server =
+        std::make_unique< WeaveServer > ();
+
+    size_t res = Server->Run();
+
+    std::cout << "Program exit! " << res << std::endl;
+
     return 0;
 }

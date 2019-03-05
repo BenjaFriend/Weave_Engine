@@ -92,7 +92,7 @@ message ( STATUS "\tcxx Flags:" ${CMAKE_CXX_FLAGS} )
 add_executable( ${PROJECT_NAME} ${_source_list} )
 
 # C++ Standard
-set_property( TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11 )
+set_property( TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14 )
 
 # Link the directories to target
 link_directories( ${LINK_DIRS} )
