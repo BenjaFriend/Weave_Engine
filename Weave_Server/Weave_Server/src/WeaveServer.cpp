@@ -11,7 +11,10 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
 
     Rooms = new Room[ MaxRooms ];
 
-    io_service.run();
+    if ( io_service.stopped() )
+    {
+        std::cout << "Io service is stopped!" << std::endl;
+    }
 
     // Create the running thread
     runningThread = std::thread( &WeaveServer::Run, this );
