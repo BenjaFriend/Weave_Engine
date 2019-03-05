@@ -272,7 +272,7 @@ void Game::Draw( float dt, float totalTime )
         if ( CurrentEntity == nullptr || !CurrentEntity->GetIsActive() || !CurrentEntity->GetIsValid() ) continue;
 
         MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
-        if ( MeshRend != nullptr )
+        if ( MeshRend != nullptr && MeshRend->IsEnabled() )
         {
             EnMat = MeshRend->GetMaterial();
 

@@ -10,13 +10,14 @@ COMPONENT_INIT( MeshRenderer )
 
 MeshRenderer::MeshRenderer()
 {
-    CurrentMaterial = nullptr;
-    CurrentMesh = nullptr;
+    ResourceManager* resMan = ResourceManager::GetInstance();
 }
 
 MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
-    : CurrentMaterial( aMat ), CurrentMesh( aMesh )
+    : MeshRenderer()
 {
+    CurrentMaterial = aMat;
+    CurrentMesh = aMesh;
 }
 
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
@@ -43,11 +44,27 @@ MeshRenderer::~MeshRenderer()
 void MeshRenderer::DrawEditorGUI()
 {
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
-    // #TODO Have a material / mesh format that we can edit during runtime
+    
+    // Display the mesh name
+    std::string meshName = "No Mesh";
 
-    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ? "Available" : "NULL" ) );
+    if ( CurrentMesh != nullptr )
+    {
+        meshName = CurrentMesh->GetMeshFileName();
+    }
+    ImGui::Text( "Mesh:\t %s", meshName.c_str() );
 
-    ImGui::Text( "Mesh:\t %s", ( CurrentMesh != nullptr ? "Available" : "NULL" ) );
+    std::string matName = "No Material";
+    if ( CurrentMaterial != nullptr )
+    {
+        matName = CurrentMaterial->GetMeshFileName();
+    }
+    ImGui::Text( "Material:\t %s", matName.c_str() );
+
+    // Add a button for setting one
+
+
+
 }
 
 void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
@@ -79,15 +96,8 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
     // Render all meshes that are a part of this entity
     // in the future I want to experiment with different meshes/material 
     // settings
-    if ( ParentTransform == nullptr )
-    {
-        ParentTransform =
-            SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( owner )->GetTransform();
-
-    }
-
     CurrentMaterial->SetShaderValues(
-        ParentTransform->GetWorldMatrix(),
+        OwningEntity->GetTransform()->GetWorldMatrix(),
         aView,
         aProjection
     );
