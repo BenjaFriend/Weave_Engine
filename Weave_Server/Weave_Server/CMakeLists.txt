@@ -31,7 +31,11 @@ message( STATUS "BOOST_ROOT         at: ${BOOST_ROOT}" )
 message( STATUS "Boost_INCLUDE_DIR  at: ${Boost_INCLUDE_DIR}" )
 message( STATUS "Boost_LIBRARY_DIR  at: ${Boost_LIBRARY_DIR}" )
 
-set( Boost_USE_STATIC_LIBS          ON  )    # Statically link boost
+if ( MSVC )
+    set( Boost_USE_STATIC_LIBS          ON  )    # Statically link boost
+else()
+    set( Boost_USE_STATIC_LIBS          OFF  )    # Statically link boost
+endif()
 set( Boost_DETAILED_FAILURE_MSG     ON  )    # Useful error messages from boost
 set( Boost_USE_STATIC_RUNTIME 	    OFF )    # Must be on for windows
 set( Boost_DEBUG                    OFF )    # Print debug info from find boost
@@ -67,6 +71,7 @@ set ( LINK_LIBS
 
 if ( NOT MSVC )
     set( LINK_LIBS ${LINK_LIBS} pthread )
+    message( STATUS "Added pthread!" )
 endif()
 
 message ( STATUS "LINK_DIRS: " ${LINK_DIRS} )
