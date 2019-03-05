@@ -8,7 +8,7 @@ set( CMAKE_BINARY_DIR    "/build" )
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/_Output/$<CONFIG> )
 
-#Sets the output directory
+# Sets the output directory
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin" )
 
 message( STATUS "Using compiler:\t " ${CMAKE_CXX_COMPILER} )
@@ -31,11 +31,12 @@ message( STATUS "BOOST_ROOT         at: ${BOOST_ROOT}" )
 message( STATUS "Boost_INCLUDE_DIR  at: ${Boost_INCLUDE_DIR}" )
 message( STATUS "Boost_LIBRARY_DIR  at: ${Boost_LIBRARY_DIR}" )
 
-#set( Boost_USE_STATIC_LIBS      OFF )
-#set( Boost_USE_STATIC_RUNTIME 	OFF )
-#set( Boost_USE_MULTITHREADED 	OFF )
+set( Boost_USE_STATIC_LIBS          ON  )    # Statically link boost
+set( Boost_DETAILED_FAILURE_MSG     ON  )    # Useful error messages from boost
+set( Boost_USE_STATIC_RUNTIME 	    OFF )    # Must be on for windows
+set( Boost_DEBUG                    OFF )    # Print debug info from find boost
 
-FIND_PACKAGE( Boost 1.69.0 COMPONENTS system regex REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system regex REQUIRED )
 
 if( Boost_FOUND )
     message( STATUS      "Success, Boost found!" )
@@ -60,9 +61,13 @@ set( LINK_DIRS
 )
 
 set ( LINK_LIBS
-      boost_system boost_regex
-      pthread
+    boost_system
+    boost_regex
 )
+
+if ( NOT MSVC )
+    set( LINK_LIBS ${LINK_LIBS} pthread )
+endif()
 
 message ( STATUS "LINK_DIRS: " ${LINK_DIRS} )
 
@@ -89,13 +94,15 @@ endif()
 ################# Add Exe ######################
 message ( STATUS "\tcxx Flags:" ${CMAKE_CXX_FLAGS} )
 
+# Link the directories to target
+link_directories( ${LINK_DIRS} )
+
 add_executable( ${PROJECT_NAME} ${_source_list} )
 
 # C++ Standard
 set_property( TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14 )
 
-# Link the directories to target
-link_directories( ${LINK_DIRS} )
-
-# Link libraries to target
-target_link_libraries( ${PROJECT_NAME} ${LINK_LIBS} )
+# Link libraries if we are not using static libs only
+if ( NOT Boost_USE_STATIC_LIBS )
+    target_link_libraries( ${PROJECT_NAME} ${LINK_LIBS} )
+endif()
