@@ -19,8 +19,10 @@ int main( int argc, char* argv[] )
 
     std::cout << "Hello world! Initalize asio and boost please!" << std::endl;
 
+    SERVER_INIT_DESC serverDesc = {};
+
     std::unique_ptr< WeaveServer > Server =
-        std::make_unique< WeaveServer > ();
+        std::make_unique< WeaveServer > ( serverDesc );
 
     size_t res = Server->Run();
 
