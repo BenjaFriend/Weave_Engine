@@ -10,7 +10,7 @@ COMPONENT_INIT( MeshRenderer )
 
 MeshRenderer::MeshRenderer()
 {
-    ResourceManager* resMan = ResourceManager::GetInstance();
+    resMan = ResourceManager::GetInstance();
 }
 
 MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
@@ -22,7 +22,7 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
 
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
-    ResourceManager* resMan = ResourceManager::GetInstance();
+    resMan = ResourceManager::GetInstance();
 
     // Load mesh
     std::string mshFile = aInitData [ MESH_SAVE_KEY ];
@@ -44,7 +44,7 @@ MeshRenderer::~MeshRenderer()
 void MeshRenderer::DrawEditorGUI()
 {
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
-    
+
     // Display the mesh name
     std::string meshName = "No Mesh";
 
@@ -61,9 +61,36 @@ void MeshRenderer::DrawEditorGUI()
     }
     ImGui::Text( "Material:\t %s", matName.c_str() );
 
-    // Add a button for setting one
 
+    // Edit Mesh Settings
+    static char meshNameBuf [ 64 ] = "\0";
+    ImGui::InputText( "New Mesh Name: ", meshNameBuf, IM_ARRAYSIZE( meshNameBuf ) );
 
+    if ( ImGui::Button( "Apply Mesh Change" ) )
+    {
+        std::string stdMeshName = meshNameBuf;
+        FileName meshFile( stdMeshName.begin(), stdMeshName.end() );
+        Mesh* newMesh = resMan->LoadMesh( meshFile );
+        if ( newMesh != nullptr )
+        {
+            SetMesh( newMesh );
+        }
+    }
+
+    // Edit material settings
+    static char matNameBuf [ 64 ] = "\0";
+    ImGui::InputText( "New Material Name: ", matNameBuf, IM_ARRAYSIZE( matNameBuf ) );
+
+    if ( ImGui::Button( "Apply Material Change" ) )
+    {
+        std::string stdMatName = matNameBuf;
+        FileName matFile( stdMatName.begin(), stdMatName.end() );
+        Material* newMat = resMan->LoadMaterial( matFile );
+        if ( newMat != nullptr )
+        {
+            SetMaterial( newMat );
+        }
+    }
 
 }
 

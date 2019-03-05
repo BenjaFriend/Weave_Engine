@@ -41,11 +41,11 @@ public:
     // Accessors
     ////////////////////////////////////////////////////
 
-    inline Material* GetMaterial() const { return CurrentMaterial; }
-    inline void SetMaterial( Material* aMat ) { CurrentMaterial = aMat; }
+    FORCE_INLINE Material* GetMaterial() const { return CurrentMaterial; }
+    FORCE_INLINE void SetMaterial( Material* aMat ) { CurrentMaterial = aMat; }
 
-    inline Mesh* GetMesh() const { return CurrentMesh; }
-    inline void SetMesh( Mesh* aMesh ) { CurrentMesh = aMesh; }
+    FORCE_INLINE Mesh* GetMesh() const { return CurrentMesh; }
+    FORCE_INLINE void SetMesh( Mesh* aMesh ) { CurrentMesh = aMesh; }
 
 protected:
 
@@ -61,5 +61,8 @@ private:
 
     /** The transform of this owning entity */
     Transform* ParentTransform = nullptr;
+
+    /** The resource manager for changing meshes at runtime */
+    ResourceManager* resMan = nullptr;
 
 };

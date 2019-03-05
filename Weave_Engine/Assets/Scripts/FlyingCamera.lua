@@ -9,7 +9,7 @@ function start()
 end
 
 function update()
-	if IsKeyDown(84) then
-		MoveCamera(VEC3:new(0, .1, 0))
-	end
+	--if IsKeyDown(84) then
+	--	MoveCamera(VEC3:new(0, .1, 0))
+	--end
 end
