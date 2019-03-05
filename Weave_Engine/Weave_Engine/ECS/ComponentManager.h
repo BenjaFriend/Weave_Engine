@@ -132,6 +132,7 @@ namespace ECS
         void RemoveComponent( const EntityID aEntityID )
         {
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+            assert( activeComponents [ aEntityID ] [ CTID ] != nullptr );
 
             delete ( activeComponents [ aEntityID ] [ CTID ] );
             activeComponents [ aEntityID ] [ CTID ] = nullptr;

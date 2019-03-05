@@ -61,22 +61,7 @@ namespace ECS
         /// Write the data for this component to a file
         /// </summary>
         /// <param name="aOutFile">The file stream to write to</param>
-        virtual void SaveObject( nlohmann::json & aEntComponentArray )
-        {
-            nlohmann::json comp_data = nlohmann::json::object();
-            comp_data [ COMP_SAVE_KEY ] = ComponentName();
-
-            SaveComponentData( comp_data );
-
-            if ( aEntComponentArray.is_array() )
-            {
-                aEntComponentArray.push_back( comp_data );
-            }
-            else
-            {
-                LOG_WARN( "Could not save component data to the array!" );
-            }
-        }
+        virtual void SaveObject( nlohmann::json & aEntComponentArray );
 
         ////////////////////////////////////////////////////    
         // Operators 

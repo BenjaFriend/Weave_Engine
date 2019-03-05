@@ -5,6 +5,24 @@
 
 using namespace ECS;
 
+void IComponent::SaveObject( nlohmann::json & aEntComponentArray )
+{
+    nlohmann::json comp_data = nlohmann::json::object();
+    comp_data [ COMP_SAVE_KEY ] = ComponentName();
+
+    SaveComponentData( comp_data );
+
+    if ( aEntComponentArray.is_array() )
+    {
+        aEntComponentArray.push_back( comp_data );
+    }
+    else
+    {
+        LOG_WARN( "Could not save component data to the array!" );
+    }
+}
+
+
 IComponent::Factory::Factory( std::string const & type )
 {
     std::pair <FactoryMap::iterator, bool> results
