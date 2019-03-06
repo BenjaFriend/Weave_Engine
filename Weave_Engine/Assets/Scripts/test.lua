@@ -1,3 +1,5 @@
+ent = nil;
+
 
 -----------------------------------------------
 --- Called from C++ when we are initialized ---
@@ -17,7 +19,12 @@ end
 
 function onClick()
 
-    CurrentScene = GetActiveScene();
-    CurrentScene:AddEntity( "This boi is from heck lua event" );
+    if( ent == nil ) then
+        CurrentScene = GetActiveScene();
+        Print( CurrentScene:GetSceneName() );
+        ent = CurrentScene:AddEntity( "Lua generated" );
+    end
+
+
 
 end
