@@ -148,6 +148,9 @@
     <ClCompile Include="Core\CameraManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\ScriptComponent.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">

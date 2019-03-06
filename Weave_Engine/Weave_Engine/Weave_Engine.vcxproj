@@ -327,6 +327,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Resources\SimpleShader.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\SceneManager.cpp" />
+    <ClCompile Include="Scripting\ScriptComponent.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

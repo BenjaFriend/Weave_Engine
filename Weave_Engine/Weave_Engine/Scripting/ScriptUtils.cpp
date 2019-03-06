@@ -7,8 +7,20 @@
 
 using namespace Scripting;
 
+ScriptManager* ScriptManager::Instance = nullptr;
+
+void Scripting::ScriptManager::ReleaseScript( const std::string & aFileName )
+{
+    // Remove this behavior
+    if ( LuaBehaviors.find( aFileName ) != LuaBehaviors.end() )
+    {
+        LuaBehaviors.erase( aFileName );
+    }
+}
+
 ScriptManager::ScriptManager()
 {
+    Start();
 }
 
 ScriptManager::~ScriptManager()
@@ -16,13 +28,46 @@ ScriptManager::~ScriptManager()
     UpdateTicks.clear();
     OnClickCallbacks.clear();
     LuaStates.clear();
+    LuaBehaviors.clear();
+}
+
+ScriptManager * Scripting::ScriptManager::GetInstance()
+{
+    if ( Instance == nullptr )
+    {
+        Instance = new ScriptManager();
+    }
+    return Instance;
+}
+
+void Scripting::ScriptManager::ReleaseInstance()
+{
+    if ( Instance != nullptr )
+    {
+        delete Instance;
+        Instance = nullptr;
+    }
+}
+
+void ScriptManager::Start()
+{
+    for ( auto const & script : LuaBehaviors )
+    {
+        if ( script.second.StartFunc != sol::nil )
+        {
+            script.second.StartFunc();
+        }
+    }
 }
 
 void ScriptManager::Update( float deltaTime )
 {
-    for ( auto it : UpdateTicks )
+    for ( auto const & script : LuaBehaviors )
     {
-        it( deltaTime );
+        if ( script.second.UpdateFunc != sol::nil )
+        {
+            script.second.UpdateFunc( deltaTime );
+        }
     }
 }
 
@@ -35,30 +80,30 @@ void Scripting::ScriptManager::OnClick()
 void ScriptManager::LoadScripts()
 {
     ReadDirectory( "Assets/Scripts/", ScriptPaths );
-
-    for ( auto it : ScriptPaths )
-    {
-        LoadScript( ( it ).c_str() );
-    }
 }
 
-void ScriptManager::LoadScript( const char * aFile )
+void Scripting::ScriptManager::RegisterScript( const std::string & aFileName )
 {
-    sol::state lua;
-    lua.open_libraries( sol::lib::base );
+    ScriptBehaviors aScriptBehavior;
+    LoadScript( aFileName.c_str(), &aScriptBehavior );
+    LuaBehaviors [ aFileName ] = std::move( aScriptBehavior );
+}
+
+void ScriptManager::LoadScript( const char * aFile, ScriptBehaviors * aOutBehavior )
+{
+    aOutBehavior->ScriptState.open_libraries( sol::lib::base );
 
     // Set lua types
-    DefineLuaTypes( lua );
+    DefineLuaTypes( aOutBehavior->ScriptState );
 
     // Load in this script...
-    lua.script_file( aFile );
+    aOutBehavior->ScriptState.script_file( aFile );
 
-    RunLuaFunction( lua, "start" );
+    AddCallback( aOutBehavior->ScriptState, "start", &aOutBehavior->StartFunc );
+    AddCallback( aOutBehavior->ScriptState, "update", &aOutBehavior->UpdateFunc );
+    AddCallback( aOutBehavior->ScriptState, "onClick", &aOutBehavior->OnClickfun );
 
-    AddCallback( lua, "update", UpdateTicks );
-    AddCallback( lua, "onClick", OnClickCallbacks );
-
-    LuaStates.push_back( std::move( lua ) );
+    LuaStates.push_back( std::move( aOutBehavior->ScriptState ) );
     LOG_TRACE( "Loaded Lua script: {}", aFile );
 }
 
@@ -124,23 +169,18 @@ void ScriptManager::ReadDirectory(
     }
 }
 
-void ScriptManager::AddCallback(
-    const sol::state & lua,
-    const char * aFuncName,
-    std::vector<sol::function>& aCallbackVec )
+void ScriptManager::AddCallback( const sol::state & lua, const char * aFuncName, sol::function * aOutCallbackVec )
 {
+    *aOutCallbackVec = sol::nil;
     // Store the function for later if there is one
     sol::optional <sol::function> unsafe_func = lua [ aFuncName ];
     if ( unsafe_func != sol::nullopt )
     {
-        sol::function& safe_func = unsafe_func.value();
-        aCallbackVec.emplace_back( safe_func );
+        *aOutCallbackVec  = unsafe_func.value();
     }
 }
 
-void ScriptManager::RunLuaFunction(
-    const sol::state & lua,
-    const char * aFuncName )
+void ScriptManager::RunLuaFunction( const sol::state & lua, const char * aFuncName )
 {
     sol::optional <sol::function> unsafe_Func = lua [ aFuncName ];
     if ( unsafe_Func != sol::nullopt )

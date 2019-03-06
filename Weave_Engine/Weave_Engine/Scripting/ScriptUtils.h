@@ -16,6 +16,14 @@
 
 namespace Scripting
 {
+    struct ScriptBehaviors
+    {
+        sol::state ScriptState;     // the sol state of this script
+        sol::function UpdateFunc    = sol::nil;   // the update fnuction callback
+        sol::function StartFunc     = sol::nil;    // the start function callback
+        sol::function OnClickfun    = sol::nil;   // The onClickFunction callback
+    };
+
     /// <summary>
     /// Class for loading in all scripts in the assets folder
     /// </summary>
@@ -24,9 +32,14 @@ namespace Scripting
     {
     public:
 
-        ScriptManager();
+        static ScriptManager* GetInstance();
 
-        ~ScriptManager();
+        static void ReleaseInstance();
+
+        /// <summary>
+        /// Run all current scripts that have a Start callback
+        /// </summary>
+        void Start();
 
         /// <summary>
         /// Update any entity callbacks
@@ -44,13 +57,31 @@ namespace Scripting
         /// </summary>
         void LoadScripts();
 
+        /// <summary>
+        /// Register a script and it's behaviors to the manager
+        /// </summary>
+        /// <param name="aFileName">The file path to the script</param>
+        void RegisterScript( const std::string & aFileName );
+
+        /// <summary>
+        /// Release the script behavior from the manager
+        /// </summary>
+        /// <param name="aFileName">The file path to the script</param>
+        void ReleaseScript( const std::string & aFileName );
+
     private:
+
+        ScriptManager();
+
+        ~ScriptManager();
+
+        static ScriptManager* Instance;
 
         /// <summary>
         /// Load in this lua script and store it's lua state
         /// </summary>
         /// <param name="aFile"></param>
-        void LoadScript( const char* aFile );
+        void LoadScript( const char* aFile, ScriptBehaviors * aOutBehavior );
 
         /// <summary>
         /// Define the lua states for any game play scripts
@@ -76,7 +107,7 @@ namespace Scripting
         void AddCallback(
             const sol::state & lua,
             const char* aFuncName,
-            std::vector<sol::function>& aCallbackVec
+            sol::function * aOutCallbackVec
         );
 
         /// <summary>
@@ -110,6 +141,9 @@ namespace Scripting
 
         /** Lua states that should be persistent */
         std::vector<sol::state> LuaStates;
+
+        /** A map of file locations to asset behaviors */
+        std::unordered_map < std::string, ScriptBehaviors > LuaBehaviors;
 
         /** Vector of script file paths */
         std::vector<std::string> ScriptPaths;
