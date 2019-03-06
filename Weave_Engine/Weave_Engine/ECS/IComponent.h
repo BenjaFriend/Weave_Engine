@@ -31,6 +31,11 @@
 #define  COMPONENT_INIT( name )                                         \
     const static ECS::IComponent::ConcreteFactory< name > CompFactory = {};
 
+#define REMOVE_COMP_BTN( name )                                             \
+    if( ImGui::Button("Remove Component") )                                 \
+    { OwningEntity->RemoveComponent< name > (); return; }               
+    
+
 class Entity;
 namespace ECS
 {

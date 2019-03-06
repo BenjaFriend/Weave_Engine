@@ -25,9 +25,6 @@ ScriptManager::ScriptManager()
 
 ScriptManager::~ScriptManager()
 {
-    UpdateTicks.clear();
-    OnClickCallbacks.clear();
-    LuaStates.clear();
     LuaBehaviors.clear();
 }
 
@@ -73,16 +70,16 @@ void ScriptManager::Update( float deltaTime )
 
 void Scripting::ScriptManager::OnClick()
 {
-    for ( auto it : OnClickCallbacks )
-        it();
+    for ( auto const & script : LuaBehaviors )
+    {
+        if ( script.second.OnClickfun != sol::nil )
+        {
+            script.second.OnClickfun();
+        }
+    }
 }
 
-void ScriptManager::LoadScripts()
-{
-    ReadDirectory( "Assets/Scripts/", ScriptPaths );
-}
-
-void Scripting::ScriptManager::RegisterScript( const std::string & aFileName )
+void ScriptManager::RegisterScript( const std::string & aFileName )
 {
     ScriptBehaviors aScriptBehavior;
     LoadScript( aFileName.c_str(), &aScriptBehavior );
@@ -103,7 +100,6 @@ void ScriptManager::LoadScript( const char * aFile, ScriptBehaviors * aOutBehavi
     AddCallback( aOutBehavior->ScriptState, "update", &aOutBehavior->UpdateFunc );
     AddCallback( aOutBehavior->ScriptState, "onClick", &aOutBehavior->OnClickfun );
 
-    LuaStates.push_back( std::move( aOutBehavior->ScriptState ) );
     LOG_TRACE( "Loaded Lua script: {}", aFile );
 }
 
@@ -157,18 +153,6 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
         );
 }
 
-void ScriptManager::ReadDirectory(
-    const std::string & dirName,
-    std::vector<std::string>& aPathVec )
-{
-    namespace fs = std::filesystem;
-
-    for ( const auto & entry : fs::directory_iterator( dirName ) )
-    {
-        aPathVec.push_back( entry.path().generic_string() );
-    }
-}
-
 void ScriptManager::AddCallback( const sol::state & lua, const char * aFuncName, sol::function * aOutCallbackVec )
 {
     *aOutCallbackVec = sol::nil;
@@ -176,7 +160,7 @@ void ScriptManager::AddCallback( const sol::state & lua, const char * aFuncName,
     sol::optional <sol::function> unsafe_func = lua [ aFuncName ];
     if ( unsafe_func != sol::nullopt )
     {
-        *aOutCallbackVec  = unsafe_func.value();
+        *aOutCallbackVec = unsafe_func.value();
     }
 }
 

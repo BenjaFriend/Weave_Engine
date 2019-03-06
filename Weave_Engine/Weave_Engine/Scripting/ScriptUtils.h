@@ -53,11 +53,6 @@ namespace Scripting
         void OnClick();
 
         /// <summary>
-        /// Load all scripts in the Assets/Scripts directory
-        /// </summary>
-        void LoadScripts();
-
-        /// <summary>
         /// Register a script and it's behaviors to the manager
         /// </summary>
         /// <param name="aFileName">The file path to the script</param>
@@ -133,21 +128,8 @@ namespace Scripting
         /// <param name="rotate">The relative rotation change of the camera</param>
         void MoveCamera( glm::vec3 & move, glm::vec2 & rotate );
 
-        /** Lua update function callbacks */
-        std::vector<sol::function> UpdateTicks;
-
-        /** Lua on click function callbacks */
-        std::vector<sol::function> OnClickCallbacks;
-
-        /** Lua states that should be persistent */
-        std::vector<sol::state> LuaStates;
-
         /** A map of file locations to asset behaviors */
         std::unordered_map < std::string, ScriptBehaviors > LuaBehaviors;
-
-        /** Vector of script file paths */
-        std::vector<std::string> ScriptPaths;
-
     };
 
 }   // namespace Scripting

@@ -7,7 +7,7 @@
 #include "../Entity/Entity.h"
 #include "../Entity/Camera.h"
 #include "../Resources/Materials/Material.h"
-
+#include "../Scripting/ScriptComponent.h"
 #include "../ECS/IComponent.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
@@ -111,7 +111,6 @@ void Game::Init()
     inputManager->BindAction( this, &Game::OnMouseUp, Input::InputType::LookReleased );
     inputManager->BindAction( this, &Game::Quit, Input::InputType::Quit );
 
-    ScriptMan->LoadScripts();
     inputManager->BindAction( ScriptMan, &Scripting::ScriptManager::OnClick, Input::InputType::Fire );
 }
 
@@ -141,27 +140,15 @@ void Game::LoadShaders()
 
 void Game::InitLights()
 {
-    glm::vec3 Red = glm::vec3( 1.0f, 0.0f, 0.0f );
-    glm::vec3 Blue = glm::vec3( 0.0f, 0.0f, 1.0f );
-    glm::vec3 White = glm::vec3( 1.0f, 1.0f, 1.0f );
-
     DirectionalLightData DirLight1 = {};
     DirLight1.AmbientColor = glm::vec4( 1.f, 1.f, 1.f, 1.0f ); // Ambient color is the color when we are in shadow
     DirLight1.DiffuseColor = glm::vec4( 1.f, 1.f, 1.f, 1.0f );
     DirLight1.Direction = glm::vec3( 1.0f, 0.0f, 0.0f );
     DirLight1.Intensity = 1.f;
 
-
     // Add Dir Lights
-    Entity* dirLightEntity = sceneManager->GetActiveScene()->AddEntity( "Dir Light 1" );
+    Entity* dirLightEntity = sceneManager->GetActiveScene()->AddEntity( "Default Dir Light" );
     dirLightEntity->AddComponent<DirLight>( DirLight1 );
-
-    // Add Point Lights
-    Entity* pLightEntity = sceneManager->GetActiveScene()->AddEntity( "Point Light 1" );
-    pLightEntity->AddComponent<PointLight>( Red, glm::vec3( 0.f, 2.0f, 0.0f ) );
-
-    Entity* pLightEntity2 = sceneManager->GetActiveScene()->AddEntity( "Point Light 2" );
-    pLightEntity2->AddComponent<PointLight>( Blue, glm::vec3( 0.f, -1.0f, 0.0f ) );
 }
 
 // --------------------------------------------------------
@@ -178,8 +165,9 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-    // Load in the meshes
+    // Load in the meshes that will be used by some other systems
     PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
+    CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
     // Create the basic sampler ---------------------------------------------
     D3D11_SAMPLER_DESC samplerDesc = {}; // Zero out the struct memory
@@ -191,9 +179,6 @@ void Game::CreateBasicGeometry()
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     SamplerID = resourceMan->AddSampler( samplerDesc );
-
-    // Load floor --------------------------------------------------------
-    CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
     // Load in the skybox SRV --------------------------------------------------------
     SkyboxSrvID = resourceMan->LoadSRV_DDS( L"Assets/Textures/SunnyCubeMap.dds" );
@@ -221,7 +206,7 @@ void Game::Update( float dt, float totalTime )
     // Update the camera
     FlyingCamera->Update( dt );
     FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
-    
+
     ScriptMan->Update( dt );
 
 #if defined( EDITOR_ON )
@@ -247,7 +232,7 @@ void Game::Draw( float dt, float totalTime )
         0 );
 
     assert( FlyingCamera != nullptr );
-    
+
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
     //    have different geometry.
@@ -550,10 +535,6 @@ void Game::OnMouseDown()
 {
     // Add any custom code here...
     FlyingCamera->SetDoRotation( true );
-
-    // Save the previous mouse position, so we have it for the future
-    //prevMousePos.x = x;
-    //prevMousePos.y = y;
 
     // Caputure the mouse so we keep getting mouse move
     // events even if the mouse leaves the window.  we'll be

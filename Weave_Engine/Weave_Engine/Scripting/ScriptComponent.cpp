@@ -53,6 +53,8 @@ void ScriptComponent::SaveComponentData( nlohmann::json & aCompData )
 
 void ScriptComponent::DrawEditorGUI()
 {
+    REMOVE_COMP_BTN( ScriptComponent );
+
     ImGui::LabelText( "Current Script: ", ScriptFilePath.c_str() );
 
     // Allow for editing of what script is loaded
@@ -68,6 +70,9 @@ void ScriptComponent::DrawEditorGUI()
         }
         // Load this script to the manager
         ScriptFilePath = newScriptName;
-        ScriptMan->RegisterScript( ScriptFilePath );
+        if ( ScriptFilePath.length() > 0 )
+        {
+            ScriptMan->RegisterScript( ScriptFilePath );
+        }
     }
 }
