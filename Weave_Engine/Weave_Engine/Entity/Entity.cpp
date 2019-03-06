@@ -38,6 +38,8 @@ Entity::~Entity()
     EntityTransform = nullptr;
     componentManager = nullptr;
     --EntityCount;
+    IsActive = true;
+    IsValid = false;
 }
 
 Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
@@ -94,5 +96,20 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
     if ( aJsonEntityArray.is_array() )
     {
         aJsonEntityArray.push_back( entity_data );
+    }
+}
+
+void Entity::Reset()
+{
+    RemoveAllComponents();
+    IsValid = false;
+    IsDestroyableOnLoad = true;
+    componentManager = ECS::ComponentManager::GetInstance();
+    EntityTransform = nullptr;
+
+    // Give entity component a transform again
+    if ( EntityTransform == nullptr )
+    {
+        EntityTransform = this->AddComponent<Transform>();
     }
 }

@@ -281,6 +281,9 @@
     <ClInclude Include="Core\CameraManager.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Scripting\ScriptComponent.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

@@ -381,6 +381,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Resources\Vertex.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneManager.h" />
+    <ClInclude Include="Scripting\ScriptComponent.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Dispatcher.hpp" />

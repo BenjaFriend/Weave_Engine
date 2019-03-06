@@ -58,13 +58,6 @@ Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
     return newEnt;
 }
 
-void Scene::ResetEntity( Entity * aEntity )
-{
-    if ( aEntity == nullptr ) return;
-    aEntity->SetIsValid( false );
-    aEntity->RemoveAllComponents();
-}
-
 void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 {
     // Delete each entity that has been added
@@ -74,7 +67,7 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
         {
             if ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() || aOverrideDestroyOnLoad )
             {
-                ResetEntity( &EntityArray_Raw [ i ] );
+                EntityArray_Raw [ i ].Reset();
             }
         }
     }

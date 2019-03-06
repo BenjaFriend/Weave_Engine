@@ -45,12 +45,6 @@ namespace SceneManagement
         Entity* AddEntityFromfile( nlohmann::json const & aFile );
 
         /// <summary>
-        /// Deletes entity with the given ID
-        /// </summary>
-        /// <param name="aEntityID">ID of the entity to delete</param>
-        void ResetEntity( Entity * aEntity );
-
-        /// <summary>
         /// Set data about this 
         /// </summary>
         /// <param name="aVertShader">The vert shader to use</param>

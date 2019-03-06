@@ -43,6 +43,12 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::DrawEditorGUI()
 {
+    if( ImGui::Button( "Remove Component" ) ) 
+    {
+        OwningEntity->RemoveComponent< MeshRenderer >();
+        return;
+    }
+
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
 
     // Display the mesh name
@@ -70,11 +76,7 @@ void MeshRenderer::DrawEditorGUI()
     {
         std::string stdMeshName = meshNameBuf;
         FileName meshFile( stdMeshName.begin(), stdMeshName.end() );
-        Mesh* newMesh = resMan->LoadMesh( meshFile );
-        if ( newMesh != nullptr )
-        {
-            SetMesh( newMesh );
-        }
+        SetMeshFromFile( meshFile );
     }
 
     // Edit material settings
@@ -85,13 +87,36 @@ void MeshRenderer::DrawEditorGUI()
     {
         std::string stdMatName = matNameBuf;
         FileName matFile( stdMatName.begin(), stdMatName.end() );
-        Material* newMat = resMan->LoadMaterial( matFile );
-        if ( newMat != nullptr )
-        {
-            SetMaterial( newMat );
-        }
+        SetMaterialFromFile( matFile );
     }
+}
 
+bool MeshRenderer::SetMeshFromFile( const FileName & aFileName )
+{
+    Mesh* newMesh = resMan->LoadMesh( aFileName );
+    if ( newMesh != nullptr )
+    {
+        SetMesh( newMesh );
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool MeshRenderer::SetMaterialFromFile( const FileName & aFileName )
+{
+    Material* newMat = resMan->LoadMaterial( aFileName );
+    if ( newMat != nullptr )
+    {
+        SetMaterial( newMat );
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
