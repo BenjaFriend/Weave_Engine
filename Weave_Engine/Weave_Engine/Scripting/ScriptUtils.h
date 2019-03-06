@@ -73,10 +73,10 @@ namespace Scripting
         /// <param name="lua">The lua state to check</param>
         /// <param name="aFuncName">function name to check for</param>
         /// <param name="aCallbackVec">Vector of function callbacks to add to</param>
-        void AddCallback( 
+        void AddCallback(
             const sol::state & lua,
-            const char* aFuncName, 
-            std::vector<sol::function>& aCallbackVec 
+            const char* aFuncName,
+            std::vector<sol::function>& aCallbackVec
         );
 
         /// <summary>
@@ -93,13 +93,14 @@ namespace Scripting
         /// <returns>Pointer to the created entity</returns>
         Entity* CreateEntity( const sol::table & aEntityInfo );
 
-		void Log_Print(std::string msg);
-		/// <summary>
-		/// Update the active camera's transform position and rotation
-		/// </summary>
-		/// <param name="move">The relative movement change of the camera</param>
-		/// <param name="rotate">The relative rotation change of the camera</param>
-		void MoveCamera(glm::vec3 move, glm::vec2 rotate);
+        void Log_Print( const std::string &  msg );
+
+        /// <summary>
+        /// Update the active camera's transform position and rotation
+        /// </summary>
+        /// <param name="move">The relative movement change of the camera</param>
+        /// <param name="rotate">The relative rotation change of the camera</param>
+        void MoveCamera( glm::vec3 & move, glm::vec2 & rotate );
 
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;

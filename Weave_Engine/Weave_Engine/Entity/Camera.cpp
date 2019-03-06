@@ -43,7 +43,7 @@ Camera::Camera( nlohmann::json const & aInitData )
     PitchAngle = 0;
     YawAngle = 90;
 
-    inputManager = Input::InputManager::GetInstance();    
+    inputManager = Input::InputManager::GetInstance();
 }
 
 Camera::~Camera()
@@ -95,17 +95,17 @@ void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
     Pos = this->GetPosition();
 
-	if (OwningEntity != nullptr)
-	{
-		Transform* transform = OwningEntity->GetTransform();
-		Pos = transform->GetPosition();
-		Forward = transform->GetForward();
-		Right = transform->GetRight();
-		Up = transform->GetUp();
-	}
+    if ( OwningEntity != nullptr )
+    {
+        Transform* transform = OwningEntity->GetTransform();
+        Pos = transform->GetPosition();
+        Forward = transform->GetForward();
+        Right = transform->GetRight();
+        Up = transform->GetUp();
+    }
 
     //calculate view
-	View = glm::transpose(glm::lookAtLH(Pos, Pos + Forward, Up));
+    View = glm::transpose( glm::lookAtLH( Pos, Pos + Forward, Up ) );
 
     //calculate proj
     Projection = glm::transpose( glm::perspectiveFovLH( FOV, aWidth, aHeight, NearZ, FarZ ) );
@@ -119,22 +119,22 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
     glm::clamp( PitchAngle, -MAX_PITCH, MAX_PITCH );
     YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY * ( SouthPaw ? 1.f : -1.f );
 
-	if (OwningEntity != nullptr)
-	{
-		Transform* transform = OwningEntity->GetTransform();
-		transform->SetRotation({ 0, YawAngle, PitchAngle });
-		Forward = transform->GetForward();
-		Right = transform->GetRight();
-		Up = transform->GetUp();
-	}
-	else
-	{
-		//rotate along x and y
-		glm::mat4 rotation = glm::eulerAngleYX(YawAngle, PitchAngle);
-		Forward = rotation * DEFAULT_FORWARD;
-		Up = rotation * DEFAULT_UP;
-		Right = glm::cross(Forward, Up);
-	}
+    if ( OwningEntity != nullptr )
+    {
+        Transform* transform = OwningEntity->GetTransform();
+        transform->SetRotation( { 0, YawAngle, PitchAngle } );
+        Forward = transform->GetForward();
+        Right = transform->GetRight();
+        Up = transform->GetUp();
+    }
+    else
+    {
+        //rotate along x and y
+        glm::mat4 rotation = glm::eulerAngleYX( YawAngle, PitchAngle );
+        Forward = rotation * DEFAULT_FORWARD;
+        Up = rotation * DEFAULT_UP;
+        Right = glm::cross( Forward, Up );
+    }
 }
 
 ////////////////////////////////////////////////////

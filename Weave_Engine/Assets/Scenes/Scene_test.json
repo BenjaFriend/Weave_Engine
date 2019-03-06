@@ -10,9 +10,9 @@
                         "Z": 0.0
                     },
                     "Rot": {
-                        "X": 45.0,
-                        "Y": 40.0,
-                        "Z": 45.0
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
                     },
                     "Scale": {
                         "X": 1.0,
@@ -33,13 +33,14 @@
                         "Z": 1.0
                     },
                     "Direction": {
-                        "X": 49.0,
-                        "Y": -332.0,
-                        "Z": 166.0
+                        "X": 1.0,
+                        "Y": 0.0,
+                        "Z": 0.0
                     },
                     "Intensity": 1.0
                 }
             ],
+            "DestroyOnLoad": true,
             "IsActive": true,
             "Name": "Dir Light 1"
         },
@@ -79,6 +80,7 @@
                     "Range": 5.0
                 }
             ],
+            "DestroyOnLoad": true,
             "IsActive": true,
             "Name": "Point Light 1"
         },
@@ -87,7 +89,7 @@
                 {
                     "ComponentName": "Transform",
                     "Pos": {
-                        "X": -15.0,
+                        "X": 0.0,
                         "Y": 0.0,
                         "Z": 0.0
                     },
@@ -111,44 +113,16 @@
                     "ComponentName": "PointLight",
                     "Intensity": 1.0,
                     "Pos": {
-                        "X": 5.0,
+                        "X": 0.0,
                         "Y": -1.0,
-                        "Z": 5.0
+                        "Z": 0.0
                     },
                     "Range": 5.0
                 }
             ],
+            "DestroyOnLoad": true,
             "IsActive": true,
             "Name": "Point Light 2"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 0.0,
-                        "Y": -1.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 25.0,
-                        "Y": 0.10000000149011612,
-                        "Z": 25.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
-                    "Mesh": "Assets/Models/cube.obj"
-                }
-            ],
-            "IsActive": true,
-            "Name": "Floor Boi"
         }
     ],
     "Scene_Name": "Test_Scene_Name"
