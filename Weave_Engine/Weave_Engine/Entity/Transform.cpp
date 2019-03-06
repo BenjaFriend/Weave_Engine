@@ -92,7 +92,7 @@ inline void Transform::SetScale( const float aX, const float aY, const float aZ 
 
 void Transform::UpdateDirectionalVectors()
 {
-	glm::mat4 rotation = glm::eulerAngleYX(Rotation.y, Rotation.z);
+	glm::mat4 rotation = glm::eulerAngleYX(Rotation.y, Rotation.x);
 	Forward = rotation * DEFAULT_FORWARD;
 	Up = rotation * DEFAULT_UP;
 	Right = glm::cross(Forward, Up);

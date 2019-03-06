@@ -95,6 +95,8 @@ public:
     /// <param name="aNewRot">The new rotation of this object</param>
     void SetRotation( const glm::vec3 & aNewRot ) { Rotation = aNewRot; }
 
+	void Rotate(const glm::vec3& rotation) { Rotation += rotation; }
+
 	glm::vec3 GetForward() const { return Forward; }
 	glm::vec3 GetRight() const { return Right; }
 	glm::vec3 GetUp() const { return Up; }

@@ -95,7 +95,7 @@ namespace Scripting
 
 		void Log_Print(std::string msg);
 
-		void MoveCamera(glm::vec3 move);
+		void MoveCamera(glm::vec3 move, glm::vec2 mouseMove);
 
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;

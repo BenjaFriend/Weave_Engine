@@ -57,7 +57,12 @@ void InputManager::OnMouseUp( WPARAM buttonState, int x, int y )
 
 void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
 {
+	curMousePos = glm::vec2(x, y);
+}
 
+glm::vec2 InputManager::GetMousePosition() const
+{
+	return curMousePos;
 }
 
 void Input::InputManager::Update( float dt )

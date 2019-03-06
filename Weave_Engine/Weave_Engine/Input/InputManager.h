@@ -80,6 +80,8 @@ namespace Input
         void OnMouseUp( WPARAM buttonState, int x, int y );
         void OnMouseMove( WPARAM buttonState, int x, int y );
 
+		glm::vec2 GetMousePosition() const;
+
 #endif  // _WIN32 || _WIN64
 
     protected:
@@ -98,6 +100,8 @@ namespace Input
         /// Destructor for the input manager
         /// </summary>
         ~InputManager();
+
+		glm::vec2 curMousePos = glm::vec2(0, 0);
 
         /** The instance of the InputManager */
         static InputManager* Instance;
