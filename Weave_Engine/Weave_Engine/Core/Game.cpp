@@ -582,6 +582,7 @@ void Game::OnMouseUp()
 // --------------------------------------------------------
 void Game::OnMouseMove( WPARAM buttonState, int x, int y )
 {
+
     FlyingCamera->UpdateMouseInput( prevMousePos.x - x, prevMousePos.y - y );
 
     // Save the previous mouse position, so we have it for the future

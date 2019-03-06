@@ -94,8 +94,12 @@ namespace Scripting
         Entity* CreateEntity( const sol::table & aEntityInfo );
 
 		void Log_Print(std::string msg);
-
-		void MoveCamera(glm::vec3 move);
+		/// <summary>
+		/// Update the active camera's transform position and rotation
+		/// </summary>
+		/// <param name="move">The relative movement change of the camera</param>
+		/// <param name="rotate">The relative rotation change of the camera</param>
+		void MoveCamera(glm::vec3 move, glm::vec2 rotate);
 
         /** Lua update function callbacks */
         std::vector<sol::function> UpdateTicks;

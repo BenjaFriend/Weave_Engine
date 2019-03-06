@@ -71,11 +71,19 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
 
     Input::InputManager* inpMan = Input::InputManager::GetInstance();
-    aLua.set_function( "IsKeyDown", &Input::InputManager::IsKeyDown, inpMan );
+	aLua.set_function("IsIKeyDown", &Input::InputManager::IsKeyDown, inpMan);
+	aLua.set_function( "IsCKeyDown", &Input::InputManager::IsCKeyDown, inpMan );
+	aLua.set_function("GetMousePosition", &Input::InputManager::GetMousePosition, inpMan);
     aLua.set_function( "MoveCamera", &Scripting::ScriptManager::MoveCamera, this );
 
     // Define the entity types
     aLua.new_usertype<Material>( "Material" );
+
+	aLua.new_usertype<glm::vec2>("VEC2",
+		sol::constructors<glm::vec2(float x, float y)>(),
+		"x", &glm::vec2::x,
+		"y", &glm::vec2::y
+		);
 
     aLua.new_usertype<glm::vec3>( "VEC3",
         sol::constructors<glm::vec3( float x, float y, float z )>(),
@@ -196,12 +204,14 @@ void ScriptManager::Log_Print( std::string msg )
     LOG_TRACE( "{}", msg );
 }
 
-void ScriptManager::MoveCamera( glm::vec3 move )
+void ScriptManager::MoveCamera(glm::vec3 move, glm::vec2 rotate)
 {
-    Camera* cam = CameraManager::GetInstance()->GetActiveCamera();
-    assert( cam != nullptr );
-    Transform* transform = cam->GetEntity()->GetTransform();
 
-    transform->MoveRelative( move.x, move.y, move.z );
-    cam->SetPosition( transform->GetPosition() );
+	Camera* cam = CameraManager::GetInstance()->GetActiveCamera();
+	assert(cam != nullptr);
+	Transform* transform = cam->GetEntity()->GetTransform();
+
+	transform->Rotate(glm::vec3(rotate.y, rotate.x, 0));
+	transform->MoveRelative(move.x, move.y, move.z);
+	cam->SetPosition(transform->GetPosition());
 }

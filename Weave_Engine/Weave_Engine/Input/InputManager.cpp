@@ -57,7 +57,12 @@ void InputManager::OnMouseUp( WPARAM buttonState, int x, int y )
 
 void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
 {
+	curMousePos = glm::vec2(x, y);
+}
 
+glm::vec2 InputManager::GetMousePosition() const
+{
+	return curMousePos;
 }
 
 void Input::InputManager::Update( float dt )
@@ -76,6 +81,11 @@ void Input::InputManager::Update( float dt )
 bool InputManager::IsKeyDown( int vKey )
 {
     return GetAsyncKeyState( vKey ) & 0x80000;
+}
+
+bool InputManager::IsCKeyDown(char vKey)
+{
+	return GetAsyncKeyState(vKey) & 0x80000;
 }
 
 void Input::InputManager::OnLookDown( WPARAM buttonState, int x, int y )
