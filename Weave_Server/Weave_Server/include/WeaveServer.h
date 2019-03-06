@@ -7,11 +7,13 @@
 #include <boost/asio.hpp>
 #include <boost/regex.hpp>
 #include <boost/bind.hpp>
+#include <boost/asio/buffer.hpp>
 
 #include "Room.h"
 
 #define DEF_LISTEN_PORT     50000
 #define DEF_RESPONSE_PORT   50001
+#define DEF_BUF_SIZE        512
 
 struct SERVER_INIT_DESC
 {
@@ -25,10 +27,10 @@ struct SERVER_INIT_DESC
     unsigned short MaxRooms     = 4;
 };
 
-/** 
+/**
  * @brief   The core server architecture with send and recieve sockets
  *          that will funnel the necessary data to the rooms.
- * 
+ *
  * @author  Ben Hoffman
  */
 class WeaveServer
@@ -53,6 +55,12 @@ public:
 
 private:
 
+    /** Hand a remove connection coming in via UDP from an endpoint */
+    void HandleRemoteRecieved( const std::error_code & error, size_t msgSize );
+
+    /** Start an async recieve */
+    void StartRecieve();
+
     /** Any necessary updates to the rooms */
     void Tick();
 
@@ -61,6 +69,11 @@ private:
 
     /** The server socket */
     boost::asio::ip::udp::socket ListenSocket;
+
+    /** the endpoint of the remote client contacting the server */
+    boost::asio::ip::udp::endpoint remote_endpoint;
+
+    char recv_buf [ DEF_BUF_SIZE ];
 
     /** The running thread of waiting for data */
     std::thread runningThread;
@@ -73,7 +86,7 @@ private:
 
     /** The default port to send data back to the clients on  */
     unsigned short ResponsePort = DEF_RESPONSE_PORT;
-    
+
     /** Pointer to the room objects */
     Room* Rooms = nullptr;
 
