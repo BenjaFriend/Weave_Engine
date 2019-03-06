@@ -67,7 +67,21 @@ namespace Input
         /// <param name="dt">delta time of the frame</param>
         void Update( float dt );
 
-        bool IsKeyDown( int vKey );
+		/* The reason why there are two different 'IsKeyDown' functions */
+		/* Sol and Lua don't properly cast (int <--> char) values */
+		/* 'IsCKeyDown' only works with capital chars */
+		/// <summary>
+		/// Test if a key is down
+		/// </summary>
+		/// <param name="vKey">Int value of the key</param>
+		/// <returns>True if the key is down</returns>
+		bool IsKeyDown(int vKey);
+		/// <summary>
+		/// Test if a key is down
+		/// </summary>
+		/// <param name="vKey">Char value of the key</param>
+		/// <returns>True if the key is down</returns>
+		bool IsCKeyDown( char vKey );
 
         void OnLookDown( WPARAM buttonState, int x, int y );
         void OnLookUp( WPARAM buttonState, int x, int y );
@@ -78,6 +92,8 @@ namespace Input
         void OnMouseDown( WPARAM buttonState, int x, int y );
         void OnMouseUp( WPARAM buttonState, int x, int y );
         void OnMouseMove( WPARAM buttonState, int x, int y );
+
+		glm::vec2 GetMousePosition() const;
 
 #endif  // _WIN32 || _WIN64
 
@@ -97,6 +113,8 @@ namespace Input
         /// Destructor for the input manager
         /// </summary>
         ~InputManager();
+
+		glm::vec2 curMousePos = glm::vec2(0, 0);
 
         /** The instance of the InputManager */
         static InputManager* Instance;
