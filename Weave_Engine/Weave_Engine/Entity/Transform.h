@@ -79,39 +79,42 @@ public:
     /// <param name="aZ">new Z value of the scale</param>
     inline void SetScale( const float aX, const float aY, const float aZ );
 
-    inline void SetScaleX( const float aVal ) { Scale.x = aVal; }
-    inline void SetScaleY( const float aVal ) { Scale.y = aVal; }
-    inline void SetScaleZ( const float aVal ) { Scale.z = aVal; }
+    FORCE_INLINE void SetScaleX( const float aVal ) { Scale.x = aVal; }
+    FORCE_INLINE void SetScaleY( const float aVal ) { Scale.y = aVal; }
+    FORCE_INLINE void SetScaleZ( const float aVal ) { Scale.z = aVal; }
 
     /// <summary>
     /// Get the current rotation
     /// </summary>
     /// <returns>Reference to the current rotation</returns>
-    inline const glm::vec3 & GetRotation() const { return Rotation; }
+    FORCE_INLINE const glm::vec3 & GetRotation() const { return Rotation; }
 
     /// <summary>
     /// Set the rotation of this entity 
     /// </summary>
     /// <param name="aNewRot">The new rotation of this object</param>
-    void SetRotation( const glm::vec3 & aNewRot ) { Rotation = aNewRot; }
-	/// <summary>
-	/// Rotate the entity relative to the direction it's facing
-	/// </summary>
-	/// <param name="rotation">The euler angle to change the rotation by</param>
-	void Rotate(const glm::vec3& rotation) { Rotation += rotation; }
+    FORCE_INLINE void SetRotation( const glm::vec3 & aNewRot ) { Rotation = aNewRot; }
 
-	/// <summary>
-	/// Get the forward vector the entity is facing
-	/// </summary>
-	glm::vec3 GetForward() const { return Forward; }
-	/// <summary>
-	/// Get the right vector relative to where the entity is facing
-	/// </summary>
-	glm::vec3 GetRight() const { return Right; }
-	/// <summary>
-	/// Get the up vector relative to where the entity is facing
-	/// </summary>
-	glm::vec3 GetUp() const { return Up; }
+    /// <summary>
+    /// Rotate the entity relative to the direction it's facing
+    /// </summary>
+    /// <param name="rotation">The euler angle to change the rotation by</param>
+    FORCE_INLINE void Rotate( const glm::vec3 & rotation ) { Rotation += rotation; }
+
+    /// <summary>
+    /// Get the forward vector the entity is facing
+    /// </summary>
+    FORCE_INLINE const glm::vec3 & GetForward() const { return Forward; }
+
+    /// <summary>
+    /// Get the right vector relative to where the entity is facing
+    /// </summary>
+    FORCE_INLINE const glm::vec3 & GetRight() const { return Right; }
+
+    /// <summary>
+    /// Get the up vector relative to where the entity is facing
+    /// </summary>
+    FORCE_INLINE const glm::vec3 & GetUp() const { return Up; }
 
     /// <summary>
     /// Calculate the world matrix for this entity
@@ -123,16 +126,16 @@ protected:
 
     virtual void SaveComponentData( nlohmann::json & aCompData ) override;
 
-	/// <summary>
-	/// Update the Forward, Right, and Up directional vectors
-	/// </summary>
-	void UpdateDirectionalVectors();
+    /// <summary>
+    /// Update the Forward, Right, and Up directional vectors
+    /// </summary>
+    void UpdateDirectionalVectors();
 
 private:
 
-	const glm::vec4 DEFAULT_UP = glm::vec4(0.f, 1.f, 0.f, 0.f);
-	const glm::vec4 DEFAULT_FORWARD = glm::vec4(0.f, 0.f, -1.f, 0.f);
-	const glm::vec4 DEFAULT_RIGHT = glm::vec4(1.f, 0.f, 0.f, 0.f);
+    const glm::vec4 DEFAULT_UP = glm::vec4( 0.f, 1.f, 0.f, 0.f );
+    const glm::vec4 DEFAULT_FORWARD = glm::vec4( 0.f, 0.f, -1.f, 0.f );
+    const glm::vec4 DEFAULT_RIGHT = glm::vec4( 1.f, 0.f, 0.f, 0.f );
 
 
     /** The current position */
@@ -144,12 +147,12 @@ private:
     /** Euler rotation of this entity */
     glm::vec3 Rotation;
 
-	/** The forward vector of the enitity**/
-	glm::vec3 Forward;
+    /** The forward vector of the enitity**/
+    glm::vec3 Forward;
 
-	/** The right vector of the enitity **/
-	glm::vec3 Right;
+    /** The right vector of the enitity **/
+    glm::vec3 Right;
 
-	/** The up vector of the enitity **/
-	glm::vec3 Up;
+    /** The up vector of the enitity **/
+    glm::vec3 Up;
 };

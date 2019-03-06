@@ -85,13 +85,6 @@ namespace Scripting
         void DefineLuaTypes( sol::state & aLua );
 
         /// <summary>
-        /// Read a given directory and add any files in it to the given vector
-        /// </summary>
-        /// <param name="dirName">The directory to search</param>
-        /// <param name="aPathVec">vector of file paths to add to</param>
-        void ReadDirectory( const std::string& dirName, std::vector<std::string>& aPathVec );
-
-        /// <summary>
         /// Checks to see if there is a callback function of this name
         /// in the given lua state, if there is, then push to the vector
         /// of callbacks.
@@ -99,11 +92,7 @@ namespace Scripting
         /// <param name="lua">The lua state to check</param>
         /// <param name="aFuncName">function name to check for</param>
         /// <param name="aCallbackVec">Vector of function callbacks to add to</param>
-        void AddCallback(
-            const sol::state & lua,
-            const char* aFuncName,
-            sol::function * aOutCallbackVec
-        );
+        void AddCallback( const sol::state & lua, const char* aFuncName, sol::function * aOutCallbackVec );
 
         /// <summary>
         /// Run a function in the lua state if it exists
@@ -119,7 +108,11 @@ namespace Scripting
         /// <returns>Pointer to the created entity</returns>
         Entity* CreateEntity( const sol::table & aEntityInfo );
 
-        void Log_Print( const std::string &  msg );
+        /// <summary>
+        /// A bind for lua to use the debug print 
+        /// </summary>
+        /// <param name="msg"></param>
+        void Log_Print( const std::string & msg );
 
         /// <summary>
         /// Update the active camera's transform position and rotation

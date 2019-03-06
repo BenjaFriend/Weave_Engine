@@ -187,7 +187,7 @@ void EditorCore::DrawUI()
                 {
                     LOG_TRACE( "Add Game Object!" );
                     sceneMan->GetActiveScene()->AddEntity();
-                }         
+                }
 
                 ImGui::EndMenu();
             }
@@ -258,7 +258,7 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
 
     char newNameBuf [ 256 ];
     strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
-    ImGui::InputText( "Name", newNameBuf, 256 );
+    ImGui::InputText( "Name", newNameBuf, IM_ARRAYSIZE( newNameBuf ) );
 
     if ( ImGui::Button( "Delete" ) )
     {
@@ -284,7 +284,7 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
                 compMan->AddComponentFromEditor( SelectedEntity, name );
             }
         }
-    }          
+    }
 
     SelectedEntity->SetName( newNameBuf );
     SelectedEntity->SetIsActive( isActive );

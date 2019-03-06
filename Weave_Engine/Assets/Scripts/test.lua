@@ -4,11 +4,20 @@
 -----------------------------------------------
 function start()
 
+    Print( "Welcome to the family lua" );
 
 end
 
+-----------------------------------------------
+--- Called from C++ every update ---
+-----------------------------------------------
 function update()
 
-    Print( "New debugging script! " );
+end
+
+function onClick()
+
+    CurrentScene = GetActiveScene();
+    CurrentScene:AddEntity( "This boi is from heck lua event" );
 
 end

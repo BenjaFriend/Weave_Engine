@@ -117,6 +117,22 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     aLua.set_function( "GetMousePosition", &Input::InputManager::GetMousePosition, inpMan );
     aLua.set_function( "MoveCamera", &Scripting::ScriptManager::MoveCamera, this );
 
+    SceneManagement::SceneManager* sceneMan = SceneManagement::SceneManager::GetInstance();
+
+    //aLua.set_function( "LoadScene", &SceneManagement::SceneManager::LoadScene, sceneMan );
+    aLua.set_function( "GetActiveScene", &SceneManagement::SceneManager::GetActiveScene, sceneMan );
+    //aLua.set_function( "UnloadCurrentScene", &SceneManagement::SceneManager::UnloadCurrentScene, sceneMan );
+
+
+    aLua.new_usertype<SceneManagement::Scene>( "Scene",
+        sol::constructors<SceneManagement::Scene()>(),
+        "GetSceneName", &SceneManagement::Scene::GetSceneName,
+        "SetSceneName", &SceneManagement::Scene::SetSceneName,
+        "ResetScene", &SceneManagement::Scene::ResetScene,
+        "AddEntity", &SceneManagement::Scene::AddEntity,
+        "GetEntityArray", &SceneManagement::Scene::GetEntityArray
+    );
+
     // Define the entity types
     aLua.new_usertype<Material>( "Material" );
 

@@ -28,12 +28,6 @@ public:
     Camera( nlohmann::json const & aInitData );
 
     /// <summary>
-    /// Update camera matrices appropriately. 
-    /// </summary>
-    /// <param name="aDeltaTime">Delta Time of this frame</param>
-    void Update( const float aDeltaTime );
-
-    /// <summary>
     /// Updates the projection matrix of the camera
     /// </summary>
     /// <param name="aWidth">The aspect ration width</param>

@@ -204,7 +204,6 @@ void Game::Update( float dt, float totalTime )
     inputManager->Update( dt );
 
     // Update the camera
-    FlyingCamera->Update( dt );
     FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 
     ScriptMan->Update( dt );

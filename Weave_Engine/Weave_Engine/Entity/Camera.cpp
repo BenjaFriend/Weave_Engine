@@ -51,10 +51,6 @@ Camera::~Camera()
     inputManager = nullptr;
 }
 
-void Camera::Update( const float aDeltaTime )
-{
-}
-
 void Camera::SetDoRotation( bool aDoRot )
 {
     DoRotation = aDoRot;
@@ -77,11 +73,9 @@ void Camera::SetMovementSpeed( float aNewVal )
 
 void Camera::SaveComponentData( nlohmann::json & aCompData )
 {
-
     aCompData [ POS_SAVE_KEY ] [ "X" ] = Pos.x;
     aCompData [ POS_SAVE_KEY ] [ "Y" ] = Pos.y;
     aCompData [ POS_SAVE_KEY ] [ "Z" ] = Pos.z;
-
 }
 
 void Camera::DrawEditorGUI()
