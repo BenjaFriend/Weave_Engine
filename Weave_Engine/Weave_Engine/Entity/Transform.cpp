@@ -60,7 +60,6 @@ void Transform::SaveComponentData( nlohmann::json & comp_data )
 
 void Transform::MoveRelative( const float aX, const float aY, const float aZ )
 {
-    // #TODO Make this actually take into account the rotation
 	UpdateDirectionalVectors();
 
 	Position += Forward * aZ;

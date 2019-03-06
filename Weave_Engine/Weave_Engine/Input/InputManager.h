@@ -67,7 +67,20 @@ namespace Input
         /// <param name="dt">delta time of the frame</param>
         void Update( float dt );
 
+		/* The reason why there are two different 'IsKeyDown' functions */
+		/* Sol and Lua don't properly cast (int <--> char) values */
+		/* 'IsCKeyDown' only works with capital chars */
+		/// <summary>
+		/// Test if a key is down
+		/// </summary>
+		/// <param name="vKey">Int value of the key</param>
+		/// <returns>True if the key is down</returns>
 		bool IsKeyDown(int vKey);
+		/// <summary>
+		/// Test if a key is down
+		/// </summary>
+		/// <param name="vKey">Char value of the key</param>
+		/// <returns>True if the key is down</returns>
 		bool IsCKeyDown( char vKey );
 
         void OnLookDown( WPARAM buttonState, int x, int y );
