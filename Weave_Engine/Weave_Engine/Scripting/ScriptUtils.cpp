@@ -71,7 +71,7 @@ void ScriptManager::DefineLuaTypes( sol::state & aLua )
     aLua.set_function( "CreateEntity", &Scripting::ScriptManager::CreateEntity, this );
 
     Input::InputManager* inpMan = Input::InputManager::GetInstance();
-    aLua.set_function( "IsKeyDown", &Input::InputManager::IsKeyDown, inpMan );
+    aLua.set_function( "IsKeyDown", &Input::InputManager::IsCKeyDown, inpMan );
     aLua.set_function( "MoveCamera", &Scripting::ScriptManager::MoveCamera, this );
 
     // Define the entity types

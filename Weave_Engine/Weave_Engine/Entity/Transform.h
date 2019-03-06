@@ -95,6 +95,10 @@ public:
     /// <param name="aNewRot">The new rotation of this object</param>
     void SetRotation( const glm::vec3 & aNewRot ) { Rotation = aNewRot; }
 
+	glm::vec3 GetForward() const { return Forward; }
+	glm::vec3 GetRight() const { return Right; }
+	glm::vec3 GetUp() const { return Up; }
+
     /// <summary>
     /// Calculate the world matrix for this entity
     /// </summary>
@@ -105,7 +109,14 @@ protected:
 
     virtual void SaveComponentData( nlohmann::json & aCompData ) override;
 
+	void UpdateDirectionalVectors();
+
 private:
+
+	const glm::vec4 DEFAULT_UP = glm::vec4(0.f, 1.f, 0.f, 0.f);
+	const glm::vec4 DEFAULT_FORWARD = glm::vec4(0.f, 0.f, -1.f, 0.f);
+	const glm::vec4 DEFAULT_RIGHT = glm::vec4(1.f, 0.f, 0.f, 0.f);
+
 
     /** The current position */
     glm::vec3 Position;
@@ -115,4 +126,10 @@ private:
 
     /** Euler rotation of this entity */
     glm::vec3 Rotation;
+
+	glm::vec3 Forward;
+
+	glm::vec3 Right;
+
+	glm::vec3 Up;
 };

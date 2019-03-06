@@ -78,6 +78,11 @@ bool InputManager::IsKeyDown( int vKey )
     return GetAsyncKeyState( vKey ) & 0x80000;
 }
 
+bool InputManager::IsCKeyDown(char vKey)
+{
+	return GetAsyncKeyState(vKey) & 0x80000;
+}
+
 void Input::InputManager::OnLookDown( WPARAM buttonState, int x, int y )
 {
     SignalInput( InputType::Look );

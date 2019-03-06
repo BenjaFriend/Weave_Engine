@@ -67,7 +67,8 @@ namespace Input
         /// <param name="dt">delta time of the frame</param>
         void Update( float dt );
 
-        bool IsKeyDown( int vKey );
+		bool IsKeyDown(int vKey);
+		bool IsCKeyDown( char vKey );
 
         void OnLookDown( WPARAM buttonState, int x, int y );
         void OnLookUp( WPARAM buttonState, int x, int y );
