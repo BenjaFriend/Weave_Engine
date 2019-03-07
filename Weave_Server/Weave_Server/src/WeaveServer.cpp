@@ -49,10 +49,10 @@ size_t WeaveServer::Run()
 
     while ( !IsDone || !io_service.stopped() )
     {
-        //if ( IsDone || io_service.stopped() ) { break; }
-
         // Run said server
         io_service.run();
+
+        std::cout << "Server iteration next!" << std::endl;
     }
 
     std::cout << "Server:: Stop running!" << std::endl;
@@ -85,6 +85,8 @@ void WeaveServer::HandleRemoteRecieved( const std::error_code & error, std::size
     {
         // access to remote_endpoint
         std::cout << "Message received! " << msgSize << std::endl;
+        std::cout << recv_buf << std::endl;
+
         // Start another async request
         StartRecieve();
     }
