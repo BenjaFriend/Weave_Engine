@@ -1,41 +1,40 @@
 #include "WeaveServer.h"
 
-using boost::asio::ip::udp;
+namespace bai = boost::asio::ip;
 
 WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
-: ListenSocket( io_service, udp::endpoint( udp::v4(), aDesc.ListenPort ) )
+    :
+    MaxRooms( aDesc.MaxRooms ),
+    ListenPort( aDesc.ListenPort ),
+    ResponsePort( aDesc.ResponsePort )
 {
-    MaxRooms = aDesc.MaxRooms;
-    ListenPort = aDesc.ListenPort;
-    ResponsePort = aDesc.ResponsePort;
+    std::shared_ptr< bai::udp::socket > wat(
+        new bai::udp::socket( io_service, bai::udp::endpoint( bai::udp::v4(), ListenPort ) )
+    );
 
-    Rooms = new Room[ MaxRooms ];
+    // Excuse me
+    ListenSocket = std::move( wat );
 
-    if ( io_service.stopped() )
-    {
-        std::cout << "Io service is stopped!" << std::endl;
-    }
+    // Create the rooms
+    Rooms = new Room [ MaxRooms ];
 
-    // Create the running thread
+    // Start the running thread
     runningThread = std::thread( &WeaveServer::Run, this );
-    runningThread.join();
 }
 
 WeaveServer::~WeaveServer()
 {
-    // Stop IO services (flags for running thread to stop)
     io_service.stop();
 
-    // Wait for server thread to finish
-    if( runningThread.joinable() )
+    if ( runningThread.joinable() )
     {
         runningThread.join();
     }
 
     // Clean up rooms
-    if( Rooms != nullptr )
+    if ( Rooms != nullptr )
     {
-        delete[] Rooms;
+        delete [] Rooms;
         Rooms = nullptr;
     }
 
@@ -45,51 +44,52 @@ WeaveServer::~WeaveServer()
 size_t WeaveServer::Run()
 {
     std::cout << "Server:: Start running!" << std::endl;
+
     StartRecieve();
-    // Initalize the socket
-    while( !io_service.stopped() )
+
+    while ( !IsDone || !io_service.stopped() )
     {
-        // TODO: Invesigate a better exception handling system
-        try
-        {
-            io_service.run();
-        }
-        catch ( const std::exception & e )
-        {
-            std::cerr << "WaveServer: Network exception: " << e.what() << std::endl;
-        }
-        catch ( ... )
-        {
-            std::cerr <<  "Server: Network exception: unknown" << std::endl;
-        }
-        std::cout << "Listening..." << std::endl;
-    }   // End service loop
+        //if ( IsDone || io_service.stopped() ) { break; }
+
+        // Run said server
+        io_service.run();
+    }
 
     std::cout << "Server:: Stop running!" << std::endl;
 
     return 0;
 }
 
-void WeaveServer::StartRecieve()
+void WeaveServer::Shutdown()
 {
-    ListenSocket.async_receive_from( 
-        boost::asio::buffer( recv_buf, DEF_BUF_SIZE ), 
-        remote_endpoint,
-	    [this](std::error_code ec, std::size_t bytes_recvd ) { this->HandleRemoteRecieved( ec, bytes_recvd ); } );
+    io_service.stop();
+    IsDone = true;
 }
 
-void WeaveServer::HandleRemoteRecieved( const std::error_code & error, size_t msgSize )
+void WeaveServer::StartRecieve()
 {
-    if( !error )
+    std::cout << "StartRecieve" << std::endl;
+
+    ListenSocket->async_receive_from(
+        boost::asio::buffer( recv_buf, DEF_BUF_SIZE ),
+        remote_endpoint,
+        boost::bind( &WeaveServer::HandleRemoteRecieved, this,
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred )
+    );
+}
+
+void WeaveServer::HandleRemoteRecieved( const std::error_code & error, std::size_t msgSize )
+{
+    if ( !error )
     {
         // access to remote_endpoint
-        std::cout << "Message recieved! " << msgSize << std::endl;
+        std::cout << "Message received! " << msgSize << std::endl;
+        // Start another async request
+        StartRecieve();
     }
     else
     {
-        std::cerr << "Message error!" << std::endl;
+        std::cerr << "Message error! " << error << std::endl;
     }
-
-    // Start another async request
-    StartRecieve();
 }
