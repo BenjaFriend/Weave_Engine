@@ -220,10 +220,14 @@ inline void EditorCore::DrawHierarchy()
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
         CurrentEntity = &entArray [ i ];
-        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsValid() ) continue;
+        assert( CurrentEntity != nullptr );
+        
+        if ( !CurrentEntity->GetIsValid() ) continue;
+
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
             SelectedEntity = CurrentEntity;
+            LOG_TRACE( "Selected entity: {}", CurrentEntity->GetName().c_str() );
         }
         ImGui::Separator();
     }
@@ -255,6 +259,8 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
 
     bool isActive = SelectedEntity->GetIsActive();
     ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
+
+    ImGui::Text( "ID: %ld", SelectedEntity->GetID() );
 
     char newNameBuf [ 256 ];
     strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );

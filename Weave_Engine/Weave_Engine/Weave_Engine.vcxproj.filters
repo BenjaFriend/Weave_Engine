@@ -151,6 +151,9 @@
     <ClCompile Include="Scripting\ScriptComponent.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\ObjectPool.hpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">

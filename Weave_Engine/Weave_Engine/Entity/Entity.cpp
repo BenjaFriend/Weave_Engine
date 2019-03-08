@@ -16,6 +16,7 @@ Entity::Entity( std::string aName )
 
 Entity::Entity()
 {
+
     IsActive = true;
     IsValid = false;
     IsDestroyableOnLoad = true;

@@ -12,6 +12,8 @@
 #include "../stdafx.h"
 #include "../Entity/Entity.h"
 
+#include "../Utils/ObjectPool.hpp"
+
 namespace SceneManagement
 {
 
@@ -115,7 +117,7 @@ namespace SceneManagement
         /** A raw array of entity data */
         Entity* EntityArray_Raw = nullptr;
 
-        UINT64 LastCreatedEntity = 0;
+        ObjectPool<Entity>* EntityPool = nullptr;
 
         std::vector<DirLight*> DirLights;
 

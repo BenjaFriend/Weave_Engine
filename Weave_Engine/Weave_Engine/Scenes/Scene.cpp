@@ -6,7 +6,9 @@ using namespace SceneManagement;
 
 Scene::Scene()
 {
-    EntityArray_Raw = new Entity [ MAX_ENTITY_COUNT ];
+    EntityPool = new ObjectPool<Entity>( MAX_ENTITY_COUNT );
+
+    EntityArray_Raw = EntityPool->GetRaw();
     // Initalize the entity array
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
@@ -18,24 +20,19 @@ Scene::~Scene()
 {
     UnloadAllEntities( true );
     UnloadAllLights();
-    if ( EntityArray_Raw != nullptr )
-    {
-        delete [] EntityArray_Raw;
-        EntityArray_Raw = nullptr;
-    }
+    EntityArray_Raw = nullptr;
+    SAFE_DELETE( EntityPool );
 }
 
 // Entity -----------------------------------------------
 
 Entity * Scene::AddEntity( std::string aName )
 {
-    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
+    Entity* newEnt = EntityPool->GetResource();
 
-    // TODO: Loop until there is a non-valid entity
+    assert( newEnt != nullptr );
 
-    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
     newEnt->SetName( aName );
-    newEnt->GetTransform()->SetPosition( glm::vec3( 0.f ) );
     newEnt->SetIsActive( true );
     newEnt->SetIsValid( true );
 
@@ -46,9 +43,9 @@ Entity * Scene::AddEntity( std::string aName )
 
 Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
 {
-    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
+    Entity* newEnt = EntityPool->GetResource();
 
-    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
+    assert( newEnt != nullptr );
 
     newEnt->SetIsValid( true );
     newEnt->ConstructFromFile( aFile );
@@ -65,14 +62,15 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
     {
         if ( &EntityArray_Raw [ i ] != nullptr )
         {
-            if ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() || aOverrideDestroyOnLoad )
+            if ( EntityArray_Raw [ i ].GetIsValid() &&
+                ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
+                    aOverrideDestroyOnLoad ) )
             {
                 EntityArray_Raw [ i ].Reset();
+                EntityPool->ReturnResource( i );
             }
         }
     }
-    // Reset last created entity
-    LastCreatedEntity = 1;
 }
 
 void Scene::ResetScene()

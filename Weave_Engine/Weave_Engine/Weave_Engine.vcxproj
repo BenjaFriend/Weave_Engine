@@ -339,6 +339,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Utils\ObjectPool.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
