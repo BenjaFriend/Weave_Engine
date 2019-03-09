@@ -12,7 +12,7 @@ function start()
 end
 
 function update( deltaTime )
-	
+
 	movement = VEC3:new(0, 0, 0)
 
 	if IsCKeyDown('W') then
@@ -35,7 +35,7 @@ function update( deltaTime )
 	if IsCKeyDown('X') then
 		movement.y = movement.y - 1;
 	end
-	
+
 
 	rot = VEC2:new( 0, 0 );
 
@@ -49,7 +49,7 @@ function update( deltaTime )
 	movement.x = movement.x * deltaTime * cameraSpeed;
 	movement.y = movement.y * deltaTime * cameraSpeed;
 	movement.z = movement.z * deltaTime * cameraSpeed;
-	
+
 	MoveCamera( movement, rot );
 	prevMousePos = curMousePos;
 

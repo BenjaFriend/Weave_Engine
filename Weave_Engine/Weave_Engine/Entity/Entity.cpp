@@ -9,33 +9,26 @@
 size_t Entity::EntityCount = 0;
 
 Entity::Entity( std::string aName )
-    : Name( aName )
+    : Entity()
 {
-    IsActive = true;
-    IsDestroyableOnLoad = true;
-    entID = EntityCount++;
-
-    componentManager = ECS::ComponentManager::GetInstance();
-
-    // Give entity component a transform 
-    EntityTransform = this->AddComponent<Transform>();
-}
-
-Entity::Entity( std::string aName, glm::vec3 aPos )
-    : Entity( aName )
-{
-    EntityTransform->SetPosition( aPos );
+    Name = aName;
 }
 
 Entity::Entity()
 {
+
     IsActive = true;
+    IsValid = false;
+    IsDestroyableOnLoad = true;
 
     entID = EntityCount++;
     componentManager = ECS::ComponentManager::GetInstance();
 
     // Give entity component a transform 
-    EntityTransform = this->AddComponent<Transform>();
+    if ( EntityTransform == nullptr )
+    {
+        EntityTransform = this->AddComponent<Transform>();
+    }
 }
 
 // virtual destructor
@@ -46,6 +39,8 @@ Entity::~Entity()
     EntityTransform = nullptr;
     componentManager = nullptr;
     --EntityCount;
+    IsActive = true;
+    IsValid = false;
 }
 
 Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
@@ -79,7 +74,7 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
     nlohmann::json entity_data = nlohmann::json::object();
 
     entity_data [ NAME_SAVE_KEY ] = this->Name;
-    entity_data [ IS_ACTIVE_SAVE_KEY ] = this->IsActive;
+    entity_data [ IS_ACTIVE_SAVE_KEY ] = ( bool ) this->IsActive;
     entity_data [ IS_DESTROY_ON_LOAD ] = ( bool ) this->IsDestroyableOnLoad;
     entity_data [ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
 
@@ -105,26 +100,17 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
     }
 }
 
-////////////////////////////////////////////////////
-// Accessors
-////////////////////////////////////////////////////
-
-void Entity::SetIsActive( const bool aStatus )
+void Entity::Reset()
 {
-    IsActive = aStatus;
-}
+    RemoveAllComponents();
+    IsValid = false;
+    IsDestroyableOnLoad = true;
+    componentManager = ECS::ComponentManager::GetInstance();
+    EntityTransform = nullptr;
 
-const bool Entity::GetIsActive() const
-{
-    return IsActive;
-}
-
-const std::string & Entity::GetName() const
-{
-    return Name;
-}
-
-void Entity::SetName( std::string newName )
-{
-    Name = newName;
+    // Give entity component a transform again
+    if ( EntityTransform == nullptr )
+    {
+        EntityTransform = this->AddComponent<Transform>();
+    }
 }

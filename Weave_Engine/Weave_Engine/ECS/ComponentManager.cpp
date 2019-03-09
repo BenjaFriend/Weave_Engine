@@ -48,6 +48,26 @@ bool ECS::ComponentManager::AddComponent( Entity * aEntity, nlohmann::json & aCo
     return true;
 }
 
+bool ECS::ComponentManager::AddComponentFromEditor( Entity * aEntity, const std::string & aCompName )
+{
+    assert( aEntity != nullptr );
+    const ECS::EntityID aEntityID = aEntity->GetID();
+
+    IComponent* newComp = IComponent::ReadFromEditor( aCompName );
+
+    if ( newComp == nullptr ) return false;
+
+    newComp->owner = aEntityID;
+    newComp->OwningEntity = aEntity;
+    newComp->id = ComponentCount;
+
+    ++ComponentCount;
+    const ComponentTypeId CTID = newComp->GetStaticComponentTypeID();
+    this->activeComponents [ aEntityID ] [ CTID ] = newComp;
+
+    return true;
+}
+
 ECS::ComponentManager::ComponentManager()
 {
 }

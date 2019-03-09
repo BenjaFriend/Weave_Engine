@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 
 #include "EditorCore.h"
+#include "../ECS/IComponent.h"
 
 using namespace Editor;
 
@@ -38,7 +39,7 @@ EditorCore::EditorCore()
 {
     sceneMan = SceneManagement::SceneManager::GetInstance();
     sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
-
+    compMan = ECS::ComponentManager::GetInstance();
     LoadResources();
 }
 
@@ -179,6 +180,18 @@ void EditorCore::DrawUI()
 
                 ImGui::EndMenu();
             }
+
+            if ( ImGui::BeginMenu( "Entity" ) )
+            {
+                if ( ImGui::MenuItem( "Add Game Object" ) )
+                {
+                    LOG_TRACE( "Add Game Object!" );
+                    sceneMan->GetActiveScene()->AddEntity();
+                }
+
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMenuBar();
         }
         ImGui::End();
@@ -207,10 +220,14 @@ inline void EditorCore::DrawHierarchy()
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
         CurrentEntity = &entArray [ i ];
-        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsValid() ) continue;
+        assert( CurrentEntity != nullptr );
+        
+        if ( !CurrentEntity->GetIsValid() ) continue;
+
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {
             SelectedEntity = CurrentEntity;
+            LOG_TRACE( "Selected entity: {}", CurrentEntity->GetName().c_str() );
         }
         ImGui::Separator();
     }
@@ -243,16 +260,36 @@ FORCE_INLINE void Editor::EditorCore::DrawInspector()
     bool isActive = SelectedEntity->GetIsActive();
     ImGui::Checkbox( "Active", &isActive ); ImGui::SameLine();
 
+    ImGui::Text( "ID: %ld", SelectedEntity->GetID() );
+
     char newNameBuf [ 256 ];
     strcpy_s( newNameBuf, SelectedEntity->GetName().c_str() );
-    ImGui::InputText( "Name", newNameBuf, 256 );
+    ImGui::InputText( "Name", newNameBuf, IM_ARRAYSIZE( newNameBuf ) );
 
     if ( ImGui::Button( "Delete" ) )
     {
-        SceneManagement::SceneManager::GetInstance()->GetActiveScene()->ResetEntity( SelectedEntity );
+        SelectedEntity->Reset();
         SelectedEntity = nullptr;
         ImGui::End();
         return;
+    }
+
+    if ( ImGui::CollapsingHeader( "Add Component" ) )
+    {
+        const auto & componentTypes = ECS::IComponent::ComponentFactories();
+
+        for ( const auto & compType : componentTypes )
+        {
+            std::string name = compType.first.c_str();
+            char buf [ 64 ] = "\0";
+            sprintf_s( buf, "Type: %s", compType.first.c_str() );
+
+            if ( ImGui::Button( buf ) )
+            {
+                LOG_TRACE( "Add comp type {}", name );
+                compMan->AddComponentFromEditor( SelectedEntity, name );
+            }
+        }
     }
 
     SelectedEntity->SetName( newNameBuf );

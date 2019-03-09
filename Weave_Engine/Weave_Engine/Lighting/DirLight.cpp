@@ -12,6 +12,13 @@
 
 COMPONENT_INIT( DirLight )
 
+DirLight::DirLight()
+{
+    LightingData = {};
+    
+    SceneManagement::SceneManager::GetInstance()->GetActiveScene()->AddDirLight( this );
+}
+
 DirLight::DirLight( DirectionalLightData aLightData )
     : LightingData( aLightData )
 {
@@ -73,6 +80,10 @@ void DirLight::SaveComponentData( nlohmann::json & comp_data )
 void DirLight::DrawEditorGUI()
 {
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
+    if ( ImGui::Button( "Remove" ) )
+    {
+        OwningEntity->RemoveComponent<DirLight>();
+    }
     ImGui::ColorEdit3( "Ambient Color", ( float* ) &LightingData.AmbientColor );
     ImGui::ColorEdit3( "Diffuse Color", ( float* ) &LightingData.DiffuseColor );
     ImGui::DragFloat3( "Direction", ( float* ) &LightingData.Direction );

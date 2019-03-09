@@ -93,13 +93,8 @@ DXCore::~DXCore()
     CameraManager::ReleaseInstance();
 
     ECS::ComponentManager::ReleaseInstance();
-    if ( ScriptMan != nullptr )
-    {
-        delete ScriptMan;
-        ScriptMan = nullptr;
-    }
+    Scripting::ScriptManager::ReleaseInstance();
     Physics::PhysicsManager::ReleaseInstance();
-
 
     Input::InputManager::ReleaseInstance();
     inputManager = nullptr;
@@ -462,7 +457,7 @@ void DXCore::InitSystems()
     ComponentMan = ECS::ComponentManager::GetInstance();
     CameraMan = CameraManager::GetInstance();
     PhysicsMan = Physics::PhysicsManager::GetInstance();
-    ScriptMan = new Scripting::ScriptManager();
+    ScriptMan = Scripting::ScriptManager::GetInstance();
 }
 
 // --------------------------------------------------------

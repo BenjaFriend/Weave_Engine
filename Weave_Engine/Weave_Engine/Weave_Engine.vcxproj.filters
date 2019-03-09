@@ -148,6 +148,12 @@
     <ClCompile Include="Core\CameraManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\ScriptComponent.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\ObjectPool.hpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -280,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="Core\CameraManager.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\ScriptComponent.h">
+      <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

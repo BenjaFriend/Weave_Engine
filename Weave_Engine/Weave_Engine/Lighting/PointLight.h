@@ -11,6 +11,8 @@ public:
 
     COMPONENT( PointLight );
 
+    PointLight();
+
     PointLight( 
         glm::vec3 aColor,
         glm::vec3 aPos, 

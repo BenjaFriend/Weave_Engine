@@ -8,8 +8,7 @@ COMPONENT_INIT( Physics::RigidBody )
 
 using namespace Physics;
 
-RigidBody::RigidBody( float aMass ) :
-    Mass( aMass )
+RigidBody::RigidBody()
 {
     Acceleration = { 0.f, 0.f, 0.f };
     Velocity = { 0.f, 0.f, 0.f };
