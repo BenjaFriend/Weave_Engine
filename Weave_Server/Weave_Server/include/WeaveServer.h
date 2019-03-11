@@ -1,5 +1,8 @@
 #pragma once
 
+// Define that we are the server to help with dependency management
+#define WEAVE_SERVER
+
 #include <iostream>
 #include <thread>
 #include <memory>
@@ -26,6 +29,15 @@ struct SERVER_INIT_DESC
 
     /** The max number of rooms that are allowed on this server */
     unsigned short MaxRooms = 4;
+
+    friend std::ostream& operator<<( std::ostream& os, const SERVER_INIT_DESC& data )
+    {
+        os << "Server Config";
+        os << "\n\tListen Port: \t" << data.ListenPort;
+        os << "\n\tResponse Port: \t" << data.ResponsePort;
+        os << "\n\tMax Rooms: \t" << data.MaxRooms << "\n";
+        return os;
+    }
 };
 
 /**
