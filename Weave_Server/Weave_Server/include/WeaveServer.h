@@ -14,6 +14,7 @@
 #include <boost/asio/buffer.hpp>
 
 #include "Room.h"
+#include "MemoryBitStream.h"
 
 #define DEF_LISTEN_PORT     50000
 #define DEF_RESPONSE_PORT   50001

@@ -58,6 +58,7 @@ include_directories(
     include
     src
     ${Boost_INCLUDE_DIR}
+    ../../Weave_Common/include
 )
 ############### Link Libraries ################
 set( LINK_DIRS
@@ -86,7 +87,10 @@ endif()
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )
 
 ### Setup visual studio source groups / filters ###
-file( GLOB_RECURSE _source_list src/*.cpp* src/*.h* src/*.hpp*   include/*.cpp* include/*.h* include/*.hpp* )
+file( GLOB_RECURSE _source_list
+src/*.cpp* src/*.h* src/*.hpp*
+include/*.cpp* include/*.h* include/*.hpp*
+../../Weave_Common/include/*.cpp* ../../Weave_Common/include/*.h*  )
 
 if( MSVC )
     foreach( _source IN ITEMS ${_source_list} )
