@@ -32,7 +32,7 @@ struct SERVER_INIT_DESC
 
     friend std::ostream& operator<<( std::ostream& os, const SERVER_INIT_DESC& data )
     {
-        os << "Server Config";
+        os << "\nServer Config";
         os << "\n\tListen Port: \t" << data.ListenPort;
         os << "\n\tResponse Port: \t" << data.ResponsePort;
         os << "\n\tMax Rooms: \t" << data.MaxRooms << "\n";
