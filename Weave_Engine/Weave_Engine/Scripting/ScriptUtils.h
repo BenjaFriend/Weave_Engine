@@ -16,6 +16,14 @@
 
 namespace Scripting
 {
+    struct ScriptBehaviors
+    {
+        sol::state ScriptState;     // the sol state of this script
+        sol::function UpdateFunc    = sol::nil;   // the update fnuction callback
+        sol::function StartFunc     = sol::nil;    // the start function callback
+        sol::function OnClickfun    = sol::nil;   // The onClickFunction callback
+    };
+
     /// <summary>
     /// Class for loading in all scripts in the assets folder
     /// </summary>
@@ -24,9 +32,14 @@ namespace Scripting
     {
     public:
 
-        ScriptManager();
+        static ScriptManager* GetInstance();
 
-        ~ScriptManager();
+        static void ReleaseInstance();
+
+        /// <summary>
+        /// Run all current scripts that have a Start callback
+        /// </summary>
+        void Start();
 
         /// <summary>
         /// Update any entity callbacks
@@ -40,30 +53,36 @@ namespace Scripting
         void OnClick();
 
         /// <summary>
-        /// Load all scripts in the Assets/Scripts directory
+        /// Register a script and it's behaviors to the manager
         /// </summary>
-        void LoadScripts();
+        /// <param name="aFileName">The file path to the script</param>
+        void RegisterScript( const std::string & aFileName );
+
+        /// <summary>
+        /// Release the script behavior from the manager
+        /// </summary>
+        /// <param name="aFileName">The file path to the script</param>
+        void ReleaseScript( const std::string & aFileName );
 
     private:
+
+        ScriptManager();
+
+        ~ScriptManager();
+
+        static ScriptManager* Instance;
 
         /// <summary>
         /// Load in this lua script and store it's lua state
         /// </summary>
         /// <param name="aFile"></param>
-        void LoadScript( const char* aFile );
+        void LoadScript( const char* aFile, ScriptBehaviors * aOutBehavior );
 
         /// <summary>
         /// Define the lua states for any game play scripts
         /// </summary>
         /// <param name="aLua">the lua state to edit</param>
         void DefineLuaTypes( sol::state & aLua );
-
-        /// <summary>
-        /// Read a given directory and add any files in it to the given vector
-        /// </summary>
-        /// <param name="dirName">The directory to search</param>
-        /// <param name="aPathVec">vector of file paths to add to</param>
-        void ReadDirectory( const std::string& dirName, std::vector<std::string>& aPathVec );
 
         /// <summary>
         /// Checks to see if there is a callback function of this name
@@ -73,11 +92,7 @@ namespace Scripting
         /// <param name="lua">The lua state to check</param>
         /// <param name="aFuncName">function name to check for</param>
         /// <param name="aCallbackVec">Vector of function callbacks to add to</param>
-        void AddCallback( 
-            const sol::state & lua,
-            const char* aFuncName, 
-            std::vector<sol::function>& aCallbackVec 
-        );
+        void AddCallback( const sol::state & lua, const char* aFuncName, sol::function * aOutCallbackVec );
 
         /// <summary>
         /// Run a function in the lua state if it exists
@@ -93,22 +108,21 @@ namespace Scripting
         /// <returns>Pointer to the created entity</returns>
         Entity* CreateEntity( const sol::table & aEntityInfo );
 
-		void Log_Print(std::string msg);
+        /// <summary>
+        /// A bind for lua to use the debug print 
+        /// </summary>
+        /// <param name="msg"></param>
+        void Log_Print( const std::string & msg );
 
-		void MoveCamera(glm::vec3 move);
+        /// <summary>
+        /// Update the active camera's transform position and rotation
+        /// </summary>
+        /// <param name="move">The relative movement change of the camera</param>
+        /// <param name="rotate">The relative rotation change of the camera</param>
+        void MoveCamera( glm::vec3 & move, glm::vec2 & rotate );
 
-        /** Lua update function callbacks */
-        std::vector<sol::function> UpdateTicks;
-
-        /** Lua on click function callbacks */
-        std::vector<sol::function> OnClickCallbacks;
-
-        /** Lua states that should be persistent */
-        std::vector<sol::state> LuaStates;
-
-        /** Vector of script file paths */
-        std::vector<std::string> ScriptPaths;
-
+        /** A map of file locations to asset behaviors */
+        std::unordered_map < std::string, ScriptBehaviors > LuaBehaviors;
     };
 
 }   // namespace Scripting

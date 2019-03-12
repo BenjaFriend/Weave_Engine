@@ -156,6 +156,9 @@ namespace Editor
         /** The scene manager of this game */
         SceneManagement::SceneManager* sceneMan = nullptr;
 
+        /** The entity component manager */
+        ECS::ComponentManager* compMan = nullptr;
+
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
 

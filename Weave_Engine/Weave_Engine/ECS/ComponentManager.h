@@ -88,6 +88,14 @@ namespace ECS
             return static_cast< T* >( activeComponents [ aEntityID ] [ CTID ] );
         }
 
+        /// <summary>
+        /// Add a component from the editor
+        /// </summary>
+        /// <param name="aEntity">The entity to add this component to</param>
+        /// <param name="aCompName">Class name of the component</param>
+        /// <returns>True if success, false if failure</returns>
+        bool AddComponentFromEditor( Entity* aEntity, const std::string & aCompName );
+
 		template <class T>
 		T* FindComponentOfType()
 		{
@@ -124,6 +132,7 @@ namespace ECS
         void RemoveComponent( const EntityID aEntityID )
         {
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+            assert( activeComponents [ aEntityID ] [ CTID ] != nullptr );
 
             delete ( activeComponents [ aEntityID ] [ CTID ] );
             activeComponents [ aEntityID ] [ CTID ] = nullptr;

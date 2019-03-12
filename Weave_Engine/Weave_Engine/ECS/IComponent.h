@@ -31,6 +31,11 @@
 #define  COMPONENT_INIT( name )                                         \
     const static ECS::IComponent::ConcreteFactory< name > CompFactory = {};
 
+#define REMOVE_COMP_BTN( name )                                             \
+    if( ImGui::Button("Remove Component") )                                 \
+    { OwningEntity->RemoveComponent< name > (); return; }               
+    
+
 class Entity;
 namespace ECS
 {
@@ -61,22 +66,7 @@ namespace ECS
         /// Write the data for this component to a file
         /// </summary>
         /// <param name="aOutFile">The file stream to write to</param>
-        virtual void SaveObject( nlohmann::json & aEntComponentArray )
-        {
-            nlohmann::json comp_data = nlohmann::json::object();
-            comp_data [ COMP_SAVE_KEY ] = ComponentName();
-
-            SaveComponentData( comp_data );
-
-            if ( aEntComponentArray.is_array() )
-            {
-                aEntComponentArray.push_back( comp_data );
-            }
-            else
-            {
-                LOG_WARN( "Could not save component data to the array!" );
-            }
-        }
+        virtual void SaveObject( nlohmann::json & aEntComponentArray );
 
         ////////////////////////////////////////////////////    
         // Operators 
@@ -111,27 +101,52 @@ namespace ECS
         /// <returns>const char* of what this component should be called</returns>
         virtual const char* ComponentName() = 0;
 
+        /// <summary>
+        /// Construct this component at runtime from a scene serialization file
+        /// </summary>
+        /// <param name="aInitData">The initalization data for this component</param>
+        /// <returns>Pointer to the newly constructed component</returns>
         static IComponent* ReadFromFile( nlohmann::json & aInitData );
 
-        // Basic component Factory pattern for components to be added
-        // via JSON data
+        /// <summary>
+        /// Construct this component at runtime from the editor
+        /// </summary>
+        /// <param name="aCompName">The class name of this component</param>
+        /// <returns>Pointer to newly constructed component</returns>
+        static IComponent* ReadFromEditor( const std::string & aCompName );
+
+#pragma region Component Factory
+        /// <summary>
+        /// Base factory class for components to be added at runtime. 
+        /// </summary>
         class Factory
         {
         protected:
             Factory( std::string const& type );
         public:
             virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const = 0;
+            virtual IComponent* ConstructFromEditor() const = 0;
         };
 
+        /// <summary>
+        /// A component factory that will create a new factory based on it's class name 
+        /// for use with the editor and scene serialization. 
+        /// </summary>
         template <typename Derived>
         class ConcreteFactory : public Factory
         {
         public:
+
             ConcreteFactory() : Factory( Derived::ClassName() ) {}
+
             virtual IComponent* ConstructFromFile( nlohmann::json const & source ) const
             {
-
                 return new Derived( source );
+            }
+
+            virtual IComponent* ConstructFromEditor()const
+            {
+                return new Derived();
             }
         };
 
@@ -141,6 +156,7 @@ namespace ECS
             static FactoryMap theOneAndOnly;
             return theOneAndOnly;
         }
+#pragma endregion 
 
     protected:
 

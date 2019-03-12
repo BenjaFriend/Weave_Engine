@@ -6,11 +6,12 @@ using namespace SceneManagement;
 
 Scene::Scene()
 {
-    EntityArray_Raw = new Entity [ MAX_ENTITY_COUNT ];
+    EntityPool = new ObjectPool<Entity>( MAX_ENTITY_COUNT );
+
+    EntityArray_Raw = EntityPool->GetRaw();
     // Initalize the entity array
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntityArray_Raw [ i ].SetIsActive( false );
         EntityArray_Raw [ i ].SetIsValid( false );
     }
 }
@@ -19,24 +20,22 @@ Scene::~Scene()
 {
     UnloadAllEntities( true );
     UnloadAllLights();
-    if ( EntityArray_Raw != nullptr )
-    {
-        delete [] EntityArray_Raw;
-        EntityArray_Raw = nullptr;
-    }
+    EntityArray_Raw = nullptr;
+    SAFE_DELETE( EntityPool );
 }
 
 // Entity -----------------------------------------------
 
 Entity * Scene::AddEntity( std::string aName )
 {
-    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
+    Entity* newEnt = EntityPool->GetResource();
 
-    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
+    assert( newEnt != nullptr );
+
     newEnt->SetName( aName );
-    newEnt->GetTransform()->SetPosition( glm::vec3( 0.f ) );
     newEnt->SetIsActive( true );
     newEnt->SetIsValid( true );
+
     LOG_TRACE( "Add raw entity! {}", aName );
 
     return newEnt;
@@ -44,9 +43,9 @@ Entity * Scene::AddEntity( std::string aName )
 
 Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
 {
-    assert( LastCreatedEntity <= MAX_ENTITY_COUNT );
+    Entity* newEnt = EntityPool->GetResource();
 
-    Entity* newEnt = &EntityArray_Raw [ LastCreatedEntity++ ];
+    assert( newEnt != nullptr );
 
     newEnt->SetIsValid( true );
     newEnt->ConstructFromFile( aFile );
@@ -56,26 +55,22 @@ Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
     return newEnt;
 }
 
-void Scene::ResetEntity( Entity * aEntity )
-{
-    if ( aEntity == nullptr ) return;
-    aEntity->SetIsValid( false );
-    aEntity->RemoveAllComponents();
-}
-
 void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 {
     // Delete each entity that has been added
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( &EntityArray_Raw [ i ] != nullptr &&
-            EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
-            aOverrideDestroyOnLoad )
+        if ( &EntityArray_Raw [ i ] != nullptr )
         {
-            EntityArray_Raw [ i ].SetIsValid( false );
+            if ( EntityArray_Raw [ i ].GetIsValid() &&
+                ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
+                    aOverrideDestroyOnLoad ) )
+            {
+                EntityArray_Raw [ i ].Reset();
+                EntityPool->ReturnResource( i );
+            }
         }
     }
-    LastCreatedEntity = 1;
 }
 
 void Scene::ResetScene()

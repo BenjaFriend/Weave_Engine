@@ -106,8 +106,8 @@
                 },
                 {
                     "Color": {
-                        "B": 1.0,
-                        "G": 0.0,
+                        "B": 0.0,
+                        "G": 1.0,
                         "R": 0.0
                     },
                     "ComponentName": "PointLight",
@@ -122,7 +122,7 @@
             ],
             "DestroyOnLoad": true,
             "IsActive": true,
-            "Name": "blue point light"
+            "Name": "Green point light"
         },
         {
             "Components": [
@@ -155,5 +155,5 @@
             "Name": "Floor"
         }
     ],
-    "Scene_Name": "Test_Scene_Name"
+    "Scene_Name": "This is my lua loaded scene!"
 }

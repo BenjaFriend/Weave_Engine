@@ -8,14 +8,21 @@
 
 COMPONENT_INIT( MeshRenderer )
 
-MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
-    : CurrentMaterial( aMat ), CurrentMesh( aMesh )
+MeshRenderer::MeshRenderer()
 {
+    resMan = ResourceManager::GetInstance();
+}
+
+MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
+    : MeshRenderer()
+{
+    CurrentMaterial = aMat;
+    CurrentMesh = aMesh;
 }
 
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
-    ResourceManager* resMan = ResourceManager::GetInstance();
+    resMan = ResourceManager::GetInstance();
 
     // Load mesh
     std::string mshFile = aInitData [ MESH_SAVE_KEY ];
@@ -36,20 +43,102 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::DrawEditorGUI()
 {
+    if( ImGui::Button( "Remove Component" ) ) 
+    {
+        OwningEntity->RemoveComponent< MeshRenderer >();
+        return;
+    }
+
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
-    // #TODO Have a material / mesh format that we can edit during runtime
 
-    ImGui::Text( "Material:\t %d", ( CurrentMaterial != nullptr ? "Available" : "NULL" ) );
+    // Display the mesh name
+    std::string meshName = "No Mesh";
 
-    ImGui::Text( "Mesh:\t %s", ( CurrentMesh != nullptr ? "Available" : "NULL" ) );
+    if ( CurrentMesh != nullptr )
+    {
+        meshName = CurrentMesh->GetMeshFileName();
+    }
+    ImGui::Text( "Mesh:\t %s", meshName.c_str() );
+
+    std::string matName = "No Material";
+    if ( CurrentMaterial != nullptr )
+    {
+        matName = CurrentMaterial->GetMeshFileName();
+    }
+    ImGui::Text( "Material:\t %s", matName.c_str() );
+
+
+    // Edit Mesh Settings
+    static char meshNameBuf [ 64 ] = "\0";
+    ImGui::InputText( "New Mesh Name: ", meshNameBuf, IM_ARRAYSIZE( meshNameBuf ) );
+
+    if ( ImGui::Button( "Apply Mesh Change" ) )
+    {
+        std::string stdMeshName = meshNameBuf;
+        FileName meshFile( stdMeshName.begin(), stdMeshName.end() );
+        SetMeshFromFile( meshFile );
+    }
+
+    // Edit material settings
+    static char matNameBuf [ 64 ] = "\0";
+    ImGui::InputText( "New Material Name: ", matNameBuf, IM_ARRAYSIZE( matNameBuf ) );
+
+    if ( ImGui::Button( "Apply Material Change" ) )
+    {
+        std::string stdMatName = matNameBuf;
+        FileName matFile( stdMatName.begin(), stdMatName.end() );
+        SetMaterialFromFile( matFile );
+    }
+}
+
+bool MeshRenderer::SetMeshFromFile( const FileName & aFileName )
+{
+    Mesh* newMesh = resMan->LoadMesh( aFileName );
+    if ( newMesh != nullptr )
+    {
+        SetMesh( newMesh );
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool MeshRenderer::SetMaterialFromFile( const FileName & aFileName )
+{
+    Material* newMat = resMan->LoadMaterial( aFileName );
+    if ( newMat != nullptr )
+    {
+        SetMaterial( newMat );
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void MeshRenderer::SaveComponentData( nlohmann::json & aOutFile )
 {
-    assert( CurrentMesh != nullptr && CurrentMaterial != nullptr );
-
-    aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
-    aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
+    // Save mesh
+    if ( CurrentMesh != nullptr )
+    {
+        aOutFile [ MESH_SAVE_KEY ] = CurrentMesh->GetMeshFileName();
+    }
+    else
+    {
+        aOutFile [ MESH_SAVE_KEY ] = "NULL_MESH";
+    }
+    // Save material
+    if ( CurrentMaterial != nullptr )
+    {
+        aOutFile [ MAT_FILE_SAVE_KEY ] = CurrentMaterial->GetMeshFileName();
+    }
+    else
+    {
+        aOutFile [ MAT_FILE_SAVE_KEY ] = "NULL_MAT";
+    }
 }
 
 void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::highp_mat4 & aProjection )
@@ -59,15 +148,8 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
     // Render all meshes that are a part of this entity
     // in the future I want to experiment with different meshes/material 
     // settings
-    if ( ParentTransform == nullptr )
-    {
-        ParentTransform =
-            SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetEntity( owner )->GetTransform();
-
-    }
-
     CurrentMaterial->SetShaderValues(
-        ParentTransform->GetWorldMatrix(),
+        OwningEntity->GetTransform()->GetWorldMatrix(),
         aView,
         aProjection
     );

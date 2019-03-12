@@ -93,13 +93,8 @@ DXCore::~DXCore()
     CameraManager::ReleaseInstance();
 
     ECS::ComponentManager::ReleaseInstance();
-    if ( ScriptMan != nullptr )
-    {
-        delete ScriptMan;
-        ScriptMan = nullptr;
-    }
+    Scripting::ScriptManager::ReleaseInstance();
     Physics::PhysicsManager::ReleaseInstance();
-
 
     Input::InputManager::ReleaseInstance();
     inputManager = nullptr;
@@ -462,7 +457,7 @@ void DXCore::InitSystems()
     ComponentMan = ECS::ComponentManager::GetInstance();
     CameraMan = CameraManager::GetInstance();
     PhysicsMan = Physics::PhysicsManager::GetInstance();
-    ScriptMan = new Scripting::ScriptManager();
+    ScriptMan = Scripting::ScriptManager::GetInstance();
 }
 
 // --------------------------------------------------------
@@ -653,7 +648,7 @@ LRESULT DXCore::ProcessMessage( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
         // Cursor moves over the window (or outside, while we're currently capturing it)
     case WM_MOUSEMOVE:
-        OnMouseMove( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
+        inputManager->OnMouseMove( wParam, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
         return 0;
 
         // Mouse wheel is scrolled

@@ -12,6 +12,8 @@
 #include "../stdafx.h"
 #include "../Entity/Entity.h"
 
+#include "../Utils/ObjectPool.hpp"
+
 namespace SceneManagement
 {
 
@@ -43,12 +45,6 @@ namespace SceneManagement
         /// <param name="aFile"></param>
         /// <returns></returns>
         Entity* AddEntityFromfile( nlohmann::json const & aFile );
-
-        /// <summary>
-        /// Deletes entity with the given ID
-        /// </summary>
-        /// <param name="aEntityID">ID of the entity to delete</param>
-        void ResetEntity( Entity * aEntity );
 
         /// <summary>
         /// Set data about this 
@@ -121,7 +117,7 @@ namespace SceneManagement
         /** A raw array of entity data */
         Entity* EntityArray_Raw = nullptr;
 
-        UINT64 LastCreatedEntity = 0;
+        ObjectPool<Entity>* EntityPool = nullptr;
 
         std::vector<DirLight*> DirLights;
 

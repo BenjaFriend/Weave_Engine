@@ -28,7 +28,7 @@ ResourceManager * ResourceManager::GetInstance()
 
 // Private constructor
 ResourceManager::ResourceManager( ID3D11Device* aDevice, ID3D11DeviceContext* aContext )
-{ 
+{
     currentDevice = aDevice;
     currentContext = aContext;
 }
@@ -69,15 +69,16 @@ Mesh* ResourceManager::LoadMesh( const FileName & aFileName )
 
     Mesh* newMesh = new Mesh( currentDevice, aFileName );
 
-	if (newMesh->GetIndexBuffer() != nullptr && newMesh->GetVertexBuffer() != nullptr)
-	{
-		Meshes[aFileName] = newMesh;
-	}
-	else
-	{
-		delete newMesh;
-	}
-    
+    if ( newMesh->GetIndexBuffer() != nullptr && newMesh->GetVertexBuffer() != nullptr )
+    {
+        Meshes [ aFileName ] = newMesh;
+    }
+    else
+    {
+        delete newMesh;
+        return nullptr;
+    }
+
     return newMesh;
 }
 
