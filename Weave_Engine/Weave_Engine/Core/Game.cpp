@@ -14,6 +14,8 @@
 #include "../Physics/BoxCollider.h"
 #include "../Physics/RigidBody.h"
 
+#include "MemoryBitStream.h"
+
 // For the DirectX Math library
 using namespace DirectX;
 
