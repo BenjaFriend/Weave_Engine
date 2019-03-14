@@ -58,8 +58,7 @@ include_directories(
     include
     src
     ${Boost_INCLUDE_DIR}
-    ../../Weave_Common/include
-    ../../Weave_Common/src
+    ../../Weave_Common
 )
 ############### Link Libraries ################
 set( LINK_DIRS
@@ -91,8 +90,7 @@ set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )
 file( GLOB_RECURSE _source_list
     src/*.cpp* src/*.h* src/*.hpp*
     include/*.cpp* include/*.h* include/*.hpp*
-    ../../Weave_Common/include/*.cpp* ../../Weave_Common/include/*.h*
-    ../../Weave_Common/src/*.cpp* ../../Weave_Common/src/*.h*
+    ../../Weave_Common/*.cpp* ../../Weave_Common/*.h* ../../Weave_Common/*.hpp*
 )
 
 if( MSVC )

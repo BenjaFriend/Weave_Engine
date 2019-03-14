@@ -46,6 +46,9 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{30eb033b-b279-4bd3-ade1-00d4996df988}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weave_Common">
+      <UniqueIdentifier>{f22b3655-ec51-428f-a5cc-9f8dd60ac642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="Utils\ObjectPool.hpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
+      <Filter>Weave_Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="Scripting\ScriptComponent.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h">
+      <Filter>Weave_Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
