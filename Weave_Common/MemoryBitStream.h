@@ -1,8 +1,11 @@
+#pragma once
+
 #include <cstdint>
 #include <cstdlib>
 #include <string>
 #include <cstring>	// memcpy and memset
 #include <stdio.h>
+#include <algorithm>
 
 inline uint32_t ConvertToFixed( float inNumber, float inMin, float inPrecision )
 {
