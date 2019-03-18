@@ -1,4 +1,3 @@
-//#include "RoboCatPCH.h"
 #include "MemoryBitStream.h"
 
 void OutputMemoryBitStream::WriteBits( uint8_t inData,
@@ -8,7 +7,7 @@ void OutputMemoryBitStream::WriteBits( uint8_t inData,
 	
 	if( nextBitHead > mBitCapacity )
 	{
-		ReallocBuffer( __max( mBitCapacity * 2, nextBitHead ) );
+		ReallocBuffer( std::max( mBitCapacity * 2, nextBitHead ) );
 	}
 	
 	//calculate the byteOffset into our buffer

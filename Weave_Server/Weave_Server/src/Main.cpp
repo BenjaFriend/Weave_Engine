@@ -52,15 +52,15 @@ static void ParseConfigFile( SERVER_INIT_DESC & aOutDesc, const char* aFileName 
 
         if ( firstWord == "ListenPort" )
         {
-            sscanf_s( line.c_str(), "ListenPort : %hu", &aOutDesc.ListenPort );
+            sscanf( line.c_str(), "ListenPort : %hu", &aOutDesc.ListenPort );
         }
         else if ( firstWord == "ResponsePort" )
         {
-            sscanf_s( line.c_str(), "ResponsePort : %hu", &aOutDesc.ResponsePort );
+            sscanf( line.c_str(), "ResponsePort : %hu", &aOutDesc.ResponsePort );
         }
         else if ( firstWord == "MaxRooms" )
         {
-            sscanf_s( line.c_str(), "MaxRooms : %hu", &aOutDesc.MaxRooms );
+            sscanf( line.c_str(), "MaxRooms : %hu", &aOutDesc.MaxRooms );
         }
     }
 

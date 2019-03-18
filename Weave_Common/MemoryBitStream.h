@@ -1,9 +1,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <string>
-
-class GameObject;
-class LinkingContext;
+#include <cstring>	// memcpy and memset
+#include <stdio.h>
 
 inline uint32_t ConvertToFixed( float inNumber, float inMin, float inPrecision )
 {
