@@ -53,7 +53,6 @@ int WINAPI WinMain(
 
     // Result variable for function calls below
     HRESULT hr = S_OK;
-
     // Attempt to create the window for our program, and
     // exit early if something failed
     hr = dxGame.InitWindow();
