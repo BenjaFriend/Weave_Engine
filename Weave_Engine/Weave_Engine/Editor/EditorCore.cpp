@@ -32,7 +32,8 @@ void EditorCore::SetDrawGizmos( const bool aDrawGizmos )
 
 void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 {
-    SceneFile = aFileName;
+    std::string sFile( aFileName.begin(), aFileName.end() );
+    SceneFile = sFile;
 }
 
 EditorCore::EditorCore()
@@ -41,6 +42,7 @@ EditorCore::EditorCore()
     sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
     compMan = ECS::ComponentManager::GetInstance();
     LoadResources();
+    strcpy_s( editSceneNameBuf, SceneFile.c_str() );
 }
 
 EditorCore::~EditorCore()
@@ -221,7 +223,7 @@ inline void EditorCore::DrawHierarchy()
     {
         CurrentEntity = &entArray [ i ];
         assert( CurrentEntity != nullptr );
-        
+
         if ( !CurrentEntity->GetIsValid() ) continue;
 
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
@@ -238,6 +240,12 @@ inline void EditorCore::DrawHierarchy()
 FORCE_INLINE void Editor::EditorCore::DrawStats()
 {
     ImGui::Begin( "Info" );
+
+    ImGui::InputText( "Scene File", editSceneNameBuf, IM_ARRAYSIZE( editSceneNameBuf ) );
+    if( ImGui::Button( "Change Scene Name" ) )
+    {
+        SceneFile = editSceneNameBuf;
+    }
     ImGui::Text( "%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate );
 
     ImGui::Text( "%.1f FPS", ImGui::GetIO().Framerate );
@@ -333,41 +341,14 @@ void Editor::EditorCore::ResetScene()
 
 void EditorCore::SaveScene()
 {
-    LOG_TRACE( "Save scene!" );
-    nlohmann::json njson;
-
-    njson [ SCENE_NAME_SAVE_KEY ] = "Test_Scene_Name";
-    njson [ ENTITY_ARRAY_SAVE_KEY ] = nlohmann::json::array();
-
-    Entity* CurrentEntity = nullptr;
-
-    SceneManagement::Scene* CurScene = sceneMan->GetActiveScene();
-    Entity* entArray = CurScene->GetEntityArray();
-
-    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
-    {
-        CurrentEntity = &entArray [ i ];
-        if ( CurrentEntity != nullptr && CurrentEntity->GetIsValid() )
-        {
-            CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );
-        }
-    }
-
-    // Open a file stream to the given scene file
-    std::ofstream ofs( SceneFile );
-    if ( ofs.is_open() )
-    {
-        ofs << std::setw( 4 ) << njson << std::endl;
-    }
-    else
-    {
-        LOG_ERROR( "Failed to save scene!" );
-    }
-    ofs.close();
+    LOG_TRACE( "Editor: Save scene to file: {}", SceneFile );
+    FileName fName( SceneFile.begin(), SceneFile.end() );
+    SceneManagement::SceneManager::GetInstance()->SaveScene( fName );
 }
 
 void EditorCore::LoadScene()
 {
-    LOG_TRACE( "Editor: Load scene!" );
-    SceneManagement::SceneManager::GetInstance()->LoadScene( SceneFile );
+    LOG_TRACE( "Editor: Load scene to file: {}", SceneFile );
+    FileName fName( SceneFile.begin(), SceneFile.end() );
+    SceneManagement::SceneManager::GetInstance()->LoadScene( fName );
 }

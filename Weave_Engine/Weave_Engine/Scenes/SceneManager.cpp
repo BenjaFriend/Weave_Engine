@@ -89,5 +89,35 @@ void SceneManager::UnloadCurrentScene()
 
 void SceneManager::SaveScene( FileName & aSceneFile )
 {
+    LOG_TRACE( "Save scene!" );
+    nlohmann::json njson;
 
+    njson [ SCENE_NAME_SAVE_KEY ] = "Test_Scene_Name";
+    njson [ ENTITY_ARRAY_SAVE_KEY ] = nlohmann::json::array();
+
+    Entity* CurrentEntity = nullptr;
+
+    SceneManagement::Scene* CurScene = GetActiveScene();
+    Entity* entArray = CurScene->GetEntityArray();
+
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        CurrentEntity = &entArray [ i ];
+        if ( CurrentEntity != nullptr && CurrentEntity->GetIsValid() )
+        {
+            CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );
+        }
+    }
+
+    // Open a file stream to the given scene file
+    std::ofstream ofs( aSceneFile );
+    if ( ofs.is_open() )
+    {
+        ofs << std::setw( 4 ) << njson << std::endl;
+    }
+    else
+    {
+        LOG_ERROR( "Failed to save scene!" );
+    }
+    ofs.close();
 }
