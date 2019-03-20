@@ -1,0 +1,373 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Weave_Common">
+      <UniqueIdentifier>{91e3e511-7643-4177-b66a-f2b9a7f8a28d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine">
+      <UniqueIdentifier>{2166d733-0ce8-4c49-8914-159b8cd5ee2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Scenes">
+      <UniqueIdentifier>{de6b8da2-591a-4efa-8a99-4d98a4b318a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Core">
+      <UniqueIdentifier>{ef50f18b-8897-41c8-b5fb-b0a00201bae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\ECS">
+      <UniqueIdentifier>{eb79321b-f9bf-40d2-a54e-4e0716b74246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Editor">
+      <UniqueIdentifier>{c3f9fcb3-c3b5-4273-8701-151064da91af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Entity">
+      <UniqueIdentifier>{89ee5df2-9c2e-4053-b01c-ad8695f64bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Input">
+      <UniqueIdentifier>{77fba9f9-a613-497c-a505-6977620762fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Lighting">
+      <UniqueIdentifier>{65bfae21-930c-4d49-9605-1a758f9e2b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Networking">
+      <UniqueIdentifier>{c355fe37-6cb8-44cc-9273-883883a09227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Physics">
+      <UniqueIdentifier>{51fb4012-909d-4299-a345-b939f8cc972e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Resources">
+      <UniqueIdentifier>{06cb9312-6ad7-404e-9135-6183b3191896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Resources\Materials">
+      <UniqueIdentifier>{73e641f0-0fea-4bf5-870a-8cab28b0058b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Scripting">
+      <UniqueIdentifier>{ff7d3557-f38d-4cda-9a5b-1fef2ba9d384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Utils">
+      <UniqueIdentifier>{404f6a1f-4ede-4f51-95dc-e22b3f0176a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\imgui">
+      <UniqueIdentifier>{ed3a2763-43b7-45a4-a0ee-f54afe39ac89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Engine\Shaders">
+      <UniqueIdentifier>{f1a2fbc4-62bf-4daa-9980-c695fd85af03}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h">
+      <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\stdafx.h">
+      <Filter>Weave_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Scenes\SceneManager.h">
+      <Filter>Weave_Engine\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Scenes\Scene.h">
+      <Filter>Weave_Engine\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Core\CameraManager.h">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Core\DXCore.h">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Core\Game.h">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Core\Logger.h">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\ECS\Component.h">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\ECS\ComponentManager.h">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\ECS\FamilyTypeID.h">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\ECS\IComponent.h">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Editor\EditorCore.h">
+      <Filter>Weave_Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Editor\Gizmo.h">
+      <Filter>Weave_Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Entity\Transform.h">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Entity\Camera.h">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Entity\Entity.h">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Input\IInput_Impl.h">
+      <Filter>Weave_Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Input\Input_Win.h">
+      <Filter>Weave_Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Input\InputManager.h">
+      <Filter>Weave_Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Lighting\PointLight.h">
+      <Filter>Weave_Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Lighting\DirLight.h">
+      <Filter>Weave_Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Lighting\LightShaderDefs.h">
+      <Filter>Weave_Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Physics\BoxCollider.h">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Physics\Collisions.h">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Physics\PhysicsManager.h">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Physics\RigidBody.h">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\ISaveable.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\Mesh.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\MeshRenderer.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\RenderManager.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\ResourceManager.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\SimpleShader.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\Vertex.h">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Resources\Materials\Material.h">
+      <Filter>Weave_Engine\Resources\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Scripting\ScriptComponent.h">
+      <Filter>Weave_Engine\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Scripting\ScriptUtils.h">
+      <Filter>Weave_Engine\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Utils\ObjectPool.hpp">
+      <Filter>Weave_Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Utils\SaveFileDefs.h">
+      <Filter>Weave_Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Utils\Singleton.hpp">
+      <Filter>Weave_Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Weave_Engine\Utils\Dispatcher.hpp">
+      <Filter>Weave_Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imconfig.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imgui.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imgui_impl_dx11.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imgui_impl_win32.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imgui_internal.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imstb_rectpack.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TankGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
+      <Filter>Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\stdafx.cpp">
+      <Filter>Weave_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Scenes\Scene.cpp">
+      <Filter>Weave_Engine\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Scenes\SceneManager.cpp">
+      <Filter>Weave_Engine\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Core\CameraManager.cpp">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Core\DXCore.cpp">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Core\Game.cpp">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Core\Logger.cpp">
+      <Filter>Weave_Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\ECS\ComponentManager.cpp">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\ECS\FamilyTypeID.cpp">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\ECS\IComponent.cpp">
+      <Filter>Weave_Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Editor\Gizmo.cpp">
+      <Filter>Weave_Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Editor\EditorCore.cpp">
+      <Filter>Weave_Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Entity\Transform.cpp">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Entity\Camera.cpp">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Entity\Entity.cpp">
+      <Filter>Weave_Engine\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Input\InputManager.cpp">
+      <Filter>Weave_Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Lighting\PointLight.cpp">
+      <Filter>Weave_Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Lighting\DirLight.cpp">
+      <Filter>Weave_Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Physics\Collisions.cpp">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Physics\PhysicsManager.cpp">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Physics\RigidBody.cpp">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Physics\BoxCollider.cpp">
+      <Filter>Weave_Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\Mesh.cpp">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\MeshRenderer.cpp">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\RenderManager.cpp">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\ResourceManager.cpp">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\SimpleShader.cpp">
+      <Filter>Weave_Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Resources\Materials\Material.cpp">
+      <Filter>Weave_Engine\Resources\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Scripting\ScriptUtils.cpp">
+      <Filter>Weave_Engine\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Weave_Engine\Scripting\ScriptComponent.cpp">
+      <Filter>Weave_Engine\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui_demo.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui_draw.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui_impl_dx11.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui_impl_win32.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp">
+      <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="..\additional\imgui\imgui\.travis.yml">
+      <Filter>Weave_Engine\imgui</Filter>
+    </None>
+    <None Include="..\Weave_Engine\Lighting.hlsli">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\additional\imgui\imgui\LICENSE.txt">
+      <Filter>Weave_Engine\imgui</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Weave_Engine\VertexShader.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Weave_Engine\Editor_Outline.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Weave_Engine\PixelShader.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Weave_Engine\PixelShader_Unlit.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Weave_Engine\SkyPS.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Weave_Engine\SkyVS.hlsl">
+      <Filter>Weave_Engine\Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
