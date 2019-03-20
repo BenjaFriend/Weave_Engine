@@ -1,6 +1,7 @@
 #include "pch.h"
 
-#include <Core/Game.h>
+//#include <Core/Game.h>
+#include "Game/TankGame.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 
@@ -48,7 +49,7 @@ int WINAPI WinMain(
 
     // Create the Game object using
     // the app handle we got from WinMain
-    Game dxGame( hInstance );
+    TankGame dxGame( hInstance );
 
     // Result variable for function calls below
     HRESULT hr = S_OK;

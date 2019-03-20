@@ -254,6 +254,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\Weave_Engine\Utils\ObjectPool.hpp" />
     <ClInclude Include="..\Weave_Engine\Utils\SaveFileDefs.h" />
     <ClInclude Include="..\Weave_Engine\Utils\Singleton.hpp" />
+    <ClInclude Include="Game\TankGame.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -320,13 +321,14 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="..\Weave_Engine\Scripting\ScriptComponent.cpp" />
     <ClCompile Include="..\Weave_Engine\Scripting\ScriptUtils.cpp" />
     <ClCompile Include="..\Weave_Engine\stdafx.cpp" />
+    <ClCompile Include="Game\TankGame.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TankGame.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weave_Engine\Weave_Engine.vcxproj">

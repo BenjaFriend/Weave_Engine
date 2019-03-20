@@ -64,6 +64,9 @@
     <Filter Include="Weave_Engine\Shaders">
       <UniqueIdentifier>{f1a2fbc4-62bf-4daa-9980-c695fd85af03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{28517e4c-2cd5-4083-94a7-441053c3e40c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -216,12 +219,12 @@
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h">
       <Filter>Weave_Engine\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Game\TankGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TankGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
@@ -334,6 +337,12 @@
     </ClCompile>
     <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp">
       <Filter>Weave_Engine\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\TankGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

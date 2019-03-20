@@ -30,7 +30,7 @@ public:
     // will be called automatically
     void Init();
     void OnResize();
-    void Update( float deltaTime, float totalTime );
+    virtual void Update( float deltaTime, float totalTime );
     void Draw( float deltaTime, float totalTime );
 
     // Overridden mouse input helper methods
