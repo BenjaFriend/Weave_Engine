@@ -2,15 +2,23 @@
 
 #include <Core/Game.h>
 
-
-class TankGame : public Game
+namespace Tanks
 {
 
-public:
+    class TankGame : public Game
+    {
 
-    TankGame( HINSTANCE hInstance );
-    ~TankGame();
+    public:
 
-    virtual void Update( float deltaTime, float totalTime ) override;
+        TankGame( HINSTANCE hInstance );
+        ~TankGame();
 
-};
+        virtual void Init() override;
+
+        virtual void Update( float deltaTime, float totalTime ) override;
+
+        virtual void Quit() override;
+
+    };
+
+}   // namespace Tanks

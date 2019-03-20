@@ -28,7 +28,7 @@ public:
 
     // Overridden setup and game loop methods, which
     // will be called automatically
-    void Init();
+    virtual void Init();
     void OnResize();
     virtual void Update( float deltaTime, float totalTime );
     void Draw( float deltaTime, float totalTime );
