@@ -59,7 +59,7 @@ public:
 
 private:
 
-    void Mesh::CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices, int numIndices );
+    void CalculateTangents( Vertex* verts, int numVerts, unsigned int* indices, int numIndices );
 
     /** The vertex buffer for this mesh class */
     ID3D11Buffer * VertexBuffer = nullptr;

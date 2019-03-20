@@ -28,9 +28,9 @@ public:
 
     // Overridden setup and game loop methods, which
     // will be called automatically
-    void Init();
+    virtual void Init();
     void OnResize();
-    void Update( float deltaTime, float totalTime );
+    virtual void Update( float deltaTime, float totalTime );
     void Draw( float deltaTime, float totalTime );
 
     // Overridden mouse input helper methods
