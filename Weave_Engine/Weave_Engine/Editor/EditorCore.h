@@ -100,7 +100,7 @@ namespace Editor
         FORCE_INLINE void SetDrawColliders( const bool aDrawColliders ) { DebugDrawColliders = aDrawColliders; }
 
         FORCE_INLINE void SetSceneFile( const FileName & aFileName );
-        FORCE_INLINE const FileName & GetSceneFileName() const { return SceneFile; }
+        FORCE_INLINE const FileName & GetSceneFileName() const { FileName fName( SceneFile.begin(), SceneFile.end() ); return fName; }
 
         FORCE_INLINE void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
         FORCE_INLINE Camera* GetCamera()const { return CurrentCamera; }
@@ -167,7 +167,7 @@ namespace Editor
 
         /** Vertex shader to use for drawing any gizmos */
         SimpleVertexShader* VertexShader = nullptr;
-        
+
         /** Wireframe state for drawing gizmos */
         ID3D11RasterizerState* WireFrame = nullptr;
 
@@ -187,7 +187,10 @@ namespace Editor
         Entity* SelectedEntity = nullptr;
 
         /** The current scene file to save all entities to */
-        FileName SceneFile = L"Assets/Scenes/Scene_test.json";
+        std::string SceneFile = "Assets/Scenes/Scene_test.json";
+
+        /** The char buffer for changing the scene name with IMGUI */
+        char editSceneNameBuf [ 64 ] = "\0";
 
         /** The color that will be draw around the entity that's selected */
         glm::vec3 SelectedOutlineColor = { 1.0f, 0.0f, 0.0f };
@@ -197,6 +200,6 @@ namespace Editor
 
     };
 
-    
+
 
 }   // namespace Editor
