@@ -61,6 +61,7 @@ include_directories(
     src
     ${Boost_INCLUDE_DIR}
     ../../Weave_Common
+    ../../Weave_Engine/additional/spdlog/include
 )
 ############### Link Libraries ################
 set( LINK_DIRS
