@@ -49,8 +49,8 @@
     <Filter Include="Weave_Common">
       <UniqueIdentifier>{f22b3655-ec51-428f-a5cc-9f8dd60ac642}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Networking">
-      <UniqueIdentifier>{58a20c39-c072-4e90-94ce-1d3f9c88f1de}</UniqueIdentifier>
+    <Filter Include="Weave_Common\Networking">
+      <UniqueIdentifier>{7a14e846-56b3-48c2-b479-0d3cb373b87c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <Filter>Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Networking\NetworkManager.cpp">
+      <Filter>Weave_Common\Networking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h">
       <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h">
+      <Filter>Weave_Common\Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
