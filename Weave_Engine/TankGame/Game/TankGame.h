@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Game.h>
-#include "Networking/NetworkManager.h"
+#include "../Networking/ClientNetworkManager.h"
 
 namespace Tanks
 {
@@ -22,7 +22,7 @@ namespace Tanks
 
     private:
 
-        NetworkManager* NetMan = nullptr;
+        ClientNetworkManager* NetMan = nullptr;
 
     };
 

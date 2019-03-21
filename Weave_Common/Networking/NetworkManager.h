@@ -38,7 +38,23 @@ protected:
     /// <summary>
     /// Process a packet from the queue of packets
     /// </summary>
-    virtual void ProcessPacket();
+    virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) = 0;
+
+
+    class ReceivedPacket
+    {
+    public:
+        ReceivedPacket( float inRecievedtime, InputMemoryBitStream& inStream, boost::asio::ip::udp::endpoint & aInEndpoint );
+
+        float GetReceivedTime() const { return Recievedtime; }
+        const boost::asio::ip::udp::endpoint& GetEndpoint() const { return InEndpoint; }
+        InputMemoryBitStream& GetPacketBuffer() { return PacketBuffer; }
+
+    private:
+        float Recievedtime;
+        InputMemoryBitStream PacketBuffer;
+        boost::asio::ip::udp::endpoint InEndpoint;
+    };
 
 private:
 
@@ -46,6 +62,11 @@ private:
     /// Start the execution of listening 
     /// </summary>
     void Run();
+
+    /// <summary>
+    /// Process the packets that are currently in the queue
+    /// </summary>
+    void ProcessQueuedPackets();
 
     /// <summary>
     /// Hand a remove connection coming in via UDP from an endpoint
@@ -73,5 +94,8 @@ private:
 
     /** Char buffer for storing messages */
     char recv_buf [ DEF_BUF_SIZE ];
+
+    /** The queue of packets to process */
+    std::queue< ReceivedPacket > PacketQueue;
 
 };

@@ -207,11 +207,13 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
   <ItemGroup>
     <ClInclude Include="Components\Bullet.h" />
     <ClInclude Include="Game\TankGame.h" />
+    <ClInclude Include="Networking\ClientNetworkManager.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\Bullet.cpp" />
     <ClCompile Include="Game\TankGame.cpp" />
+    <ClCompile Include="Networking\ClientNetworkManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -6,7 +6,7 @@ using namespace Tanks;
 TankGame::TankGame( HINSTANCE hInstance )
     : Game( hInstance )
 {
-    NetMan = new NetworkManager();
+    NetMan = new ClientNetworkManager();
     
 }
 

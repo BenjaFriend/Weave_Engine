@@ -13,7 +13,7 @@ public:
 
 protected:
 
-    virtual void ProcessPacket() override;
+    virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
 
 private:
 

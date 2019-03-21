@@ -41,11 +41,6 @@ bool NetworkManager::Init( UINT16 aPort )
     return true;
 }
 
-void NetworkManager::ProcessPacket()
-{
-
-}
-
 void NetworkManager::Run()
 {
     StartRecieve();
@@ -56,6 +51,17 @@ void NetworkManager::Run()
         io_service.run();
 
         LOG_TRACE( "Server iteration next!" );
+    }
+}
+
+void NetworkManager::ProcessQueuedPackets()
+{
+    while ( !PacketQueue.empty() )
+    {
+        ReceivedPacket& nextPacket = PacketQueue.front();
+        // #TODO Only process this packet if it was received later than the last one
+        ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetEndpoint() );
+        PacketQueue.pop();
     }
 }
 
@@ -84,6 +90,12 @@ void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::s
         LOG_WARN( "NetworkMan recv buf: {} ", recv_buf );
         // memcpy the buffer to a pack on the queue to be processed
 
+        int packetSize = sizeof( recv_buf );
+        InputMemoryBitStream inputStream( recv_buf, packetSize * 8 );
+
+        // Put this packet memory into the buffer
+        ReceivedPacket packet( 0.0f, inputStream, remote_endpoint );
+        PacketQueue.emplace( packet );
 
         // Start another async request
         StartRecieve();
@@ -92,4 +104,11 @@ void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::s
     {
         LOG_ERROR( "Network Man: Message error! {} ", error.message() );
     }
+}
+
+NetworkManager::ReceivedPacket::ReceivedPacket( float inRecievedtime, InputMemoryBitStream & inStream, boost::asio::ip::udp::endpoint & aInEndpoint ) :
+    Recievedtime( inRecievedtime ),
+    PacketBuffer( inStream ),
+    InEndpoint ( aInEndpoint )
+{
 }
