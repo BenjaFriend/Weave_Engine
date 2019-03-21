@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Bullet.h"
 
 COMPONENT_INIT( Bullet )
