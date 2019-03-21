@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "ResourceManager.h"
 #include "Mesh.h"
 #include "Materials/Material.h"

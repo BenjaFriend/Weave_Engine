@@ -30,7 +30,17 @@ public:
 
     bool Init( UINT16 aPort );
 
+protected:
+
+    /** Check for if we are done or not */
+    std::atomic<bool> IsDone;
+
 private:
+
+    /// <summary>
+    /// Start the execution of listening 
+    /// </summary>
+    void Run();
 
     /// <summary>
     /// Hand a remove connection coming in via UDP from an endpoint
@@ -44,7 +54,10 @@ private:
     /// </summary>
     void StartRecieve();
 
-    // Socket that is used for listening
+    /** The running thread of waiting for data */
+    std::thread runningThread;
+
+    /** Socket that is used for listening */
     std::shared_ptr< boost::asio::ip::udp::socket > ListenSocket;
 
     /** Io service for running the sockets */

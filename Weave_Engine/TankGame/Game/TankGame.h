@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/Game.h>
+#include "Networking/NetworkManager.h"
 
 namespace Tanks
 {
@@ -18,6 +19,10 @@ namespace Tanks
         virtual void Update( float deltaTime, float totalTime ) override;
 
         virtual void Quit() override;
+
+    private:
+
+        NetworkManager* NetMan = nullptr;
 
     };
 

@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include "ScriptUtils.h"
 #include "../Input/InputManager.h"

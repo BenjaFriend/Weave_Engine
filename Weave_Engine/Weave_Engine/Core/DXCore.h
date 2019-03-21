@@ -2,7 +2,7 @@
 
 
 
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include <Windows.h>
 #include <d3d11.h>

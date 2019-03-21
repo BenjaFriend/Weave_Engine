@@ -8,7 +8,7 @@
 
 #if defined( __cplusplus )
 
-#include "../MathHelper.h"
+#include "MathHelper.h"
 #define FLOAT4 glm::vec4
 #define FLOAT3 glm::vec3
 

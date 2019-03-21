@@ -9,7 +9,7 @@
 #include "../Lighting/LightShaderDefs.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "../Entity/Entity.h"
 
 #include "../Utils/ObjectPool.hpp"

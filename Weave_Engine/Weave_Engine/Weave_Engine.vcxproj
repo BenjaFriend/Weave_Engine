@@ -158,7 +158,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -238,7 +238,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>../stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -272,6 +272,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -281,6 +282,10 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Weave_Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\additional\imgui\imgui\imgui.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -315,7 +320,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Core\CameraManager.cpp" />
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
-    <ClCompile Include="Core\Logger.cpp" />
     <ClCompile Include="Core\Main.cpp" />
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp" />
@@ -344,21 +348,14 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Scenes\SceneManager.cpp" />
     <ClCompile Include="Scripting\ScriptComponent.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="Utils\ObjectPool.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
+    <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
+    <ClInclude Include="..\..\Weave_Common\stdafx.h" />
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui_impl_dx11.h" />
@@ -370,7 +367,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Core\CameraManager.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
-    <ClInclude Include="Core\Logger.h" />
     <ClInclude Include="ECS\Component.h" />
     <ClInclude Include="ECS\ComponentManager.h" />
     <ClInclude Include="ECS\FamilyTypeID.h" />
@@ -386,7 +382,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Lighting\DirLight.h" />
     <ClInclude Include="Lighting\LightShaderDefs.h" />
     <ClInclude Include="Lighting\PointLight.h" />
-    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Physics\BoxCollider.h" />
     <ClInclude Include="Physics\Collisions.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
@@ -402,13 +397,10 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scripting\ScriptComponent.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Dispatcher.hpp" />
     <ClInclude Include="Utils\SaveFileDefs.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Assets\Scripts\loadLevel.lua" />
-    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

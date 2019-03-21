@@ -29,6 +29,7 @@
 //#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include <d3d11.h>          // Any directX functionality
 #include <Windows.h>        // Windows callbacks
+#include <string>
 
 // Windows uses wide chars for their file names
 typedef std::wstring                FileName;

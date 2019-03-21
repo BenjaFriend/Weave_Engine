@@ -52,6 +52,9 @@
     <Filter Include="Weave_Common\Networking">
       <UniqueIdentifier>{7a14e846-56b3-48c2-b479-0d3cb373b87c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weave_Common\Logging">
+      <UniqueIdentifier>{bcbd089c-753d-4aae-bb9e-5f9cd9a92753}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -84,9 +87,6 @@
     <ClCompile Include="Physics\Collisions.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Logger.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\additional\imgui\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -111,7 +111,6 @@
     <ClCompile Include="Lighting\DirLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="ECS\FamilyTypeID.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
@@ -166,6 +165,12 @@
     <ClCompile Include="..\..\Weave_Common\Networking\NetworkManager.cpp">
       <Filter>Weave_Common\Networking</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp">
+      <Filter>Weave_Common\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
+      <Filter>Weave_Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -203,10 +208,6 @@
     </ClInclude>
     <ClInclude Include="Resources\ISaveable.h">
       <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Core\Logger.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h">
       <Filter>imgui</Filter>
@@ -271,7 +272,6 @@
     <ClInclude Include="Entity\Transform.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Utils\Dispatcher.hpp">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -308,10 +308,17 @@
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h">
       <Filter>Weave_Common\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Logging\Logger.h">
+      <Filter>Weave_Common\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\stdafx.h">
+      <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\MathHelper.h">
+      <Filter>Weave_Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="cpp.hint" />
-    <None Include="..\Assets\Scripts\loadLevel.lua" />
   </ItemGroup>
 </Project>

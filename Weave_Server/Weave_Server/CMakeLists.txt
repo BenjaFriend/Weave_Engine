@@ -3,6 +3,8 @@ cmake_minimum_required ( VERSION 3.13 )
 ############### Project Settings ###############
 project( "Weave_Server" )
 
+add_definitions( -D_CRT_SECURE_NO_WARNINGS )
+
 # Set Build Dir
 set( CMAKE_BINARY_DIR    "/build" )
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )

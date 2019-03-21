@@ -21,7 +21,7 @@
 
 #endif
 
-#include "../MathHelper.h"
+#include "MathHelper.h"
 
 #include "../Utils/SaveFileDefs.h"
 

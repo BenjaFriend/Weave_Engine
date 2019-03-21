@@ -2,7 +2,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include "../stdafx.h"
+#include "stdafx.h"
 #include <iomanip>
 
 #include "json/json.hpp"

@@ -21,7 +21,7 @@
 #include <fstream>
 #include <tuple>
 
-#include "Core/Logger.h"    // Logging definitions to only happen in debug
+#include "Logging/Logger.h"    // Logging definitions to only happen in debug
 #include "MathHelper.h"     // Math definitions and typedefs
 
 /**************************************************************/
@@ -55,6 +55,8 @@ typedef std::string                FileName;
 /**************************************************************/
 #if defined( _DEBUG ) || defined ( DEBUG )
 
+#if defined( _WIN32 ) || defined ( _WIN64 )
+
 #define _CRTDBG_MAP_ALLOC   // memory leak detection
 #include <crtdbg.h> 
 
@@ -63,6 +65,8 @@ typedef std::string                FileName;
 
 //#define new DEBUG_NEW // This breaks IMGui, but gives you a 
                         // great memory leak detector
+
+#endif  // _WIN32
 
 #else 
 

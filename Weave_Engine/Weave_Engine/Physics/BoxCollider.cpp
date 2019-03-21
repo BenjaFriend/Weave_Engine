@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "BoxCollider.h"
 #include "../Entity/Entity.h"
 
