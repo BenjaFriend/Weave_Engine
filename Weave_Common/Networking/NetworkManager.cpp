@@ -19,7 +19,7 @@ NetworkManager::~NetworkManager()
         runningThread.join();
     }
 
-    //LOG_TRACE( "NetworkManager DTOR" );
+    LOG_TRACE( " --- NetworkManager DTOR --- " );
 }
 
 bool NetworkManager::Init( UINT16 aPort )
@@ -39,6 +39,11 @@ bool NetworkManager::Init( UINT16 aPort )
     runningThread = std::thread( &NetworkManager::Run, this );
 
     return true;
+}
+
+void NetworkManager::ProcessPacket()
+{
+
 }
 
 void NetworkManager::Run()

@@ -35,6 +35,11 @@ protected:
     /** Check for if we are done or not */
     std::atomic<bool> IsDone;
 
+    /// <summary>
+    /// Process a packet from the queue of packets
+    /// </summary>
+    virtual void ProcessPacket();
+
 private:
 
     /// <summary>

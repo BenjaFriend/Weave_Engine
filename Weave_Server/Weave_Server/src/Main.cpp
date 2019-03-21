@@ -1,11 +1,11 @@
+#include "stdafx.h"
+
 #include <iostream>
 #include <string>       // std::string
 #include <thread>       // std::thread
 #include <memory>       // std::unique_ptr
 #include <fstream>
 #include <unordered_map>
-
-#include <boost/asio.hpp>
 
 #include "WeaveServer.h"
 
@@ -78,6 +78,8 @@ static void InitalizeCommands()
 
 int main( int argc, char* argv [] )
 {
+    Logger* logger = nullptr;
+
     SERVER_INIT_DESC serverDesc = {};
 
     // Loop through the args that are passed in
@@ -93,6 +95,9 @@ int main( int argc, char* argv [] )
             ParseConfigFile( serverDesc, argv [ i + 1 ] );
         }
     }
+
+    logger = Logger::GetInstance();
+    LOG_TRACE( "Logger initlaized!" );
 
     std::cout << serverDesc << std::endl;
     
@@ -114,6 +119,12 @@ int main( int argc, char* argv [] )
 
             // Put the input to all upper case into the "cmd" variable
             std::transform( input.begin(), input.end(), std::back_inserter( cmd ), ::toupper );
+
+            if ( UserOptions.find( cmd ) == UserOptions.end() )
+            {
+                std::cout << "\t" << cmd << " is not a valid command!" << std::endl;
+                continue;
+            }
 
             switch ( UserOptions [ cmd ] )
             {
@@ -144,6 +155,9 @@ int main( int argc, char* argv [] )
         std::cerr << e.what() << std::endl;
     }
 
+
+    Logger::ReleaseInstance();
+    logger = nullptr;
 
     std::cout << "Program exit!\n\n" << std::endl;
 
