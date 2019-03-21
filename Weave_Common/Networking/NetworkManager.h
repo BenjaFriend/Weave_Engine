@@ -30,6 +30,11 @@ public:
 
     bool Init( UINT16 aPort );
 
+    /// <summary>
+    /// 
+    /// </summary>
+    void ProcessIncomingPackets();
+
 protected:
 
     /** Check for if we are done or not */
@@ -96,6 +101,5 @@ private:
     char recv_buf [ DEF_BUF_SIZE ];
 
     /** The queue of packets to process */
-    std::queue< ReceivedPacket > PacketQueue;
-
+    std::queue< ReceivedPacket > PacketQueue;   // #TODO Make this is a lockless queue
 };

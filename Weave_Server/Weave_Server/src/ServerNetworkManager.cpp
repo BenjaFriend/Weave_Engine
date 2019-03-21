@@ -15,7 +15,7 @@ ServerNetworkManager::~ServerNetworkManager()
 
 void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
-    LOG_TRACE( "Server process packet!" );
+    LOG_TRACE( " ---- Server process packet! ---" );
 }
 
 void ServerNetworkManager::UpdateAllClients()

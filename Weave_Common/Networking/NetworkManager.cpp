@@ -41,6 +41,15 @@ bool NetworkManager::Init( UINT16 aPort )
     return true;
 }
 
+void NetworkManager::ProcessIncomingPackets()
+{
+    // If we were not using Boost asio, then we would do a recvfrom socket call here
+
+    ProcessQueuedPackets();
+
+
+}
+
 void NetworkManager::Run()
 {
     StartRecieve();

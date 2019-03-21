@@ -1,48 +1,21 @@
 #pragma once
 
-// Define that we are the server to help with dependency management
-#define WEAVE_SERVER
-
 #include <iostream>
 #include <thread>
 #include <memory>
+#include <unordered_map>
 
 #include "ServerNetworkManager.h"
 
+#include "ServerUtils.h"
+#include "Config.h"
 #include "Room.h"
-#include "MemoryBitStream.h"
 
-#define DEF_LISTEN_PORT     50000
-#define DEF_RESPONSE_PORT   50001
-#define DEF_BUF_SIZE        512
-
-struct SERVER_INIT_DESC
-{
-    /** The default port to listen to data from the clients on  */
-    unsigned short ListenPort = DEF_LISTEN_PORT;
-
-    /** The default port to send data back to the clients on  */
-    unsigned short ResponsePort = DEF_RESPONSE_PORT;
-
-    /** The max number of rooms that are allowed on this server */
-    unsigned short MaxRooms = 4;
-
-    friend std::ostream& operator<<( std::ostream& os, const SERVER_INIT_DESC& data )
-    {
-        os << "\nServer Config";
-        os << "\n\tListen Port: \t" << data.ListenPort;
-        os << "\n\tResponse Port: \t" << data.ResponsePort;
-        os << "\n\tMax Rooms: \t" << data.MaxRooms << "\n";
-        return os;
-    }
-};
-
-/**
- * @brief   The core server architecture with send and receive sockets
- *          that will funnel the necessary data to the rooms.
- *
- * @author  Ben Hoffman
- */
+/// <summary>
+/// The core server logic that will handle the creation of rooms and 
+/// manage data
+/// </summary>
+/// <author>Ben Hoffman</author>
 class WeaveServer
 {
 public:
@@ -55,13 +28,24 @@ public:
 
     ~WeaveServer();
 
-    /**
-    * @brief    Shutdown the server
-    */
+    /// <summary>
+    /// Start running the server, this is a blocking function.
+    /// </summary>
+    void Run();
+
+    /// <summary>
+    /// Signal the server that we want to shut down
+    /// </summary>
     void Shutdown();
 
 private:
 
+    /// <summary>
+    /// Process any console input from the user, such as quit or help. 
+    /// </summary>
+    void ProcessConsoleInput();
+
+    /** The network manager for this server */
     ServerNetworkManager* NetworkMan = nullptr;
 
     /** The max number of rooms that this server can have */
@@ -75,4 +59,21 @@ private:
 
     /** Pointer to the room objects */
     Room* Rooms = nullptr;
+
+    /// <summary>
+    /// Command options for the console input
+    /// </summary>
+    enum class EUserCoptions : uint8_t
+    {
+        QUIT,
+        HELP
+    };
+
+    std::unordered_map<std::string, EUserCoptions> UserOptions;
+
+    /** A flag for if the user has entered the QUIT command */
+    std::atomic<bool> ShouldQuit;
+
+    /** The thread the user input will be checked on */
+    std::thread userInputThread;
 };

@@ -16,5 +16,5 @@ ClientNetworkManager::~ClientNetworkManager()
 
 void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
-
+    LOG_TRACE( "Client process the backet booiys!" );
 }

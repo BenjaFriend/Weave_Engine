@@ -24,6 +24,8 @@ void TankGame::Init()
 void TankGame::Update( float deltaTime, float totalTime )
 {
     Game::Update( deltaTime, totalTime );
+
+    NetMan->ProcessIncomingPackets();
 }
 
 void TankGame::Quit()
