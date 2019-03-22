@@ -31,9 +31,12 @@ public:
     bool Init( UINT16 aPort );
 
     /// <summary>
-    /// 
+    /// Check and see if there are any packets incoming to this socket
     /// </summary>
     void ProcessIncomingPackets();
+
+
+    void SendPacket( const OutputMemoryBitStream& inOutputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
 
 protected:
 

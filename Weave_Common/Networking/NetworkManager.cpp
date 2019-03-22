@@ -50,6 +50,17 @@ void NetworkManager::ProcessIncomingPackets()
 
 }
 
+void NetworkManager::SendPacket( const OutputMemoryBitStream & inOutputStream, const bai::udp::endpoint & inFromAddress )
+{
+    // Send the output stream to the given endpoint
+    // returns the number of bytes send
+    size_t numBytesSent = ListenSocket->send_to( 
+        boost::asio::buffer( inOutputStream.GetBufferPtr(), inOutputStream.GetBitLength() ),
+        inFromAddress 
+    );
+    // #TODO Keep track of the number of bytes sent this frame
+}
+
 void NetworkManager::Run()
 {
     StartRecieve();
