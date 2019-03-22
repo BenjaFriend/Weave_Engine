@@ -105,11 +105,7 @@ void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::s
     // The data is in the 'recv_buf' currently
     if ( !error )
     {
-        // access to remote_endpoint
-        LOG_TRACE( "Network Man: Message received! Size: {}", msgSize );
-        LOG_WARN( "NetworkMan recv buf: {} ", recv_buf );
-        // memcpy the buffer to a pack on the queue to be processed
-
+        // Put the data into an input stream so that we can manage it
         int packetSize = sizeof( recv_buf );
         InputMemoryBitStream inputStream( recv_buf, packetSize * 8 );
 

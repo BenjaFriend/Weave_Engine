@@ -6,43 +6,87 @@ using namespace Tanks;
 TankGame::TankGame( HINSTANCE hInstance )
     : Game( hInstance )
 {
-    NetMan = new ClientNetworkManager();
-    
 }
 
 TankGame::~TankGame()
 {
-    SAFE_DELETE( NetMan );
+    // Release network manager instance
+    ClientNetworkManager::ReleaseInstance();
 }
 
 void TankGame::Init()
 {
     Game::Init();
-    // Listen for incoming data on port 50000
-    NetMan->Init( 50000 );
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
 {
     Game::Update( deltaTime, totalTime );
 
-    NetMan->ProcessIncomingPackets();
-
-    // Create a test packet
-    OutputMemoryBitStream welcomePacket;
-    welcomePacket.Write( 'HELO' );
-    
-    // To localhost, port 50001
-    boost::asio::ip::udp::endpoint target( 
-        boost::asio::ip::address::from_string( "127.0.0.1" ),
-        50001 
-    );
-
-    // Send it
-    NetMan->SendPacket( welcomePacket, target );
+    switch ( GameState )
+    {
+    case Tanks::EGameState::Playing:
+    {
+        NetMan->ProcessIncomingPackets();
+        NetMan->SendOutgoingPackets();
+    }
+    break;
+    break;
+    default:
+        break;
+    }
 }
 
 void TankGame::Quit()
 {
+    GameState = EGameState::Quitting;
+
+    // Tell the server that we quit
+
     Game::Quit();
+}
+
+void Tanks::TankGame::DrawUI()
+{
+    Game::DrawUI();
+
+    switch ( GameState )
+    {
+    case Tanks::EGameState::MainMenu:
+        DrawMainMenu();
+        break;
+    case Tanks::EGameState::Playing:
+        break;
+    case Tanks::EGameState::Quitting:
+        break;
+    default:
+        break;
+    }
+}
+
+void Tanks::TankGame::DrawMainMenu()
+{
+    ImGui::Begin( "Main Menu" );
+
+    static char namebuf [ 64 ] = "Player 1\0";
+    static char serverAddressBuf [ 64 ] = "127.0.0.1\0";
+    static unsigned short serverPortBuf = 50001;
+    ImGui::InputText( "Player Name", namebuf, IM_ARRAYSIZE( namebuf ) );
+    ImGui::InputText( "Address", serverAddressBuf, IM_ARRAYSIZE( serverAddressBuf ) );
+    ImGui::InputInt( "Port", ( int* ) &serverPortBuf );
+
+    if ( ImGui::Button( "Connect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+    {
+        // Attempt to connect to the server
+        NetMan = ClientNetworkManager::StaticInit( serverAddressBuf, serverPortBuf, namebuf );
+        GameState = EGameState::Playing;
+    }
+
+    ImGui::Separator();
+
+    if ( ImGui::Button( "Quit", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+    {
+        Quit();
+    }
+    ImGui::End();
 }

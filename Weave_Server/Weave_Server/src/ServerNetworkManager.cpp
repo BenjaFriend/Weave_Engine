@@ -15,7 +15,10 @@ ServerNetworkManager::~ServerNetworkManager()
 
 void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
-    LOG_TRACE( " ---- Server process packet! ---" );
+    UINT32 packetType;
+    inInputStream.Read( packetType );
+
+    LOG_TRACE( "From input stream: {} ", packetType );
 }
 
 void ServerNetworkManager::UpdateAllClients()
