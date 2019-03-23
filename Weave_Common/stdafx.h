@@ -40,7 +40,7 @@
 // Windows uses wide chars for their file names
 typedef std::wstring                FileName;
 #define FORCE_INLINE                __forceinline
-#define w_UNUSED
+#define W_UNUSED
 
 #else 
 
