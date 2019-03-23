@@ -31,7 +31,6 @@ void TankGame::Update( float deltaTime, float totalTime )
         NetMan->SendOutgoingPackets();
     }
     break;
-    break;
     default:
         break;
     }
