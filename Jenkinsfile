@@ -15,8 +15,8 @@ node {
     stage('Build') {
        echo 'Hello I am in the buiiild stage!'
        // Run CMake here, maybe inside a docker container?
-       //sh "cmake \$PWD/Weave_Server"
-       //sh "make \$PWD/Weave_Server"
+       sh "cmake \$PWD/Weave_Server"
+       sh "make \$PWD/Weave_Server"
     }
 
     stage('Results') {
