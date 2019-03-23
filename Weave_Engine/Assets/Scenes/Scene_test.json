@@ -153,6 +153,36 @@
             "DestroyOnLoad": true,
             "IsActive": true,
             "Name": "Floor"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": 0.0,
+                        "Y": 2.0,
+                        "Z": 0.0
+                    },
+                    "Rot": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+              {
+                "ComponentName": "MeshRenderer",
+                "MaterialFile": "Assets/Materials/Cobblestone.wmat",
+                "Mesh": "Assets/Models/My_Tank.obj"
+              }
+            ],
+            "DestroyOnLoad": true,
+            "IsActive": true,
+            "Name": "Tank Enty"
         }
     ],
     "Scene_Name": "Test_Scene_Name"
