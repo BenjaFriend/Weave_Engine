@@ -5,6 +5,7 @@
 #include <thread>       // std::thread
 #include <memory>       // std::unique_ptr
 #include <fstream>
+#include <assert.h>
 
 #include "ServerUtils.h"
 #include "Config.h"
@@ -13,6 +14,7 @@
 int main( int argc, char* argv [] )
 {
     Logger* logger = Logger::GetInstance();
+    assert( logger != nullptr );
     LOG_TRACE( "Logger initlaized!" );
 
     SERVER_INIT_DESC serverDesc = {};
@@ -23,12 +25,12 @@ int main( int argc, char* argv [] )
         {
             if ( strcmp( argv [ i ], HELP_FLAG ) == 0 )               // Help flag has been passed in
             {
-                PrintHelp();
+                ServerUtils::PrintHelp();
                 return 0;
             }
             else if ( strcmp( argv [ i ], CONFIG_FILE_FLAG ) == 0 )   // Specifying config file
             {
-                ParseConfigFile( serverDesc, argv [ i + 1 ] );
+                ServerUtils::ParseConfigFile( serverDesc, argv [ i + 1 ] );
             }
         }
     }

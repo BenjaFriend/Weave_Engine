@@ -15,7 +15,6 @@
 #include <cstdlib>          // wcstombs_s
 #include <stdlib.h>  
 #include <stdio.h>
-#include <crtdbg.h>  
 #include <assert.h>
 #include <string>
 #include <fstream>
@@ -41,12 +40,14 @@
 // Windows uses wide chars for their file names
 typedef std::wstring                FileName;
 #define FORCE_INLINE                __forceinline
+#define w_UNUSED
 
 #else 
 
 // Using other another graphics library
 typedef std::string                FileName;
 #define FORCE_INLINE                __forceinline
+#define W_UNUSED                    __attribute__ ((unused))
 
 #endif
 

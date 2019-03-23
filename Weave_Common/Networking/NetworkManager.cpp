@@ -54,7 +54,7 @@ void NetworkManager::SendPacket( const OutputMemoryBitStream & inOutputStream, c
 {
     // Send the output stream to the given endpoint
     // returns the number of bytes send
-    size_t numBytesSent = ListenSocket->send_to( 
+    ListenSocket->send_to( 
         boost::asio::buffer( inOutputStream.GetBufferPtr(), inOutputStream.GetBitLength() ),
         inFromAddress 
     );

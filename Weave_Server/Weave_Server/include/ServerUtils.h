@@ -1,4 +1,7 @@
-#pragma once
+//#pragma once
+
+#ifndef __SERVER_UTILS_H
+#define __SERVER_UTILS_H
 
 #include "Config.h"
 #include "stdafx.h"
@@ -27,49 +30,58 @@ struct SERVER_INIT_DESC
     }
 };
 
-/// <summary>
-/// Print out the help options for this program.
-/// </summary>
-static void PrintHelp()
+namespace ServerUtils
 {
-    std::cout << "Usage: ./Weave_Server [-h] [-c]" << std::endl;
-    std::cout << "\t-h\tPrint out this useful help message" << std::endl;
-    std::cout << "\t-c\tSpecify the server config file to use. If not specified the default values will be used." << std::endl;
-}
+    static void PrintHelp() W_UNUSED;
+    static void ParseConfigFile( SERVER_INIT_DESC & aOutDesc, const char* aFileName ) W_UNUSED;
 
-/// <summary>
-/// Attempt to read in the server config file.
-/// </summary>
-/// <param name="aOutDesc">Server description to populate with config file data</param>
-/// <param name="aFileName">The config file name</param>
-static void ParseConfigFile( SERVER_INIT_DESC & aOutDesc, const char* aFileName )
-{
-    assert( aFileName != nullptr );
-
-    std::ifstream fileInput( aFileName );
-    if ( !fileInput.is_open() )
+    /// <summary>
+    /// Print out the help options for this program.
+    /// </summary>
+    static void PrintHelp() 
     {
-        std::cerr << aFileName << " Was not a valid file! Cannot load in config." << std::endl;
-        return;
+        std::cout << "Usage: ./Weave_Server [-h] [-c]" << std::endl;
+        std::cout << "\t-h\tPrint out this useful help message" << std::endl;
+        std::cout << "\t-c\tSpecify the server config file to use. If not specified the default values will be used." << std::endl;
     }
 
-    for ( std::string line; getline( fileInput, line ); )
+    /// <summary>
+    /// Attempt to read in the server config file.
+    /// </summary>
+    /// <param name="aOutDesc">Server description to populate with config file data</param>
+    /// <param name="aFileName">The config file name</param>
+    static void ParseConfigFile( SERVER_INIT_DESC & aOutDesc, const char* aFileName )
     {
-        std::string firstWord = line.substr( 0, line.find( " " ) );
+        assert( aFileName != nullptr );
 
-        if ( firstWord == "ListenPort" )
+        std::ifstream fileInput( aFileName );
+        if ( !fileInput.is_open() )
         {
-            sscanf( line.c_str(), "ListenPort : %hu", &aOutDesc.ListenPort );
+            std::cerr << aFileName << " Was not a valid file! Cannot load in config." << std::endl;
+            return;
         }
-        else if ( firstWord == "ResponsePort" )
+
+        for ( std::string line; getline( fileInput, line ); )
         {
-            sscanf( line.c_str(), "ResponsePort : %hu", &aOutDesc.ResponsePort );
+            std::string firstWord = line.substr( 0, line.find( " " ) );
+
+            if ( firstWord == "ListenPort" )
+            {
+                sscanf( line.c_str(), "ListenPort : %hu", &aOutDesc.ListenPort );
+            }
+            else if ( firstWord == "ResponsePort" )
+            {
+                sscanf( line.c_str(), "ResponsePort : %hu", &aOutDesc.ResponsePort );
+            }
+            else if ( firstWord == "MaxRooms" )
+            {
+                sscanf( line.c_str(), "MaxRooms : %hu", &aOutDesc.MaxRooms );
+            }
         }
-        else if ( firstWord == "MaxRooms" )
-        {
-            sscanf( line.c_str(), "MaxRooms : %hu", &aOutDesc.MaxRooms );
-        }
+
+        fileInput.close();
     }
 
-    fileInput.close();
-}
+};   // namespace ServerUtils
+
+#endif  // __SERVER_UTILS_H

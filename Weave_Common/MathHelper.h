@@ -5,6 +5,8 @@
 /// </summary>
 /// <author>Ben Hoffman</author>
 
+#include <inttypes.h>
+
 // GLM Manual: https://github.com/g-truc/glm/blob/master/manual.md
 #define GLM_FORCE_INLINE
 #define GLM_FORCE_INTRINSICS
@@ -24,15 +26,15 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/quaternion.hpp>
 
+// Windows libraries
 #if defined( _WIN32 ) || defined ( _WIN64 )
 
-//#include <DirectXMath.h>	// XMFLOAT3, XMFLOAT4X4
 #include <d3d11.h>          // Any directX functionality
 #include <Windows.h>        // Windows callbacks
 #include <string>
 
 // Windows uses wide chars for their file names
-typedef std::wstring                FileName;
+typedef std::wstring               FileName;
 
 #else 
 
@@ -44,9 +46,13 @@ typedef std::string                FileName;
 
 #endif
 
-typedef unsigned __int64        UINT64;
-typedef unsigned __int32        UINT32;
-typedef unsigned __int8         UINT8;
-typedef signed __int64          INT64;
-typedef signed __int32          INT32;
-typedef signed __int8           INT8;
+// Integer typedefs for ease of use
+typedef uint8_t                 UINT8;
+typedef unsigned short          UINT16;
+typedef uint32_t                UINT32;
+typedef uint64_t                UINT64;
+
+typedef int8_t                  INT8;
+typedef signed short            INT16;
+typedef int32_t                 INT32;
+typedef int64_t                 INT64;

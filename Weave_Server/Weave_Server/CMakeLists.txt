@@ -85,7 +85,7 @@ message ( STATUS "LINK_DIRS: " ${LINK_DIRS} )
 if( MSVC )
     set ( MY_COMPILER_FLAGS "/W3" )
 else()
-    set ( MY_COMPILER_FLAGS "-Wall -Wextra" )
+    set ( MY_COMPILER_FLAGS "-Werror -Wall -Wno-reorder" )
 endif()
 
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )
