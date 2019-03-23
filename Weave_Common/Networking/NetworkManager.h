@@ -16,10 +16,23 @@
 
 #define DEF_BUF_SIZE        512
 
-
+/// <summary>
+/// Base network manager provides the ability to easily send and receive
+/// data. This implementation goes off of the book 'Multiplayer Game Programming: Architecting Networked Games'
+/// Code examples that I followed can be found here: 
+/// https://github.com/MultiplayerBook/MultiplayerBook/tree/master/Chapter%208/RoboCatAction
+/// </summary>
 class NetworkManager
 {
+
 public:
+
+    // Packet types
+    static const UINT32 HelloPacket     = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket   = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket     = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket     = 'INPT';   // The client's input state
+
     NetworkManager();
 
     virtual ~NetworkManager();
@@ -35,7 +48,11 @@ public:
     /// </summary>
     void ProcessIncomingPackets();
 
-
+    /// <summary>
+    /// Send a pack to the  given destination
+    /// </summary>
+    /// <param name="inOutputStream">Data to send within this packet</param>
+    /// <param name="inFromAddress">The endpoint to send this data to</param>
     void SendPacket( const OutputMemoryBitStream& inOutputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
 
 protected:
@@ -48,7 +65,10 @@ protected:
     /// </summary>
     virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) = 0;
 
-
+    /// <summary>
+    /// A packet is data that has been received from a remote endpoint. Process the information
+    /// inside this packet by using it's bit stream. 
+    /// </summary>
     class ReceivedPacket
     {
     public:
@@ -59,8 +79,14 @@ protected:
         InputMemoryBitStream& GetPacketBuffer() { return PacketBuffer; }
 
     private:
+
+        /** Time that this packet was received */
         float Recievedtime;
+
+        /** Data buffer of this packet */
         InputMemoryBitStream PacketBuffer;
+
+        /** The endpoint that this packet came from */
         boost::asio::ip::udp::endpoint InEndpoint;
     };
 
@@ -105,4 +131,5 @@ private:
 
     /** The queue of packets to process */
     std::queue< ReceivedPacket > PacketQueue;   // #TODO Make this is a lockless queue
+
 };

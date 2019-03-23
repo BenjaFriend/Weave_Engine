@@ -28,7 +28,7 @@ void TankGame::Update( float deltaTime, float totalTime )
     case Tanks::EGameState::Playing:
     {
         NetMan->ProcessIncomingPackets();
-        NetMan->SendOutgoingPackets();
+        NetMan->SendOutgoingPackets( totalTime );
     }
     break;
     default:
