@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include "PointLight.h"
 #include "../Scenes/SceneManager.h"

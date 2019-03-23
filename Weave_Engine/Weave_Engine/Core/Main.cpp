@@ -1,6 +1,6 @@
 
 
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "Game.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include "LightShaderDefs.h"
 #include "../ECS/Component.h"

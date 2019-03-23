@@ -1,6 +1,6 @@
-#include "WeaveServer.h"
+#include "stdafx.h" 
 
-namespace bai = boost::asio::ip;
+#include "WeaveServer.h"
 
 WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     :
@@ -8,27 +8,24 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     ListenPort( aDesc.ListenPort ),
     ResponsePort( aDesc.ResponsePort )
 {
-    std::shared_ptr< bai::udp::socket > wat(
-        new bai::udp::socket( io_service, bai::udp::endpoint( bai::udp::v4(), ListenPort ) )
-    );
+    NetworkMan = new ServerNetworkManager();
+    NetworkMan->Init( ListenPort );
 
-    // Excuse me
-    ListenSocket = std::move( wat );
-
-    // Create the rooms
-    Rooms = new Room [ MaxRooms ];
-
-    // Start the running thread
-    runningThread = std::thread( &WeaveServer::Run, this );
+    // Add user command options
+    UserOptions [ "QUIT" ] = EUserCoptions::QUIT;
+    UserOptions [ "HELP" ] = EUserCoptions::HELP;
+    ShouldQuit = false;
 }
 
 WeaveServer::~WeaveServer()
 {
-    io_service.stop();
-
-    if ( runningThread.joinable() )
+    SAFE_DELETE( NetworkMan );
+    
+    // Make sure that user input thread is cleaned up
+    ShouldQuit = true;
+    if ( userInputThread.joinable() )
     {
-        runningThread.join();
+        userInputThread.join();
     }
 
     // Clean up rooms
@@ -41,57 +38,68 @@ WeaveServer::~WeaveServer()
     std::cout << "Successful server dtor!" << std::endl;
 }
 
-size_t WeaveServer::Run()
+void WeaveServer::Run()
 {
-    std::cout << "Server:: Start running!" << std::endl;
+    // Spawn a thread for user input
+    userInputThread = std::thread( &WeaveServer::ProcessConsoleInput, this );
 
-    StartRecieve();
-
-    while ( !IsDone || !io_service.stopped() )
+    while ( 1 )
     {
-        // Run said server
-        io_service.run();
+        if ( ShouldQuit ) break;
 
-        std::cout << "Server iteration next!" << std::endl;
+        NetworkMan->ProcessIncomingPackets();
+
+        // Update the rooms and scenes here
     }
-
-    std::cout << "Server:: Stop running!" << std::endl;
-
-    return 0;
+    
 }
 
 void WeaveServer::Shutdown()
 {
-    io_service.stop();
-    IsDone = true;
+    LOG_TRACE( "Shut Down server!" );
+    ShouldQuit = true;
 }
 
-void WeaveServer::StartRecieve()
+void WeaveServer::ProcessConsoleInput()
 {
-    std::cout << "StartRecieve" << std::endl;
-
-    ListenSocket->async_receive_from(
-        boost::asio::buffer( recv_buf, DEF_BUF_SIZE ),
-        remote_endpoint,
-        boost::bind( &WeaveServer::HandleRemoteRecieved, this,
-            boost::asio::placeholders::error,
-            boost::asio::placeholders::bytes_transferred )
-    );
-}
-
-void WeaveServer::HandleRemoteRecieved( const std::error_code & error, std::size_t msgSize )
-{
-    if ( !error )
+    std::string input = "";
+    bool isDone = false;
+    // Input loop for stopping the server
+    while ( !isDone )
     {
-        // access to remote_endpoint
-        std::cout << "Message received! " << msgSize << std::endl;
-        std::cout << recv_buf << std::endl;
+        std::cout << "Enter a command [ QUIT ]: ";
+        std::cin >> input;
+        std::string cmd;
 
-        // Start another async request
-        StartRecieve();
-    }
-    else
-    {
-        std::cerr << "Message error! " << error << std::endl;
+        // Put the input to all upper case into the "cmd" variable
+        std::transform( input.begin(), input.end(), std::back_inserter( cmd ), ::toupper );
+
+        if ( UserOptions.find( cmd ) == UserOptions.end() )
+        {
+            std::cout << "\t" << cmd << " is not a valid command!" << std::endl;
+            continue;
+        }
+
+        switch ( UserOptions [ cmd ] )
+        {
+        case EUserCoptions::QUIT:
+            std::cout << "Quitting..." << std::endl;
+            Shutdown();
+            isDone = true;
+            break;
+
+        case EUserCoptions::HELP:
+            std::cout << "Command options: " << std::endl;
+            for ( auto const & possibleCmd : UserOptions )
+            {
+                std::cout << "\t" << possibleCmd.first << std::endl;
+            }
+            std::cout << "\n\n" << std::endl;
+            break;
+        default:
+            std::cout << "\t" << cmd << " is not a valid command!" << std::endl;
+            break;
+        }
+
     }
 }

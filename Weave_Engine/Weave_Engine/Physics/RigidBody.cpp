@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "RigidBody.h"
 
 #define MASS_SAVE_KEY   "Mass"

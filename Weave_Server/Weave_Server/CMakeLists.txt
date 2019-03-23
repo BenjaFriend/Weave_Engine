@@ -3,6 +3,8 @@ cmake_minimum_required ( VERSION 3.13 )
 ############### Project Settings ###############
 project( "Weave_Server" )
 
+add_definitions( -D_CRT_SECURE_NO_WARNINGS )
+
 # Set Build Dir
 set( CMAKE_BINARY_DIR    "/build" )
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )
@@ -59,6 +61,8 @@ include_directories(
     src
     ${Boost_INCLUDE_DIR}
     ../../Weave_Common
+    ../../Weave_Engine/additional/spdlog/include
+    ../../Weave_Engine/additional/glm
 )
 ############### Link Libraries ################
 set( LINK_DIRS
@@ -81,7 +85,7 @@ message ( STATUS "LINK_DIRS: " ${LINK_DIRS} )
 if( MSVC )
     set ( MY_COMPILER_FLAGS "/W3" )
 else()
-    set ( MY_COMPILER_FLAGS "-Wall -Wextra" )
+    set ( MY_COMPILER_FLAGS "-Werror -Wall -Wno-reorder" )
 endif()
 
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )

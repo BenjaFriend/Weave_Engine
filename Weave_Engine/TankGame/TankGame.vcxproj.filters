@@ -22,6 +22,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{374bb93b-1031-458b-a308-d7a8e8bce558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{8e2f1ace-bde8-4aa2-934e-4e6b55c4a500}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -32,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="Components\Bullet.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\ClientNetworkManager.h">
+      <Filter>Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="Components\Bullet.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\ClientNetworkManager.cpp">
+      <Filter>Networking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

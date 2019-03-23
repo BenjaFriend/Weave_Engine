@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include "DXCore.h"
 #include "../Resources/SimpleShader.h"
@@ -41,6 +41,13 @@ public:
     void OnMouseWheel( float wheelDelta, int x, int y );
     virtual void Quit() override;
 
+protected:
+
+    /// <summary>
+    /// Draw any game options
+    /// </summary>
+    virtual void DrawUI();
+
 private:
 
     // Initialization helper methods - feel free to customize, combine, etc.
@@ -51,11 +58,6 @@ private:
 
     void DrawLightSources();
     void DrawColliders();
-
-    /// <summary>
-    /// Draw any game options
-    /// </summary>
-    void DrawUI();
 
 
     // Wrappers for DirectX shaders to provide simplified functionality

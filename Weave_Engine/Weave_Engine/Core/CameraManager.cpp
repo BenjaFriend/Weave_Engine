@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 
 #include "CameraManager.h"
 #include "../Entity/Entity.h"
