@@ -55,10 +55,10 @@ private:
     /// <param name="aClient">The client to update</param>
     void SendStatePacket( ClientProxyPtr aClient );
     
+    /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
 
     /** Map of endpoints to clients */
     typedef std::map< boost::asio::ip::udp::endpoint, ClientProxyPtr >	AddressToClientMap;
-
     AddressToClientMap EndpointToClientMap;
 };

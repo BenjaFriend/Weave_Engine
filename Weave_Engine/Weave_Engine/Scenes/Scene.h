@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "../Entity/Entity.h"
 
-#include "../Utils/ObjectPool.hpp"
+#include "Utils/ObjectPool.hpp"
 
 namespace SceneManagement
 {

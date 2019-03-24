@@ -5,6 +5,7 @@
 ServerNetworkManager::ServerNetworkManager()
     : NetworkManager()
 {
+    // Create a scene to replicate
 
 }
 

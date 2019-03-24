@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "../Resources/ISaveable.h"
-#include "../Utils/SaveFileDefs.h"
+#include "Utils/SaveFileDefs.h"
 #include "json/json.hpp"
 
 #if defined( ENABLE_UI )

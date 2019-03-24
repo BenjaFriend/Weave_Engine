@@ -37,9 +37,6 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{9acedad1-1d3a-4a7e-8add-fccce6d03104}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{c53457fd-b4a5-4dae-b29e-f15774912ba7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{50e15407-d9e6-4d20-910f-bea14f49b7f2}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="Weave_Common\Input">
       <UniqueIdentifier>{c7d05cd6-141d-4be6-b2d0-211492bfa58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Utils">
+      <UniqueIdentifier>{6c55ad0f-5c7f-45e9-bebb-44f222d9c4d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="Scripting\ScriptComponent.cpp">
       <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\ObjectPool.hpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <Filter>Weave_Common</Filter>
@@ -278,9 +275,6 @@
     <ClInclude Include="Entity\Transform.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Dispatcher.hpp">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -292,9 +286,6 @@
     </ClInclude>
     <ClInclude Include="Resources\MeshRenderer.h">
       <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\SaveFileDefs.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\SceneManager.h">
       <Filter>Scenes</Filter>
@@ -328,6 +319,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h">
       <Filter>Weave_Common\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp">
+      <Filter>Weave_Common\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

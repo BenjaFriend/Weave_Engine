@@ -18,7 +18,7 @@
 
 #include "SimpleShader.h"
 #include "Mesh.h"
-#include "../Utils/SaveFileDefs.h"
+#include "Utils/SaveFileDefs.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

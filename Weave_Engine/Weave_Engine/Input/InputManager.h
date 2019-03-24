@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include "../Utils/Dispatcher.hpp"
+#include "Utils/Dispatcher.hpp"
 #include "IInput_Impl.h"
 
 #include <stdio.h>

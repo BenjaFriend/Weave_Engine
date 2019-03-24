@@ -349,7 +349,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Scenes\SceneManager.cpp" />
     <ClCompile Include="Scripting\ScriptComponent.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
-    <ClCompile Include="Utils\ObjectPool.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
@@ -359,6 +358,10 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
     <ClInclude Include="..\..\Weave_Common\Timing.h" />
+    <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h" />
+    <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp" />
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui_impl_dx11.h" />
@@ -400,8 +403,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scripting\ScriptComponent.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
-    <ClInclude Include="Utils\Dispatcher.hpp" />
-    <ClInclude Include="Utils\SaveFileDefs.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

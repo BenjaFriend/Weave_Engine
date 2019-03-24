@@ -2,7 +2,7 @@
 
 #include "IComponent.h"
 #include "FamilyTypeID.h"
-#include "../Utils/SaveFileDefs.h"
+#include "Utils/SaveFileDefs.h"
 
 namespace ECS
 {
