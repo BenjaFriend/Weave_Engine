@@ -33,6 +33,11 @@ ScriptComponent::ScriptComponent( nlohmann::json const & aInitData )
     : ScriptComponent()
 {
     ScriptFilePath = aInitData.value( SCRIPT_ASSET_PATH_SAVE_KEY, "" );
+
+	if (ScriptFilePath.length() > 0)
+	{
+		ScriptMan->RegisterScript(ScriptFilePath);
+	}
 }
 
 ScriptComponent::~ScriptComponent()

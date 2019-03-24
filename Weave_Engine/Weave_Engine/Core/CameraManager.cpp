@@ -44,7 +44,8 @@ void CameraManager::CreateDebugCamera()
     // This should not happen here
     DebugCameraEntity = new Entity( "Default_Editor_Cam" );
     DebugCameraEntity->SetIsDestroyableOnLoad( false );
-    
+   
+
     std::string flyingCamScript = "Assets/Scripts/FlyingCamera.lua";
     FileName name( flyingCamScript.begin(), flyingCamScript.end() );
     DebugCameraEntity->AddComponent<ScriptComponent>( name );
