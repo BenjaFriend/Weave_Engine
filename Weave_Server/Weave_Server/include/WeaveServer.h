@@ -10,6 +10,7 @@
 #include "ServerUtils.h"
 #include "Config.h"
 #include "Room.h"
+#include "Timing.h"
 
 /// <summary>
 /// The core server logic that will handle the creation of rooms and 

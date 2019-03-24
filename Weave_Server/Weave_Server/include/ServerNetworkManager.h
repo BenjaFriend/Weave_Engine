@@ -47,7 +47,7 @@ private:
     /// </summary>
     void UpdateAllClients();
     
-    UINT32 NewPlayerID;
+    UINT32 NewPlayerID = 0;
 
     /** Map of endpoints to clients */
     typedef std::map< boost::asio::ip::udp::endpoint, ClientProxyPtr >	AddressToClientMap;

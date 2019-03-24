@@ -389,13 +389,7 @@ void DXCore::OnResize()
 // --------------------------------------------------------
 HRESULT DXCore::Run()
 {
-    // Grab the start time now that
-    // the game loop is running
-    __int64 now;
-    QueryPerformanceCounter( ( LARGE_INTEGER* ) &now );
-    startTime = now;
-    currentTime = now;
-    previousTime = now;
+    startTime = Timing::sInstance.GetStartTime();
 
     // Give subclass a chance to initialize
     Init();
@@ -413,9 +407,14 @@ HRESULT DXCore::Run()
             DispatchMessage( &msg );
         }
         else
-        {
+        {   
             // Update timer and title bar (if necessary)
-            UpdateTimer();
+            //UpdateTimer();
+
+            Timing::sInstance.Update();
+            deltaTime = Timing::sInstance.GetDeltaTime();
+            totalTime = Timing::sInstance.GetTimef();
+
             if ( titleBarStats )
                 UpdateTitleBarStats();
 
@@ -440,7 +439,6 @@ void DXCore::Quit()
     PostMessage( this->hWnd, WM_CLOSE, NULL, NULL );
 }
 
-
 void DXCore::InitSystems()
 {
     logger = Logger::GetInstance();
@@ -459,30 +457,6 @@ void DXCore::InitSystems()
     PhysicsMan = Physics::PhysicsManager::GetInstance();
     ScriptMan = Scripting::ScriptManager::GetInstance();
 }
-
-// --------------------------------------------------------
-// Uses high resolution time stamps to get very accurate
-// timing information, and calculates useful time stats
-// --------------------------------------------------------
-void DXCore::UpdateTimer()
-{
-    // Grab the current time
-    __int64 now;
-    QueryPerformanceCounter( ( LARGE_INTEGER* ) &now );
-    currentTime = now;
-
-    // Calculate delta time and clamp to zero
-    //  - Could go negative if CPU goes into power save mode 
-    //    or the process itself gets moved to another core
-    deltaTime = __max( static_cast< float >( ( currentTime - previousTime ) * perfCounterSeconds ), 0.0f );
-
-    // Calculate the total time from start to now
-    totalTime = static_cast< float >( ( ( currentTime - startTime ) * perfCounterSeconds ) );
-
-    // Save current time for next frame
-    previousTime = currentTime;
-}
-
 
 // --------------------------------------------------------
 // Updates the window's title bar with several stats once
@@ -530,7 +504,6 @@ void DXCore::UpdateTitleBarStats()
     fpsFrameCount = 0;
     fpsTimeElapsed += 1.0f;
 }
-
 
 // --------------------------------------------------------
 // Allocates a console window we can print to for debugging

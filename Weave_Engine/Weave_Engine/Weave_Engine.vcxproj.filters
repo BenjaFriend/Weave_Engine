@@ -171,6 +171,9 @@
     <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
       <Filter>Weave_Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Timing.cpp">
+      <Filter>Weave_Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -315,6 +318,9 @@
       <Filter>Weave_Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Weave_Common\MathHelper.h">
+      <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Timing.h">
       <Filter>Weave_Common</Filter>
     </ClInclude>
   </ItemGroup>

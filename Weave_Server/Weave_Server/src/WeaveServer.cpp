@@ -47,6 +47,11 @@ void WeaveServer::Run()
     {
         if ( ShouldQuit ) break;
 
+        Timing::sInstance.Update();
+        float deltaTime = Timing::sInstance.GetDeltaTime();
+
+        LOG_TRACE( "Update! Delta time:  {}", deltaTime );
+
         NetworkMan->ProcessIncomingPackets();
 
         // Update the rooms and scenes here
