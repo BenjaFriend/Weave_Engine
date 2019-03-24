@@ -71,7 +71,6 @@ void Game::Init()
 #if defined( EDITOR_ON )
 
     editor = Editor::EditorCore::GetInstance();
-    editor->SetCamera( FlyingCamera );
     LOG_TRACE( "Editor Initalized!" );
 
 #endif  // EDITOR_ON
@@ -232,6 +231,7 @@ void Game::Draw( float dt, float totalTime )
         1.0f,
         0 );
 
+    FlyingCamera = CameraMan->GetActiveCamera();
     assert( FlyingCamera != nullptr );
 
     // Set buffers in the input assembler

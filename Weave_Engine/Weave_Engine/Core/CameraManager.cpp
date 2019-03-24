@@ -16,6 +16,13 @@ CameraManager* CameraManager::GetInstance()
     return Instance;
 }
 
+void CameraManager::Init()
+{
+    assert( Instance != nullptr );
+    // Create a camera by default
+    Instance->CreateDebugCamera();
+}
+
 void CameraManager::ReleaseInstance()
 {
     SAFE_DELETE( Instance );
@@ -24,9 +31,6 @@ void CameraManager::ReleaseInstance()
 CameraManager::CameraManager()
 {
     LOG_TRACE( "Camera man created" );
-    // Create a camera by default
-    CreateDebugCamera();
-    
 }
 
 CameraManager::~CameraManager()
@@ -44,27 +48,47 @@ void CameraManager::CreateDebugCamera()
     // This should not happen here
     DebugCameraEntity = new Entity( "Default_Editor_Cam" );
     DebugCameraEntity->SetIsDestroyableOnLoad( false );
-    
-    std::string flyingCamScript = "Assets/Scripts/FlyingCamera.lua";
-    FileName name( flyingCamScript.begin(), flyingCamScript.end() );
-    DebugCameraEntity->AddComponent<ScriptComponent>( name );
-
+   
     // Add a camera component
     DebugCamera = DebugCameraEntity->AddComponent<Camera>();
     if ( ActiveCamera == nullptr )
     {
         ActiveCamera = DebugCamera;
     }
+
+    std::string flyingCamScript = "Assets/Scripts/FlyingCamera.lua";
+    FileName name( flyingCamScript.begin(), flyingCamScript.end() );
+    DebugCameraEntity->AddComponent<ScriptComponent>( name );
 }
 
-Camera* CameraManager::AddCamera( const std::string aName )
+void CameraManager::RegisterCamera( const size_t aID, Camera* aCam )
 {
-    // Create an entity 
-    // This should not happen here
-    Entity* CameraEnt = new Entity( aName );
-    CameraEnt->SetIsDestroyableOnLoad( false );
+    // Ensure that this camera does not exist in the map
+    auto it = CurrentCameras.find( aID );
+    if ( it == CurrentCameras.end() )
+    {
+        CurrentCameras [ aID ] = aCam;
+        LOG_WARN( "Registered camera! {}", aID );
+    }
+}
 
-    // Add a camera component
-    Camera* CamComp = CameraEnt->AddComponent<Camera>();
-    return CamComp;
+void CameraManager::UnregisterCamera( const size_t aID )
+{
+    if ( aID == DebugCamera->GetComponentId() ) return;
+
+    auto it = CurrentCameras.find( aID );
+    if ( it != CurrentCameras.end() )
+    {
+        CurrentCameras.erase( it );
+    }
+}
+
+void CameraManager::SetActiveCamera( const size_t aCamID )
+{
+    // Set this camera as the active one if it is in the map
+    auto it = CurrentCameras.find( aCamID );
+    if ( it != CurrentCameras.end() )
+    {
+        ActiveCamera = CurrentCameras [ aCamID ];
+    }
 }

@@ -3,6 +3,9 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "../Entity/Entity.h"
+#include "../Core/CameraManager.h"
+
+size_t Camera::CameraCount = 0;
 
 COMPONENT_INIT( Camera )
 
@@ -25,29 +28,28 @@ Camera::Camera()
     YawAngle = 90;
 
     inputManager = Input::InputManager::GetInstance();
+
+    CameraID = CameraCount++;
+    CameraManager::GetInstance()->RegisterCamera( CameraID, this );
+    LOG_TRACE( "Camera Ctor? {}", CameraID );
 }
 
 Camera::Camera( nlohmann::json const & aInitData )
+    : Camera()
 {
     Pos = {};
     Pos.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
     Pos.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
     Pos.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
 
-
     RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
-    Up = DEFAULT_UP;
-    Forward = DEFAULT_FORWARD;
-    Right = DEFAULT_RIGHT;
-
-    PitchAngle = 0;
-    YawAngle = 90;
-
-    inputManager = Input::InputManager::GetInstance();
 }
 
 Camera::~Camera()
 {
+    CameraManager::GetInstance()->UnregisterCamera( CameraID );
+    --CameraCount;
+
     inputManager = nullptr;
 }
 
@@ -83,6 +85,17 @@ void Camera::DrawEditorGUI()
     ImGui::InputFloat( "FOV", &FOV );
     ImGui::InputFloat( "NearZ", &NearZ );
     ImGui::InputFloat( "FarZ", &FarZ );
+
+    ImGui::Text( "Camera ID: %ld", CameraID );
+    if ( ImGui::Button( "Set as active Camera" ) )
+    {
+        CameraManager::GetInstance()->SetActiveCamera( CameraID );
+    }
+
+    if ( ImGui::Button( "Use Debug Camera" ) )
+    {
+        CameraManager::GetInstance()->SetDebugCameraActive();
+    }
 }
 
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )

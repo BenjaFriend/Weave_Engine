@@ -75,7 +75,13 @@ public:
     void SetSouthPaw( const bool val ) { SouthPaw = val; }
     const bool GetSouthPaw() const { return SouthPaw; }
 
+    const size_t GetCameraID() const { return CameraID;  }
+
 protected:
+
+    static size_t CameraCount;
+
+    size_t CameraID = 0;
 
     /** Destructor for camera class */
     ~Camera();

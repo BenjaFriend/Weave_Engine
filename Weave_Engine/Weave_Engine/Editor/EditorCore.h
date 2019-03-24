@@ -7,7 +7,9 @@
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
 #include "../Resources/MeshRenderer.h"
-#include "../Entity/Camera.h"
+//#include "../Entity/Camera.h"
+#include "../Core/CameraManager.h"
+
 #include "Gizmo.h"
 
 #include "json/json.hpp"
@@ -102,9 +104,6 @@ namespace Editor
         FORCE_INLINE void SetSceneFile( const FileName & aFileName );
         FORCE_INLINE const FileName & GetSceneFileName() const { FileName fName( SceneFile.begin(), SceneFile.end() ); return fName; }
 
-        FORCE_INLINE void SetCamera( Camera* aCam ) { CurrentCamera = aCam; }
-        FORCE_INLINE Camera* GetCamera()const { return CurrentCamera; }
-
     private:
 
         EditorCore();
@@ -170,9 +169,6 @@ namespace Editor
 
         /** Wireframe state for drawing gizmos */
         ID3D11RasterizerState* WireFrame = nullptr;
-
-        /** The current editor camera */
-        Camera* CurrentCamera = nullptr;
 
         /** Flag to set lighting gizmos */
         bool DoGizmoDraw = true;

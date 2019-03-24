@@ -29,13 +29,22 @@ public:
     /// </summary>
     static void ReleaseInstance();
 
+    static void Init();
+
     /// <summary>
-    /// Add a camera to the scene that can be used for 
+    /// Register this camera to the camera manager
     /// </summary>
-    /// <param name="aName">The name of this camera</param>
-    /// <returns>Pointer to the added camera</returns>
-    Camera* AddCamera( const std::string aName );
-    
+    /// <param name="aID">ID of this camera</param>
+    void RegisterCamera( const size_t aID, Camera* aCam );
+
+    /// <summary>
+    /// Remove this camera from the camera manager
+    /// </summary>
+    /// <param name="aID"></param>
+    void UnregisterCamera( const size_t aID );
+
+    void SetActiveCamera( const size_t aCamID );
+
     /// <summary>
     /// Get the current camera being used to render the scene
     /// </summary>
@@ -43,6 +52,8 @@ public:
     FORCE_INLINE Camera* GetActiveCamera() const { return ActiveCamera; }
 
     FORCE_INLINE Camera* GetDebugCamera() const { return DebugCamera; }
+
+    void SetDebugCameraActive() { ActiveCamera = DebugCamera; }
 
 private:
 
@@ -60,5 +71,5 @@ private:
     Camera* ActiveCamera = nullptr;
     Entity* CameraEntity = nullptr;
 
-    std::unordered_map < std::string, Camera* > CurrentCameras;
+    std::unordered_map < size_t, Camera* > CurrentCameras;
 };
