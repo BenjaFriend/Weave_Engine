@@ -89,7 +89,7 @@ void Camera::DrawEditorGUI()
     ImGui::Text( "Camera ID: %ld", CameraID );
     if ( ImGui::Button( "Set as active Camera" ) )
     {
-        CameraManager::GetInstance()->SetActiveCamera( CameraID );
+        SetAsActiveCamera();
     }
 
     if ( ImGui::Button( "Use Debug Camera" ) )
@@ -168,4 +168,9 @@ const glm::mat4 Camera::GetViewMatrix() const
 const glm::mat4 Camera::GetProjectMatrix() const
 {
     return Projection;
+}
+
+void Camera::SetAsActiveCamera()
+{
+    CameraManager::GetInstance()->SetActiveCamera( CameraID );
 }

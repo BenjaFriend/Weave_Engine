@@ -203,7 +203,7 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-
+    FlyingCamera = CameraMan->GetActiveCamera();
     // Update the camera
     FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 

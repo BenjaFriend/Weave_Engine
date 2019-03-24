@@ -4,12 +4,15 @@
 
 namespace Tanks
 {
+
     /// <summary>
     /// Network manager for a client that can be used to process incoming and outgoing 
     /// packet data and control the online state of this player. 
     /// </summary>
     class ClientNetworkManager : public NetworkManager
     {
+        
+    public:
         /// <summary>
         /// The network state of this client that can be used to determine what
         /// outgoing information needs to be processed
@@ -20,8 +23,7 @@ namespace Tanks
             SayingHello,    // Client is attempting to connect to the server
             Welcomed        // Client has been welcomed into the game by the server
         };
-
-    public:
+        
         static ClientNetworkManager* Instance;
 
         static ClientNetworkManager* StaticInit( const char * aServerAddr, const unsigned short aPort, const std::string& aName );
@@ -65,6 +67,11 @@ namespace Tanks
         /// </summary>
         void SendHelloPacket();
 
+        /// <summary>
+        /// Send the input state of this client to the server
+        /// </summary>
+        void SendInputPacket();
+
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;
 
@@ -87,7 +94,7 @@ namespace Tanks
         /** Time between input updates */
         float TimeOfLastInputUpdate;
         /** The amount of time between sending hello packets */
-        const float TimeBetweenInputUpdate = 1.f;
+        const float TimeBetweenInputUpdate = 0.5f;
 
     };
 

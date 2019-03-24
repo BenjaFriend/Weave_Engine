@@ -75,7 +75,16 @@ public:
     void SetSouthPaw( const bool val ) { SouthPaw = val; }
     const bool GetSouthPaw() const { return SouthPaw; }
 
+    /// <summary>
+    /// The ID of the current camera
+    /// </summary>
+    /// <returns></returns>
     const size_t GetCameraID() const { return CameraID;  }
+
+    /// <summary>
+    /// Set this camera as the one to be used for rendering right now
+    /// </summary>
+    void SetAsActiveCamera();
 
 protected:
 

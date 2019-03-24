@@ -4,7 +4,7 @@
 
 namespace Input
 {
-    enum InputType
+    enum class InputType : UINT8
     {
         NONE,
         Horizontal,

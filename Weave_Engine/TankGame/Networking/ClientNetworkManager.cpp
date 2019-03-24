@@ -63,14 +63,7 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     {
         if ( totalTime > TimeOfLastInputUpdate + TimeBetweenInputUpdate )
         {     
-            OutputMemoryBitStream packet;
-            packet.Write( InputPacket );
-
-            // Get player input state and send it!
-
-            SendPacket( packet, ServerEndpoint );
-            LOG_TRACE( "Sent input packet!" );
-
+            SendInputPacket();
             TimeOfLastInputUpdate = totalTime;
         }
     }
@@ -126,4 +119,16 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
     SendPacket( welcomePacket, ServerEndpoint );
 
     LOG_TRACE( "Sent hello packet!" );
+}
+
+void Tanks::ClientNetworkManager::SendInputPacket()
+{
+
+    // If the client has hit any buttons
+    OutputMemoryBitStream output = {};
+    output.Write( InputPacket );
+    // For every move in the queue
+    // Write it
+
+    SendPacket( output, ServerEndpoint );
 }

@@ -39,6 +39,9 @@
     <ClInclude Include="Networking\ClientNetworkManager.h">
       <Filter>Networking</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerMoves.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

@@ -79,7 +79,12 @@ void CameraManager::UnregisterCamera( const size_t aID )
     auto it = CurrentCameras.find( aID );
     if ( it != CurrentCameras.end() )
     {
-        CurrentCameras.erase( it );
+        // If this is the camera currently in use, default to the editor cam
+        if ( aID == ActiveCamera->GetCameraID() )
+        {
+            ActiveCamera = DebugCamera;
+        }
+        CurrentCameras.erase( aID );
     }
 }
 

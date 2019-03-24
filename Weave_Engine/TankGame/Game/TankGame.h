@@ -49,6 +49,11 @@ namespace Tanks
         /// Draws the menu options
         /// </summary>
         void DrawMainMenu();
+    
+        /// <summary>
+        /// Draw the UI that should appear during gameplay
+        /// </summary>
+        void DrawGameUI();
 
     private:
 
