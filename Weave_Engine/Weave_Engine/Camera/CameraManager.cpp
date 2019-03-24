@@ -2,7 +2,7 @@
 
 #include "CameraManager.h"
 #include "../Entity/Entity.h"
-#include "../Entity/Camera.h"
+#include "Camera.h"
 #include "../Scripting/ScriptComponent.h"
 
 CameraManager* CameraManager::Instance = nullptr;

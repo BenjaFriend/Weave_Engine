@@ -2,7 +2,7 @@
 
 #include "EditorCore.h"
 #include "../ECS/IComponent.h"
-#include "../Entity/Camera.h"
+#include "../Camera/Camera.h"
 
 using namespace Editor;
 

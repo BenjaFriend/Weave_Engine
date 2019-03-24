@@ -318,7 +318,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Core\CameraManager.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Camera\CameraManager.cpp" />
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Main.cpp" />
@@ -327,7 +328,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="ECS\IComponent.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
-    <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
@@ -370,7 +370,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\additional\imgui\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
-    <ClInclude Include="Core\CameraManager.h" />
+    <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Camera\CameraManager.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="ECS\Component.h" />
@@ -379,7 +380,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="ECS\IComponent.h" />
     <ClInclude Include="Editor\EditorCore.h" />
     <ClInclude Include="Editor\Gizmo.h" />
-    <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Input\IInput_Impl.h" />

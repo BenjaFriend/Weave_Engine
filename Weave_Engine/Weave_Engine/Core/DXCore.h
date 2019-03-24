@@ -17,7 +17,7 @@
 #include "../Resources/ResourceManager.h"
 #include "../ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
-#include "CameraManager.h"
+#include "../Camera/CameraManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want

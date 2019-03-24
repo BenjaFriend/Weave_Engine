@@ -7,8 +7,7 @@
 #include "../Resources/SimpleShader.h"
 #include "../Resources/Vertex.h"
 #include "../Resources/MeshRenderer.h"
-//#include "../Entity/Camera.h"
-#include "../Core/CameraManager.h"
+#include "../Camera/CameraManager.h"
 
 #include "Gizmo.h"
 

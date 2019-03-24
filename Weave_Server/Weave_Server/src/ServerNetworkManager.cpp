@@ -134,6 +134,9 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
     packet.Write( StatePacket );
 
     // #TODO Write the scene data to this state packet
+    // Write the number of connected clients
+    packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
+
 
     SendPacket( packet, aClient->GetEndpoint() );
 }

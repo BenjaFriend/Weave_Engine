@@ -97,8 +97,7 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
         if ( ClientState == ClientNetworkManager::EClientState::Welcomed )
         {
             // Update our local  world based on this new info
-
-            LOG_TRACE( "State update dude! " );
+            ProcessStatePacket( inInputStream );            
         }
     }
     break;
@@ -144,4 +143,12 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         // Clear our move list, as we have sent everything in it
         PlayerMoves::Instance->Clear();
     }
+}
+
+void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
+{
+    UINT8 playerCount = 0;
+    inInputStream.Read( playerCount );
+
+    LOG_TRACE( "State update dude! Con players = {}", playerCount );
 }

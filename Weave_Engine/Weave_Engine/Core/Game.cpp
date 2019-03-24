@@ -5,7 +5,7 @@
 #include "../Resources/Mesh.h"
 #include "../Resources/MeshRenderer.h"
 #include "../Entity/Entity.h"
-#include "../Entity/Camera.h"
+#include "../Camera/Camera.h"
 #include "../Resources/Materials/Material.h"
 #include "../Scripting/ScriptComponent.h"
 #include "../ECS/IComponent.h"

@@ -9,8 +9,6 @@
 
 /////////////////////////////////////////////////
 // Forward Declarations
-class Mesh;
-class Material;
 class Component;
 
 /// <summary>

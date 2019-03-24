@@ -74,6 +74,12 @@ namespace Tanks
         /// </summary>
         void SendInputPacket();
 
+        /// <summary>
+        /// Process the given  state packet from the server
+        /// </summary>
+        /// <param name="inInputStream">Input stream of data</param>
+        void ProcessStatePacket( InputMemoryBitStream& inInputStream );
+
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;
 
