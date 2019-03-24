@@ -77,4 +77,12 @@ private:
 
     /** The thread the user input will be checked on */
     std::thread userInputThread;
+
+
+
+    /** Time between input updates */
+    float TimeOfLastStateUpdate;
+    /** The amount of time between sending hello packets */
+    const float TimeBetweenStateUpdates = 1.0f;
+
 };

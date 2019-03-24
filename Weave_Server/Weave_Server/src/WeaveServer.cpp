@@ -49,8 +49,16 @@ void WeaveServer::Run()
 
         Timing::sInstance.Update();
         float deltaTime = Timing::sInstance.GetDeltaTime();
+        float totalTime = Timing::sInstance.GetTimef();
 
         NetworkMan->ProcessIncomingPackets();
+
+        // If we have hit our tick rate, then update all clients
+        if ( totalTime > TimeOfLastStateUpdate + TimeBetweenStateUpdates )
+        {
+            NetworkMan->UpdateAllClients();
+            TimeOfLastStateUpdate = totalTime;
+        }
 
         // Update the rooms and scenes here
     }

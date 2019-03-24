@@ -117,16 +117,6 @@ void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
     LOG_TRACE( "Sent  welcome packet to client {} ID {}", aClient->GetName(), aClient->GetPlayerID() );
 }
 
-void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
-{
-    OutputMemoryBitStream packet = {};
-    packet.Write( StatePacket );
-
-    // #TODO Write the scene data to this state packet
-
-    SendPacket( packet, aClient->GetEndpoint() );
-}
-
 void ServerNetworkManager::UpdateAllClients()
 {
     // #TODO: Make sure we only do this at a specific tick rate
@@ -135,5 +125,14 @@ void ServerNetworkManager::UpdateAllClients()
     {
         SendStatePacket( it->second );
     }
+}
 
+void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
+{
+    OutputMemoryBitStream packet = {};
+    packet.Write( StatePacket );
+
+    // #TODO Write the scene data to this state packet
+
+    SendPacket( packet, aClient->GetEndpoint() );
 }

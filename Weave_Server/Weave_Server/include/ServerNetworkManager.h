@@ -14,6 +14,10 @@ public:
 
     virtual ~ServerNetworkManager();
 
+    /// <summary>
+    /// Update all clients that are connected with the proper state data
+    /// </summary>
+    void UpdateAllClients();
 
 protected:
 
@@ -50,11 +54,6 @@ private:
     /// </summary>
     /// <param name="aClient">The client to update</param>
     void SendStatePacket( ClientProxyPtr aClient );
-
-    /// <summary>
-    /// Update all clients that are connected with the proper state data
-    /// </summary>
-    void UpdateAllClients();
     
     UINT32 NewPlayerID = 0;
 
