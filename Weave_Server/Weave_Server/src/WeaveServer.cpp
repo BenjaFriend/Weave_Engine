@@ -6,7 +6,8 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     :
     MaxRooms( aDesc.MaxRooms ),
     ListenPort( aDesc.ListenPort ),
-    ResponsePort( aDesc.ResponsePort )
+    ResponsePort( aDesc.ResponsePort ),
+    TimeBetweenStateUpdates( aDesc.StateUpdateTickRate )
 {
     NetworkMan = new ServerNetworkManager();
     NetworkMan->Init( ListenPort );
