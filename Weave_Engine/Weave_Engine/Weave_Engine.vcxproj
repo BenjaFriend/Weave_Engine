@@ -352,6 +352,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Utils\ObjectPool.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />

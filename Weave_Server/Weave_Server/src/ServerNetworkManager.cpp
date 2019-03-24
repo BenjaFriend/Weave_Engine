@@ -43,7 +43,7 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
     case InputPacket:
     {
         // Handle the input given from the player
-        LOG_TRACE( "Received INPUT packet!!" );
+        ProcessInputPacket( aClient, inInputStream );
         // Update this players input
     }
     break;
@@ -79,6 +79,33 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
         // Possibly malicious
     }
 
+}
+
+void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
+{
+    UINT32 sizeOfMoveList = 0;
+    inInputStream.Read( sizeOfMoveList );
+
+    for ( size_t i = 0; i < sizeOfMoveList; ++i )
+    {
+        UINT8 move = 0;
+        inInputStream.Read( move );
+        switch ( static_cast < Input::InputType > ( move ) )
+        {
+        case Input::InputType::Fire:
+        {
+            LOG_TRACE( "PLAYER FIRE MOVE!" );
+        }
+        break;
+        case Input::InputType::Move_Left:
+        {
+            LOG_TRACE( "Move left!" );
+        }
+        break;
+        default:
+            break;
+        }
+    }
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )

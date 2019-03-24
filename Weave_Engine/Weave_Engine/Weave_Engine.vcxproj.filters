@@ -55,6 +55,9 @@
     <Filter Include="Weave_Common\Logging">
       <UniqueIdentifier>{bcbd089c-753d-4aae-bb9e-5f9cd9a92753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weave_Common\Input">
+      <UniqueIdentifier>{c7d05cd6-141d-4be6-b2d0-211492bfa58e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Weave_Common\Timing.h">
       <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h">
+      <Filter>Weave_Common\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

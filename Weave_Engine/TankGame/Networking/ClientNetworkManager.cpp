@@ -62,13 +62,13 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     case Tanks::ClientNetworkManager::EClientState::Welcomed:
     {
         if ( totalTime > TimeOfLastInputUpdate + TimeBetweenInputUpdate )
-        {     
+        {
             SendInputPacket();
             TimeOfLastInputUpdate = totalTime;
         }
     }
     break;
-    
+
     default:
         break;
     }
@@ -88,7 +88,7 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
         // Get our player ID
         inInputStream.Read( PlayerID );
 
-        LOG_TRACE( "We have  been welcomed! Our ID is {}",  PlayerID );
+        LOG_TRACE( "We have  been welcomed! Our ID is {}", PlayerID );
     }
     break;
     case  StatePacket:
@@ -123,12 +123,25 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
 
 void Tanks::ClientNetworkManager::SendInputPacket()
 {
+    if ( PlayerMoves::Instance->HasMoves() )
+    {
+        // If the client has hit any buttons
+        OutputMemoryBitStream output = {};
+        output.Write( InputPacket );
 
-    // If the client has hit any buttons
-    OutputMemoryBitStream output = {};
-    output.Write( InputPacket );
-    // For every move in the queue
-    // Write it
+        // For every move in the queue
+        const std::deque<Input::InputType> moveQueue = PlayerMoves::Instance->GetMoveQueue();
 
-    SendPacket( output, ServerEndpoint );
+        // Write the size of how many moves there are
+        output.Write( static_cast< UINT32 > ( moveQueue.size() ) );
+        for ( const auto & move : moveQueue )
+        {
+            output.Write( static_cast< UINT8 > ( move ) );
+        }
+
+        SendPacket( output, ServerEndpoint );
+
+        // Clear our move list, as we have sent everything in it
+        PlayerMoves::Instance->Clear();
+    }
 }

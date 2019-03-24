@@ -2,6 +2,8 @@
 
 #include "Networking/NetworkManager.h"
 #include "ClientProxy.h"
+#include "Input/InputBindings.h"
+
 #include <map>
 
 class ServerNetworkManager : public NetworkManager
@@ -29,6 +31,13 @@ private:
     /// <param name="inInputStream">Data from the new client</param>
     /// <param name="inFromAddress">Endpoint of the client</param>
     void ProcessNewClientPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
+
+    /// <summary>
+    /// Process a packet filled with a move list from the client
+    /// </summary>
+    /// <param name="aClient"></param>
+    /// <param name="inInputStream"></param>
+    void ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
 
     /// <summary>
     /// Send a welcome packet to the given client

@@ -2,6 +2,7 @@
 
 #include <Core/Game.h>
 #include "../Networking/ClientNetworkManager.h"
+#include "PlayerMoves.h"
 
 namespace Tanks
 {

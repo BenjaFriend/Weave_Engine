@@ -18,7 +18,7 @@ void TankGame::Init()
 {
     Game::Init();
 
-
+    PlayerMoves::Init();
 }
 
 void TankGame::Update( float deltaTime, float totalTime )

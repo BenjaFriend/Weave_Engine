@@ -206,13 +206,14 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Components\Bullet.h" />
+    <ClInclude Include="Game\PlayerMoves.h" />
     <ClInclude Include="Game\TankGame.h" />
     <ClInclude Include="Networking\ClientNetworkManager.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PlayerMoves.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\Bullet.cpp" />
+    <ClCompile Include="Game\PlayerMoves.cpp" />
     <ClCompile Include="Game\TankGame.cpp" />
     <ClCompile Include="Networking\ClientNetworkManager.cpp" />
     <ClCompile Include="pch.cpp">

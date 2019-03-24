@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Networking/NetworkManager.h"
+#include "../Game/PlayerMoves.h"
+#include <deque>
 
 namespace Tanks
 {

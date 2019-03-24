@@ -39,7 +39,7 @@
     <ClInclude Include="Networking\ClientNetworkManager.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMoves.h">
+    <ClInclude Include="Game\PlayerMoves.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -58,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="Networking\ClientNetworkManager.cpp">
       <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\PlayerMoves.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

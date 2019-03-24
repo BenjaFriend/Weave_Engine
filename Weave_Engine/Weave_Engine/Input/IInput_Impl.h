@@ -1,26 +1,10 @@
 #pragma once
 #include "stdafx.h"
 
+#include "Input/InputBindings.h"
 
 namespace Input
 {
-    enum class InputType : UINT8
-    {
-        NONE,
-        Horizontal,
-        Vertical,
-
-        Fire,
-        FireReleased,
-
-        Look,
-        LookReleased,
-
-        Use,
-
-        Quit
-    };
-
     struct InputBinding
     {
         UINT8 InputValue;
