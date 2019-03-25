@@ -7,6 +7,7 @@
 #include "../Resources/ISaveable.h"
 #include "Utils/SaveFileDefs.h"
 #include "json/json.hpp"
+#include "MemoryBitStream.h"
 
 /// <summary>
 /// Add miscellaneous component meta data to a component class
@@ -59,6 +60,26 @@ namespace ECS
         /// </summary>
         /// <param name="aOutFile">The file stream to write to</param>
         virtual void SaveObject( nlohmann::json & aEntComponentArray );
+
+        /// <summary>
+        /// Write this component to a replicated bit stream
+        /// </summary>
+        /// <param name="inOutputStream"></param>
+        /// <param name="inDirtyState"></param>
+        virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const
+        {
+            ( void ) inOutputStream;
+            ( void ) ( inDirtyState );
+        }
+
+        /// <summary>
+        /// Read this component from a bit stream
+        /// </summary>
+        /// <param name="inInputStream"></param>
+        virtual void Read( InputMemoryBitStream& inInputStream )
+        {
+            ( void ) ( inInputStream );
+        }
 
         ////////////////////////////////////////////////////    
         // Operators 
