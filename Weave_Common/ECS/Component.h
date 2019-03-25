@@ -4,14 +4,6 @@
 #include "ECS/FamilyTypeID.h"
 #include "Utils/SaveFileDefs.h"
 
-#if defined( ENABLE_UI )
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-
-#endif
-
 namespace ECS
 {
 
@@ -50,5 +42,4 @@ namespace ECS
     // which will set its unique identifier.
     template<class T>
     const ComponentTypeId ECS::Component<T>::STATIC_COMPONENT_TYPE_ID = ECS::Util::FamilyTypeID<IComponent>::Get<T>();
-
 }

@@ -272,6 +272,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp" />
     <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp" />
     <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp" />
     <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp" />
@@ -327,7 +328,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Main.cpp" />
-    <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
@@ -353,6 +353,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Weave_Common\ECS\Component.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\ComponentManager.h" />
     <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h" />
     <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h" />
     <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h" />
@@ -381,8 +383,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Camera\CameraManager.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
-    <ClInclude Include="ECS\Component.h" />
-    <ClInclude Include="ECS\ComponentManager.h" />
     <ClInclude Include="Editor\EditorCore.h" />
     <ClInclude Include="Editor\Gizmo.h" />
     <ClInclude Include="Entity\Entity.h" />
@@ -407,6 +407,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scripting\ScriptComponent.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
+    <ClInclude Include="UI_OPTIONS.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

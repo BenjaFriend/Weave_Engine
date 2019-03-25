@@ -4,7 +4,7 @@
 #include "../Resources/Mesh.h"
 #include "../Resources/Materials/Material.h"
 #include "../Resources/SimpleShader.h"
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 
 Entity::Entity( std::string aName )
     : Entity()

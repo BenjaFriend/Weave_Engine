@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "PhysicsManager.h"
+#include "UI_OPTIONS.h"
 
 namespace Physics
 {

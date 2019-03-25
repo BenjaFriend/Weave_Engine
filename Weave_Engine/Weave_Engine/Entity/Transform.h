@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "MathHelper.h"
+#include "UI_OPTIONS.h"
 
 /// <summary>
 /// A transform component will give entities a position, 

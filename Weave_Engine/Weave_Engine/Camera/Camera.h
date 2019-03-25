@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdio.h>
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "../Input/InputManager.h"   // Input
+#include "UI_OPTIONS.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

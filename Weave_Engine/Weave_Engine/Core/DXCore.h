@@ -15,7 +15,7 @@
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
 #include "../Resources/ResourceManager.h"
-#include "../ECS/ComponentManager.h"
+#include "ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
 #include "../Camera/CameraManager.h"
 

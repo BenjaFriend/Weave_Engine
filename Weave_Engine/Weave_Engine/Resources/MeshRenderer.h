@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "Mesh.h"
 #include "Materials/Material.h"
 #include "MathHelper.h"
@@ -8,6 +8,7 @@
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
 #include "../Resources/ResourceManager.h"
+#include "UI_OPTIONS.h"
 
 /// <summary>
 /// A mesh renderer is a component that when added to an entity

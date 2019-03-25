@@ -2,7 +2,7 @@
 
 #include "ScriptUtils.h"
 #include "../Input/InputManager.h"
-#include "../ECS/ComponentManager.h"
+#include "ECS/ComponentManager.h"
 #include "../Scenes/SceneManager.h"
 
 using namespace Scripting;
