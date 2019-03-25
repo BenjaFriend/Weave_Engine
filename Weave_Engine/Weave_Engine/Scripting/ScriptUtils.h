@@ -8,7 +8,7 @@
 #include "../Camera/CameraManager.h"
 #include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
-#include "../Entity/Transform.h"
+#include "Entity/Transform.h"
 #include "../Camera/Camera.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"

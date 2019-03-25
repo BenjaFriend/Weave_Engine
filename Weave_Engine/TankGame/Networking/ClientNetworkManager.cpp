@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ClientNetworkManager.h"
+#include "Scenes/SceneManager.h"
 
 using namespace Tanks;
 
@@ -149,6 +150,10 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
 {
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );
+    using namespace SceneManagement;
+
+    Scene* scene = SceneManager::GetInstance()->GetActiveScene();
+    scene->Read( inInputStream );
 
     LOG_TRACE( "State update dude! Con players = {}", playerCount );
 }

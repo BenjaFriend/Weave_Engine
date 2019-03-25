@@ -25,9 +25,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{e85a9b44-a058-4d21-a21b-9b7163126777}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS">
-      <UniqueIdentifier>{299ebfb2-90f8-4eba-b4eb-a77d63243e4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{1c9e2adb-e382-4805-bf81-7c5c97592a54}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,12 @@
     </Filter>
     <Filter Include="Weave_Common\Entity">
       <UniqueIdentifier>{8640c16b-d66c-48d0-8c58-a45226cc57fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\ECS">
+      <UniqueIdentifier>{ac553fbd-f31b-46aa-9066-23e566451475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Resources">
+      <UniqueIdentifier>{8e6566a8-41c3-41b1-8a40-387f37952a70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,17 +114,11 @@
     <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="ECS\ComponentManager.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
     <ClCompile Include="Lighting\PointLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
     <ClCompile Include="Lighting\DirLight.cpp">
       <Filter>Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS\FamilyTypeID.cpp">
-      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="Scripting\ScriptUtils.cpp">
       <Filter>Scripting</Filter>
@@ -141,17 +138,11 @@
     <ClCompile Include="Editor\Gizmo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Transform.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Resources\MeshRenderer.cpp">
       <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS\IComponent.cpp">
-      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\SceneManager.cpp">
       <Filter>Scenes</Filter>
@@ -189,6 +180,18 @@
     <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp">
       <Filter>Weave_Common\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -221,9 +224,6 @@
     <ClInclude Include="Physics\Collisions.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\ISaveable.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -248,23 +248,11 @@
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\ComponentManager.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\IComponent.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\Component.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting\PointLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Lighting\DirLight.h">
       <Filter>Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\FamilyTypeID.h">
-      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\ScriptUtils.h">
       <Filter>Scripting</Filter>
@@ -283,9 +271,6 @@
     </ClInclude>
     <ClInclude Include="Editor\Gizmo.h">
       <Filter>Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Transform.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
@@ -353,6 +338,26 @@
     <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h">
       <Filter>Weave_Common\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h">
+      <Filter>Weave_Common\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\ComponentManager.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_OPTIONS.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\Component.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Entity\Transform.h">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

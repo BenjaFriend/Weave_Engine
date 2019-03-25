@@ -68,7 +68,7 @@ void CameraManager::RegisterCamera( const size_t aID, Camera* aCam )
     if ( it == CurrentCameras.end() )
     {
         CurrentCameras [ aID ] = aCam;
-        LOG_WARN( "Registered camera! {}", aID );
+        LOG_TRACE( "Registered camera! {}", aID );
     }
 }
 

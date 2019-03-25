@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "Scene.h"
+#include "Resources/MeshRenderer.h"
 
 using namespace SceneManagement;
 
@@ -24,14 +25,36 @@ Scene::~Scene()
     SAFE_DELETE( EntityPool );
 }
 
-void SceneManagement::Scene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirtyState ) const
-{
-    // Write out the array of entity data
-}
-
 void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in the array of entity info
+    UINT32 numEntities = {};
+    inInputStream.Read( numEntities );
+
+    LOG_TRACE( "Num entities on server scene: {}", numEntities );
+    for ( size_t i = 0; i < numEntities; ++i )
+    {
+        INT32 networkID = 0;
+        inInputStream.Read( networkID );
+
+        LOG_TRACE( " Reading entity: {}", networkID );
+        // Do we have this in our replicated map
+        if ( !IsObjectReplicated( networkID ) )
+        {
+            LOG_WARN( " Entity {} IS NOT in  our replication map! Adding...", networkID );
+
+            // If not, add it
+            Entity* ent = AddEntity( "Newly Added rep object" );
+            ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+            ent->SetNetworkID( networkID );
+            AddReplicatedObject( ent );
+        }
+
+        IEntity* replicatedEnt = NetworkIdToEntityMap [ networkID ];
+
+        LOG_TRACE( "Scene Update entity {}", replicatedEnt->GetName() );
+        replicatedEnt->Read( inInputStream );
+    }
 }
 
 // Entity -----------------------------------------------

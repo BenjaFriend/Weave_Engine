@@ -20,6 +20,14 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
     CurrentMesh = aMesh;
 }
 
+MeshRenderer::MeshRenderer( const FileName & aMatFile, const FileName & aMeshFile )
+{
+    resMan = ResourceManager::GetInstance();
+
+    CurrentMesh = resMan->LoadMesh( aMeshFile );
+    CurrentMaterial = resMan->LoadMaterial( aMatFile );
+}
+
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
     resMan = ResourceManager::GetInstance();
@@ -43,11 +51,7 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::DrawEditorGUI()
 {
-    if( ImGui::Button( "Remove Component" ) ) 
-    {
-        OwningEntity->RemoveComponent< MeshRenderer >();
-        return;
-    }
+    REMOVE_COMP_BTN( MeshRenderer );
 
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
 
@@ -149,7 +153,7 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
     // in the future I want to experiment with different meshes/material 
     // settings
     CurrentMaterial->SetShaderValues(
-        OwningEntity->GetTransform()->GetWorldMatrix(),
+        OwningEntity->GetAsEntity()->GetTransform()->GetWorldMatrix(),
         aView,
         aProjection
     );

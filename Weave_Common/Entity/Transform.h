@@ -1,7 +1,15 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "MathHelper.h"
+#include "Config.h"
+
+#if !defined( WEAVE_SERVER )
+
+#include "UI_OPTIONS.h"
+
+#endif // !WEAVE_SERVER
+
 
 /// <summary>
 /// A transform component will give entities a position, 
@@ -45,7 +53,7 @@ public:
     /// Set the position of this entity
     /// </summary>
     /// <param name="aNewPos">The new position of this object</param>
-    inline void SetPosition( const glm::vec3 & aNewPos ) { Position = aNewPos; }
+    inline void SetPosition( const glm::vec3 aNewPos ) { Position = aNewPos; }
 
     /// <summary>
     /// Set the position of this entity 

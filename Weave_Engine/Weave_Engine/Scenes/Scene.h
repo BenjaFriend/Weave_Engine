@@ -33,7 +33,6 @@ namespace SceneManagement
 
         virtual ~Scene();
 
-        virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
         virtual void Read( InputMemoryBitStream& inInputStream ) override;
 
         /// <summary>
