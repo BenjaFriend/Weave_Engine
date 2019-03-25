@@ -31,6 +31,13 @@ public:
     MeshRenderer( Material* aMat, Mesh* aMesh );
 
     /// <summary>
+    /// Load in this mesh renderer based on file names
+    /// </summary>
+    /// <param name="aMatFile">Material file name</param>
+    /// <param name="aMeshFile">Mesh file name</param>
+    MeshRenderer( const FileName & aMatFile, const FileName & aMeshFile );
+
+    /// <summary>
     /// Initalize this mesh renderer from save file data
     /// </summary>
     /// <param name="aInitData">JSON save file data.</param>

@@ -20,6 +20,14 @@ MeshRenderer::MeshRenderer( Material * aMat, Mesh * aMesh )
     CurrentMesh = aMesh;
 }
 
+MeshRenderer::MeshRenderer( const FileName & aMatFile, const FileName & aMeshFile )
+{
+    resMan = ResourceManager::GetInstance();
+
+    CurrentMesh = resMan->LoadMesh( aMeshFile );
+    CurrentMaterial = resMan->LoadMaterial( aMatFile );
+}
+
 MeshRenderer::MeshRenderer( nlohmann::json const & aInitData )
 {
     resMan = ResourceManager::GetInstance();
