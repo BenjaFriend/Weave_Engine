@@ -5,11 +5,11 @@
 #include <filesystem>   // std::filesystem::directory_iterator
 
 #include "../Scenes/SceneManager.h"
-#include "../Core/CameraManager.h"
+#include "../Camera/CameraManager.h"
 #include "../Scenes/Scene.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Transform.h"
-#include "../Entity/Camera.h"
+#include "../Camera/Camera.h"
 #include "../Resources/ResourceManager.h"
 #include "../Resources/Materials/Material.h"
 #include "../Resources/MeshRenderer.h"

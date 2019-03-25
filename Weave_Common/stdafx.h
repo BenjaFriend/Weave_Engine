@@ -30,7 +30,7 @@
                     // Should only turn off if you cannot use ImGui
 #define EDITOR_ON   // Flag for turning the editor on and off
 
-#define MAX_ENTITY_COUNT    256
+#define MAX_ENTITY_COUNT    32
 
 /**************************************************************/
 /* Platform specifications                                    */
@@ -40,7 +40,7 @@
 // Windows uses wide chars for their file names
 typedef std::wstring                FileName;
 #define FORCE_INLINE                __forceinline
-#define w_UNUSED
+#define W_UNUSED
 
 #else 
 

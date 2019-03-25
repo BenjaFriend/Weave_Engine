@@ -63,6 +63,7 @@ include_directories(
     ../../Weave_Common
     ../../Weave_Engine/additional/spdlog/include
     ../../Weave_Engine/additional/glm
+    ../../Weave_Engine/additional/json
 )
 ############### Link Libraries ################
 set( LINK_DIRS

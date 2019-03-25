@@ -5,7 +5,7 @@
 #include "../Resources/Mesh.h"
 #include "../Resources/MeshRenderer.h"
 #include "../Entity/Entity.h"
-#include "../Entity/Camera.h"
+#include "../Camera/Camera.h"
 #include "../Resources/Materials/Material.h"
 #include "../Scripting/ScriptComponent.h"
 #include "../ECS/IComponent.h"
@@ -71,7 +71,6 @@ void Game::Init()
 #if defined( EDITOR_ON )
 
     editor = Editor::EditorCore::GetInstance();
-    editor->SetCamera( FlyingCamera );
     LOG_TRACE( "Editor Initalized!" );
 
 #endif  // EDITOR_ON
@@ -204,7 +203,7 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-
+    FlyingCamera = CameraMan->GetActiveCamera();
     // Update the camera
     FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 
@@ -232,6 +231,7 @@ void Game::Draw( float dt, float totalTime )
         1.0f,
         0 );
 
+    FlyingCamera = CameraMan->GetActiveCamera();
     assert( FlyingCamera != nullptr );
 
     // Set buffers in the input assembler

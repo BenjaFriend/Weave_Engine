@@ -6,8 +6,8 @@
 #include <iomanip>
 
 #include "json/json.hpp"
-#include "../Utils/Dispatcher.hpp"
-#include "../Utils/SaveFileDefs.h"
+#include "Utils/Dispatcher.hpp"
+#include "Utils/SaveFileDefs.h"
 #include "Scene.h"
 
 namespace SceneManagement

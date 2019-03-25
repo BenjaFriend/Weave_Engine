@@ -10,6 +10,7 @@
 #include "ServerUtils.h"
 #include "Config.h"
 #include "Room.h"
+#include "Timing.h"
 
 /// <summary>
 /// The core server logic that will handle the creation of rooms and 
@@ -76,4 +77,12 @@ private:
 
     /** The thread the user input will be checked on */
     std::thread userInputThread;
+
+
+
+    /** Time between input updates */
+    float TimeOfLastStateUpdate;
+    /** The amount of time between sending hello packets */
+    const float TimeBetweenStateUpdates = 1.0f;
+
 };
