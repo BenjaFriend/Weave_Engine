@@ -210,7 +210,9 @@
                         "X": -1.0368245840072632,
                         "Y": 9.406854629516602,
                         "Z": 17.09549331665039
-                    }
+                    },
+                    "Do_Movement" : true,
+                    "South_Paw" : false
                 }
             ],
             "DestroyOnLoad": true,

@@ -45,7 +45,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 
             // If not, add it
             Entity* ent = AddEntity( "Newly Added rep object" );
-            ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/Cube.obj" );
+            ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
             ent->SetNetworkID( networkID );
             AddReplicatedObject( ent );
         }

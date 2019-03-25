@@ -248,6 +248,7 @@ void ScriptManager::MoveCamera( glm::vec3 & move, glm::vec2 & rotate )
 {
     Camera* cam = CameraManager::GetInstance()->GetActiveCamera();
     assert( cam != nullptr );
+    if ( !cam->GetDoMovement() ) return;
     Transform* transform = cam->GetEntity()->GetAsEntity()->GetTransform();
 
     transform->Rotate( glm::vec3( rotate.y, rotate.x, 0 ) );

@@ -15,6 +15,8 @@ COMPONENT_INIT( Camera )
 #define UP_SAVE_KEY             "Up"
 #define YAW_ANGLE_SAVE_KEY      "Yaw"
 #define PITCH_ANGLE_SAVE_KEY    "Pitch"
+#define DO_MOVEMENT_KEY         "Do_Movement"
+#define DO_SOUTH_PAW_KEY        "South_Paw"
 
 Camera::Camera()
 {
@@ -28,9 +30,13 @@ Camera::Camera()
     YawAngle = 90;
 
     inputManager = Input::InputManager::GetInstance();
+    SouthPaw = false;
+    DoMovement = true;
 
     CameraID = CameraCount++;
     CameraManager::GetInstance()->RegisterCamera( CameraID, this );
+    // I want to set this camera as the active one when a scene is loaded
+    SetAsActiveCamera();
 }
 
 Camera::Camera( nlohmann::json const & aInitData )
@@ -40,6 +46,9 @@ Camera::Camera( nlohmann::json const & aInitData )
     Pos.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
     Pos.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
     Pos.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
+
+    DoMovement = aInitData [ DO_MOVEMENT_KEY ];
+    SouthPaw = aInitData [ DO_SOUTH_PAW_KEY ];
 
     RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
 }
@@ -77,6 +86,10 @@ void Camera::SaveComponentData( nlohmann::json & aCompData )
     aCompData [ POS_SAVE_KEY ] [ "X" ] = Pos.x;
     aCompData [ POS_SAVE_KEY ] [ "Y" ] = Pos.y;
     aCompData [ POS_SAVE_KEY ] [ "Z" ] = Pos.z;
+
+    aCompData [ DO_MOVEMENT_KEY ] = ( bool ) ( DoMovement );
+    aCompData [ DO_SOUTH_PAW_KEY ] = ( bool ) ( SouthPaw );
+
 }
 
 void Camera::DrawEditorGUI()
@@ -86,6 +99,9 @@ void Camera::DrawEditorGUI()
     ImGui::InputFloat( "FarZ", &FarZ );
 
     ImGui::Text( "Camera ID: %ld", CameraID );
+
+    ImGui::Checkbox( "Do Movement", &DoMovement );
+
     if ( ImGui::Button( "Set as active Camera" ) )
     {
         SetAsActiveCamera();

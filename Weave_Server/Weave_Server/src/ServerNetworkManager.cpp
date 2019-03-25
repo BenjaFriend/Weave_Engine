@@ -107,13 +107,13 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         case Input::InputType::Move_Left:
         {
             LOG_TRACE( "Move left!" );    
-            inputMovement.x -= 1.0f;
+            inputMovement.x += 1.0f;
         }
         break;
         case Input::InputType::Move_Right:
         {
             LOG_TRACE( "Move_Right" );
-            inputMovement.x += 1.0f;
+            inputMovement.x -= 1.0f;
         }
         break;
         case Input::InputType::Move_Up:
