@@ -3,6 +3,7 @@
 #include "Networking/NetworkManager.h"
 #include "ClientProxy.h"
 #include "Input/InputBindings.h"
+#include "ServerScene.h"
 
 #include <map>
 
@@ -57,6 +58,9 @@ private:
     
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
+
+    /** The current scene that is loaded */
+    ServerScene Scene;
 
     /** Map of endpoints to clients */
     typedef std::map< boost::asio::ip::udp::endpoint, ClientProxyPtr >	AddressToClientMap;

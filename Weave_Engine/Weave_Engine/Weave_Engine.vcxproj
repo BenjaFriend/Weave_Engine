@@ -272,6 +272,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp" />
     <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -283,6 +284,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Scenes\IScene.cpp" />
     <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -351,11 +353,13 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h" />
     <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
     <ClInclude Include="..\..\Weave_Common\Timing.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp" />

@@ -389,7 +389,7 @@ void DXCore::OnResize()
 // --------------------------------------------------------
 HRESULT DXCore::Run()
 {
-    startTime = Timing::sInstance.GetStartTime();
+    startTime = static_cast< UINT64 >( Timing::sInstance.GetStartTime() );
 
     // Give subclass a chance to initialize
     Init();
@@ -407,7 +407,7 @@ HRESULT DXCore::Run()
             DispatchMessage( &msg );
         }
         else
-        {   
+        {
             // Update timer and title bar (if necessary)
             //UpdateTimer();
 
@@ -446,12 +446,12 @@ void DXCore::InitSystems()
 
     sceneManager = SceneManagement::SceneManager::GetInstance();
     resourceMan = ResourceManager::Initalize( device, context );
-    
+
 #if defined ( _WIN32 ) || defined ( _WIN64 )
     inputManager = Input::InputManager::Initalize<Input::Input_Win>();
 #else
 #endif
-    
+
     ComponentMan = ECS::ComponentManager::GetInstance();
     ScriptMan = Scripting::ScriptManager::GetInstance();
     CameraMan = CameraManager::GetInstance(); CameraManager::Init();
