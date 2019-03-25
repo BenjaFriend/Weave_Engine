@@ -4,7 +4,8 @@
 #include <unordered_map>
 
 #include "ECS/IComponent.h"
-#include "Entity/IEntity.h"
+
+class IEntity;
 
 namespace ECS
 {

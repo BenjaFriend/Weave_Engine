@@ -33,8 +33,25 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
     LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
     {
-        LOG_TRACE( "Scene Update entity {}", i );
-        EntityArray_Raw [ i ].Read( inInputStream );
+        INT32 networkID = 0;
+        inInputStream.Read( networkID );
+
+        LOG_TRACE( " Reading entity: {}", networkID );
+        // Do we have this in our replicated map
+        if ( !IsObjectReplicated( networkID ) )
+        {
+            LOG_WARN( " Entity {} IS NOT in  our replication map! Adding...", networkID );
+
+            // If not, add it
+            Entity* ent = AddEntity( "Newly Added rep object" );
+            ent->SetNetworkID( networkID );
+            AddReplicatedObject( ent );
+        }
+
+        IEntity* replicatedEnt = NetworkIdToEntityMap [ networkID ];
+
+        LOG_TRACE( "Scene Update entity {}", replicatedEnt->GetName() );
+        replicatedEnt->Read( inInputStream );
     }
 }
 

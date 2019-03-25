@@ -75,13 +75,14 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
         SendWelcomePacket( newClient );
 
         newClient->SetClientEntity( Scene.AddEntity( newClient->GetName() ) );
+        newClient->GetClientEntity()->SetNetworkID( newClient->GetPlayerID() );
+        Scene.AddReplicatedObject( newClient->GetClientEntity().get() );
     }
     else
     {
         // Bad boi, this isn't what we want from a new client! 
         // Possibly malicious
     }
-
 }
 
 void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
@@ -89,41 +90,52 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     UINT32 sizeOfMoveList = 0;
     inInputStream.Read( sizeOfMoveList );
 
+    glm::vec3 inputMovement( 0.f );
+
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
         inInputStream.Read( move );
+
         switch ( static_cast < Input::InputType > ( move ) )
         {
         case Input::InputType::Fire:
         {
-            LOG_TRACE( "PLAYER FIRE MOVE!" );
+            LOG_TRACE( "PLAYER FIRE MOVE!" );      
         }
         break;
         case Input::InputType::Move_Left:
         {
             LOG_TRACE( "Move left!" );    
+            inputMovement.x -= 1.0f;
         }
         break;
         case Input::InputType::Move_Right:
         {
             LOG_TRACE( "Move_Right" );
+            inputMovement.x += 1.0f;
         }
         break;
         case Input::InputType::Move_Up:
         {
             LOG_TRACE( "Move_Up" );
+            inputMovement.z -= 1.0f;
         }
         break;
         case Input::InputType::Move_Down:
         {
             LOG_TRACE( "Move_Down!" );
+            inputMovement.z += 1.0f;
         }
         break;
         default:
             break;
         }
     }
+
+    // Move the client based on their input to the server
+    glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
+    aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )

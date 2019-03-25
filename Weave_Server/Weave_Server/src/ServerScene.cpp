@@ -9,19 +9,20 @@ ServerScene::ServerScene()
 ServerScene::~ServerScene()
 {
     EntityArray.clear();
-
+    NetworkIdToEntityMap.clear();
     LOG_TRACE( "DELETE a server scene!" );
 }
 
 void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirtyState ) const
 {
-    inOutputStream.Write( static_cast< UINT32 > ( EntityArray.size() ) );
+    inOutputStream.Write( static_cast< UINT32 > ( NetworkIdToEntityMap.size() ) );
 
-    for ( size_t i = 0; i < EntityArray.size(); ++i )
+    for ( const auto & entity : NetworkIdToEntityMap )
     {
-        EntityArray [ i ]->Write( inOutputStream, 0 );
+        entity.second->Write( inOutputStream, 0 );
     }
 }
+
 IEntityPtr ServerScene::AddEntity( const std::string & aName )
 {
     IEntityPtr newEnt = std::make_shared<IEntity>();

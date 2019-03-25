@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
 #include "Entity.h"
-#include "../Resources/Mesh.h"
-#include "../Resources/Materials/Material.h"
-#include "../Resources/SimpleShader.h"
 #include "ECS/Component.h"
 
 Entity::Entity( std::string aName )
@@ -16,17 +13,7 @@ Entity::Entity()
     : IEntity()
 {
 
-    IsActive = true;
-    IsValid = false;
-    IsDestroyableOnLoad = true;
 
-    componentManager = ECS::ComponentManager::GetInstance();
-
-    // Give entity component a transform 
-    if ( EntityTransform == nullptr )
-    {
-        EntityTransform = this->AddComponent<Transform>();
-    }
 }
 
 // virtual destructor

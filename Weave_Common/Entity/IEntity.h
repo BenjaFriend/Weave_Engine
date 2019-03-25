@@ -3,8 +3,13 @@
 #include "stdafx.h"
 #include "MemoryBitStream.h"
 #include "Transform.h"
+#include "ECS/ComponentManager.h"
 
 #include <memory>
+
+/////////////////////////////////////////////////
+// Forward Declarations
+class Component;
 
 class IEntity
 {
@@ -13,6 +18,10 @@ public:
     IEntity();
 
     virtual ~IEntity();
+
+
+    /** Get the current transform of this object */
+    FORCE_INLINE Transform* GetTransform() const { return EntityTransform; }
 
     /// <summary>
     /// If an entity is destroyable on load, then it will be deleted during a 
@@ -53,6 +62,50 @@ public:
 
     FORCE_INLINE const size_t GetID() const { return this->entID; }
 
+    // Components ------------------------------
+
+    /// <summary>
+    /// Get a pointer to this component on this entity
+    /// </summary>
+    /// <returns>
+    /// Pointer to the component if it exists, nullptr 
+    /// if this entity does not have a component of this type
+    /// </returns>
+    template<typename T>
+    T* GetComponent()
+    {
+        return this->componentManager->GetComponent<T>( this->entID );
+    }
+
+    /// <summary>
+    /// Add a component of type T to this entity
+    /// </summary>
+    template<class T, class ...P>
+    T* AddComponent( P&&... param )
+    {
+        return
+            this->componentManager->AddComponent<T>(
+                this,
+                std::forward<P>( param )...
+                );
+    }
+
+    /// <summary>
+    /// Remove the component of this type from this entity
+    /// </summary>
+    template<typename T>
+    void RemoveComponent()
+    {
+        this->componentManager->RemoveComponent<T>( this->entID );
+    }
+
+    FORCE_INLINE const ECS::ComponentMap * GetAllComponents() const
+    {
+        return componentManager->GetAllComponents( this->entID );
+    }
+
+    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( entID ); }
+
     virtual class Entity* GetAsEntity() { return nullptr; }
 
     /// <summary>
@@ -68,9 +121,20 @@ public:
     /// <param name="inInputStream"></param>
     virtual void Read( InputMemoryBitStream & inInputStream );
 
+    FORCE_INLINE const INT32  GetNetworkID() const { return NetworkID; }
+    FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
+
 protected:
 
     static size_t EntityCount;
+
+    INT32 NetworkID = -1;
+
+    /** handles the adding/removing of components for this entity */
+    ECS::ComponentManager * componentManager = nullptr;
+
+    /** The transform of the entity */
+    Transform* EntityTransform = nullptr;
 
     /** The unique ID of this entity */
     size_t entID;

@@ -53,7 +53,7 @@ public:
     /// Set the position of this entity
     /// </summary>
     /// <param name="aNewPos">The new position of this object</param>
-    inline void SetPosition( const glm::vec3 & aNewPos ) { Position = aNewPos; }
+    inline void SetPosition( const glm::vec3 aNewPos ) { Position = aNewPos; }
 
     /// <summary>
     /// Set the position of this entity 
