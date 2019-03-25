@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 #include "MemoryBitStream.h"
+#include "Transform.h"
+
 #include <memory>
 
 class IEntity

@@ -138,9 +138,6 @@
     <ClCompile Include="Editor\Gizmo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Transform.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -191,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp">
       <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp">
+      <Filter>Weave_Common\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,9 +271,6 @@
     </ClInclude>
     <ClInclude Include="Editor\Gizmo.h">
       <Filter>Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Transform.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
@@ -357,6 +354,10 @@
     <ClInclude Include="..\..\Weave_Common\ECS\Component.h">
       <Filter>Weave_Common\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Entity\Transform.h">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

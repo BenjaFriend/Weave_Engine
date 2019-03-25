@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "Materials/Material.h"
 #include "MathHelper.h"
-#include "../Entity/Transform.h"
+#include "Entity/Transform.h"
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
 #include "../Resources/ResourceManager.h"

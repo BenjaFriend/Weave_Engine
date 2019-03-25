@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Camera.h"
-#include "../Entity/Transform.h"
+#include "Entity/Transform.h"
 #include "../Entity/Entity.h"
 #include "CameraManager.h"
 

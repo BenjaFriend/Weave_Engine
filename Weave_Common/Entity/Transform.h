@@ -2,7 +2,14 @@
 
 #include "ECS/Component.h"
 #include "MathHelper.h"
+#include "Config.h"
+
+#if !defined( WEAVE_SERVER )
+
 #include "UI_OPTIONS.h"
+
+#endif // !WEAVE_SERVER
+
 
 /// <summary>
 /// A transform component will give entities a position, 

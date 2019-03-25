@@ -276,6 +276,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp" />
     <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp" />
     <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp" />
     <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -331,7 +332,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
-    <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
     <ClCompile Include="Lighting\PointLight.cpp" />
@@ -358,6 +358,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h" />
     <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h" />
     <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h" />
+    <ClInclude Include="..\..\Weave_Common\Entity\Transform.h" />
     <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
@@ -381,12 +382,12 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Camera\CameraManager.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Editor\EditorCore.h" />
     <ClInclude Include="Editor\Gizmo.h" />
     <ClInclude Include="Entity\Entity.h" />
-    <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Input\IInput_Impl.h" />
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Input\Input_Win.h" />
