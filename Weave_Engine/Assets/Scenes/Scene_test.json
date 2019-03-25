@@ -159,8 +159,8 @@
                 {
                     "ComponentName": "Transform",
                     "Pos": {
-                        "X": 0.0,
-                        "Y": 2.0,
+                        "X": 5.0,
+                        "Y": 1.0,
                         "Z": 0.0
                     },
                     "Rot": {
@@ -174,15 +174,48 @@
                         "Z": 1.0
                     }
                 },
-              {
-                "ComponentName": "MeshRenderer",
-                "MaterialFile": "Assets/Materials/Cobblestone.wmat",
-                "Mesh": "Assets/Models/My_Tank.obj"
-              }
+                {
+                    "ComponentName": "MeshRenderer",
+                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
+                    "Mesh": "Assets/Models/My_Tank.obj"
+                }
             ],
             "DestroyOnLoad": true,
             "IsActive": true,
             "Name": "Tank Enty"
+        },
+        {
+            "Components": [
+                {
+                    "ComponentName": "Transform",
+                    "Pos": {
+                        "X": -1.0368245840072632,
+                        "Y": 9.406854629516602,
+                        "Z": 17.09549331665039
+                    },
+                    "Rot": {
+                        "X": -0.44812852144241333,
+                        "Y": -0.0003022151067852974,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
+                },
+                {
+                    "ComponentName": "Camera",
+                    "Pos": {
+                        "X": -1.0368245840072632,
+                        "Y": 9.406854629516602,
+                        "Z": 17.09549331665039
+                    }
+                }
+            ],
+            "DestroyOnLoad": true,
+            "IsActive": true,
+            "Name": "Camera"
         }
     ],
     "Scene_Name": "Test_Scene_Name"

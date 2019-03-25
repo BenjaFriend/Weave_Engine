@@ -24,14 +24,10 @@ Scene::~Scene()
     SAFE_DELETE( EntityPool );
 }
 
-void SceneManagement::Scene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirtyState ) const
-{
-    // Write out the array of entity data
-}
-
 void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in the array of entity info
+
 }
 
 // Entity -----------------------------------------------

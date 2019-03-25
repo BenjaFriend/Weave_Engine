@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 #include "Camera.h"
-#include "Transform.h"
+#include "../Entity/Transform.h"
 #include "../Entity/Entity.h"
-#include "../Core/CameraManager.h"
+#include "CameraManager.h"
 
 size_t Camera::CameraCount = 0;
 

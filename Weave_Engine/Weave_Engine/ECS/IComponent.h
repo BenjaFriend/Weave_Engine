@@ -8,14 +8,6 @@
 #include "Utils/SaveFileDefs.h"
 #include "json/json.hpp"
 
-#if defined( ENABLE_UI )
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-
-#endif
-
 /// <summary>
 /// Add miscellaneous component meta data to a component class
 /// </summary>
@@ -60,7 +52,7 @@ namespace ECS
         /// Natively draw any IMGUI fields that are to be used
         /// with this component here
         /// </summary>
-        virtual void DrawEditorGUI() = 0;
+        virtual void DrawEditorGUI() {}
 
         /// <summary>
         /// Write the data for this component to a file
@@ -77,11 +69,11 @@ namespace ECS
         /////////////////////////////////////////////////    
         // Accessors 
 
-        inline const ComponentID GetComponentId() const { return this->id; }
+        FORCE_INLINE const ComponentID GetComponentId() const { return this->id; }
 
-        inline const bool IsEnabled() const { return this->isEnabled; }
+        FORCE_INLINE const bool IsEnabled() const { return this->isEnabled; }
 
-        inline void SetEnabled( bool aEnabledState )
+        FORCE_INLINE void SetEnabled( bool aEnabledState )
         {
             this->isEnabled = aEnabledState;
             ( this->isEnabled ? OnEnable() : OnDisable() );
@@ -91,9 +83,9 @@ namespace ECS
         /// Get the owning Entity ID of this component
         /// </summary>
         /// <returns>Entity ID of the owning entity</returns>
-        const EntityID& GetOwner() const { return this->owner; }
+        FORCE_INLINE const size_t& GetOwner() const { return this->owner; }
 
-        const Entity* GetEntity() const { return OwningEntity; }
+        FORCE_INLINE const Entity* GetEntity() const { return OwningEntity; }
 
         /// <summary>
         /// Get the human-readable name of this component
@@ -171,7 +163,7 @@ namespace ECS
         bool isEnabled = true;
 
         /** The owner of this component */
-        EntityID owner;
+        size_t owner;
 
         Entity* OwningEntity = nullptr;
 
