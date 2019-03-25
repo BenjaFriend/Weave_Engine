@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "ECS/IComponent.h"
+#include "Entity/IEntity.h"
 
 namespace ECS
 {
@@ -48,7 +49,7 @@ namespace ECS
         /// <param name="...args">Arguments for your component's constructor</param>
         /// <returns>Pointer to the newly created component</returns>
         template<class T, class ...ARGS>
-        T* AddComponent( Entity* aEntity, ARGS&&... args )
+        T* AddComponent( IEntity* aEntity, ARGS&&... args )
         {
             assert( aEntity != nullptr );
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
@@ -78,7 +79,7 @@ namespace ECS
         /// <param name="aEntityID">The entity to add to</param>
         /// <param name="aCompData">The json component data for creating a </param>
         /// <returns>Returns true if successfully added</returns>
-        bool AddComponent( Entity* aEntity, nlohmann::json & aCompData );
+        bool AddComponent( IEntity* aEntity, nlohmann::json & aCompData );
 
         template <class T>
         T* GetComponent( const EntityID aEntityID )
@@ -94,25 +95,25 @@ namespace ECS
         /// <param name="aEntity">The entity to add this component to</param>
         /// <param name="aCompName">Class name of the component</param>
         /// <returns>True if success, false if failure</returns>
-        bool AddComponentFromEditor( Entity* aEntity, const std::string & aCompName );
+        bool AddComponentFromEditor( IEntity* aEntity, const std::string & aCompName );
 
-		template <class T>
-		T* FindComponentOfType()
-		{
-			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+        template <class T>
+        T* FindComponentOfType()
+        {
+            const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
-			std::unordered_map<EntityID, ComponentMap>::iterator it;
+            std::unordered_map<EntityID, ComponentMap>::iterator it;
 
-			for (it = activeComponents.begin(); it != activeComponents.end(); ++it)
-			{
-				if (it->second.find(CTID) != it->second.end())
-				{
-					return reinterpret_cast<T*>(it->second[CTID]);
-				}
-			}
+            for ( it = activeComponents.begin(); it != activeComponents.end(); ++it )
+            {
+                if ( it->second.find( CTID ) != it->second.end() )
+                {
+                    return reinterpret_cast< T* >( it->second [ CTID ] );
+                }
+            }
 
-			return nullptr;
-		}
+            return nullptr;
+        }
 
         const ComponentMap * GetAllComponents( const EntityID aEntityID ) const
         {
@@ -161,7 +162,7 @@ namespace ECS
         void CleanupAllComponents();
 
         /** Keep track of all component types */
-        std::unordered_map<EntityID, ComponentMap> activeComponents;
+        std::unordered_map< EntityID, ComponentMap  > activeComponents;
 
         /** Current count of all components */
         size_t ComponentCount = 0;

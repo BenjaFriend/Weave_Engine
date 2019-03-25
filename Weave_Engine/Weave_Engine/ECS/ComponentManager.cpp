@@ -25,7 +25,7 @@ void ECS::ComponentManager::ReleaseInstance()
     }
 }
 
-bool ECS::ComponentManager::AddComponent( Entity * aEntity, nlohmann::json & aCompData )
+bool ECS::ComponentManager::AddComponent( IEntity * aEntity, nlohmann::json & aCompData )
 {
     assert( aEntity != nullptr );
     const ECS::EntityID aEntityID = aEntity->GetID();
@@ -48,7 +48,7 @@ bool ECS::ComponentManager::AddComponent( Entity * aEntity, nlohmann::json & aCo
     return true;
 }
 
-bool ECS::ComponentManager::AddComponentFromEditor( Entity * aEntity, const std::string & aCompName )
+bool ECS::ComponentManager::AddComponentFromEditor( IEntity * aEntity, const std::string & aCompName )
 {
     assert( aEntity != nullptr );
     const ECS::EntityID aEntityID = aEntity->GetID();

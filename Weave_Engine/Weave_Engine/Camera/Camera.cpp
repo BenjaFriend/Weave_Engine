@@ -31,7 +31,6 @@ Camera::Camera()
 
     CameraID = CameraCount++;
     CameraManager::GetInstance()->RegisterCamera( CameraID, this );
-    LOG_TRACE( "Camera Ctor? {}", CameraID );
 }
 
 Camera::Camera( nlohmann::json const & aInitData )
@@ -101,10 +100,11 @@ void Camera::DrawEditorGUI()
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
     Pos = this->GetPosition();
+    Entity* ent = OwningEntity->GetAsEntity();
 
-    if ( OwningEntity != nullptr )
+    if ( ent != nullptr )
     {
-        Transform* transform = OwningEntity->GetTransform();
+        Transform* transform = ent->GetTransform();
         Pos = transform->GetPosition();
         Forward = transform->GetForward();
         Right = transform->GetRight();
@@ -126,9 +126,11 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
     glm::clamp( PitchAngle, -MAX_PITCH, MAX_PITCH );
     YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY * ( SouthPaw ? 1.f : -1.f );
 
-    if ( OwningEntity != nullptr )
+    Entity* ent = OwningEntity->GetAsEntity();
+
+    if ( ent != nullptr )
     {
-        Transform* transform = OwningEntity->GetTransform();
+        Transform* transform = ent->GetTransform();
         transform->SetRotation( { 0, YawAngle, PitchAngle } );
         Forward = transform->GetForward();
         Right = transform->GetRight();
@@ -151,8 +153,16 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 const glm::vec3 Camera::GetPosition() const
 {
     if ( OwningEntity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
-    Transform* transform = OwningEntity->GetTransform();
-    return transform->GetPosition();
+    Entity* ent = OwningEntity->GetAsEntity();
+    if ( ent != nullptr )
+    {
+        Transform* transform = ent->GetTransform();
+        return transform->GetPosition();
+    }
+    else
+    {
+        return glm::vec3( 0.f );
+    }
 }
 
 void Camera::SetPosition( glm::vec3 position )

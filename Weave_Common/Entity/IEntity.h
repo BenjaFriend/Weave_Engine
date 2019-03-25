@@ -51,6 +51,8 @@ public:
 
     FORCE_INLINE const size_t GetID() const { return this->entID; }
 
+    virtual class Entity* GetAsEntity() { return nullptr; }
+
     /// <summary>
     /// Write this component to a replicated bit stream
     /// </summary>

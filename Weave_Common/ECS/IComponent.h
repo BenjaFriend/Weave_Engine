@@ -26,10 +26,11 @@
 
 #define REMOVE_COMP_BTN( name )                                             \
     if( ImGui::Button("Remove Component") )                                 \
-    { OwningEntity->RemoveComponent< name > (); return; }               
+    { OwningEntity->GetAsEntity()->RemoveComponent< name > (); return; }               
     
 
-class Entity;
+class IEntity;
+
 namespace ECS
 {
     using ComponentID = size_t;
@@ -106,7 +107,7 @@ namespace ECS
         /// <returns>Entity ID of the owning entity</returns>
         FORCE_INLINE const size_t& GetOwner() const { return this->owner; }
 
-        FORCE_INLINE const Entity* GetEntity() const { return OwningEntity; }
+        FORCE_INLINE IEntity* GetEntity() const { return OwningEntity; }
 
         /// <summary>
         /// Get the human-readable name of this component
@@ -186,7 +187,7 @@ namespace ECS
         /** The owner of this component */
         size_t owner;
 
-        Entity* OwningEntity = nullptr;
+        IEntity* OwningEntity = nullptr;
 
         virtual void OnEnable() {}
 

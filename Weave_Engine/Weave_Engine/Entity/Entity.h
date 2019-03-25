@@ -33,6 +33,8 @@ public:
 
     virtual ~Entity();
 
+    virtual class Entity* GetAsEntity() override { return this; }
+
     /// <summary>
     /// Create this entity based off of a scene file data set
     /// </summary>
