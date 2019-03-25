@@ -12,9 +12,9 @@
 /// <summary>
 /// Add miscellaneous component meta data to a component class
 /// </summary>
-#define COMPONENT( name )                                               \
-    static const char* ClassName() { return #name; }                    \
-    virtual char const* ComponentName() { return ClassName();  }        \
+#define COMPONENT( name )                                                       \
+    static const char* ClassName() { return #name; }                            \
+    virtual char const* ComponentName() override { return ClassName();  }       \
     const static ECS::IComponent::ConcreteFactory< name > CompFactory; 
 
 /// <summary>

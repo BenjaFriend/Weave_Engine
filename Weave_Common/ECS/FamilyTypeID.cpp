@@ -8,6 +8,7 @@ namespace ECS
 
     namespace Util
     {
+        template<>
         TypeID FamilyTypeID<IComponent>::s_count = 0u;
 
         template class FamilyTypeID<IComponent>;

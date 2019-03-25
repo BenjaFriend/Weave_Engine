@@ -19,6 +19,5 @@ public:
 private:
 
     std::vector< IEntityPtr > EntityArray;
-    size_t  NetworkEntityID = 0;
 
 };

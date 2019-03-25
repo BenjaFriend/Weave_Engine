@@ -30,7 +30,7 @@ namespace ECS
             return STATIC_COMPONENT_TYPE_ID;
         }
 
-        virtual const char* ComponentName() = 0;
+        virtual const char* ComponentName() override = 0;
 
     protected:
 
