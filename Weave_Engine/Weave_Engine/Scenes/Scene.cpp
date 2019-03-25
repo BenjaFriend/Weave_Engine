@@ -27,7 +27,15 @@ Scene::~Scene()
 void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in the array of entity info
+    UINT32 numEntities = {};
+    inInputStream.Read( numEntities );
 
+    LOG_TRACE( "Num entities on server scene: {}", numEntities );
+    for ( size_t i = 0; i < numEntities; ++i )
+    {
+        LOG_TRACE( "Scene Update entity {}", i );
+        EntityArray_Raw [ i ].Read( inInputStream );
+    }
 }
 
 // Entity -----------------------------------------------

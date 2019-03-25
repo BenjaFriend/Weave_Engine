@@ -4,7 +4,7 @@
 // https://github.com/tobias-stein/EntityComponentSystem
 
 #include "stdafx.h"
-#include "../Resources/ISaveable.h"
+#include "Resources/ISaveable.h"
 #include "Utils/SaveFileDefs.h"
 #include "json/json.hpp"
 #include "MemoryBitStream.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "EditorCore.h"
-#include "../ECS/IComponent.h"
+#include "ECS/IComponent.h"
 #include "../Camera/Camera.h"
 
 using namespace Editor;

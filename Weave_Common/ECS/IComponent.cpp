@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "IComponent.h"
-#include "../Entity/Entity.h"
 
 using namespace ECS;
 

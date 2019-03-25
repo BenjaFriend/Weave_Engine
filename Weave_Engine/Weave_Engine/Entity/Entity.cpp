@@ -6,22 +6,20 @@
 #include "../Resources/SimpleShader.h"
 #include "../ECS/Component.h"
 
-size_t Entity::EntityCount = 0;
-
 Entity::Entity( std::string aName )
     : Entity()
 {
     Name = aName;
 }
 
-Entity::Entity()
+Entity::Entity() 
+    : IEntity()
 {
 
     IsActive = true;
     IsValid = false;
     IsDestroyableOnLoad = true;
 
-    entID = EntityCount++;
     componentManager = ECS::ComponentManager::GetInstance();
 
     // Give entity component a transform 
@@ -38,7 +36,6 @@ Entity::~Entity()
     RemoveAllComponents();
     EntityTransform = nullptr;
     componentManager = nullptr;
-    --EntityCount;
     IsActive = true;
     IsValid = false;
 }

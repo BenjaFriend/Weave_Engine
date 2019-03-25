@@ -1,6 +1,8 @@
 #pragma once
 
 #include "stdafx.h"
+#include "MemoryBitStream.h"
+#include <memory>
 
 class IEntity
 {
@@ -49,7 +51,22 @@ public:
 
     FORCE_INLINE const size_t GetID() const { return this->entID; }
 
+    /// <summary>
+    /// Write this component to a replicated bit stream
+    /// </summary>
+    /// <param name="inOutputStream"></param>
+    /// <param name="inDirtyState"></param>
+    virtual void Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const;
+
+    /// <summary>
+    /// Read this component from a bit stream
+    /// </summary>
+    /// <param name="inInputStream"></param>
+    virtual void Read( InputMemoryBitStream & inInputStream );
+
 protected:
+
+    static size_t EntityCount;
 
     /** The unique ID of this entity */
     size_t entID;
@@ -66,3 +83,6 @@ protected:
     /** The name of this object */
     std::string Name = "Default Entity";
 };
+
+// Use smart pointers for the client proxy to have safer exits
+typedef std::shared_ptr< IEntity >	IEntityPtr;

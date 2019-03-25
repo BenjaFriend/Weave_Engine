@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include "../ISaveable.h"
+#include "Resources/ISaveable.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations

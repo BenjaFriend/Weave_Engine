@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IComponent.h"
-#include "FamilyTypeID.h"
+#include "ECS/IComponent.h"
+#include "ECS/FamilyTypeID.h"
 #include "Utils/SaveFileDefs.h"
 
 #if defined( ENABLE_UI )

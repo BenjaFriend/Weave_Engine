@@ -73,6 +73,8 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
 
         // Send welcome packet to them and tell them what their ID is
         SendWelcomePacket( newClient );
+
+        newClient->SetClientEntity( Scene.AddEntity( newClient->GetName() ) );
     }
     else
     {
@@ -100,7 +102,22 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         break;
         case Input::InputType::Move_Left:
         {
-            LOG_TRACE( "Move left!" );
+            LOG_TRACE( "Move left!" );    
+        }
+        break;
+        case Input::InputType::Move_Right:
+        {
+            LOG_TRACE( "Move_Right" );
+        }
+        break;
+        case Input::InputType::Move_Up:
+        {
+            LOG_TRACE( "Move_Up" );
+        }
+        break;
+        case Input::InputType::Move_Down:
+        {
+            LOG_TRACE( "Move_Down!" );
         }
         break;
         default:

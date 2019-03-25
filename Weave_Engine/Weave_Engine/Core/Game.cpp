@@ -8,7 +8,7 @@
 #include "../Camera/Camera.h"
 #include "../Resources/Materials/Material.h"
 #include "../Scripting/ScriptComponent.h"
-#include "../ECS/IComponent.h"
+#include "ECS/IComponent.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
 #include "../Physics/BoxCollider.h"

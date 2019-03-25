@@ -3,6 +3,7 @@
 #include  <boost/asio.hpp>
 #include <string>
 #include <memory>
+#include "Entity/IEntity.h"
 
 class  ClientProxy
 {
@@ -19,6 +20,10 @@ public:
 
     FORCE_INLINE const UINT32 GetPlayerID() const { return PlayerId; }
 
+    void SetClientEntity( IEntityPtr aEnt ) { ClientEntity = aEnt; }
+
+    IEntityPtr GetClientEntity() { return  ClientEntity; }
+
 private:
 
     /** The remote endpoint of this client */
@@ -29,6 +34,10 @@ private:
 
     /** Player's unique ID */
     UINT32 PlayerId;
+
+    /** pointer to this client's entity */
+    IEntityPtr ClientEntity;
+
 };
 
 // Use smart pointers for the client proxy to have safer exits
