@@ -46,7 +46,7 @@ typedef std::wstring                FileName;
 
 // Using other another graphics library
 typedef std::string                FileName;
-#define FORCE_INLINE                __forceinline
+#define FORCE_INLINE                inline
 #define W_UNUSED                    __attribute__ ((unused))
 
 #endif
