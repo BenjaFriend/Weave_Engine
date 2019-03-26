@@ -10,3 +10,6 @@
 [submodule "Weave_Engine/additional/glm"]
 	path = Weave_Engine/additional/glm
 	url = git@github.com:g-truc/glm.git
+[submodule "Weave_Tests/Catch2"]
+	path = Weave_Tests/Catch2
+	url = git@github.com:catchorg/Catch2.git
