@@ -24,7 +24,8 @@ node {
        sh "make -C \$PWD"
     }
 
-    stage('Results') {
-        echo 'Ya boi is done'
+    stage('Unit Tests') {
+        echo 'Run Unit tests...'
+        sh "./Weave_Tests/bin/WEAVE_TESTS"
     }
 }
