@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IComponent.h"
-#include "FamilyTypeID.h"
-#include "../Utils/SaveFileDefs.h"
+#include "ECS/IComponent.h"
+#include "ECS/FamilyTypeID.h"
+#include "Utils/SaveFileDefs.h"
 
 namespace ECS
 {
@@ -30,7 +30,7 @@ namespace ECS
             return STATIC_COMPONENT_TYPE_ID;
         }
 
-        virtual const char* ComponentName() = 0;
+        virtual const char* ComponentName() override = 0;
 
     protected:
 
@@ -42,5 +42,4 @@ namespace ECS
     // which will set its unique identifier.
     template<class T>
     const ComponentTypeId ECS::Component<T>::STATIC_COMPONENT_TYPE_ID = ECS::Util::FamilyTypeID<IComponent>::Get<T>();
-
 }

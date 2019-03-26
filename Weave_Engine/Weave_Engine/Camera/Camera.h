@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdio.h>
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "../Input/InputManager.h"   // Input
+#include "UI_OPTIONS.h"
 
 /////////////////////////////////////////////////
 // Forward Declarations
@@ -75,7 +76,25 @@ public:
     void SetSouthPaw( const bool val ) { SouthPaw = val; }
     const bool GetSouthPaw() const { return SouthPaw; }
 
+    /// <summary>
+    /// The ID of the current camera
+    /// </summary>
+    /// <returns></returns>
+    const size_t GetCameraID() const { return CameraID;  }
+
+    /// <summary>
+    /// Set this camera as the one to be used for rendering right now
+    /// </summary>
+    void SetAsActiveCamera();
+
+    bool const GetDoMovement() const { return DoMovement; }
+    void SetDoMovement( const bool aDoMove ) { DoMovement = aDoMove; }
+
 protected:
+
+    static size_t CameraCount;
+
+    size_t CameraID = 0;
 
     /** Destructor for camera class */
     ~Camera();
@@ -95,7 +114,9 @@ private:
     float YawAngle;
 
     /** Option for south paw controls */
-    bool SouthPaw = false;
+    UINT32 SouthPaw : 1;
+
+    bool DoMovement = true;
 
     /** Current position of the camera */
     glm::vec3 Pos;

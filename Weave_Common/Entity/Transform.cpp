@@ -38,9 +38,11 @@ Transform::~Transform()
 
 void Transform::DrawEditorGUI()
 {
+#ifndef WEAVE_SERVER
     ImGui::InputFloat3( "Position", ( float* ) &Position );
     ImGui::InputFloat3( "Scale", ( float* ) &Scale );
     ImGui::InputFloat3( "Rotation", ( float* ) &Rotation );
+#endif
 }
 
 void Transform::SaveComponentData( nlohmann::json & comp_data )

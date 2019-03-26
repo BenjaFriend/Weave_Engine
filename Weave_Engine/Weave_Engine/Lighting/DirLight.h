@@ -3,7 +3,8 @@
 #include "stdafx.h"
 
 #include "LightShaderDefs.h"
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
+#include "UI_OPTIONS.h"
 
 class LightSystem;
 

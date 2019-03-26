@@ -3,7 +3,8 @@ FlyingCamera = {}
 cameraSpeed = 5.5;
 rotSpeed = 5.5;
 prevMousePos = VEC2:new( 0, 0 );
-
+movement = VEC3:new(0, 0, 0);
+rot = VEC2:new( 0, 0 );
 -----------------------------------------------
 --- Called from C++ when we are initialized ---
 -----------------------------------------------
@@ -13,7 +14,11 @@ end
 
 function update( deltaTime )
 
-	movement = VEC3:new(0, 0, 0)
+	movement.x = 0;
+	movement.y = 0;
+	movement.z = 0;
+	rot.x= 0;
+	rot.y = 0;
 
 	if IsCKeyDown('W') then
 		movement.z = movement.z + 1
@@ -34,10 +39,7 @@ function update( deltaTime )
 	end
 	if IsCKeyDown('X') then
 		movement.y = movement.y - 1;
-	end
-
-
-	rot = VEC2:new( 0, 0 );
+	end	
 
 	curMousePos = GetMousePosition();	-- returns a vector 2 of mouse pos
 
@@ -46,6 +48,7 @@ function update( deltaTime )
 		rot.x = ( curMousePos.x - prevMousePos.x ) * deltaTime * rotSpeed;
 		rot.y = -1 * ( curMousePos.y - prevMousePos.y ) * deltaTime * rotSpeed;
 	end
+
 	movement.x = movement.x * deltaTime * cameraSpeed;
 	movement.y = movement.y * deltaTime * cameraSpeed;
 	movement.z = movement.z * deltaTime * cameraSpeed;

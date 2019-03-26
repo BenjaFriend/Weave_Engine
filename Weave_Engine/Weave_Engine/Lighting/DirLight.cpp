@@ -82,7 +82,7 @@ void DirLight::DrawEditorGUI()
     ImGui::Checkbox( "Is Enabled", &this->isEnabled );
     if ( ImGui::Button( "Remove" ) )
     {
-        OwningEntity->RemoveComponent<DirLight>();
+        OwningEntity->GetAsEntity()->RemoveComponent<DirLight>();
     }
     ImGui::ColorEdit3( "Ambient Color", ( float* ) &LightingData.AmbientColor );
     ImGui::ColorEdit3( "Diffuse Color", ( float* ) &LightingData.DiffuseColor );

@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "Scenes/IScene.h"
+
 #include "../Resources/Materials/Material.h"
 #include "../Resources/Mesh.h"
 #include "../Resources/SimpleShader.h"
@@ -12,7 +14,7 @@
 #include "stdafx.h"
 #include "../Entity/Entity.h"
 
-#include "../Utils/ObjectPool.hpp"
+#include "Utils/ObjectPool.hpp"
 
 namespace SceneManagement
 {
@@ -23,13 +25,15 @@ namespace SceneManagement
     /// A scene data structure for controlling what things are currently 
     /// enabled at runtime
     /// </summary>
-    class Scene
+    class Scene : public IScene
     {
     public:
 
         Scene();
 
-        ~Scene();
+        virtual ~Scene();
+
+        virtual void Read( InputMemoryBitStream& inInputStream ) override;
 
         /// <summary>
         /// Adds an entity to the game with no mesh. Adds this entity to the 
@@ -70,7 +74,7 @@ namespace SceneManagement
         /// </summary>
         void ResetScene();
 
-        FORCE_INLINE Entity* GetEntityArray() const { return EntityArray_Raw; }
+        FORCE_INLINE Entity* GetEntityArray() const { return reinterpret_cast< Entity* > ( EntityArray_Raw ); }
 
         /// <summary>
         /// Get this scene's name
@@ -83,8 +87,8 @@ namespace SceneManagement
         FORCE_INLINE Entity* GetEntity( Entity_ID aID )
         {
             if ( aID < 0 || aID > MAX_ENTITY_COUNT ) return nullptr;
-            
-            return &EntityArray_Raw [ aID ];    
+
+            return reinterpret_cast< Entity* >( &EntityArray_Raw [ aID ] );
         }
 
         FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
@@ -110,9 +114,6 @@ namespace SceneManagement
         /// </summary>
         /// <param name="aPixShader">Pixel shader to send lighting info to</param>
         void SetLightData( SimplePixelShader* aPixShader );
-
-        /** This scene's name */
-        std::string SceneName = "DEFAULT_SCENE";
 
         /** A raw array of entity data */
         Entity* EntityArray_Raw = nullptr;

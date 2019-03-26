@@ -1,8 +1,11 @@
 #include "stdafx.h"
 
 #include "Camera.h"
-#include "Transform.h"
+#include "Entity/Transform.h"
 #include "../Entity/Entity.h"
+#include "CameraManager.h"
+
+size_t Camera::CameraCount = 0;
 
 COMPONENT_INIT( Camera )
 
@@ -12,6 +15,8 @@ COMPONENT_INIT( Camera )
 #define UP_SAVE_KEY             "Up"
 #define YAW_ANGLE_SAVE_KEY      "Yaw"
 #define PITCH_ANGLE_SAVE_KEY    "Pitch"
+#define DO_MOVEMENT_KEY         "Do_Movement"
+#define DO_SOUTH_PAW_KEY        "South_Paw"
 
 Camera::Camera()
 {
@@ -25,29 +30,34 @@ Camera::Camera()
     YawAngle = 90;
 
     inputManager = Input::InputManager::GetInstance();
+    SouthPaw = false;
+    DoMovement = true;
+
+    CameraID = CameraCount++;
+    CameraManager::GetInstance()->RegisterCamera( CameraID, this );
+    // I want to set this camera as the active one when a scene is loaded
+    SetAsActiveCamera();
 }
 
 Camera::Camera( nlohmann::json const & aInitData )
+    : Camera()
 {
     Pos = {};
     Pos.x = aInitData [ POS_SAVE_KEY ] [ "X" ];
     Pos.y = aInitData [ POS_SAVE_KEY ] [ "Y" ];
     Pos.z = aInitData [ POS_SAVE_KEY ] [ "Z" ];
 
+    DoMovement = aInitData [ DO_MOVEMENT_KEY ];
+    SouthPaw = aInitData [ DO_SOUTH_PAW_KEY ];
 
     RelativeInput = glm::vec3( 0.f, 0.f, 0.f );
-    Up = DEFAULT_UP;
-    Forward = DEFAULT_FORWARD;
-    Right = DEFAULT_RIGHT;
-
-    PitchAngle = 0;
-    YawAngle = 90;
-
-    inputManager = Input::InputManager::GetInstance();
 }
 
 Camera::~Camera()
 {
+    CameraManager::GetInstance()->UnregisterCamera( CameraID );
+    --CameraCount;
+
     inputManager = nullptr;
 }
 
@@ -76,6 +86,10 @@ void Camera::SaveComponentData( nlohmann::json & aCompData )
     aCompData [ POS_SAVE_KEY ] [ "X" ] = Pos.x;
     aCompData [ POS_SAVE_KEY ] [ "Y" ] = Pos.y;
     aCompData [ POS_SAVE_KEY ] [ "Z" ] = Pos.z;
+
+    aCompData [ DO_MOVEMENT_KEY ] = ( bool ) ( DoMovement );
+    aCompData [ DO_SOUTH_PAW_KEY ] = ( bool ) ( SouthPaw );
+
 }
 
 void Camera::DrawEditorGUI()
@@ -83,15 +97,30 @@ void Camera::DrawEditorGUI()
     ImGui::InputFloat( "FOV", &FOV );
     ImGui::InputFloat( "NearZ", &NearZ );
     ImGui::InputFloat( "FarZ", &FarZ );
+
+    ImGui::Text( "Camera ID: %ld", CameraID );
+
+    ImGui::Checkbox( "Do Movement", &DoMovement );
+
+    if ( ImGui::Button( "Set as active Camera" ) )
+    {
+        SetAsActiveCamera();
+    }
+
+    if ( ImGui::Button( "Use Debug Camera" ) )
+    {
+        CameraManager::GetInstance()->SetDebugCameraActive();
+    }
 }
 
 void Camera::UpdateProjectionMatrix( const float aWidth, const float aHeight )
 {
     Pos = this->GetPosition();
+    Entity* ent = OwningEntity->GetAsEntity();
 
-    if ( OwningEntity != nullptr )
+    if ( ent != nullptr )
     {
-        Transform* transform = OwningEntity->GetTransform();
+        Transform* transform = ent->GetTransform();
         Pos = transform->GetPosition();
         Forward = transform->GetForward();
         Right = transform->GetRight();
@@ -113,9 +142,11 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
     glm::clamp( PitchAngle, -MAX_PITCH, MAX_PITCH );
     YawAngle += static_cast< float >( aDeltaMouseX ) * SENSITIVITY * ( SouthPaw ? 1.f : -1.f );
 
-    if ( OwningEntity != nullptr )
+    Entity* ent = OwningEntity->GetAsEntity();
+
+    if ( ent != nullptr )
     {
-        Transform* transform = OwningEntity->GetTransform();
+        Transform* transform = ent->GetTransform();
         transform->SetRotation( { 0, YawAngle, PitchAngle } );
         Forward = transform->GetForward();
         Right = transform->GetRight();
@@ -138,8 +169,16 @@ void Camera::UpdateMouseInput( const long aDeltaMouseX, const long aDeltaMouseY 
 const glm::vec3 Camera::GetPosition() const
 {
     if ( OwningEntity == nullptr ) return glm::vec3( 0.f, 0.f, 0.f );
-    Transform* transform = OwningEntity->GetTransform();
-    return transform->GetPosition();
+    Entity* ent = OwningEntity->GetAsEntity();
+    if ( ent != nullptr )
+    {
+        Transform* transform = ent->GetTransform();
+        return transform->GetPosition();
+    }
+    else
+    {
+        return glm::vec3( 0.f );
+    }
 }
 
 void Camera::SetPosition( glm::vec3 position )
@@ -155,4 +194,9 @@ const glm::mat4 Camera::GetViewMatrix() const
 const glm::mat4 Camera::GetProjectMatrix() const
 {
     return Projection;
+}
+
+void Camera::SetAsActiveCamera()
+{
+    CameraManager::GetInstance()->SetActiveCamera( CameraID );
 }

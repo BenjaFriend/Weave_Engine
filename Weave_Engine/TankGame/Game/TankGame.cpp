@@ -1,13 +1,10 @@
 #include "pch.h"
 #include "TankGame.h"
 
-//TEMP
-#include "Scripting\ScriptComponent.h"
-
 using namespace Tanks;
 
 TankGame::TankGame( HINSTANCE hInstance )
-    : Game	( hInstance )
+    : Game( hInstance )
 {
 }
 
@@ -21,6 +18,7 @@ void TankGame::Init()
 {
     Game::Init();
 
+    PlayerMoves::Init();
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
@@ -32,7 +30,7 @@ void TankGame::Update( float deltaTime, float totalTime )
     case Tanks::EGameState::Playing:
     {
         NetMan->ProcessIncomingPackets();
-        NetMan->SendOutgoingPackets();
+        NetMan->SendOutgoingPackets( totalTime );
     }
     break;
     default:
@@ -65,6 +63,34 @@ void Tanks::TankGame::DrawUI()
     default:
         break;
     }
+
+    // Draw client state
+    {
+        ImGui::Begin( "Client State" );
+        std::string stateText = "Uninitalized";
+        if ( NetMan != nullptr )
+        {
+            switch ( NetMan->GetClientState() )
+            {
+            case ClientNetworkManager::EClientState::Uninitalized:
+                stateText = "Uninitalized";
+            break;
+            case ClientNetworkManager::EClientState::SayingHello:
+                stateText = "Saying Hello...";
+            break;
+            case ClientNetworkManager::EClientState::Welcomed:
+                stateText = "Welcomed!";
+            break;
+            default:
+                break;
+            }
+        }
+        
+        ImGui::Text( "Client State: %s", stateText.c_str() );
+
+        ImGui::End();
+    }
+
 }
 
 void Tanks::TankGame::DrawMainMenu()
@@ -92,4 +118,9 @@ void Tanks::TankGame::DrawMainMenu()
         Quit();
     }
     ImGui::End();
+}
+
+void Tanks::TankGame::DrawGameUI()
+{
+    
 }

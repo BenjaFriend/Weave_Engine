@@ -1,3 +1,5 @@
+#include "Config.h"
+
 #include "stdafx.h"
 
 #include <iostream>
@@ -8,7 +10,6 @@
 #include <assert.h>
 
 #include "ServerUtils.h"
-#include "Config.h"
 #include "WeaveServer.h"
 
 int main( int argc, char* argv [] )

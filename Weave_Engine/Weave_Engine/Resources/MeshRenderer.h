@@ -1,13 +1,14 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "Mesh.h"
 #include "Materials/Material.h"
 #include "MathHelper.h"
-#include "../Entity/Transform.h"
+#include "Entity/Transform.h"
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
 #include "../Resources/ResourceManager.h"
+#include "UI_OPTIONS.h"
 
 /// <summary>
 /// A mesh renderer is a component that when added to an entity
@@ -28,6 +29,13 @@ public:
     /// <param name="aMat">The material to use for this mesh renderer</param>
     /// <param name="aMesh">The material to use for this mesh renderer</param>
     MeshRenderer( Material* aMat, Mesh* aMesh );
+
+    /// <summary>
+    /// Load in this mesh renderer based on file names
+    /// </summary>
+    /// <param name="aMatFile">Material file name</param>
+    /// <param name="aMeshFile">Mesh file name</param>
+    MeshRenderer( const FileName & aMatFile, const FileName & aMeshFile );
 
     /// <summary>
     /// Initalize this mesh renderer from save file data

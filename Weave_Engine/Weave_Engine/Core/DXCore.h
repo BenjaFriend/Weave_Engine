@@ -8,15 +8,16 @@
 #include <d3d11.h>
 #include <string>
 
+#include "Timing.h"
 #include "../Input/InputManager.h"
 #include "../Input/Input_Win.h"
 
 #include "../Scenes/SceneManager.h"
 #include "../Scenes/Scene.h"
 #include "../Resources/ResourceManager.h"
-#include "../ECS/ComponentManager.h"
+#include "ECS/ComponentManager.h"
 #include "../Physics/PhysicsManager.h"
-#include "CameraManager.h"
+#include "../Camera/CameraManager.h"
 
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
@@ -122,16 +123,12 @@ private:
     float totalTime;
     float deltaTime;
     __int64 startTime;
-    __int64 currentTime;
-    __int64 previousTime;
 
     // FPS calculation
     int fpsFrameCount;
     float fpsTimeElapsed;
 
     void InitSystems();
-
-    void UpdateTimer();			// Updates the timer for this frame(
     
     void UpdateTitleBarStats();	// Puts debug info in the title bar
      

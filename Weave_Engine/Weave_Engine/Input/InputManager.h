@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include "../Utils/Dispatcher.hpp"
+#include "Utils/Dispatcher.hpp"
 #include "IInput_Impl.h"
 
 #include <stdio.h>
@@ -76,12 +76,20 @@ namespace Input
 		/// <param name="vKey">Int value of the key</param>
 		/// <returns>True if the key is down</returns>
 		bool IsKeyDown(int vKey);
+
 		/// <summary>
 		/// Test if a key is down
 		/// </summary>
 		/// <param name="vKey">Char value of the key</param>
 		/// <returns>True if the key is down</returns>
 		bool IsCKeyDown( char vKey );
+        
+        /// <summary>
+        /// Check if a certain key is UP
+        /// </summary>
+        /// <param name="vKey">Key to check</param>
+        /// <returns>True if key is up</returns>
+        bool IsKeyUp( int vKey );
 
         void OnLookDown( WPARAM buttonState, int x, int y );
         void OnLookUp( WPARAM buttonState, int x, int y );
@@ -101,6 +109,8 @@ namespace Input
 
         /** Vector of input bindings to keys/buttons */
         std::vector<InputBinding> InputBinds;
+        
+        std::vector< bool > PreviousInputState;
 
     private:
 
@@ -130,6 +140,8 @@ namespace Input
         /// </summary>
         /// <param name="type">The input type</param>
         void SignalInput( InputType type );
+
+
 
     };  // Class InputManager
 

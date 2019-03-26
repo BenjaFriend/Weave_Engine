@@ -156,7 +156,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common;$(SolutionDir)Weave_Engine</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -236,7 +236,7 @@ xcopy /e /d /y "$(SolutionDir)additional\lua\lib\lua52.dll" "$(OutDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)additional\imgui;$(SolutionDir)additional\spdlog\include;$(SolutionDir)additional\json;$(SolutionDir)additional\LuaBridge\Source;$(SolutionDir)additional\lua\include;$(SolutionDir)additional\sol2;$(BOOST_ROOT);$(SolutionDir)additional\assimp\include;$(SolutionDir)..\Weave_Common;$(SolutionDir)Weave_Engine</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -272,6 +272,11 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp" />
+    <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp" />
+    <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp" />
     <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -283,10 +288,12 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Scenes\IScene.cpp" />
     <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Timing.cpp" />
     <ClCompile Include="..\additional\imgui\imgui\imgui.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -317,18 +324,14 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Core\CameraManager.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Camera\CameraManager.cpp" />
     <ClCompile Include="Core\DXCore.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Main.cpp" />
-    <ClCompile Include="ECS\ComponentManager.cpp" />
-    <ClCompile Include="ECS\FamilyTypeID.cpp" />
-    <ClCompile Include="ECS\IComponent.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
-    <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
-    <ClCompile Include="Entity\Transform.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
     <ClCompile Include="Lighting\PointLight.cpp" />
@@ -348,14 +351,27 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Scenes\SceneManager.cpp" />
     <ClCompile Include="Scripting\ScriptComponent.cpp" />
     <ClCompile Include="Scripting\ScriptUtils.cpp" />
-    <ClCompile Include="Utils\ObjectPool.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Weave_Common\ECS\Component.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\ComponentManager.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h" />
+    <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h" />
+    <ClInclude Include="..\..\Weave_Common\Entity\Transform.h" />
+    <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h" />
+    <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
+    <ClInclude Include="..\..\Weave_Common\Timing.h" />
+    <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h" />
+    <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp" />
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui.h" />
     <ClInclude Include="..\additional\imgui\imgui\imgui_impl_dx11.h" />
@@ -364,18 +380,14 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\additional\imgui\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_textedit.h" />
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h" />
-    <ClInclude Include="Core\CameraManager.h" />
+    <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Camera\CameraManager.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Core\DXCore.h" />
     <ClInclude Include="Core\Game.h" />
-    <ClInclude Include="ECS\Component.h" />
-    <ClInclude Include="ECS\ComponentManager.h" />
-    <ClInclude Include="ECS\FamilyTypeID.h" />
-    <ClInclude Include="ECS\IComponent.h" />
     <ClInclude Include="Editor\EditorCore.h" />
     <ClInclude Include="Editor\Gizmo.h" />
-    <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Entity.h" />
-    <ClInclude Include="Entity\Transform.h" />
     <ClInclude Include="Input\IInput_Impl.h" />
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Input\Input_Win.h" />
@@ -386,7 +398,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Physics\Collisions.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Physics\RigidBody.h" />
-    <ClInclude Include="Resources\ISaveable.h" />
     <ClInclude Include="Resources\Materials\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\MeshRenderer.h" />
@@ -397,8 +408,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scripting\ScriptComponent.h" />
     <ClInclude Include="Scripting\ScriptUtils.h" />
-    <ClInclude Include="Utils\Dispatcher.hpp" />
-    <ClInclude Include="Utils\SaveFileDefs.h" />
+    <ClInclude Include="UI_OPTIONS.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

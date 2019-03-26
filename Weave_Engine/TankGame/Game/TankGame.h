@@ -2,6 +2,7 @@
 
 #include <Core/Game.h>
 #include "../Networking/ClientNetworkManager.h"
+#include "PlayerMoves.h"
 
 namespace Tanks
 {
@@ -49,6 +50,11 @@ namespace Tanks
         /// Draws the menu options
         /// </summary>
         void DrawMainMenu();
+    
+        /// <summary>
+        /// Draw the UI that should appear during gameplay
+        /// </summary>
+        void DrawGameUI();
 
     private:
 

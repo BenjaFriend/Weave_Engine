@@ -20,6 +20,9 @@ struct SERVER_INIT_DESC
     /** The max number of rooms that are allowed on this server */
     unsigned short MaxRooms = 4;
 
+    /** The time between client state updates on the server */
+    float StateUpdateTickRate = 1.0f;
+
     friend std::ostream& operator<<( std::ostream& os, const SERVER_INIT_DESC& data )
     {
         os << "\nServer Config";
@@ -76,6 +79,10 @@ namespace ServerUtils
             else if ( firstWord == "MaxRooms" )
             {
                 sscanf( line.c_str(), "MaxRooms : %hu", &aOutDesc.MaxRooms );
+            }
+            else if ( firstWord == "TickRate" )
+            {
+                sscanf( line.c_str(), "TickRate : %f", &aOutDesc.StateUpdateTickRate );
             }
         }
 

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 
 #include "EditorCore.h"
-#include "../ECS/IComponent.h"
+#include "ECS/IComponent.h"
+#include "../Camera/Camera.h"
 
 using namespace Editor;
 
@@ -84,7 +85,8 @@ void EditorCore::Update( float dt )
 
 void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
 {
-    assert( CurrentCamera != nullptr && VertexShader != nullptr && OutlineShader != nullptr );
+    const Camera* CurrentCamera = CameraManager::GetInstance()->GetActiveCamera();
+    assert( VertexShader != nullptr && OutlineShader != nullptr );
     DrawUI();
 
     if ( DoGizmoDraw )

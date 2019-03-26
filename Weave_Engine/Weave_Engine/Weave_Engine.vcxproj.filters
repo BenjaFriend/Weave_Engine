@@ -25,9 +25,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{e85a9b44-a058-4d21-a21b-9b7163126777}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS">
-      <UniqueIdentifier>{299ebfb2-90f8-4eba-b4eb-a77d63243e4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{1c9e2adb-e382-4805-bf81-7c5c97592a54}</UniqueIdentifier>
     </Filter>
@@ -36,9 +33,6 @@
     </Filter>
     <Filter Include="Editor">
       <UniqueIdentifier>{9acedad1-1d3a-4a7e-8add-fccce6d03104}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{c53457fd-b4a5-4dae-b29e-f15774912ba7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{50e15407-d9e6-4d20-910f-bea14f49b7f2}</UniqueIdentifier>
@@ -55,6 +49,27 @@
     <Filter Include="Weave_Common\Logging">
       <UniqueIdentifier>{bcbd089c-753d-4aae-bb9e-5f9cd9a92753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weave_Common\Input">
+      <UniqueIdentifier>{c7d05cd6-141d-4be6-b2d0-211492bfa58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Utils">
+      <UniqueIdentifier>{6c55ad0f-5c7f-45e9-bebb-44f222d9c4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{3744b0aa-1c80-4f98-80e0-b382b43fdee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Scenes">
+      <UniqueIdentifier>{d2fa5d1f-c843-4761-b880-12b34c8798ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Entity">
+      <UniqueIdentifier>{8640c16b-d66c-48d0-8c58-a45226cc57fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\ECS">
+      <UniqueIdentifier>{ac553fbd-f31b-46aa-9066-23e566451475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Common\Resources">
+      <UniqueIdentifier>{8e6566a8-41c3-41b1-8a40-387f37952a70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\DXCore.cpp">
@@ -65,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="Core\Main.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\Camera.cpp">
-      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Entity\Entity.cpp">
       <Filter>Entity</Filter>
@@ -102,17 +114,11 @@
     <ClCompile Include="..\additional\imgui\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="ECS\ComponentManager.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
     <ClCompile Include="Lighting\PointLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
     <ClCompile Include="Lighting\DirLight.cpp">
       <Filter>Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS\FamilyTypeID.cpp">
-      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="Scripting\ScriptUtils.cpp">
       <Filter>Scripting</Filter>
@@ -132,17 +138,11 @@
     <ClCompile Include="Editor\Gizmo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Transform.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Resources\MeshRenderer.cpp">
       <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS\IComponent.cpp">
-      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\SceneManager.cpp">
       <Filter>Scenes</Filter>
@@ -150,14 +150,8 @@
     <ClCompile Include="Scenes\Scene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Core\CameraManager.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Scripting\ScriptComponent.cpp">
       <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\ObjectPool.hpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
       <Filter>Weave_Common</Filter>
@@ -171,6 +165,33 @@
     <ClCompile Include="..\..\Weave_Common\stdafx.cpp">
       <Filter>Weave_Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Timing.cpp">
+      <Filter>Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\CameraManager.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Scenes\IScene.cpp">
+      <Filter>Weave_Common\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -178,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="Core\Game.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Camera.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Entity.h">
       <Filter>Entity</Filter>
@@ -206,9 +224,6 @@
     <ClInclude Include="Physics\Collisions.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\ISaveable.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="..\additional\imgui\imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -233,23 +248,11 @@
     <ClInclude Include="..\additional\imgui\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\ComponentManager.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\IComponent.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\Component.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting\PointLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Lighting\DirLight.h">
       <Filter>Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\FamilyTypeID.h">
-      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\ScriptUtils.h">
       <Filter>Scripting</Filter>
@@ -269,12 +272,6 @@
     <ClInclude Include="Editor\Gizmo.h">
       <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Transform.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\Dispatcher.hpp">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -287,17 +284,11 @@
     <ClInclude Include="Resources\MeshRenderer.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\SaveFileDefs.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Scenes\SceneManager.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\CameraManager.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\ScriptComponent.h">
       <Filter>Scripting</Filter>
@@ -317,6 +308,56 @@
     <ClInclude Include="..\..\Weave_Common\MathHelper.h">
       <Filter>Weave_Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Timing.h">
+      <Filter>Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h">
+      <Filter>Weave_Common\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\CameraManager.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h">
+      <Filter>Weave_Common\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h">
+      <Filter>Weave_Common\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\ECS\ComponentManager.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_OPTIONS.h" />
+    <ClInclude Include="..\..\Weave_Common\ECS\Component.h">
+      <Filter>Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Entity\Transform.h">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

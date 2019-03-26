@@ -4,24 +4,17 @@
 // https://github.com/tobias-stein/EntityComponentSystem
 
 #include "stdafx.h"
-#include "../Resources/ISaveable.h"
-#include "../Utils/SaveFileDefs.h"
+#include "Resources/ISaveable.h"
+#include "Utils/SaveFileDefs.h"
 #include "json/json.hpp"
-
-#if defined( ENABLE_UI )
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-
-#endif
+#include "MemoryBitStream.h"
 
 /// <summary>
 /// Add miscellaneous component meta data to a component class
 /// </summary>
-#define COMPONENT( name )                                               \
-    static const char* ClassName() { return #name; }                    \
-    virtual char const* ComponentName() { return ClassName();  }        \
+#define COMPONENT( name )                                                       \
+    static const char* ClassName() { return #name; }                            \
+    virtual char const* ComponentName() override { return ClassName();  }       \
     const static ECS::IComponent::ConcreteFactory< name > CompFactory; 
 
 /// <summary>
@@ -33,10 +26,11 @@
 
 #define REMOVE_COMP_BTN( name )                                             \
     if( ImGui::Button("Remove Component") )                                 \
-    { OwningEntity->RemoveComponent< name > (); return; }               
+    { OwningEntity->GetAsEntity()->RemoveComponent< name > (); return; }               
     
 
-class Entity;
+class IEntity;
+
 namespace ECS
 {
     using ComponentID = size_t;
@@ -60,13 +54,33 @@ namespace ECS
         /// Natively draw any IMGUI fields that are to be used
         /// with this component here
         /// </summary>
-        virtual void DrawEditorGUI() = 0;
+        virtual void DrawEditorGUI() {}
 
         /// <summary>
         /// Write the data for this component to a file
         /// </summary>
         /// <param name="aOutFile">The file stream to write to</param>
         virtual void SaveObject( nlohmann::json & aEntComponentArray );
+
+        /// <summary>
+        /// Write this component to a replicated bit stream
+        /// </summary>
+        /// <param name="inOutputStream"></param>
+        /// <param name="inDirtyState"></param>
+        virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const
+        {
+            ( void ) inOutputStream;
+            ( void ) ( inDirtyState );
+        }
+
+        /// <summary>
+        /// Read this component from a bit stream
+        /// </summary>
+        /// <param name="inInputStream"></param>
+        virtual void Read( InputMemoryBitStream& inInputStream )
+        {
+            ( void ) ( inInputStream );
+        }
 
         ////////////////////////////////////////////////////    
         // Operators 
@@ -77,11 +91,11 @@ namespace ECS
         /////////////////////////////////////////////////    
         // Accessors 
 
-        inline const ComponentID GetComponentId() const { return this->id; }
+        FORCE_INLINE const ComponentID GetComponentId() const { return this->id; }
 
-        inline const bool IsEnabled() const { return this->isEnabled; }
+        FORCE_INLINE const bool IsEnabled() const { return this->isEnabled; }
 
-        inline void SetEnabled( bool aEnabledState )
+        FORCE_INLINE void SetEnabled( bool aEnabledState )
         {
             this->isEnabled = aEnabledState;
             ( this->isEnabled ? OnEnable() : OnDisable() );
@@ -91,9 +105,9 @@ namespace ECS
         /// Get the owning Entity ID of this component
         /// </summary>
         /// <returns>Entity ID of the owning entity</returns>
-        const EntityID& GetOwner() const { return this->owner; }
+        FORCE_INLINE const size_t& GetOwner() const { return this->owner; }
 
-        const Entity* GetEntity() const { return OwningEntity; }
+        FORCE_INLINE IEntity* GetEntity() const { return OwningEntity; }
 
         /// <summary>
         /// Get the human-readable name of this component
@@ -171,9 +185,9 @@ namespace ECS
         bool isEnabled = true;
 
         /** The owner of this component */
-        EntityID owner;
+        size_t owner;
 
-        Entity* OwningEntity = nullptr;
+        IEntity* OwningEntity = nullptr;
 
         virtual void OnEnable() {}
 

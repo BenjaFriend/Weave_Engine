@@ -10,6 +10,11 @@ InputManager::InputManager( IInput_Impl * impl )
 {
     impl->InitBindings( InputBinds );
     Implementation = impl;
+
+    for ( size_t i = 0; i < InputBinds.size(); ++i )
+    {
+        PreviousInputState.push_back( false );
+    }
 }
 
 InputManager::~InputManager()
@@ -47,12 +52,12 @@ void InputManager::SignalInput( InputType type )
 void InputManager::OnMouseDown( WPARAM buttonState, int x, int y )
 {
     // Test out the signaling of the system
-    SignalInput( InputType::Fire );
+    //SignalInput( InputType::Fire );
 }
 
 void InputManager::OnMouseUp( WPARAM buttonState, int x, int y )
 {
-    SignalInput( InputType::FireReleased );
+    //SignalInput( InputType::FireReleased );
 }
 
 void InputManager::OnMouseMove( WPARAM buttonState, int x, int y )
@@ -67,13 +72,22 @@ glm::vec2 InputManager::GetMousePosition() const
 
 void Input::InputManager::Update( float dt )
 {
-    for ( const auto & inputVal : InputBinds )
+    for ( size_t i = 0; i < InputBinds.size(); ++i )
     {
-        if ( IsKeyDown( inputVal.InputValue ) )
+        if ( IsKeyDown( InputBinds [ i ].InputValue ) )
         {
-            SignalInput( inputVal.Type );
+            if ( !PreviousInputState [ i ] )
+            {
+                SignalInput( InputBinds [ i ].Type );
+                PreviousInputState [ i ] = true;
+            }
+        }
+        else
+        {
+            PreviousInputState [ i ] = false;
         }
     }
+
 
     // Check any other specific things here
 }
@@ -86,6 +100,11 @@ bool InputManager::IsKeyDown( int vKey )
 bool InputManager::IsCKeyDown( char vKey )
 {
     return GetAsyncKeyState( vKey ) & 0x80000;
+}
+
+bool Input::InputManager::IsKeyUp( int vKey )
+{
+    return !IsKeyDown( vKey );
 }
 
 void Input::InputManager::OnLookDown( WPARAM buttonState, int x, int y )

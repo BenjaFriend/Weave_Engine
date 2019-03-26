@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../ECS/Component.h"
+#include "ECS/Component.h"
 #include "ScriptUtils.h"
+#include "UI_OPTIONS.h"
 
 class ScriptComponent : public ECS::Component< ScriptComponent >
 {
