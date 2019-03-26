@@ -1,21 +1,25 @@
 node {
-    //sh 'env > env.txt'
-    //for (String i : readFile('env.txt').split("\r?\n")) {
-    //    println i
-    //}
 
     sh "echo \$PWD"
 
     stage('Preparation') { // for display purposes
-
         // Get some code from a GitHub repository
         git 'https://github.com/BenjaFriend/Weave_Engine.git'
     }
 
-    stage('Build') {
-       echo 'Hello I am in the buiiild stage!'
+    stage('Build Server GCC') {
+       echo 'Building with GCC...'
+       sh "g++ --version"
        // Run CMake here, maybe inside a docker container?
-       sh "cmake \$PWD/Weave_Server"
+       sh "cmake \$PWD/Weave_Server -DUSE_CLANG=OFF"
+       sh "make \$PWD/Weave_Server"
+    }
+
+    stage('Build Server Clang') {
+       echo 'Building with Clang...'
+       sh "clang++ --version"
+       // Run CMake here, maybe inside a docker container?
+       sh "cmake \$PWD/Weave_Server -DUSE_CLANG=ON"
        sh "make \$PWD/Weave_Server"
     }
 

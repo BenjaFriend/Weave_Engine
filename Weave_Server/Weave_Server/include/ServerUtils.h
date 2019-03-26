@@ -21,14 +21,15 @@ struct SERVER_INIT_DESC
     unsigned short MaxRooms = 4;
 
     /** The time between client state updates on the server */
-    float StateUpdateTickRate = 1.0f;
+    float StateUpdateTickRate = 0.5f;
 
     friend std::ostream& operator<<( std::ostream& os, const SERVER_INIT_DESC& data )
     {
         os << "\nServer Config";
         os << "\n\tListen Port: \t" << data.ListenPort;
         os << "\n\tResponse Port: \t" << data.ResponsePort;
-        os << "\n\tMax Rooms: \t" << data.MaxRooms << "\n";
+        os << "\n\tMax Rooms: \t" << data.MaxRooms;
+        os << "\n\tTickRate: \t" << data.StateUpdateTickRate << "\n";
         return os;
     }
 };

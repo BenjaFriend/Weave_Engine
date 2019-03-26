@@ -50,12 +50,10 @@ namespace ECS
         /// <param name="...args">Arguments for your component's constructor</param>
         /// <returns>Pointer to the newly created component</returns>
         template<class T, class ...ARGS>
-        T* AddComponent( IEntity* aEntity, ARGS&&... args )
+        T* AddComponent( IEntity* aEntity, const ECS::EntityID aEntityID, ARGS&&... args )
         {
             assert( aEntity != nullptr );
             const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
-
-            const ECS::EntityID aEntityID = aEntity->GetID();
 
             // Make sure that this component doesn't exist already
             assert( this->activeComponents [ aEntityID ] [ CTID ] == nullptr );
