@@ -13,7 +13,7 @@ public:
 
     ~ObjectPool();
 
-    FORCE_INLINE const bool IsEmpty() const { AvailableIndecies.empty(); }
+    FORCE_INLINE const bool IsEmpty() const { return AvailableIndecies.empty(); }
 
     FORCE_INLINE const bool IsFull() const { return AvailableIndecies.size() == MaxSize; }
 
