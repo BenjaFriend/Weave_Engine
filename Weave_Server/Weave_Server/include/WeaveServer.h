@@ -78,7 +78,11 @@ private:
     /** The thread the user input will be checked on */
     std::thread userInputThread;
 
+    /** Delta time of the server */
+    float DeltaTime;
 
+    /** Total time that the program has been running */
+    float TotalTime;
 
     /** Time between input updates */
     float TimeOfLastStateUpdate;

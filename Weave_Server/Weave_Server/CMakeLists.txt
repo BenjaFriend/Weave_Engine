@@ -13,6 +13,13 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/_Output/$<CONFIG> )
 # Sets the output directory
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin" )
 
+option( USE_CLANG "build application with clang" OFF ) # OFF is the default
+
+if( USE_CLANG )
+    set( CMAKE_C_COMPILER   "/usr/bin/clang" )
+    set( CMAKE_CXX_COMPILER "/usr/bin/clang++" )
+endif( USE_CLANG )
+
 message( STATUS "Using compiler:\t " ${CMAKE_CXX_COMPILER} )
 
 ################# Add Boost #####################
@@ -86,7 +93,7 @@ message ( STATUS "LINK_DIRS: " ${LINK_DIRS} )
 if( MSVC )
     set ( MY_COMPILER_FLAGS "/W3" )
 else()
-    set ( MY_COMPILER_FLAGS "-Wall -Wno-reorder" )
+    set ( MY_COMPILER_FLAGS "-Wall -Wno-reorder -Wno-unknown-pragmas -Wno-multichar" )
 endif()
 
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_COMPILER_FLAGS}" )
