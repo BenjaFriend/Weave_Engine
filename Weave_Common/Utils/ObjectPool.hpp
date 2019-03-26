@@ -17,6 +17,8 @@ public:
 
     FORCE_INLINE const bool IsFull() const { return AvailableIndecies.size() == MaxSize; }
 
+    FORCE_INLINE const size_t GetNumberAvailableResources() const { return AvailableIndecies.size(); }
+
     /// <summary>
     /// Get an available resource 
     /// </summary>

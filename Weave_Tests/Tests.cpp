@@ -5,14 +5,37 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
 #include "catch2/catch.hpp"
+#include "stdafx.h"
 
-int my_add( int a, int b ) 
+#include "Utils/ObjectPool.hpp"
+
+#include "MemoryBitStream.h"
+
+TEST_CASE ( "OutputMemoryBitStream", "[OutputMemoryBitStream]" )
 {
-	return ( a + b );
-} 
+    char buf [ 64 ] = {};
+
+    InputMemoryBitStream stream( buf, 64 );
+
+    REQUIRE( stream.GetBufferPtr() != nullptr );
+}
 
 
-TEST_CASE( "inital test case", "[factorial]" )
+TEST_CASE ( "Object Pool Get", "[ObjectPool]" )
 {
-    REQUIRE( 4 == my_add( 2, 2 ) );
+    const size_t size = 4;
+
+    ObjectPool< int > pool( size );
+
+    SECTION( "Size checking" )
+    {
+        REQUIRE( pool.GetNumberAvailableResources() == size );
+        REQUIRE( pool.IsEmpty() == false );
+    }
+
+    SECTION( "Null checks" )
+    {
+        int* res = pool.GetResource();
+        REQUIRE( res != nullptr );
+    }
 }

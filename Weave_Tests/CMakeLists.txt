@@ -11,7 +11,14 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/_Output/$<CONFIG> )
 # Sets the output directory
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin" )
 
-include_directories( ../Weave_Common ../Weave_Server/Weave_Server/include )
+include_directories( 
+	../Weave_Common 
+	../Weave_Server/Weave_Server/include 
+    ../Weave_Engine/additional/spdlog/include
+    ../Weave_Engine/additional/glm
+    ../Weave_Engine/additional/json
+
+)
 
 # Prepare "Catch" library for other executables
 set( CATCH_INCLUDE_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/Catch2/single_include )
