@@ -2,7 +2,7 @@ node {
 
     sh "echo \$PWD"
 
-    stage('Preparation') { // for display purposes
+    stage('Preparation') { 
         // Get some code from a GitHub repository
         git 'https://github.com/BenjaFriend/Weave_Engine.git'
         sh "git submodule update --init --recursive;"
@@ -11,21 +11,36 @@ node {
     stage('Build Server GCC') {
        echo 'Building with GCC...'
        sh "g++ --version"
-       // Run CMake here, maybe inside a docker container?
        sh "cmake \$PWD -DUSE_CLANG=OFF"
        sh "make -C \$PWD"
+    }
+
+    stage('Unit Tests GCC') {
+        sh "g++ --version"
+        sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=OFF"
+        sh "make -C \$PWD/Weave_Tests"
+        
+        echo 'Run Unit tests...'
+        sh ".\$PWD/Weave_Tests/bin/WEAVE_TESTS"
     }
 
     stage('Build Server Clang') {
        echo 'Building with Clang...'
        sh "clang++ --version"
-       // Run CMake here, maybe inside a docker container?
+
        sh "cmake \$PWD -DUSE_CLANG=ON"
        sh "make -C \$PWD"
     }
 
-    stage('Unit Tests') {
+    stage('Unit Tests Clang') {
+        sh "clang++ --version"
+        
+        sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=ON"
+        sh "make -C \$PWD/Weave_Tests"
+        
         echo 'Run Unit tests...'
-        sh "./Weave_Tests/bin/WEAVE_TESTS"
+        sh ".\$PWD/Weave_Tests/bin/WEAVE_TESTS"
     }
+
+
 }
