@@ -21,7 +21,7 @@ node {
         sh "make -C \$PWD/Weave_Tests"
         
         echo 'Run Unit tests...'
-        sh ".\$PWD/Weave_Tests/bin/WEAVE_TESTS"
+        sh "./Weave_Tests/bin/WEAVE_TESTS"
     }
 
     stage('Build Server Clang') {
@@ -34,12 +34,12 @@ node {
 
     stage('Unit Tests Clang') {
         sh "clang++ --version"
-        
+
         sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=ON"
         sh "make -C \$PWD/Weave_Tests"
         
         echo 'Run Unit tests...'
-        sh ".\$PWD/Weave_Tests/bin/WEAVE_TESTS"
+        sh "./Weave_Tests/bin/WEAVE_TESTS"
     }
 
 
