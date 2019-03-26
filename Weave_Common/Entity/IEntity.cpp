@@ -34,6 +34,11 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState
     inOutputStream.Write( pos.y );
     inOutputStream.Write( pos.z );
 
+	const glm::vec3 rot = EntityTransform->GetRotation();
+	inOutputStream.Write(rot.x);
+	inOutputStream.Write(rot.y);
+	inOutputStream.Write(rot.z);
+
     ( void ) ( inDirtyState );
 }
 
@@ -47,7 +52,13 @@ void IEntity::Read( InputMemoryBitStream & inInputStream )
     inInputStream.Read( readPos.y );
     inInputStream.Read( readPos.z );
 
+	glm::vec3 readRot = {};
+	inInputStream.Read(readRot.x);
+	inInputStream.Read(readRot.y);
+	inInputStream.Read(readRot.z);
+
     EntityTransform->SetPosition( readPos );
+	EntityTransform->SetRotation( readRot );
 
     // #TODO: Write out each of this entities components
 

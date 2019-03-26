@@ -85,57 +85,58 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
     }
 }
 
-void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
+void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemoryBitStream & inInputStream)
 {
-    UINT32 sizeOfMoveList = 0;
-    inInputStream.Read( sizeOfMoveList );
+	UINT32 sizeOfMoveList = 0;
+	inInputStream.Read(sizeOfMoveList);
 
-    glm::vec3 inputMovement( 0.f );
+	float inputMovement(0.f);
+	float inputRotation(0.f);
 
-    for ( size_t i = 0; i < sizeOfMoveList; ++i )
-    {
-        UINT8 move = 0;
-        inInputStream.Read( move );
+	for (size_t i = 0; i < sizeOfMoveList; ++i)
+	{
+		UINT8 move = 0;
+		inInputStream.Read(move);
 
-        switch ( static_cast < Input::InputType > ( move ) )
-        {
-        case Input::InputType::Fire:
-        {
-            LOG_TRACE( "PLAYER FIRE MOVE!" );      
-        }
-        break;
-        case Input::InputType::Move_Left:
-        {
-            LOG_TRACE( "Move left!" );    
-            inputMovement.x += 1.0f;
-        }
-        break;
-        case Input::InputType::Move_Right:
-        {
-            LOG_TRACE( "Move_Right" );
-            inputMovement.x -= 1.0f;
-        }
-        break;
-        case Input::InputType::Move_Up:
-        {
-            LOG_TRACE( "Move_Up" );
-            inputMovement.z -= 1.0f;
-        }
-        break;
-        case Input::InputType::Move_Down:
-        {
-            LOG_TRACE( "Move_Down!" );
-            inputMovement.z += 1.0f;
-        }
-        break;
-        default:
-            break;
-        }
-    }
+		switch (static_cast <Input::InputType> (move))
+		{
+		case Input::InputType::Fire:
+		{
+			LOG_TRACE("PLAYER FIRE MOVE!");
+		}
+		break;
+		case Input::InputType::Move_Left:
+		{
+			LOG_TRACE("Move left!");
+			inputRotation += 1.0f;
+		}
+		break;
+		case Input::InputType::Move_Right:
+		{
+			LOG_TRACE("Move_Right");
+			inputRotation -= 1.0f;
+		}
+		break;
+		case Input::InputType::Move_Up:
+		{
+			LOG_TRACE("Move_Up");
+			inputMovement -= 1.0f;
+		}
+		break;
+		case Input::InputType::Move_Down:
+		{
+			LOG_TRACE("Move_Down!");
+			inputMovement += 1.0f;
+		}
+		break;
+		default:
+			break;
+		}
+	}
 
-    // Move the client based on their input to the server
-    glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
-    aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
+	// Move the client based on their input to the server
+	aClient->GetClientEntity()->GetTransform()->MoveRelative(0, 0, inputMovement);
+	aClient->GetClientEntity()->GetTransform()->Rotate(glm::vec3(0, inputRotation, 0));
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
