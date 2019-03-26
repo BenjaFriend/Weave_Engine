@@ -1,15 +1,15 @@
 [submodule "Weave_Engine/imgui"]
 	path = Weave_Engine/imgui
-	url = git@github.com:ocornut/imgui.git
+	url = https://github.com/ocornut/imgui.git
 [submodule "Weave_Engine/additional/spdlog"]
 	path = Weave_Engine/additional/spdlog
-	url = git@github.com:gabime/spdlog.git
+	url = https://github.com/gabime/spdlog.git
 [submodule "Weave_Engine/additional/sol2"]
 	path = Weave_Engine/additional/sol2
-	url = git@github.com:ThePhD/sol2.git
+	url = https://github.com/ThePhD/sol2.git
 [submodule "Weave_Engine/additional/glm"]
 	path = Weave_Engine/additional/glm
-	url = git@github.com:g-truc/glm.git
+	url = https://github.com/g-truc/glm.git
 [submodule "Weave_Tests/Catch2"]
 	path = Weave_Tests/Catch2
-	url = git@github.com:catchorg/Catch2.git
+	url = https://github.com/catchorg/Catch2.git
