@@ -86,6 +86,7 @@ public:
         return
             this->componentManager->AddComponent<T>(
                 this,
+                this->entID,
                 std::forward<P>( param )...
                 );
     }
