@@ -9,6 +9,10 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     ResponsePort( aDesc.ResponsePort ),
     TimeBetweenStateUpdates( aDesc.StateUpdateTickRate )
 {
+    // #TODO: Set up a room concept for the server
+    ( void )( ResponsePort );
+    ( void )( MaxRooms );
+
     NetworkMan = new ServerNetworkManager();
     NetworkMan->Init( ListenPort );
 
