@@ -123,6 +123,8 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
 
 void Tanks::ClientNetworkManager::SendInputPacket()
 {
+	PlayerMoves::Instance->UpdateMoveQueue();
+
     if ( PlayerMoves::Instance->HasMoves() )
     {
         // If the client has hit any buttons

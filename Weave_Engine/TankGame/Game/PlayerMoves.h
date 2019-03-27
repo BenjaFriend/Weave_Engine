@@ -27,9 +27,11 @@ namespace Tanks
         /// <returns>True if the queue of moves is not empty</returns>
         bool HasMoves() { return !MoveQueue.empty(); }
 
+		void UpdateMoveQueue();
+
         const std::deque<Input::InputType> & GetMoveQueue() const { return MoveQueue; }
 
-        void MoveLeft() { MoveQueue.push_back( Input::InputType::Move_Left ); }
+        void MoveLeft() { LOG_TRACE("Action"); MoveQueue.push_back( Input::InputType::Move_Left ); }
 
         void MoveRight() { MoveQueue.push_back( Input::InputType::Move_Right ); }
         
@@ -43,6 +45,8 @@ namespace Tanks
 
         // Keep track of what buttons have been pressed
         std::deque<Input::InputType> MoveQueue;
+
+		std::unordered_map<Input::InputType, float> inputTime;
 
     };
 }   // namespace Tanks

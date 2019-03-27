@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\ComponentManager.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\FamilyTypeID.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\IComponent.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Entity\IEntity.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Entity\Transform.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Logging\Logger.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\MemoryBitStream.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Networking\NetworkManager.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Scenes\IScene.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Timing.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\stdafx.cpp">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\ClientProxy.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\Main.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\Room.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\ServerNetworkManager.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\ServerScene.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\src\WeaveServer.cpp">
+      <Filter>Weave_Server\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\Component.h">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\ComponentManager.h">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\FamilyTypeID.h">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\ECS\IComponent.h">
+      <Filter>Weave_Server\..\..\Weave_Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Entity\IEntity.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Entity\Transform.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Input\InputBindings.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Logging\Logger.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\MathHelper.h">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\MemoryBitStream.h">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Networking\NetworkManager.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Resources\ISaveable.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Scenes\IScene.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Timing.h">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Utils\Dispatcher.hpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Utils\ObjectPool.hpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Utils\SaveFileDefs.h">
+      <Filter>Weave_Server\..\..\Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\Utils\Singleton.hpp">
+      <Filter>Weave_Server\..\..\Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Common\stdafx.h">
+      <Filter>Weave_Server\..\..\Weave_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\ClientProxy.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\Config.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\Room.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\ServerNetworkManager.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\ServerScene.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\ServerUtils.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\Desktop\General\Coding\C++\Weave\Weave_Engine\Weave_Server\Weave_Server\include\WeaveServer.h">
+      <Filter>Weave_Server\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Weave_Server">
+      <UniqueIdentifier>{F1FC634B-1725-3C0B-8831-93B437EC7DEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..">
+      <UniqueIdentifier>{5933C019-0248-39DB-B9F5-D809B2454662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..">
+      <UniqueIdentifier>{3616E3E9-B7F0-3C5F-B323-220F81C1A39E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common">
+      <UniqueIdentifier>{20C47741-26D1-319A-9453-174703AB0FCD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\ECS">
+      <UniqueIdentifier>{3F46C674-2ED6-3754-B608-A239BF769774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Entity">
+      <UniqueIdentifier>{BBB1C585-67D2-34EE-AD9A-BE5A119DA073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Input">
+      <UniqueIdentifier>{D3D42780-12A4-3433-AE1A-9B9FF60D3E04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Logging">
+      <UniqueIdentifier>{27FEB828-8358-3E8A-A11A-8AEBA54D7DC0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Networking">
+      <UniqueIdentifier>{F1C396EF-A508-37FB-AAD9-A9F6C851D0BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Resources">
+      <UniqueIdentifier>{CFC69234-964B-3248-AC21-C040D492D046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Scenes">
+      <UniqueIdentifier>{074C889D-CC0D-3B82-8B11-069399B9A50A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\..\..\Weave_Common\Utils">
+      <UniqueIdentifier>{460BA556-7FEC-3427-A1FC-A019DB3CDBB4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\include">
+      <UniqueIdentifier>{D6E9EF55-C7F6-3DA3-B306-412450C87A71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weave_Server\src">
+      <UniqueIdentifier>{4DC7E7C7-CC9B-336E-BACF-5C46CBC64FB7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

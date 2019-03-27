@@ -27,7 +27,8 @@ struct SERVER_INIT_DESC
     {
         os << "\nServer Config";
         os << "\n\tListen Port: \t" << data.ListenPort;
-        os << "\n\tResponse Port: \t" << data.ResponsePort;
+		os << "\n\tResponse Port: \t" << data.ResponsePort;
+		os << "\n\tTick Rate: \t" << data.StateUpdateTickRate;
         os << "\n\tMax Rooms: \t" << data.MaxRooms << "\n";
         return os;
     }

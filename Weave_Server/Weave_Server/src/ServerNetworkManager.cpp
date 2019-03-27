@@ -108,25 +108,25 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
 		case Input::InputType::Move_Left:
 		{
 			LOG_TRACE("Move left!");
-			inputRotation += 1.0f;
+			inputRotation += 5.0f;
 		}
 		break;
 		case Input::InputType::Move_Right:
 		{
 			LOG_TRACE("Move_Right");
-			inputRotation -= 1.0f;
+			inputRotation -= 5.0f;
 		}
 		break;
 		case Input::InputType::Move_Up:
 		{
 			LOG_TRACE("Move_Up");
-			inputMovement -= 1.0f;
+			inputMovement -= 0.25f;
 		}
 		break;
 		case Input::InputType::Move_Down:
 		{
 			LOG_TRACE("Move_Down!");
-			inputMovement += 1.0f;
+			inputMovement += 0.25f;
 		}
 		break;
 		default:
