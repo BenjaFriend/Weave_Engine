@@ -49,86 +49,6 @@
                 {
                     "ComponentName": "Transform",
                     "Pos": {
-                        "X": 3.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "Color": {
-                        "B": 0.0,
-                        "G": 0.0,
-                        "R": 1.0
-                    },
-                    "ComponentName": "PointLight",
-                    "Intensity": 1.0,
-                    "Pos": {
-                        "X": 5.0,
-                        "Y": 3.0,
-                        "Z": 0.0
-                    },
-                    "Range": 5.0
-                }
-            ],
-            "DestroyOnLoad": true,
-            "IsActive": true,
-            "Name": "Red point light"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
-                        "X": 0.0,
-                        "Y": 3.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "Color": {
-                        "B": 1.0,
-                        "G": 0.0,
-                        "R": 0.0
-                    },
-                    "ComponentName": "PointLight",
-                    "Intensity": 1.0,
-                    "Pos": {
-                        "X": -5.0,
-                        "Y": 3.0,
-                        "Z": 0.0
-                    },
-                    "Range": 5.0
-                }
-            ],
-            "DestroyOnLoad": true,
-            "IsActive": true,
-            "Name": "blue point light"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
                         "X": 0.0,
                         "Y": 0.0,
                         "Z": 0.0
@@ -159,36 +79,6 @@
                 {
                     "ComponentName": "Transform",
                     "Pos": {
-                        "X": 5.0,
-                        "Y": 1.0,
-                        "Z": 0.0
-                    },
-                    "Rot": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
-                    },
-                    "Scale": {
-                        "X": 1.0,
-                        "Y": 1.0,
-                        "Z": 1.0
-                    }
-                },
-                {
-                    "ComponentName": "MeshRenderer",
-                    "MaterialFile": "Assets/Materials/Cobblestone.wmat",
-                    "Mesh": "Assets/Models/My_Tank.obj"
-                }
-            ],
-            "DestroyOnLoad": true,
-            "IsActive": true,
-            "Name": "Tank Enty"
-        },
-        {
-            "Components": [
-                {
-                    "ComponentName": "Transform",
-                    "Pos": {
                         "X": -1.0368245840072632,
                         "Y": 9.406854629516602,
                         "Z": 17.09549331665039
@@ -206,13 +96,13 @@
                 },
                 {
                     "ComponentName": "Camera",
+                    "Do_Movement": true,
                     "Pos": {
                         "X": -1.0368245840072632,
                         "Y": 9.406854629516602,
                         "Z": 17.09549331665039
                     },
-                    "Do_Movement" : true,
-                    "South_Paw" : false
+                    "South_Paw": false
                 }
             ],
             "DestroyOnLoad": true,

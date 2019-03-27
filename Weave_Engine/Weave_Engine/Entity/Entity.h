@@ -31,8 +31,6 @@ public:
 
     virtual ~Entity();
 
-    virtual class Entity* GetAsEntity() override { return this; }
-
     /// <summary>
     /// Create this entity based off of a scene file data set
     /// </summary>
@@ -50,6 +48,5 @@ public:
     /// Reset this entity for re-use in the next scene.
     /// </summary>
     void Reset();
-
 
 };

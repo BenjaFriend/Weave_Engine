@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "Resources/MeshRenderer.h"
+#include "Lighting/PointLight.h"
 
 using namespace SceneManagement;
 
@@ -46,6 +47,11 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
             // If not, add it
             Entity* ent = AddEntity( "Newly Added rep object" );
             ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+            PointLightData lightData = {};
+            lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
+            lightData.Range = 8.f;            
+            lightData.Intensity = 10.f;
+            ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
             ent->SetNetworkID( networkID );
             AddReplicatedObject( ent );
         }

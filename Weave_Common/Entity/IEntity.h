@@ -107,8 +107,6 @@ public:
 
     FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( entID ); }
 
-    virtual class Entity* GetAsEntity() { return nullptr; }
-
     /// <summary>
     /// Write this component to a replicated bit stream
     /// </summary>

@@ -267,7 +267,7 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                FlyingCamera->GetEntity()->GetAsEntity()->GetTransform()->GetPosition()
+                FlyingCamera->GetEntity()->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(
