@@ -26,7 +26,7 @@
 
 #define REMOVE_COMP_BTN( name )                                             \
     if( ImGui::Button("Remove Component") )                                 \
-    { OwningEntity->GetAsEntity()->RemoveComponent< name > (); return; }               
+    { OwningEntity->RemoveComponent< name > (); return; }               
     
 
 class IEntity;

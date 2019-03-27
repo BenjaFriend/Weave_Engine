@@ -153,7 +153,7 @@ void MeshRenderer::PrepareMaterial( const glm::highp_mat4 & aView, const glm::hi
     // in the future I want to experiment with different meshes/material 
     // settings
     CurrentMaterial->SetShaderValues(
-        OwningEntity->GetAsEntity()->GetTransform()->GetWorldMatrix(),
+        OwningEntity->GetTransform()->GetWorldMatrix(),
         aView,
         aProjection
     );
