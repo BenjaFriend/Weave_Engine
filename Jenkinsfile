@@ -17,8 +17,8 @@ node {
 
     stage('Unit Tests GCC') {
         sh "g++ --version"
-        sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=OFF"
-        sh "make -C \$PWD/Weave_Tests"
+        //sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=OFF"
+        //sh "make -C \$PWD/Weave_Tests"
         
         echo 'Run Unit tests...'
         sh "./Weave_Tests/bin/WEAVE_TESTS"
@@ -35,8 +35,8 @@ node {
     stage('Unit Tests Clang') {
         sh "clang++ --version"
 
-        sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=ON"
-        sh "make -C \$PWD/Weave_Tests"
+        //sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=ON"
+        //sh "make -C \$PWD/Weave_Tests"
         
         echo 'Run Unit tests...'
         sh "./Weave_Tests/bin/WEAVE_TESTS"
