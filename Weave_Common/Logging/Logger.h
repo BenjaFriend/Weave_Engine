@@ -55,7 +55,7 @@ private:
 // Current print format: 
 // LOG_TRACE ( "This is an example of {}", "this" );
 
-#if defined( DEBUG ) || defined ( _DEBUG )
+#if defined( DEBUG ) || defined ( _DEBUG ) || defined ( W_ENABLE_LOGGING )
 
 #define  LOG_TRACE( ... )    Logger::GetCurrentConsole()->info( __VA_ARGS__ )
 #define  LOG_WARN( ... )     Logger::GetCurrentConsole()->warn( __VA_ARGS__ )

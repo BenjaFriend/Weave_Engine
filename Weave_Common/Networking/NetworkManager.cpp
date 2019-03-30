@@ -54,9 +54,9 @@ void NetworkManager::SendPacket( const OutputMemoryBitStream & inOutputStream, c
 {
     // Send the output stream to the given endpoint
     // returns the number of bytes send
-    ListenSocket->send_to( 
+    ListenSocket->send_to(
         boost::asio::buffer( inOutputStream.GetBufferPtr(), inOutputStream.GetBitLength() ),
-        inFromAddress 
+        inFromAddress
     );
     // #TODO Keep track of the number of bytes sent this frame
 }
@@ -68,9 +68,18 @@ void NetworkManager::Run()
     while ( !IsDone || !io_service.stopped() )
     {
         // Run said server
-        io_service.run();
-
-        LOG_TRACE( "Server iteration next!" );
+        try
+        {
+            io_service.run();
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( "Server: Network exception: {}", e.what() );
+        }
+        catch ( ... )
+        {
+            LOG_ERROR( "Server: Network exception: UNKNOWN" );
+        }
     }
 }
 
@@ -125,6 +134,6 @@ void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::s
 NetworkManager::ReceivedPacket::ReceivedPacket( float inRecievedtime, InputMemoryBitStream & inStream, boost::asio::ip::udp::endpoint & aInEndpoint ) :
     Recievedtime( inRecievedtime ),
     PacketBuffer( inStream ),
-    InEndpoint ( aInEndpoint )
+    InEndpoint( aInEndpoint )
 {
 }

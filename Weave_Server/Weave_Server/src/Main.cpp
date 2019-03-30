@@ -47,7 +47,7 @@ int main( int argc, char* argv [] )
         WeaveServer Server( serverDesc );
 
         // run the server
-        //Server->Run();
+        Server.Run();
     }
     catch ( const std::exception& e )
     {
