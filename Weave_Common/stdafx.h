@@ -20,7 +20,7 @@
 #include <fstream>
 #include <tuple>
 
-#define W_ENABLE_LOGGING        // Define this to enable logging in release mode 
+//#define W_ENABLE_LOGGING        // Define this to enable logging in release mode 
                                 // Make sure it's before Logger.h  include
 
 #include "Logging/Logger.h"     // Logging definitions to only happen in debug

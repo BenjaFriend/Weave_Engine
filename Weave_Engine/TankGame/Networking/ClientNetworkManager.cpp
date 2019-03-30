@@ -134,7 +134,7 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         output.Write( InputPacket );
 
         // For every move in the queue
-        const std::deque<Input::InputType> moveQueue = PlayerMoves::Instance->GetMoveQueue();
+        const std::deque<Input::InputType> & moveQueue = PlayerMoves::Instance->GetMoveQueue();
 
         // Write the size of how many moves there are
         output.Write( static_cast< UINT32 > ( moveQueue.size() ) );

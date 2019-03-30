@@ -39,10 +39,7 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState
 
 void IEntity::Read( InputMemoryBitStream & inInputStream )
 {
-    //size_t ID = {};
-    //inInputStream.Read( ID );
-
-    glm::vec3 readPos = {};
+    glm::vec3 readPos( 0.f );
     inInputStream.Read( readPos.x );
     inInputStream.Read( readPos.y );
     inInputStream.Read( readPos.z );
