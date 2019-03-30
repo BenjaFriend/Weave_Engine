@@ -28,7 +28,11 @@ namespace Tanks
         
         static ClientNetworkManager* Instance;
 
-        static ClientNetworkManager* StaticInit( const char * aServerAddr, const unsigned short aPort, const std::string& aName );
+        static ClientNetworkManager* StaticInit( 
+            std::shared_ptr< boost::asio::io_service > aService,
+            const char * aServerAddr,
+            const unsigned short aPort,
+            const std::string& aName );
 
         /// <summary>
         /// Delete the static instance of the network manager
@@ -51,7 +55,10 @@ namespace Tanks
 
     protected:
 
-        ClientNetworkManager( const char * aServerAddr, const unsigned short aPort, const std::string& aName );
+        ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService,
+            const char * aServerAddr, 
+            const unsigned short aPort,
+            const std::string& aName );
 
         virtual ~ClientNetworkManager();
 

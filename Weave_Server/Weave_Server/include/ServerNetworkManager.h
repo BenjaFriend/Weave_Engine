@@ -11,7 +11,7 @@ class ServerNetworkManager : public NetworkManager
 {
 public:
 
-    ServerNetworkManager();
+    ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
     virtual ~ServerNetworkManager();
 

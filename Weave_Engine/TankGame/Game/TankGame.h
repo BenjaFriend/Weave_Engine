@@ -3,6 +3,8 @@
 #include <Core/Game.h>
 #include "../Networking/ClientNetworkManager.h"
 #include "PlayerMoves.h"
+#include <boost/asio.hpp>
+#include <memory>
 
 namespace Tanks
 {
@@ -57,6 +59,12 @@ namespace Tanks
         void DrawGameUI();
 
     private:
+
+        /** Pointer to the io_service for the network manager
+        * This has to be here because otherwise there is an exception on exit
+        * in release mode when the netMan io_service goes out of context
+        */
+        std::shared_ptr < boost::asio::io_service > io_service;
 
         /** Network manager for this tank game */
         ClientNetworkManager* NetMan = nullptr;

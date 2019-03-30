@@ -28,12 +28,12 @@ class NetworkManager
 public:
 
     // Packet types
-    static const UINT32 HelloPacket     = 'HELO';   // Hello packet from the client
-    static const UINT32 WelcomePacket   = 'WELC';   // Welcome packet to initialize the client
-    static const UINT32 StatePacket     = 'STAT';   // State update of the scene
-    static const UINT32	InputPacket     = 'INPT';   // The client's input state
+    static const UINT32 HelloPacket = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket = 'INPT';   // The client's input state
 
-    NetworkManager();
+    NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
     virtual ~NetworkManager();
 
@@ -121,7 +121,7 @@ private:
     std::shared_ptr< boost::asio::ip::udp::socket > ListenSocket;
 
     /** Io service for running the sockets */
-    boost::asio::io_service io_service;
+    std::shared_ptr < boost::asio::io_service > io_service;
 
     /** the endpoint of the remote client contacting the server */
     boost::asio::ip::udp::endpoint remote_endpoint;

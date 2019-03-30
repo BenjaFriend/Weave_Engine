@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>       // std::string
 #include <thread>       // std::thread
-#include <memory>       // std::unique_ptr
+#include <memory>       // std::unique_ptr, std::shared_ptr
 #include <fstream>
 #include <assert.h>
 
@@ -41,11 +41,13 @@ int main( int argc, char* argv [] )
     try
     {
         // Create the server 
-        std::unique_ptr< WeaveServer > Server =
-            std::make_unique< WeaveServer >( serverDesc );
+        //std::unique_ptr< WeaveServer > Server =
+        //    std::make_unique< WeaveServer >( serverDesc );
+
+        WeaveServer Server( serverDesc );
 
         // run the server
-        Server->Run();
+        Server.Run();
     }
     catch ( const std::exception& e )
     {

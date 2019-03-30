@@ -107,7 +107,9 @@ void Tanks::TankGame::DrawMainMenu()
     if ( ImGui::Button( "Connect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
     {
         // Attempt to connect to the server
-        NetMan = ClientNetworkManager::StaticInit( serverAddressBuf, serverPortBuf, namebuf );
+        io_service.reset();
+        io_service = std::make_shared< boost::asio::io_service >();
+        NetMan = ClientNetworkManager::StaticInit( io_service, serverAddressBuf, serverPortBuf, namebuf );
         GameState = EGameState::Playing;
     }
 

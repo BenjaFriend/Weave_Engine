@@ -8,8 +8,8 @@ using namespace Tanks;
 ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 
-ClientNetworkManager::ClientNetworkManager( const char * aServerAddr, const unsigned short aPort, const std::string& aName )
-    : NetworkManager()
+ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService, const char * aServerAddr, const unsigned short aPort, const std::string& aName )
+    : NetworkManager( aService )
 {
     ServerEndpoint =
         boost::asio::ip::udp::endpoint(
@@ -27,11 +27,15 @@ ClientNetworkManager::~ClientNetworkManager()
 
 }
 
-ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( const char * aServerAddr, const unsigned short aPort, const std::string& aName )
+ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( 
+    std::shared_ptr< boost::asio::io_service > aService,
+    const char * aServerAddr,
+    const unsigned short aPort,
+    const std::string& aName )
 {
     assert( Instance == nullptr );
 
-    Instance = new ClientNetworkManager( aServerAddr, aPort, aName );
+    Instance = new ClientNetworkManager( aService, aServerAddr, aPort, aName );
     Instance->Init( 50000 );
 
     LOG_TRACE( "Client initalized!" );
@@ -130,7 +134,7 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         output.Write( InputPacket );
 
         // For every move in the queue
-        const std::deque<Input::InputType> moveQueue = PlayerMoves::Instance->GetMoveQueue();
+        const std::deque<Input::InputType> & moveQueue = PlayerMoves::Instance->GetMoveQueue();
 
         // Write the size of how many moves there are
         output.Write( static_cast< UINT32 > ( moveQueue.size() ) );
