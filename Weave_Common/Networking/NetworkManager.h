@@ -90,6 +90,12 @@ protected:
         boost::asio::ip::udp::endpoint InEndpoint;
     };
 
+    static std::shared_ptr< boost::asio::ip::udp::socket > UDPSocketFactory(
+        boost::asio::io_service & service, const boost::asio::ip::udp::endpoint& aEnpoint )
+    {
+        return std::make_shared< boost::asio::ip::udp::socket >( service, aEnpoint );
+    }
+
 private:
 
     /// <summary>
