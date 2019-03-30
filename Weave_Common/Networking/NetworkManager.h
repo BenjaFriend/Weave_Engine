@@ -55,12 +55,6 @@ public:
     /// <param name="inFromAddress">The endpoint to send this data to</param>
     void SendPacket( const OutputMemoryBitStream& inOutputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
 
-    /*void SetIOServce( std::unique_ptr < boost::asio::io_service > aService )
-    {
-        io_service.release();
-        io_service = std::move( aService );
-    }*/
-
 protected:
 
     /** Check for if we are done or not */
