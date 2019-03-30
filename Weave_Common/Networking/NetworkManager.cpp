@@ -26,7 +26,10 @@ NetworkManager::~NetworkManager()
 
 bool NetworkManager::Init( UINT16 aPort )
 {
-    ListenSocket = UDPSocketFactory( *io_service, bai::udp::endpoint( bai::udp::v4(), aPort ) );
+    ListenSocket = UDPSocketFactory( 
+        *io_service, 
+        boost::asio::ip::udp::endpoint( bai::udp::v4(), aPort ) 
+    );
 
     LOG_TRACE( "Initalize Network manager at port {}", aPort );
 
