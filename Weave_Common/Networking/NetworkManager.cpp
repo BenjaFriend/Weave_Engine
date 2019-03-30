@@ -6,12 +6,13 @@ namespace bai = boost::asio::ip;
 
 NetworkManager::NetworkManager()
 {
-
+    // Create an IO service
+    io_service = std::make_unique< boost::asio::io_service >();
 }
 
 NetworkManager::~NetworkManager()
 {
-    io_service.stop();
+    io_service->stop();
     IsDone = true;
 
     if ( runningThread.joinable() )
@@ -26,7 +27,7 @@ bool NetworkManager::Init( UINT16 aPort )
 {
     // Create a new UDP socket on the given port
     std::shared_ptr< bai::udp::socket > wat(
-        new bai::udp::socket( io_service, bai::udp::endpoint( bai::udp::v4(), aPort ) )
+        new bai::udp::socket( *io_service, bai::udp::endpoint( bai::udp::v4(), aPort ) )
     );
 
     ListenSocket = std::move( wat );
@@ -65,12 +66,12 @@ void NetworkManager::Run()
 {
     StartRecieve();
 
-    while ( !IsDone || !io_service.stopped() )
+    while ( !IsDone || !io_service->stopped() )
     {
         // Run said server
         try
         {
-            io_service.run();
+            io_service->run();
         }
         catch ( const std::exception& e )
         {

@@ -121,7 +121,7 @@ private:
     std::shared_ptr< boost::asio::ip::udp::socket > ListenSocket;
 
     /** Io service for running the sockets */
-    boost::asio::io_service io_service;
+    std::unique_ptr < boost::asio::io_service > io_service;
 
     /** the endpoint of the remote client contacting the server */
     boost::asio::ip::udp::endpoint remote_endpoint;
