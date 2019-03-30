@@ -2,8 +2,8 @@
 
 #include "ServerNetworkManager.h"
 
-ServerNetworkManager::ServerNetworkManager()
-    : NetworkManager()
+ServerNetworkManager::ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce )
+    : NetworkManager( aServce )
 {
     // Create a scene to replicate
 

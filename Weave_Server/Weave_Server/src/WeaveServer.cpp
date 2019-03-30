@@ -12,8 +12,9 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     // #TODO: Set up a room concept for the server
     ( void )( ResponsePort );
     ( void )( MaxRooms );
+    io_service = std::make_shared<boost::asio::io_service>();
 
-    NetworkMan = new ServerNetworkManager();
+    NetworkMan = new ServerNetworkManager( io_service );
     NetworkMan->Init( ListenPort );
 
     // Add user command options

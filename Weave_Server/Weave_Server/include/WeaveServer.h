@@ -4,6 +4,7 @@
 #include <thread>
 #include <memory>
 #include <unordered_map>
+#include <boost/asio.hpp>
 
 #include "ServerNetworkManager.h"
 
@@ -77,6 +78,8 @@ private:
 
     /** The thread the user input will be checked on */
     std::thread userInputThread;
+
+    std::shared_ptr < boost::asio::io_service > io_service;
 
     /** Delta time of the server */
     float DeltaTime;

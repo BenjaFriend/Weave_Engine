@@ -10,10 +10,11 @@ std::shared_ptr< boost::asio::ip::udp::socket > UDPSocketFactory(
     return std::make_shared< boost::asio::ip::udp::socket >( service, aEnpoint );
 }
 
-NetworkManager::NetworkManager()
+NetworkManager::NetworkManager( std::shared_ptr< boost::asio::io_service > aServce )
 {
     // Create an IO service
-    io_service = std::make_unique< boost::asio::io_service >();
+    //io_service = std::make_shared< boost::asio::io_service >();
+    io_service = aServce;
 }
 
 NetworkManager::~NetworkManager()

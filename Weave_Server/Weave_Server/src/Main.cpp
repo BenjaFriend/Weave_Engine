@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>       // std::string
 #include <thread>       // std::thread
-#include <memory>       // std::unique_ptr
+#include <memory>       // std::unique_ptr, std::shared_ptr
 #include <fstream>
 #include <assert.h>
 

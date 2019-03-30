@@ -28,12 +28,12 @@ class NetworkManager
 public:
 
     // Packet types
-    static const UINT32 HelloPacket     = 'HELO';   // Hello packet from the client
-    static const UINT32 WelcomePacket   = 'WELC';   // Welcome packet to initialize the client
-    static const UINT32 StatePacket     = 'STAT';   // State update of the scene
-    static const UINT32	InputPacket     = 'INPT';   // The client's input state
+    static const UINT32 HelloPacket = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket = 'INPT';   // The client's input state
 
-    NetworkManager();
+    NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
     virtual ~NetworkManager();
 
@@ -54,6 +54,12 @@ public:
     /// <param name="inOutputStream">Data to send within this packet</param>
     /// <param name="inFromAddress">The endpoint to send this data to</param>
     void SendPacket( const OutputMemoryBitStream& inOutputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
+
+    /*void SetIOServce( std::unique_ptr < boost::asio::io_service > aService )
+    {
+        io_service.release();
+        io_service = std::move( aService );
+    }*/
 
 protected:
 
@@ -121,7 +127,7 @@ private:
     std::shared_ptr< boost::asio::ip::udp::socket > ListenSocket;
 
     /** Io service for running the sockets */
-    std::unique_ptr < boost::asio::io_service > io_service;
+    std::shared_ptr < boost::asio::io_service > io_service;
 
     /** the endpoint of the remote client contacting the server */
     boost::asio::ip::udp::endpoint remote_endpoint;
