@@ -4,6 +4,12 @@
 
 namespace bai = boost::asio::ip;
 
+std::shared_ptr< boost::asio::ip::udp::socket > UDPSocketFactory( 
+    boost::asio::io_service & service, bai::udp::endpoint& aEnpoint )
+{
+    return std::make_shared< boost::asio::ip::udp::socket >( service, aEnpoint );
+}
+
 NetworkManager::NetworkManager()
 {
     // Create an IO service
@@ -25,12 +31,7 @@ NetworkManager::~NetworkManager()
 
 bool NetworkManager::Init( UINT16 aPort )
 {
-    // Create a new UDP socket on the given port
-    std::shared_ptr< bai::udp::socket > wat(
-        new bai::udp::socket( *io_service, bai::udp::endpoint( bai::udp::v4(), aPort ) )
-    );
-
-    ListenSocket = std::move( wat );
+    ListenSocket = UDPSocketFactory( *io_service, bai::udp::endpoint( bai::udp::v4(), aPort ) );
 
     LOG_TRACE( "Initalize Network manager at port {}", aPort );
 
