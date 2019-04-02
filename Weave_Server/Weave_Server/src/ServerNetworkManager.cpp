@@ -170,3 +170,15 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 
     SendPacket( packet, aClient->GetEndpoint() );
 }
+
+void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg )
+{
+    assert( aMsg != nullptr );
+    
+    OutputMemoryBitStream packet = {};
+    packet.Write( FeedMessagePacket );
+
+    packet.Write( aMsg );
+
+    SendPacket( packet, aClient->GetEndpoint() );
+}

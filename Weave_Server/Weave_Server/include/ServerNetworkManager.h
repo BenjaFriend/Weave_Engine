@@ -56,6 +56,14 @@ private:
     /// <param name="aClient">The client to update</param>
     void SendStatePacket( ClientProxyPtr aClient );
     
+    /// <summary>
+    /// Send a feed update message to a client. This is typcially just an update message
+    /// like "Player has jonied the lobby" or some other string message to show up in the 
+    /// client's feed
+    /// </summary>
+    /// <param name="aClient">The client to update</param>
+    void SendFeedMessagePacket( ClientProxyPtr aClient );
+
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
 

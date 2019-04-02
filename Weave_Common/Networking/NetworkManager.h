@@ -28,10 +28,11 @@ class NetworkManager
 public:
 
     // Packet types
-    static const UINT32 HelloPacket = 'HELO';   // Hello packet from the client
-    static const UINT32 WelcomePacket = 'WELC';   // Welcome packet to initialize the client
-    static const UINT32 StatePacket = 'STAT';   // State update of the scene
-    static const UINT32	InputPacket = 'INPT';   // The client's input state
+    static const UINT32 HelloPacket         = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket       = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket         = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket         = 'INPT';   // The client's input state
+    static const UINT32	FeedMessagePacket   = 'FMSG';   // A message ment to give a feed update to all the client
 
     NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
