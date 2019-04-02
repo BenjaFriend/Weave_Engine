@@ -62,7 +62,7 @@ private:
     /// client's feed
     /// </summary>
     /// <param name="aClient">The client to update</param>
-    void SendFeedMessagePacket( ClientProxyPtr aClient );
+    void SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg );
 
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;

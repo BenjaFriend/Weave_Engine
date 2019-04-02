@@ -178,7 +178,7 @@ void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const 
     OutputMemoryBitStream packet = {};
     packet.Write( FeedMessagePacket );
 
-    packet.Write( aMsg );
+    packet.WriteBits( aMsg, strlen( aMsg ) );
 
     SendPacket( packet, aClient->GetEndpoint() );
 }
