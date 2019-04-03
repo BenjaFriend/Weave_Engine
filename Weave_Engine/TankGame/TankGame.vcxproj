@@ -164,7 +164,7 @@
       <SubSystem>
       </SubSystem>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration);$(BOOST_LIBRARYDIR)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;lua52.lib;Weave_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
@@ -259,7 +259,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration);$(BOOST_LIBRARYDIR)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;lua52.lib;Weave_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -294,7 +294,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)additional\lua\lib;$(BOOST_LIBRARYDIR);$(SolutionDir)additional\assimp\lib;$(SolutionDir)Weave_Engine\_Output\$(Platform)\$(Configuration);$(BOOST_LIBRARYDIR)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;lua52.lib;Weave_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
