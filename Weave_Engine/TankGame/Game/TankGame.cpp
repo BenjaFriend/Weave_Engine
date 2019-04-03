@@ -57,6 +57,7 @@ void Tanks::TankGame::DrawUI()
         DrawMainMenu();
         break;
     case Tanks::EGameState::Playing:
+		DrawGameUI();
         break;
     case Tanks::EGameState::Quitting:
         break;
@@ -124,5 +125,22 @@ void Tanks::TankGame::DrawMainMenu()
 
 void Tanks::TankGame::DrawGameUI()
 {
-    
+	ImGui::Begin("Game Menu");
+
+	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+	{
+		NetMan->Disconnect( this, &Tanks ::TankGame::OnDisconnected );
+	}
+
+	// #TODO Show log feed
+
+	ImGui::End();
+}
+
+void Tanks::TankGame::OnDisconnected()
+{
+	// Go back to the main menu when we disconnect
+	GameState = EGameState::MainMenu;
+
+	LOG_TRACE( "This client has disconnect from the server!" );
 }

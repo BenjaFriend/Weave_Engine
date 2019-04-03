@@ -104,6 +104,8 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
             // Update our local  world based on this new info
             ProcessStatePacket( inInputStream );            
         }
+		
+		//TimeOfLastStatePacket = TotalTime;
     }
     break;
     default:

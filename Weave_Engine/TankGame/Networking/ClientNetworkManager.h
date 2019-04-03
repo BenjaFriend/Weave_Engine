@@ -23,7 +23,8 @@ namespace Tanks
         {
             Uninitalized,   // Client is uninitialized and at the main menu
             SayingHello,    // Client is attempting to connect to the server
-            Welcomed        // Client has been welcomed into the game by the server
+            Welcomed,       // Client has been welcomed into the game by the server
+			Leaving        // Client has been welcomed into the game by the server
         };
         
         static ClientNetworkManager* Instance;
@@ -43,6 +44,13 @@ namespace Tanks
         /// Send outgoing packets based on the current state of the client
         /// </summary>
         void SendOutgoingPackets( float totalTime );
+
+		/// <summary>
+		/// Send a disconnect message to the server and take in a callback
+		/// function to be called when successfully disconnected
+		/// </summary>
+		template <typename T>
+		void Disconnect( T* aCallbackObj, void ( T::*funcPtr ) () );
 
         /// <summary>
         /// Get the current state of the client
@@ -110,7 +118,19 @@ namespace Tanks
         float TimeOfLastInputUpdate;
         /** The amount of time between sending hello packets */
         const float TimeBetweenInputUpdate = 0.5f;
+		
+		/** Keep track of the last time we received a state packet  */
+		float TimeOfLastStatePacket;
+		/** The amount of time before this client times out from the server */
+		const float TimeUntilTimeout = 10.0f;
+
 
     };
+
+	template<typename T>
+	void ClientNetworkManager::Disconnect(T* aCallbackObj, void(T::* funcPtr)())
+	{
+
+	}
 
 }   // namespace Tanks

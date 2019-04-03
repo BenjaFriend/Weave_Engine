@@ -58,6 +58,11 @@ namespace Tanks
         /// </summary>
         void DrawGameUI();
 
+		///<summary>
+		/// Callback that occurs when this client is disconnected
+		///</summary>
+		void OnDisconnected();
+
     private:
 
         /** Pointer to the io_service for the network manager

@@ -33,6 +33,8 @@ public:
     static const UINT32 StatePacket         = 'STAT';   // State update of the scene
     static const UINT32	InputPacket         = 'INPT';   // The client's input state
     static const UINT32	FeedMessagePacket   = 'FMSG';   // A message ment to give a feed update to all the client
+	static const UINT32	LeavePacket			= 'LEAV';   // A message that the client will send to signal they want to leave
+														// or the server sends a client to force them to leave
 
     NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
