@@ -89,3 +89,8 @@ I would recommend using [Blender](https://www.blender.org/) for modeling and exp
 
 
 ![Blender export settings](blender_export_settings.PNG)
+
+## Branches
+
+`master` is where we cut our releases
+`staging` is what devs merge their feature branches into
