@@ -3,7 +3,6 @@
 #include "Networking/NetworkManager.h"
 #include "../Game/PlayerMoves.h"
 #include <deque>
-#include "Utils/Dispatcher.hpp"     // Dispatcher for callback functions
 
 namespace Tanks
 {
@@ -47,12 +46,6 @@ namespace Tanks
         void SendOutgoingPackets ( float totalTime );
 
         /// <summary>
-        /// Send a disconnect message to the server and take in a callback
-        /// function to be called when successfully disconnected
-        /// </summary>
-        void Disconnect ();
-
-        /// <summary>
         /// Get the current state of the client
         /// </summary>
         /// <returns>Enum of the networked client state</returns>
@@ -60,7 +53,6 @@ namespace Tanks
         FORCE_INLINE const UINT32 GetPlayerID () const { return PlayerID; }
         FORCE_INLINE const std::string & GetName () const { return Name; }
         FORCE_INLINE const boost::asio::ip::udp::endpoint & GetServerEndpoint () { return ServerEndpoint; }
-        FORCE_INLINE Dispatcher & GetDisconnectDispatcher () { return DisconnectedDispatcher; }
 
     protected:
 
@@ -102,9 +94,6 @@ namespace Tanks
         /** Connection state of this client */
         EClientState ClientState = EClientState::Uninitalized;
 
-        /** Dispatcher to be called when this client is disconnected from the server */
-        Dispatcher DisconnectedDispatcher;
-
         /** The name of the player */
         std::string Name;
 
@@ -127,7 +116,6 @@ namespace Tanks
         float TimeOfLastStatePacket;
         /** The amount of time before this client times out from the server */
         const float TimeUntilTimeout = 10.0f;
-
 
     };
 

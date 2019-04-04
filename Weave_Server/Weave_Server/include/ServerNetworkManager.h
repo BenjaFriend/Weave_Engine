@@ -20,11 +20,23 @@ public:
     /// </summary>
     void UpdateAllClients( );
 
+    /// <summary>
+    /// Handle a client resetting their connection to the server
+    /// </summary>
+    /// <param name="inFromAddress">the adddress to handle</param>
+    virtual void HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress ) override;
+
 protected:
 
     virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
 
 private:
+
+    /// <summary>
+    /// Handle a client leaving the server
+    /// </summary>
+    /// <param name="aClient">The client which has DC'd</param>
+    void HandleClientDisconnected( ClientProxyPtr aClient );
 
     // Handle new client packet
     void ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
@@ -43,14 +55,6 @@ private:
     /// <param name="aClient"></param>
     /// <param name="inInputStream"></param>
     void ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
-
-    /// <summary>
-    /// Handle a packet from a currently connected client saying that they want 
-    /// to leave the match.
-    /// </summary>
-    /// <param name="aClient">The pointer to the client</param>
-    /// <param name="inInputStream">Input stream</param>
-    void ProcessLeavePacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
 
     /// <summary>
     /// Send a welcome packet to the given client

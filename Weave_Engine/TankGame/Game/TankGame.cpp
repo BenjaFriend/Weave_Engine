@@ -137,7 +137,7 @@ void Tanks::TankGame::DrawGameUI()
 
 	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
 	{
-		NetMan->Disconnect();
+        Disconnect();
 	}
 
 	// #TODO Show log feed
@@ -145,10 +145,12 @@ void Tanks::TankGame::DrawGameUI()
 	ImGui::End();
 }
 
-void Tanks::TankGame::OnDisconnected()
+void Tanks::TankGame::Disconnect()
 {
 	// Go back to the main menu when we disconnect
 	GameState = EGameState::MainMenu;
+    // Reset our network manager
+    ClientNetworkManager::ReleaseInstance();
 
 	LOG_TRACE( "This client has disconnect from the server!" );
 }

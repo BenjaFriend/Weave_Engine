@@ -14,6 +14,15 @@ ServerNetworkManager::~ServerNetworkManager()
     LOG_TRACE( "--- ServerNetworkManage DTOR ---" );
 }
 
+void ServerNetworkManager::HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress )
+{
+    auto it = EndpointToClientMap.find( inFromAddress );
+    if ( it != EndpointToClientMap.end() )
+    {
+        HandleClientDisconnected( it->second );
+    }
+}
+
 void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
     auto it = EndpointToClientMap.find( inFromAddress );
@@ -27,6 +36,14 @@ void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
     {
         ProcessExistingClientPacket( ( *it ).second, inInputStream );
     }
+}
+
+void ServerNetworkManager::HandleClientDisconnected( ClientProxyPtr aClient )
+{
+    // Tell the scene that they have left and we should remove their
+    // game object!
+    EndpointToClientMap.erase( aClient->GetEndpoint() );
+    Scene.RemoveReplicatedObject( aClient->GetClientEntity().get() );
 }
 
 void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
@@ -48,12 +65,7 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Update this players input
     }
     break;
-	case LeavePacket:
-	{
-		// Remove the client from our client map
-        ProcessLeavePacket( aClient, inInputStream );
-	}
-	break;
+    // TODO: Handle heartbeat
     default:
         break;
     }
@@ -141,14 +153,6 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     // Move the client based on their input to the server
     glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
     aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
-}
-
-void ServerNetworkManager::ProcessLeavePacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
-{
-    // We need to tell the next state packet going out that 
-
-    // Put it in a queue in the scene and write it out there
-
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )

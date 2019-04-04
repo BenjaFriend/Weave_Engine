@@ -33,12 +33,13 @@ ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit(
     const unsigned short aPort,
     const std::string& aName )
 {
-    assert( Instance == nullptr );
-
+    // The client should be able to reconnect to a different server
+    ReleaseInstance( );
+    
     Instance = new ClientNetworkManager( aService, aServerAddr, aPort, aName );
     Instance->Init( 50000 );
 
-    LOG_TRACE( "Client initalized!" );
+    LOG_TRACE( "Client initalized! " );
 
     return Instance;
 }
@@ -76,15 +77,6 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
 
     default:
         break;
-    }
-}
-
-void Tanks::ClientNetworkManager::Disconnect()
-{
-    if ( ClientState == EClientState::Welcomed )
-    {
-        // Attempt to disconnect from the server
-        DisconnectedDispatcher.Dispatch ();
     }
 }
 

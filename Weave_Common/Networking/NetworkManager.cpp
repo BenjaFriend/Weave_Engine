@@ -74,6 +74,7 @@ void NetworkManager::Run()
         }
         catch ( const std::exception& e )
         {
+            ( void ) ( e );
             LOG_ERROR( "Server: Network exception: {}", e.what() );
         }
         catch ( ... )
