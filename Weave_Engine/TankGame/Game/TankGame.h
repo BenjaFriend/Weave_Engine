@@ -76,6 +76,10 @@ namespace Tanks
 
         /** The current game state of this client */
         EGameState GameState = EGameState::MainMenu;  
+
+        const FileName MainMenuSceneName = L"Assets/Scenes/MainMenu.json";
+        const FileName GameSceneName = L"Assets/Scenes/Scene_test.json";
+
     };
 
 }   // namespace Tanks

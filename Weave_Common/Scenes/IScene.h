@@ -28,6 +28,11 @@ public:
         return ( NetworkIdToEntityMap.find( aNetworkID ) != NetworkIdToEntityMap.end() );
     }
 
+    /// <summary>
+    /// Clear the scene of entities and clear the replication map
+    /// </summary>
+    virtual void ResetScene();
+
 protected:
 
     /** This scene's name */

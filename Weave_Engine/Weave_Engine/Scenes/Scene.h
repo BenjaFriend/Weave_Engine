@@ -72,7 +72,7 @@ namespace SceneManagement
         /// <summary>
         /// Remove all entities and lights in the current scene
         /// </summary>
-        void ResetScene();
+        virtual void ResetScene() override;
 
         FORCE_INLINE Entity* GetEntityArray() const { return reinterpret_cast< Entity* > ( EntityArray_Raw ); }
 

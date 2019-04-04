@@ -114,6 +114,9 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 
 void Scene::ResetScene()
 {
+    // Clears the known replicated objects
+    IScene::ResetScene();
+
     UnloadAllEntities( false );
     UnloadAllLights();
     SceneName = "DEFAULT_SCENE";

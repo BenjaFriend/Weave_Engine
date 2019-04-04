@@ -50,3 +50,8 @@ void IScene::RemoveReplicatedObject( IEntity* aEntity )
         NetworkIdToEntityMap.erase( aEntity->GetNetworkID( ) );
     }
 }
+
+void IScene::ResetScene()
+{
+    NetworkIdToEntityMap.clear();
+}

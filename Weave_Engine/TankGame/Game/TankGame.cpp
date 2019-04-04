@@ -20,7 +20,7 @@ void TankGame::Init()
 
     PlayerMoves::Init();
 
-    //NetMan->GetDisconnectDispatcher().BindListener ( this, Tanks::TankGame::OnDisconnected );
+    sceneManager->LoadScene( MainMenuSceneName );
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
@@ -110,9 +110,13 @@ void Tanks::TankGame::DrawMainMenu()
     if ( ImGui::Button( "Connect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
     {
         // Attempt to connect to the server
+        // The io_service object is what the network manager uses for async operations
         io_service.reset();
         io_service = std::make_shared< boost::asio::io_service >();
         NetMan = ClientNetworkManager::StaticInit( io_service, serverAddressBuf, serverPortBuf, namebuf );
+
+        // Load the game scene file locally and set our state to playing
+        sceneManager->LoadScene( GameSceneName );
         GameState = EGameState::Playing;
     }
 
@@ -151,6 +155,12 @@ void Tanks::TankGame::Disconnect()
 	GameState = EGameState::MainMenu;
     // Reset our network manager
     ClientNetworkManager::ReleaseInstance();
+    
+    // Reset the scene (clears the known replicated objects)
+    sceneManager->GetActiveScene()->ResetScene();
+
+    // #TODO Load in a main menu scene or something like that
+    sceneManager->LoadScene( MainMenuSceneName );
 
 	LOG_TRACE( "This client has disconnect from the server!" );
 }
