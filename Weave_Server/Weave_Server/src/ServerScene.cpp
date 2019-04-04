@@ -23,12 +23,15 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
     }
 }
 
-IEntityPtr ServerScene::AddEntity( const std::string & aName )
+IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID )
 {
     IEntityPtr newEnt = std::make_shared<IEntity>();
     newEnt->SetName( aName );
-
+    newEnt->SetNetworkID( aID );
     EntityArray.push_back( newEnt );
+
+    // Add this object to the replication map
+    AddReplicatedObject( newEnt.get() );
 
     return newEnt;
 }

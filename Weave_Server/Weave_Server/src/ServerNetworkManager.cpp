@@ -89,12 +89,6 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Update this players input
     }
     break;
-    case HeartbeatPacket:
-    {
-        LOG_TRACE( "Recieved heartbeat from {}", aClient->GetName() );
-    }
-    break;
-    // TODO: Handle heartbeat
     default:
         break;
     }
@@ -113,16 +107,18 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
         std::string name;
         inInputStream.Read( name );
 
-        ClientProxyPtr newClient = std::make_shared< ClientProxy >( std::move( inFromAddress ), name, NewPlayerID++ );
+        ClientProxyPtr newClient = std::make_shared< ClientProxy >( 
+            std::move( inFromAddress ), 
+            name, 
+            NewPlayerID++ 
+        );
 
         EndpointToClientMap [ inFromAddress ] = newClient;
 
         // Send welcome packet to them and tell them what their ID is
         SendWelcomePacket( newClient );
-
-        newClient->SetClientEntity( Scene.AddEntity( newClient->GetName() ) );
-        newClient->GetClientEntity()->SetNetworkID( newClient->GetPlayerID() );
-        Scene.AddReplicatedObject( newClient->GetClientEntity().get() );
+        auto clientEnt = Scene.AddEntity( newClient->GetName(), NewPlayerID );
+        newClient->SetClientEntity( clientEnt );
     }
     else
     {
@@ -149,6 +145,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         {
             LOG_TRACE( "PLAYER FIRE MOVE!" );      
             // Spawn a bullet on the server
+            Scene.AddEntity( "Bullet Boi", NewPlayerID++ );
         }
         break;
         case Input::InputType::Move_Left:
