@@ -23,6 +23,26 @@ void ServerNetworkManager::HandleConnectionReset( const boost::asio::ip::udp::en
     }
 }
 
+void ServerNetworkManager::CheckForDisconnects()
+{
+    std::vector < ClientProxyPtr > ClientsToDC;
+
+    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - ClientDisconnectTimeout;
+
+    for ( const auto& pair : EndpointToClientMap )
+    {
+        if ( pair.second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime )
+        {
+            ClientsToDC.push_back( pair.second );
+        }
+    }
+
+    for ( ClientProxyPtr client : ClientsToDC )
+    {
+        HandleClientDisconnected( client );
+    }
+}
+
 void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
     auto it = EndpointToClientMap.find( inFromAddress );
@@ -44,12 +64,16 @@ void ServerNetworkManager::HandleClientDisconnected( ClientProxyPtr aClient )
     // game object!
     EndpointToClientMap.erase( aClient->GetEndpoint() );
     Scene.RemoveReplicatedObject( aClient->GetClientEntity().get() );
+    LOG_TRACE( "Client removed: {}", aClient->GetName() );
 }
 
 void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
 {
     UINT32 packetType;
     inInputStream.Read( packetType );
+
+    // Keep track of the last time we received a packet from this client
+    aClient->UpdateLastPacketTime();
 
     switch ( packetType )
     {
@@ -63,6 +87,11 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Handle the input given from the player
         ProcessInputPacket( aClient, inInputStream );
         // Update this players input
+    }
+    break;
+    case HeartbeatPacket:
+    {
+        LOG_TRACE( "Recieved heartbeat from {}", aClient->GetName() );
     }
     break;
     // TODO: Handle heartbeat

@@ -138,7 +138,7 @@ void Tanks::TankGame::DrawGameUI()
         NetMan->GetServerEndpoint().port()
     );
 
-    ImGui::Text( "Connected Players: &d", NetMan->GetNumConnectedPlayers() );
+    ImGui::Text( "Connected Players: %d", NetMan->GetNumConnectedPlayers() );
 
     if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
     {

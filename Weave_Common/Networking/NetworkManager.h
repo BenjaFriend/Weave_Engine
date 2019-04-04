@@ -33,6 +33,7 @@ public:
     static const UINT32 StatePacket = 'STAT';   // State update of the scene
     static const UINT32	InputPacket = 'INPT';   // The client's input state
     static const UINT32	FeedMessagePacket = 'FMSG';   // A message ment to give a feed update to all the client
+    static const UINT32	HeartbeatPacket = 'HBET';   // A message ment to give a feed update to all the client
 
     NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 

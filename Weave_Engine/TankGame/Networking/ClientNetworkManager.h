@@ -84,6 +84,12 @@ namespace Tanks
         void SendInputPacket ();
 
         /// <summary>
+        /// Send a 'heartbeat' packet to the server letting them know that we 
+        /// are still connected!
+        /// </summary>
+        void SendHeartbeatPacket();
+
+        /// <summary>
         /// Process the given  state packet from the server
         /// </summary>
         /// <param name="inInputStream">Input stream of data</param>
@@ -114,6 +120,11 @@ namespace Tanks
         float TimeOfLastInputUpdate;
         /** The amount of time between sending hello packets */
         const float TimeBetweenInputUpdate = 0.5f;
+
+        /** Time between input updates */
+        float TimeOfLastHeartbeat;
+        /** The amount of time between sending hello packets */
+        const float TimeBetweenHeartBeats = 0.5f;
 
         /** Keep track of the last time we received a state packet  */
         float TimeOfLastStatePacket;

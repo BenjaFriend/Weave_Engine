@@ -67,10 +67,17 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     // We have been welcomed into the game and we can start sending our input updates
     case Tanks::ClientNetworkManager::EClientState::Welcomed:
     {
+        // Send input state to the server
         if ( totalTime > TimeOfLastInputUpdate + TimeBetweenInputUpdate )
         {
             SendInputPacket();
             TimeOfLastInputUpdate = totalTime;
+        }
+        // Send heartbeat packet to the server
+        if ( totalTime > TimeOfLastHeartbeat + TimeBetweenHeartBeats )
+        {
+            SendHeartbeatPacket();
+            TimeOfLastHeartbeat = totalTime;
         }
     }
     break;
@@ -151,6 +158,16 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         // Clear our move list, as we have sent everything in it
         PlayerMoves::Instance->Clear();
     }
+}
+
+void Tanks::ClientNetworkManager::SendHeartbeatPacket()
+{
+    // Create a test packet
+    OutputMemoryBitStream beatPacket;
+    beatPacket.Write( HeartbeatPacket );
+
+    // Send it
+    SendPacket( beatPacket, ServerEndpoint );
 }
 
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )

@@ -4,8 +4,14 @@
 ClientProxy::ClientProxy( const boost::asio::ip::udp::endpoint & inFromAddress, const std::string & aName, const UINT32 aID )
     : Endpoint( inFromAddress ), Name( aName ), PlayerId( aID )
 {
+    UpdateLastPacketTime();
 }
 
 ClientProxy::~ClientProxy()
 {
+}
+
+void ClientProxy::UpdateLastPacketTime()
+{
+    LastPacketFromClientTime = Timing::sInstance.GetTimef();
 }

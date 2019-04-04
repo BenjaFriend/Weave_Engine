@@ -26,6 +26,12 @@ public:
     /// <param name="inFromAddress">the adddress to handle</param>
     virtual void HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress ) override;
 
+    /// <summary>
+    /// Check to see if there has been any client that should be disconnected
+    /// from this server, if so, remove them
+    /// </summary>
+    void CheckForDisconnects();
+
 protected:
 
     virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
@@ -78,6 +84,10 @@ private:
 
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
+
+    /** The amount of time it takes for a client to be removed from the server
+    after not receiving a packet from them*/
+    float ClientDisconnectTimeout = 5.f;
 
     /** The current scene that is loaded */
     ServerScene Scene;

@@ -20,6 +20,13 @@ public:
 
     FORCE_INLINE const UINT32 GetPlayerID() const { return PlayerId; }
 
+    FORCE_INLINE const float GetLastPacketFromClientTime() const { return LastPacketFromClientTime; }
+
+    /// <summary>
+    /// Update the time that this client knows it was last received from.
+    /// </summary>
+    void UpdateLastPacketTime();
+
     void SetClientEntity( IEntityPtr aEnt ) { ClientEntity = aEnt; }
 
     IEntityPtr GetClientEntity() { return  ClientEntity; }
@@ -37,6 +44,9 @@ private:
 
     /** pointer to this client's entity */
     IEntityPtr ClientEntity;
+
+    /** The time that a packet was last received from this client */
+    float LastPacketFromClientTime = 0.0f;
 
 };
 
