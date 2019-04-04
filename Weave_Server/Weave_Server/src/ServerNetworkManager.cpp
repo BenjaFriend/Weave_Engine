@@ -119,6 +119,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         case Input::InputType::Fire:
         {
             LOG_TRACE( "PLAYER FIRE MOVE!" );      
+            // Spawn a bullet on the server
         }
         break;
         case Input::InputType::Move_Left:

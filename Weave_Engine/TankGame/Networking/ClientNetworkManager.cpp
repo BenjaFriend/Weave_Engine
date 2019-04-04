@@ -155,11 +155,13 @@ void Tanks::ClientNetworkManager::SendInputPacket()
 
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
 {
+    // Keep track of how many connected players there are on the client
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );
-    using namespace SceneManagement;
+    NumConnectedPlayers = playerCount;
 
     // Read in the state of the scene
+    using namespace SceneManagement;
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
     scene->Read( inInputStream );
 
