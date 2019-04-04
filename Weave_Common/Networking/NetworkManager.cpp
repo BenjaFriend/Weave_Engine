@@ -118,8 +118,10 @@ void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::s
         int packetSize = sizeof( recv_buf );
         InputMemoryBitStream inputStream( recv_buf, packetSize * 8 );
 
+        float receivedTime = Timing::sInstance.GetTimef();
+
         // Put this packet memory into the buffer
-        ReceivedPacket packet( 0.0f, inputStream, remote_endpoint );
+        ReceivedPacket packet( receivedTime, inputStream, remote_endpoint );
         PacketQueue.emplace( packet );
 
         // Start another async request
