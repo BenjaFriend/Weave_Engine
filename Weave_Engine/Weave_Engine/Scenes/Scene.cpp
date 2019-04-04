@@ -44,10 +44,10 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         // Do we have this in our replicated map
         if ( !IsObjectReplicated( networkID ) )
         {
-            LOG_WARN( " Entity {} IS NOT in  our replication map! Adding...", networkID );
-
             // If not, add it
             Entity* ent = AddEntity( "Newly Added rep object" );
+
+            // #TODO Make entity creation and components replicated
             ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
             PointLightData lightData = {};
             lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
@@ -59,8 +59,8 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         }
 
         IEntity* replicatedEnt = NetworkIdToEntityMap [ networkID ];
-
-        LOG_TRACE( "Scene Update entity {}", replicatedEnt->GetName() );
+        assert( replicatedEnt != nullptr );
+        // Have this entity read in it's update data
         replicatedEnt->Read( inInputStream );
     }
 }
