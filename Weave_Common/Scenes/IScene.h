@@ -17,37 +17,13 @@ public:
     virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const;
     virtual void Read( InputMemoryBitStream& inInputStream );
 
-    void AddReplicatedObject( IEntity* aEntity )
-    {
-        auto it = NetworkIdToEntityMap.find( aEntity->GetNetworkID() );
-        if ( it == NetworkIdToEntityMap.end() )
-        {
-            NetworkIdToEntityMap [ aEntity->GetNetworkID() ] = aEntity;
-        }
-    }
+    void AddReplicatedObject( IEntity* aEntity );
 
-    IEntity* GetReplicatedObject( INT32 aID )
-    {
-        if ( IsObjectReplicated( aID ) )
-        {
-            return NetworkIdToEntityMap [ aID ];
-        }
-        else
-        {
-            return nullptr;
-        }
-    }
+    IEntity* GetReplicatedObject( INT32 aID );
 
-    void RemoveReplicatedObject( IEntity* aEntity )
-    {
-        auto it = NetworkIdToEntityMap.find( aEntity->GetNetworkID() );
-        if ( it != NetworkIdToEntityMap.end() )
-        {
-            NetworkIdToEntityMap.erase( aEntity->GetNetworkID() );
-        }
-    }
+    void RemoveReplicatedObject( IEntity* aEntity );
 
-    bool IsObjectReplicated( const INT32 aNetworkID )
+    FORCE_INLINE const bool IsObjectReplicated( const INT32 aNetworkID )
     {        
         return ( NetworkIdToEntityMap.find( aNetworkID ) != NetworkIdToEntityMap.end() );
     }

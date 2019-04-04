@@ -13,12 +13,12 @@ public:
 
     ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
-    virtual ~ServerNetworkManager();
+    virtual ~ServerNetworkManager( );
 
     /// <summary>
     /// Update all clients that are connected with the proper state data
     /// </summary>
-    void UpdateAllClients();
+    void UpdateAllClients( );
 
 protected:
 
@@ -45,6 +45,14 @@ private:
     void ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
 
     /// <summary>
+    /// Handle a packet from a currently connected client saying that they want 
+    /// to leave the match.
+    /// </summary>
+    /// <param name="aClient">The pointer to the client</param>
+    /// <param name="inInputStream">Input stream</param>
+    void ProcessLeavePacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
+
+    /// <summary>
     /// Send a welcome packet to the given client
     /// </summary>
     /// <param name="aClient">The client to send the welcome packet to</param>
@@ -55,7 +63,7 @@ private:
     /// </summary>
     /// <param name="aClient">The client to update</param>
     void SendStatePacket( ClientProxyPtr aClient );
-    
+
     /// <summary>
     /// Send a feed update message to a client. This is typcially just an update message
     /// like "Player has jonied the lobby" or some other string message to show up in the 

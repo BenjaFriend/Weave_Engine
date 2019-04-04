@@ -167,8 +167,11 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     inInputStream.Read( playerCount );
     using namespace SceneManagement;
 
+    // Read in the state of the scene
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
     scene->Read( inInputStream );
+
+    // Read in any messages that may be at the end of the scene packet
 
     LOG_TRACE( "State update dude! Con players = {}", playerCount );
 }

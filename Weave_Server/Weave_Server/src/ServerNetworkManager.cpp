@@ -48,7 +48,12 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Update this players input
     }
     break;
-
+	case LeavePacket:
+	{
+		// Remove the client from our client map
+        ProcessLeavePacket( aClient, inInputStream );
+	}
+	break;
     default:
         break;
     }
@@ -136,6 +141,14 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     // Move the client based on their input to the server
     glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
     aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
+}
+
+void ServerNetworkManager::ProcessLeavePacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
+{
+    // We need to tell the next state packet going out that 
+
+    // Put it in a queue in the scene and write it out there
+
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )

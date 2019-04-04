@@ -128,6 +128,12 @@ void Tanks::TankGame::DrawMainMenu()
 void Tanks::TankGame::DrawGameUI()
 {
 	ImGui::Begin("Game Menu");
+    
+    ImGui::Text( "Currently Connected to:\n %s : %d", 
+        NetMan->GetServerEndpoint().address().to_string().c_str(),
+        NetMan->GetServerEndpoint().port()
+    );
+
 
 	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
 	{
