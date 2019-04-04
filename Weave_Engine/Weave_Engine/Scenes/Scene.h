@@ -114,7 +114,7 @@ namespace SceneManagement
         /// </summary>
         /// <param name="aPixShader">Pixel shader to send lighting info to</param>
         void SetLightData( SimplePixelShader* aPixShader );
-
+        
         /** A raw array of entity data */
         Entity* EntityArray_Raw = nullptr;
 

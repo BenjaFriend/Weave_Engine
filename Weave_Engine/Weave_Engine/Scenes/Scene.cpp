@@ -32,6 +32,8 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
     UINT32 numEntities = 0;
     inInputStream.Read( numEntities );
 
+    std::unordered_map< INT32, IEntity* > entitiesToDestroy = NetworkIdToEntityMap;
+
     LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
     {
