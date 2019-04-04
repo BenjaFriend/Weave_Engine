@@ -5,7 +5,7 @@
 #include <memory>
 #include "Entity/IEntity.h"
 
-class  ClientProxy
+class ClientProxy
 {
 
 public:
@@ -16,7 +16,7 @@ public:
 
     FORCE_INLINE const boost::asio::ip::udp::endpoint & GetEndpoint() const { return Endpoint; }
 
-    FORCE_INLINE const std::string & GetName() const { return Name; }
+    FORCE_INLINE const std::string & GetName() const { return Name; }   
 
     FORCE_INLINE const UINT32 GetPlayerID() const { return PlayerId; }
 
@@ -29,7 +29,7 @@ public:
 
     void SetClientEntity( IEntityPtr aEnt ) { ClientEntity = aEnt; }
 
-    IEntityPtr GetClientEntity() { return  ClientEntity; }
+    IEntityPtr GetClientEntity() { return ClientEntity; }
 
 private:
 

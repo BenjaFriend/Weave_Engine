@@ -183,7 +183,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     
     Scene.SetDirtyState(
         aClient->GetClientEntity()->GetNetworkID(),
-        IEntity::EIEntityReplicationState::ECRS_AllState 
+        IEntity::EIEntityReplicationState::EIRS_POS 
     );
 }
 

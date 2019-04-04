@@ -37,31 +37,53 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
     LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
     {
+        // Read in the ID and the action that this entity used
         INT32 networkID = 0;
         inInputStream.Read( networkID );
-
-        LOG_TRACE( " Reading entity: {}", networkID );
-        // Do we have this in our replicated map
-        if ( !IsObjectReplicated( networkID ) )
+        EReplicationAction action = EReplicationAction::ERA_Update;
+        inInputStream.Read( action, 2 );
+        
+        switch ( action )
         {
-            // If not, add it
-            Entity* ent = AddEntity( "Newly Added rep object" );
-
-            // #TODO Make entity creation and components replicated
-            ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
-            PointLightData lightData = {};
-            lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
-            lightData.Range = 8.f;            
-            lightData.Intensity = 10.f;
-            ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
-            ent->SetNetworkID( networkID );
-            AddReplicatedObject( ent );
+        case ERA_Create:
+        {
+            LOG_ERROR( "CREATE THE ENTITY! " );
         }
+        break;
+        case ERA_Update:
+        {
+            // Do we have this in our replicated map
+            if ( !IsObjectReplicated( networkID ) )
+            {
+                // If not, add it
+                Entity* ent = AddEntity( "Newly Added rep object" );
 
-        IEntity* replicatedEnt = NetworkIdToEntityMap [ networkID ];
-        assert( replicatedEnt != nullptr );
-        // Have this entity read in it's update data
-        replicatedEnt->Read( inInputStream );
+                // #TODO Make entity creation and components replicated
+                ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+                PointLightData lightData = {};
+                lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
+                lightData.Range = 8.f;
+                lightData.Intensity = 10.f;
+                ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
+
+                ent->SetNetworkID( networkID );
+                AddReplicatedObject( ent );
+            }
+            IEntity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
+            assert( replicatedEnt != nullptr );
+            // Have this entity read in it's update data
+            replicatedEnt->Read( inInputStream );
+        }
+        break;
+        case ERA_Destroy:
+        {
+            // Remove this network ID from the scene
+            RemoveReplicatedObject( networkID );
+        }
+        break;
+        default:
+            break;
+        }
     }
 }
 

@@ -358,8 +358,12 @@
       <Filter>Weave_Common\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

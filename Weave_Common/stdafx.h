@@ -26,6 +26,7 @@
 #include "Logging/Logger.h"     // Logging definitions to only happen in debug
 #include "MathHelper.h"         // Math definitions and typedefs
 #include "Timing.h"
+#include "Networking/ReplicationActions.h"
 
 /**************************************************************/
 /* Runtime Options                                            */

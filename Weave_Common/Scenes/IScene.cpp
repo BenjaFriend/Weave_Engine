@@ -51,6 +51,12 @@ void IScene::RemoveReplicatedObject( IEntity* aEntity )
     }
 }
 
+void IScene::RemoveReplicatedObject( INT32 aID )
+{
+    // this will break if the entity ID doesnt exist
+    NetworkIdToEntityMap.erase( aID );
+}
+
 void IScene::SetDirtyState( INT32 aNetworkID, UINT32 aDirtyState )
 {
     NetworkIdToEntityMap[ aNetworkID ]->SetDirtyState( aDirtyState );

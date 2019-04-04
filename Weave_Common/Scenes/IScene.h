@@ -5,13 +5,6 @@
 #include "Utils/ObjectPool.hpp"
 #include <unordered_map>
 
-enum ReplicationAction
-{
-    RA_Create,
-    RA_Update,
-    RA_Destroy
-};
-
 class IScene
 {
 public:
@@ -28,6 +21,8 @@ public:
     IEntity* GetReplicatedObject( INT32 aID );
 
     void RemoveReplicatedObject( IEntity* aEntity );
+
+    void RemoveReplicatedObject( INT32 aID );
 
     FORCE_INLINE const bool IsObjectReplicated( const INT32 aNetworkID )
     {        

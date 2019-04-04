@@ -514,6 +514,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h" />
     <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h" />
     <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
@@ -561,6 +562,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="UI_OPTIONS.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

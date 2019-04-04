@@ -25,31 +25,51 @@ IEntity::~IEntity()
     --EntityCount;
 }
 
-void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const
+void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
 {
     inOutputStream.Write( NetworkID );
-    // Write our dirty state
-    inOutputStream.Write( DirtyState, 2 );
+    // Write our replication action and the dirty state
+    inOutputStream.Write( ReplicationAction, 2 );
+    inOutputStream.Write( DirtyState );
 
-    if ( DirtyState & EIEntityReplicationState::EIRS_POS )
+    switch ( ReplicationAction )
+    {
+    case EReplicationAction::ERA_Create:
+    {
+        // If we are creating this object then we need to know it's type
+        WriteUpdateAction( inOutputStream, DirtyState );
+    }
+    break;
+    case EReplicationAction::ERA_Update:
+    {
+        WriteUpdateAction( inOutputStream, DirtyState );
+    }
+    break;
+    case EReplicationAction::ERA_Destroy:
+    {
+        // If we are destroying this object, than we don't need to write anything else
+    }
+    break;
+    }
+}
+
+void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const
+{
+
+    if ( inDirtyState & EIEntityReplicationState::EIRS_POS )
     {
         const glm::vec3 pos = EntityTransform->GetPosition();
         inOutputStream.Write( pos.x );
         inOutputStream.Write( pos.y );
         inOutputStream.Write( pos.z );
     }
-    
-    ( void ) ( inDirtyState );
+
 }
 
-void IEntity::Read( InputMemoryBitStream & inInputStream )
+void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 {
-    // Read in dirty state of this entity
-    UINT32 aDirtyState = 0;
-    inInputStream.Read( aDirtyState, 2 );
-
     // Read in pos
-    if ( aDirtyState & EIEntityReplicationState::EIRS_POS )
+    if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {
         glm::vec3 readPos( 0.f );
         inInputStream.Read( readPos.x );
@@ -57,9 +77,15 @@ void IEntity::Read( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.z );
 
         EntityTransform->SetPosition( readPos );
-
-        LOG_WARN( "New Entity Pos: x: {}  Y:{}  z:{} ", readPos.x, readPos.y, readPos.z );
     }
+}
+
+void IEntity::Read( InputMemoryBitStream & inInputStream )
+{
+    // Read in dirty state of this entity
+    inInputStream.Read( DirtyState );
+
+    ReadUpdateAction( inInputStream );
 
     // #TODO: Write out each of this entities components
 }

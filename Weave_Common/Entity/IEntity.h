@@ -19,7 +19,7 @@ public:
     {
         EIRS_POS        = 1 << 0,
         EIRS_ROT        = 1 << 1,
-        ECRS_AllState = EIRS_POS | EIRS_ROT
+        EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 
     IEntity();
@@ -119,7 +119,7 @@ public:
     /// </summary>
     /// <param name="inOutputStream"></param>
     /// <param name="inDirtyState"></param>
-    virtual void Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const;
+    virtual void Write( OutputMemoryBitStream & inOutputStream ) const;
 
     /// <summary>
     /// Read this component from a bit stream
@@ -130,11 +130,18 @@ public:
     FORCE_INLINE const INT32  GetNetworkID() const { return NetworkID; }
     FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
 
-    FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; }
+    FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; ReplicationAction = ERA_Update; }
     FORCE_INLINE UINT32 GetDirtyState() { return DirtyState; }
     FORCE_INLINE bool HasDirtyState() { return ( DirtyState != 0 ); }
 
+    FORCE_INLINE const EReplicationAction GetReplicationAction() { return ReplicationAction; }
+    FORCE_INLINE void SetReplicationAction( const EReplicationAction aAct ) { ReplicationAction = aAct; }
+
 protected:
+
+    virtual void WriteUpdateAction( OutputMemoryBitStream& inOutputStream, UINT32 inDirtyState ) const;
+
+    virtual void ReadUpdateAction( InputMemoryBitStream& inInputStream );
 
     static size_t EntityCount;
 
@@ -150,7 +157,10 @@ protected:
     size_t entID;
 
     /** If this entity is dirty of not */
-    UINT32 DirtyState = EIEntityReplicationState::ECRS_AllState;
+    UINT32 DirtyState = EIEntityReplicationState::EIRS_AllState;
+
+    /** The replication action for this entity to take */
+    EReplicationAction ReplicationAction = EReplicationAction::ERA_Create;
 
     /** Flag for if this entity is active or not */
     UINT32 IsActive : 1;

@@ -13,12 +13,12 @@ public:
 
     ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
-    virtual ~ServerNetworkManager( );
+    virtual ~ServerNetworkManager();
 
     /// <summary>
     /// Update all clients that are connected with the proper state data
     /// </summary>
-    void UpdateAllClients( );
+    void UpdateAllClients();
 
     /// <summary>
     /// Handle a client resetting their connection to the server

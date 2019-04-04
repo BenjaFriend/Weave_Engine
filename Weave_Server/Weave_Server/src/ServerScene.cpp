@@ -22,7 +22,10 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 
     for ( const auto & entity : NetworkIdToEntityMap )
     {
-        entity.second->Write( inOutputStream, 0 );   
+        // #TODO Read in the class ID for this object
+        entity.second->Write( inOutputStream );
+        // Reset our replication action
+        entity.second->SetReplicationAction( EReplicationAction::ERA_Update );
     }
 }
 
@@ -32,7 +35,9 @@ IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID )
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
     EntityArray.push_back( newEnt );
-    newEnt->SetDirtyState( IEntity::EIEntityReplicationState::ECRS_AllState );
+    // Setup replication actions
+    newEnt->SetReplicationAction( EReplicationAction::ERA_Create );
+    newEnt->SetDirtyState( IEntity::EIEntityReplicationState::EIRS_AllState );
 
     // Add this object to the replication map
     AddReplicatedObject( newEnt.get() );
