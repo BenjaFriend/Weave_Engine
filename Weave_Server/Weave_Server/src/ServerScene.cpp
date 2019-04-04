@@ -17,9 +17,12 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 {
     inOutputStream.Write( static_cast< UINT32 > ( NetworkIdToEntityMap.size() ) );
 
+    // #TODO Have a replication manager to only write dirty states out
+    // and what actions to take on the given object
+
     for ( const auto & entity : NetworkIdToEntityMap )
     {
-        entity.second->Write( inOutputStream, 0 );
+        entity.second->Write( inOutputStream, 0 );   
     }
 }
 
@@ -29,6 +32,7 @@ IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID )
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
     EntityArray.push_back( newEnt );
+    newEnt->SetDirtyState( IEntity::EIEntityReplicationState::ECRS_AllState );
 
     // Add this object to the replication map
     AddReplicatedObject( newEnt.get() );

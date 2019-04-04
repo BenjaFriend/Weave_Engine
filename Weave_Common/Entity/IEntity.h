@@ -15,6 +15,13 @@ class IEntity
 {
 public:
 
+    enum EIEntityReplicationState
+    {
+        EIRS_POS        = 1 << 0,
+        EIRS_ROT        = 1 << 1,
+        ECRS_AllState = EIRS_POS | EIRS_ROT
+    };
+
     IEntity();
 
     virtual ~IEntity();
@@ -123,6 +130,10 @@ public:
     FORCE_INLINE const INT32  GetNetworkID() const { return NetworkID; }
     FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
 
+    FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; }
+    FORCE_INLINE UINT32 GetDirtyState() { return DirtyState; }
+    FORCE_INLINE bool HasDirtyState() { return ( DirtyState != 0 ); }
+
 protected:
 
     static size_t EntityCount;
@@ -137,6 +148,9 @@ protected:
 
     /** The unique ID of this entity */
     size_t entID;
+
+    /** If this entity is dirty of not */
+    UINT32 DirtyState = EIEntityReplicationState::ECRS_AllState;
 
     /** Flag for if this entity is active or not */
     UINT32 IsActive : 1;

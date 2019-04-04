@@ -5,6 +5,12 @@
 #include "Utils/ObjectPool.hpp"
 #include <unordered_map>
 
+enum ReplicationAction
+{
+    RA_Create,
+    RA_Update,
+    RA_Destroy
+};
 
 class IScene
 {
@@ -27,6 +33,13 @@ public:
     {        
         return ( NetworkIdToEntityMap.find( aNetworkID ) != NetworkIdToEntityMap.end() );
     }
+
+    /// <summary>
+    /// Set the state of a replicated object to dirty
+    /// </summary>
+    /// <param name="aNetworkID">The network object to set</param>
+    /// <param name="aDirtyState">Dirty state of the object</param>
+    void SetDirtyState( INT32 aNetworkID, UINT32 aDirtyState );
 
     /// <summary>
     /// Clear the scene of entities and clear the replication map

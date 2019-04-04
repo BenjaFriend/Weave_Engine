@@ -127,7 +127,7 @@ namespace Tanks
         const float TimeBetweenHeartBeats = 0.5f;
 
         /** Keep track of the last time we received a state packet  */
-        float TimeOfLastStatePacket;
+        float TimeOfLastStatePacket = TimeUntilTimeout;
         /** The amount of time before this client times out from the server */
         const float TimeUntilTimeout = 10.0f;
 

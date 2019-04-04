@@ -9,7 +9,7 @@ ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 
 ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService, const char * aServerAddr, const unsigned short aPort, const std::string& aName )
-    : NetworkManager( aService )
+    : NetworkManager( aService ), Name( aName )
 {
     ServerEndpoint =
         boost::asio::ip::udp::endpoint(
@@ -19,7 +19,7 @@ ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_ser
 
     ClientState = EClientState::SayingHello;
 
-    Name = aName;
+    TimeOfLastStatePacket = Timing::sInstance.GetTimef();
 }
 
 ClientNetworkManager::~ClientNetworkManager()
@@ -84,6 +84,12 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
 
     default:
         break;
+    }
+
+    // Check if we should disconnect
+    if ( totalTime > TimeOfLastStatePacket + TimeUntilTimeout )
+    {
+        LOG_WARN( "We should disconnect from the server!" );
     }
 }
 
@@ -172,6 +178,8 @@ void Tanks::ClientNetworkManager::SendHeartbeatPacket()
 
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
 {
+    TimeOfLastStatePacket = Timing::sInstance.GetTimef();
+
     // Keep track of how many connected players there are on the client
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );

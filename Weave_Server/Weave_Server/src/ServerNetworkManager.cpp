@@ -180,6 +180,11 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     // Move the client based on their input to the server
     glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
     aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
+    
+    Scene.SetDirtyState(
+        aClient->GetClientEntity()->GetNetworkID(),
+        IEntity::EIEntityReplicationState::ECRS_AllState 
+    );
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
@@ -206,7 +211,6 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
     OutputMemoryBitStream packet = {};
     packet.Write( StatePacket );
 
-    // #TODO Write the scene data to this state packet
     // Write the number of connected clients
     packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
 

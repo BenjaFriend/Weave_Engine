@@ -51,6 +51,11 @@ void IScene::RemoveReplicatedObject( IEntity* aEntity )
     }
 }
 
+void IScene::SetDirtyState( INT32 aNetworkID, UINT32 aDirtyState )
+{
+    NetworkIdToEntityMap[ aNetworkID ]->SetDirtyState( aDirtyState );
+}
+
 void IScene::ResetScene()
 {
     NetworkIdToEntityMap.clear();
