@@ -3,6 +3,7 @@
 #include "Networking/NetworkManager.h"
 #include "../Game/PlayerMoves.h"
 #include <deque>
+#include "Utils/Dispatcher.hpp"     // Dispatcher for callback functions
 
 namespace Tanks
 {
@@ -13,7 +14,7 @@ namespace Tanks
     /// </summary>
     class ClientNetworkManager : public NetworkManager
     {
-        
+
     public:
         /// <summary>
         /// The network state of this client that can be used to determine what
@@ -24,82 +25,85 @@ namespace Tanks
             Uninitalized,   // Client is uninitialized and at the main menu
             SayingHello,    // Client is attempting to connect to the server
             Welcomed,       // Client has been welcomed into the game by the server
-			Leaving        // Client has been welcomed into the game by the server
+            Leaving         // Client has been welcomed into the game by the server
         };
-        
-        static ClientNetworkManager* Instance;
 
-        static ClientNetworkManager* StaticInit( 
+        static ClientNetworkManager * Instance;
+
+        static ClientNetworkManager * StaticInit (
             std::shared_ptr< boost::asio::io_service > aService,
             const char * aServerAddr,
             const unsigned short aPort,
-            const std::string& aName );
+            const std::string & aName );
 
         /// <summary>
         /// Delete the static instance of the network manager
         /// </summary>
-        static void ReleaseInstance();
+        static void ReleaseInstance ();
 
         /// <summary>
         /// Send outgoing packets based on the current state of the client
         /// </summary>
-        void SendOutgoingPackets( float totalTime );
+        void SendOutgoingPackets ( float totalTime );
 
-		/// <summary>
-		/// Send a disconnect message to the server and take in a callback
-		/// function to be called when successfully disconnected
-		/// </summary>
-		template <typename T>
-		void Disconnect( T* aCallbackObj, void ( T::*funcPtr ) () );
+        /// <summary>
+        /// Send a disconnect message to the server and take in a callback
+        /// function to be called when successfully disconnected
+        /// </summary>
+        void Disconnect ();
 
         /// <summary>
         /// Get the current state of the client
         /// </summary>
         /// <returns>Enum of the networked client state</returns>
-        FORCE_INLINE const EClientState GetClientState() const { return ClientState; }
-        FORCE_INLINE const UINT32 GetPlayerID() const { return PlayerID; }
-        FORCE_INLINE const std::string & GetName() const { return Name; }
-        FORCE_INLINE const boost::asio::ip::udp::endpoint  & GetServerEndpoint() { return ServerEndpoint; }
+        FORCE_INLINE const EClientState GetClientState () const { return ClientState; }
+        FORCE_INLINE const UINT32 GetPlayerID () const { return PlayerID; }
+        FORCE_INLINE const std::string & GetName () const { return Name; }
+        FORCE_INLINE const boost::asio::ip::udp::endpoint & GetServerEndpoint () { return ServerEndpoint; }
+        FORCE_INLINE Dispatcher & GetDisconnectDispatcher () { return DisconnectedDispatcher; }
 
     protected:
 
-        ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService,
-            const char * aServerAddr, 
-            const unsigned short aPort,
-            const std::string& aName );
+        ClientNetworkManager ( std::shared_ptr< boost::asio::io_service > aService,
+                               const char * aServerAddr,
+                               const unsigned short aPort,
+                               const std::string & aName );
 
-        virtual ~ClientNetworkManager();
+        virtual ~ClientNetworkManager ();
 
         /// <summary>
         /// Process the given input stream of data
         /// </summary>
         /// <param name="inInputStream">Input stream of this packets data</param>
         /// <param name="inFromAddress">Address that this packet is from</param>
-        virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
+        virtual void ProcessPacket ( InputMemoryBitStream & inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
 
-    private:     
+    private:
 
         /// <summary>
         /// Send a hello packet to the server
         /// </summary>
-        void SendHelloPacket();
+        void SendHelloPacket ();
 
         /// <summary>
         /// Send the input state of this client to the server
         /// </summary>
-        void SendInputPacket();
+        void SendInputPacket ();
 
         /// <summary>
         /// Process the given  state packet from the server
         /// </summary>
         /// <param name="inInputStream">Input stream of data</param>
-        void ProcessStatePacket( InputMemoryBitStream& inInputStream );
+        void ProcessStatePacket ( InputMemoryBitStream & inInputStream );
 
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;
 
         /** Connection state of this client */
         EClientState ClientState = EClientState::Uninitalized;
+
+        /** Dispatcher to be called when this client is disconnected from the server */
+        Dispatcher DisconnectedDispatcher;
 
         /** The name of the player */
         std::string Name;
@@ -118,19 +122,13 @@ namespace Tanks
         float TimeOfLastInputUpdate;
         /** The amount of time between sending hello packets */
         const float TimeBetweenInputUpdate = 0.5f;
-		
-		/** Keep track of the last time we received a state packet  */
-		float TimeOfLastStatePacket;
-		/** The amount of time before this client times out from the server */
-		const float TimeUntilTimeout = 10.0f;
+
+        /** Keep track of the last time we received a state packet  */
+        float TimeOfLastStatePacket;
+        /** The amount of time before this client times out from the server */
+        const float TimeUntilTimeout = 10.0f;
 
 
     };
-
-	template<typename T>
-	void ClientNetworkManager::Disconnect(T* aCallbackObj, void(T::* funcPtr)())
-	{
-
-	}
 
 }   // namespace Tanks

@@ -79,6 +79,15 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     }
 }
 
+void Tanks::ClientNetworkManager::Disconnect()
+{
+    if ( ClientState == EClientState::Welcomed )
+    {
+        // Attempt to disconnect from the server
+        DisconnectedDispatcher.Dispatch ();
+    }
+}
+
 void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
     UINT32 packetType;

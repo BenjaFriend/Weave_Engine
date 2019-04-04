@@ -19,6 +19,8 @@ void TankGame::Init()
     Game::Init();
 
     PlayerMoves::Init();
+
+    //NetMan->GetDisconnectDispatcher().BindListener ( this, Tanks::TankGame::OnDisconnected );
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
@@ -129,7 +131,7 @@ void Tanks::TankGame::DrawGameUI()
 
 	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
 	{
-		NetMan->Disconnect( this, &Tanks ::TankGame::OnDisconnected );
+		NetMan->Disconnect();
 	}
 
 	// #TODO Show log feed

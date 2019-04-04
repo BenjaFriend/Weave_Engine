@@ -179,13 +179,13 @@ namespace ECS
         virtual void SaveComponentData( nlohmann::json & aCompDataObj ) {}
 
         /** The unique ID of this component */
-        ComponentID id;
+        ComponentID id = 0;
 
         /** If this component is enabled or not */
         bool isEnabled = true;
 
         /** The owner of this component */
-        size_t owner;
+        size_t owner = 0;
 
         IEntity* OwningEntity = nullptr;
 
