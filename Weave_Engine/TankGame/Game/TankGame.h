@@ -3,6 +3,8 @@
 #include <Core/Game.h>
 #include "../Networking/ClientNetworkManager.h"
 #include "PlayerMoves.h"
+#include <boost/asio.hpp>
+#include <memory>
 
 namespace Tanks
 {
@@ -56,13 +58,28 @@ namespace Tanks
         /// </summary>
         void DrawGameUI();
 
+		///<summary>
+		/// Callback that occurs when this client is disconnected
+		///</summary>
+		void Disconnect();
+
     private:
+
+        /** Pointer to the io_service for the network manager
+        * This has to be here because otherwise there is an exception on exit
+        * in release mode when the netMan io_service goes out of context
+        */
+        std::shared_ptr < boost::asio::io_service > io_service;
 
         /** Network manager for this tank game */
         ClientNetworkManager* NetMan = nullptr;
 
         /** The current game state of this client */
         EGameState GameState = EGameState::MainMenu;  
+
+        const FileName MainMenuSceneName = L"Assets/Scenes/MainMenu.json";
+        const FileName GameSceneName = L"Assets/Scenes/Scene_test.json";
+
     };
 
 }   // namespace Tanks

@@ -2,8 +2,8 @@
 
 #include "ServerNetworkManager.h"
 
-ServerNetworkManager::ServerNetworkManager()
-    : NetworkManager()
+ServerNetworkManager::ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce )
+    : NetworkManager( aServce )
 {
     // Create a scene to replicate
 
@@ -12,6 +12,15 @@ ServerNetworkManager::ServerNetworkManager()
 ServerNetworkManager::~ServerNetworkManager()
 {
     LOG_TRACE( "--- ServerNetworkManage DTOR ---" );
+}
+
+void ServerNetworkManager::HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress )
+{
+    auto it = EndpointToClientMap.find( inFromAddress );
+    if ( it != EndpointToClientMap.end() )
+    {
+        HandleClientDisconnected( it->second );
+    }
 }
 
 void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
@@ -27,6 +36,14 @@ void ServerNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
     {
         ProcessExistingClientPacket( ( *it ).second, inInputStream );
     }
+}
+
+void ServerNetworkManager::HandleClientDisconnected( ClientProxyPtr aClient )
+{
+    // Tell the scene that they have left and we should remove their
+    // game object!
+    EndpointToClientMap.erase( aClient->GetEndpoint() );
+    Scene.RemoveReplicatedObject( aClient->GetClientEntity().get() );
 }
 
 void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
@@ -48,7 +65,7 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Update this players input
     }
     break;
-
+    // TODO: Handle heartbeat
     default:
         break;
     }
@@ -168,6 +185,18 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
     packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
 
     Scene.Write( packet, 0 );
+
+    SendPacket( packet, aClient->GetEndpoint() );
+}
+
+void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg )
+{
+    assert( aMsg != nullptr );
+    
+    OutputMemoryBitStream packet = {};
+    packet.Write( FeedMessagePacket );
+
+    packet.WriteBits( aMsg, static_cast< UINT32 >( strlen( aMsg ) ) );
 
     SendPacket( packet, aClient->GetEndpoint() );
 }

@@ -1,25 +1,46 @@
 node {
-    //sh 'env > env.txt'
-    //for (String i : readFile('env.txt').split("\r?\n")) {
-    //    println i
-    //}
 
     sh "echo \$PWD"
 
-    stage('Preparation') { // for display purposes
-
+    stage('Preparation') { 
         // Get some code from a GitHub repository
         git 'https://github.com/BenjaFriend/Weave_Engine.git'
+        sh "git submodule update --init --recursive;"
     }
 
-    stage('Build') {
-       echo 'Hello I am in the buiiild stage!'
-       // Run CMake here, maybe inside a docker container?
-       sh "cmake \$PWD/Weave_Server"
-       sh "make \$PWD/Weave_Server"
+    stage('Build Server GCC') {
+       echo 'Building with GCC...'
+       sh "g++ --version"
+       sh "cmake \$PWD -DUSE_CLANG=OFF"
+       sh "make -C \$PWD"
     }
 
-    stage('Results') {
-        echo 'Ya boi is done'
+    stage('Unit Tests GCC') {
+        sh "g++ --version"
+        //sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=OFF"
+        //sh "make -C \$PWD/Weave_Tests"
+        
+        echo 'Run Unit tests...'
+        sh "./Weave_Tests/bin/WEAVE_TESTS"
     }
+
+    stage('Build Server Clang') {
+       echo 'Building with Clang...'
+       sh "clang++ --version"
+
+       sh "cmake \$PWD -DUSE_CLANG=ON"
+       sh "make -C \$PWD"
+    }
+
+    stage('Unit Tests Clang') {
+        sh "clang++ --version"
+
+        //sh "cmake \$PWD/Weave_Tests -DUSE_CLANG=ON"
+        //sh "make -C \$PWD/Weave_Tests"
+        
+        echo 'Run Unit tests...'
+        sh "./Weave_Tests/bin/WEAVE_TESTS"
+    }
+
+
 }

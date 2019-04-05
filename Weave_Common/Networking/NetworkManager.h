@@ -28,12 +28,13 @@ class NetworkManager
 public:
 
     // Packet types
-    static const UINT32 HelloPacket     = 'HELO';   // Hello packet from the client
-    static const UINT32 WelcomePacket   = 'WELC';   // Welcome packet to initialize the client
-    static const UINT32 StatePacket     = 'STAT';   // State update of the scene
-    static const UINT32	InputPacket     = 'INPT';   // The client's input state
+    static const UINT32 HelloPacket = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket = 'INPT';   // The client's input state
+    static const UINT32	FeedMessagePacket = 'FMSG';   // A message ment to give a feed update to all the client
 
-    NetworkManager();
+    NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
     virtual ~NetworkManager();
 
@@ -54,6 +55,12 @@ public:
     /// <param name="inOutputStream">Data to send within this packet</param>
     /// <param name="inFromAddress">The endpoint to send this data to</param>
     void SendPacket( const OutputMemoryBitStream& inOutputStream, const boost::asio::ip::udp::endpoint & inFromAddress );
+
+    /// <summary>
+    /// Handle a connection being reset from a given address. 
+    /// </summary>
+    /// <param name="inFromAddress">Connection that was marked for reset</param>
+    virtual void HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress ) { ( void ) ( inFromAddress ); }
 
 protected:
 
@@ -90,6 +97,12 @@ protected:
         boost::asio::ip::udp::endpoint InEndpoint;
     };
 
+    static std::shared_ptr< boost::asio::ip::udp::socket > UDPSocketFactory(
+        boost::asio::io_service & service, const boost::asio::ip::udp::endpoint& aEnpoint )
+    {
+        return std::make_shared< boost::asio::ip::udp::socket >( service, aEnpoint );
+    }
+
 private:
 
     /// <summary>
@@ -121,13 +134,13 @@ private:
     std::shared_ptr< boost::asio::ip::udp::socket > ListenSocket;
 
     /** Io service for running the sockets */
-    boost::asio::io_service io_service;
+    std::shared_ptr < boost::asio::io_service > io_service;
 
     /** the endpoint of the remote client contacting the server */
     boost::asio::ip::udp::endpoint remote_endpoint;
 
     /** Char buffer for storing messages */
-    char recv_buf [ DEF_BUF_SIZE ];
+    char recv_buf[ DEF_BUF_SIZE ];
 
     /** The queue of packets to process */
     std::queue< ReceivedPacket > PacketQueue;   // #TODO Make this is a lockless queue

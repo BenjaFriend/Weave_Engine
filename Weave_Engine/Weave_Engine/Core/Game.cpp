@@ -39,7 +39,7 @@ Game::Game( HINSTANCE hInstance )
     vertexShader = 0;
     pixelShader = 0;
 
-#if defined( DEBUG ) || defined( _DEBUG )
+#if defined( DEBUG ) || defined( _DEBUG ) || defined ( W_ENABLE_LOGGING )
     // Do we want a console window?  Probably only in debug mode
     CreateConsoleWindow( 500, 120, 32, 120 );
     printf( "Console window created successfully.  Feel free to printf() here.\n" );
@@ -267,7 +267,7 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                FlyingCamera->GetEntity()->GetAsEntity()->GetTransform()->GetPosition()
+                FlyingCamera->GetEntity()->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(

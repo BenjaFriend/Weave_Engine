@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "Resources/MeshRenderer.h"
+#include "Lighting/PointLight.h"
 
 using namespace SceneManagement;
 
@@ -28,8 +29,10 @@ Scene::~Scene()
 void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in the array of entity info
-    UINT32 numEntities = {};
+    UINT32 numEntities = 0;
     inInputStream.Read( numEntities );
+
+    std::unordered_map< INT32, IEntity* > entitiesToDestroy = NetworkIdToEntityMap;
 
     LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
@@ -41,18 +44,23 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         // Do we have this in our replicated map
         if ( !IsObjectReplicated( networkID ) )
         {
-            LOG_WARN( " Entity {} IS NOT in  our replication map! Adding...", networkID );
-
             // If not, add it
             Entity* ent = AddEntity( "Newly Added rep object" );
+
+            // #TODO Make entity creation and components replicated
             ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+            PointLightData lightData = {};
+            lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
+            lightData.Range = 8.f;            
+            lightData.Intensity = 10.f;
+            ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
             ent->SetNetworkID( networkID );
             AddReplicatedObject( ent );
         }
 
         IEntity* replicatedEnt = NetworkIdToEntityMap [ networkID ];
-
-        LOG_TRACE( "Scene Update entity {}", replicatedEnt->GetName() );
+        assert( replicatedEnt != nullptr );
+        // Have this entity read in it's update data
         replicatedEnt->Read( inInputStream );
     }
 }
@@ -108,6 +116,9 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
 
 void Scene::ResetScene()
 {
+    // Clears the known replicated objects
+    IScene::ResetScene();
+
     UnloadAllEntities( false );
     UnloadAllLights();
     SceneName = "DEFAULT_SCENE";

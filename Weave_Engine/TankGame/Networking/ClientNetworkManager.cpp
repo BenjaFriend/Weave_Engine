@@ -8,8 +8,8 @@ using namespace Tanks;
 ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 
-ClientNetworkManager::ClientNetworkManager( const char * aServerAddr, const unsigned short aPort, const std::string& aName )
-    : NetworkManager()
+ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService, const char * aServerAddr, const unsigned short aPort, const std::string& aName )
+    : NetworkManager( aService )
 {
     ServerEndpoint =
         boost::asio::ip::udp::endpoint(
@@ -27,14 +27,19 @@ ClientNetworkManager::~ClientNetworkManager()
 
 }
 
-ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( const char * aServerAddr, const unsigned short aPort, const std::string& aName )
+ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( 
+    std::shared_ptr< boost::asio::io_service > aService,
+    const char * aServerAddr,
+    const unsigned short aPort,
+    const std::string& aName )
 {
-    assert( Instance == nullptr );
-
-    Instance = new ClientNetworkManager( aServerAddr, aPort, aName );
+    // The client should be able to reconnect to a different server
+    ReleaseInstance( );
+    
+    Instance = new ClientNetworkManager( aService, aServerAddr, aPort, aName );
     Instance->Init( 50000 );
 
-    LOG_TRACE( "Client initalized!" );
+    LOG_TRACE( "Client initalized! " );
 
     return Instance;
 }
@@ -100,6 +105,8 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
             // Update our local  world based on this new info
             ProcessStatePacket( inInputStream );            
         }
+		
+		//TimeOfLastStatePacket = TotalTime;
     }
     break;
     default:
@@ -132,7 +139,7 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         output.Write( InputPacket );
 
         // For every move in the queue
-        const std::deque<Input::InputType> moveQueue = PlayerMoves::Instance->GetMoveQueue();
+        const std::deque<Input::InputType> & moveQueue = PlayerMoves::Instance->GetMoveQueue();
 
         // Write the size of how many moves there are
         output.Write( static_cast< UINT32 > ( moveQueue.size() ) );
@@ -154,8 +161,11 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     inInputStream.Read( playerCount );
     using namespace SceneManagement;
 
+    // Read in the state of the scene
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
     scene->Read( inInputStream );
+
+    // Read in any messages that may be at the end of the scene packet
 
     LOG_TRACE( "State update dude! Con players = {}", playerCount );
 }

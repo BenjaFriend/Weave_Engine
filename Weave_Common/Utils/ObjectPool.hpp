@@ -13,9 +13,11 @@ public:
 
     ~ObjectPool();
 
-    FORCE_INLINE const bool IsEmpty() const { AvailableIndecies.empty(); }
+    FORCE_INLINE const bool IsEmpty() const { return AvailableIndecies.empty(); }
 
     FORCE_INLINE const bool IsFull() const { return AvailableIndecies.size() == MaxSize; }
+
+    FORCE_INLINE const size_t GetNumberAvailableResources() const { return AvailableIndecies.size(); }
 
     /// <summary>
     /// Get an available resource 

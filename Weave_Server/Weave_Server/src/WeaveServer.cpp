@@ -9,7 +9,12 @@ WeaveServer::WeaveServer( SERVER_INIT_DESC aDesc )
     ResponsePort( aDesc.ResponsePort ),
     TimeBetweenStateUpdates( aDesc.StateUpdateTickRate )
 {
-    NetworkMan = new ServerNetworkManager();
+    // #TODO: Set up a room concept for the server
+    ( void )( ResponsePort );
+    ( void )( MaxRooms );
+    io_service = std::make_shared<boost::asio::io_service>();
+
+    NetworkMan = new ServerNetworkManager( io_service );
     NetworkMan->Init( ListenPort );
 
     // Add user command options
@@ -49,16 +54,16 @@ void WeaveServer::Run()
         if ( ShouldQuit ) break;
 
         Timing::sInstance.Update();
-        float deltaTime = Timing::sInstance.GetDeltaTime();
-        float totalTime = Timing::sInstance.GetTimef();
+        DeltaTime = Timing::sInstance.GetDeltaTime();
+        TotalTime = Timing::sInstance.GetTimef();
 
         NetworkMan->ProcessIncomingPackets();
 
         // If we have hit our tick rate, then update all clients
-        if ( totalTime > TimeOfLastStateUpdate + TimeBetweenStateUpdates )
+        if ( TotalTime > TimeOfLastStateUpdate + TimeBetweenStateUpdates )
         {
             NetworkMan->UpdateAllClients();
-            TimeOfLastStateUpdate = totalTime;
+            TimeOfLastStateUpdate = TotalTime;
         }
 
         // Update the rooms and scenes here

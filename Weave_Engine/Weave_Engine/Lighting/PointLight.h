@@ -21,6 +21,8 @@ public:
         float aRange = 5.f
     );
 
+    PointLight( PointLightData aData, const glm::vec3 & aPosOffset );
+
     PointLight( nlohmann::json const & aInitData );
 
     ~PointLight();
@@ -33,7 +35,7 @@ public:
 
     void SetRange( float aVal );
 
-    const PointLightData& GetLightData() const;
+    const PointLightData& GetLightData();
 
     const bool GetDrawRange() const;
 
@@ -48,6 +50,9 @@ protected:
 private:
 
     PointLightData LightingData;
+
+    /** the Offset position from the owning entity */
+    glm::vec3 PosOffset = {};
 
     bool DrawRange = false;
 

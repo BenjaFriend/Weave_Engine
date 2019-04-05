@@ -19,6 +19,8 @@ void TankGame::Init()
     Game::Init();
 
     PlayerMoves::Init();
+
+    sceneManager->LoadScene( MainMenuSceneName );
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
@@ -57,6 +59,7 @@ void Tanks::TankGame::DrawUI()
         DrawMainMenu();
         break;
     case Tanks::EGameState::Playing:
+		DrawGameUI();
         break;
     case Tanks::EGameState::Quitting:
         break;
@@ -107,7 +110,13 @@ void Tanks::TankGame::DrawMainMenu()
     if ( ImGui::Button( "Connect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
     {
         // Attempt to connect to the server
-        NetMan = ClientNetworkManager::StaticInit( serverAddressBuf, serverPortBuf, namebuf );
+        // The io_service object is what the network manager uses for async operations
+        io_service.reset();
+        io_service = std::make_shared< boost::asio::io_service >();
+        NetMan = ClientNetworkManager::StaticInit( io_service, serverAddressBuf, serverPortBuf, namebuf );
+
+        // Load the game scene file locally and set our state to playing
+        sceneManager->LoadScene( GameSceneName );
         GameState = EGameState::Playing;
     }
 
@@ -122,5 +131,36 @@ void Tanks::TankGame::DrawMainMenu()
 
 void Tanks::TankGame::DrawGameUI()
 {
+	ImGui::Begin("Game Menu");
     
+    ImGui::Text( "Currently Connected to:\n %s : %d", 
+        NetMan->GetServerEndpoint().address().to_string().c_str(),
+        NetMan->GetServerEndpoint().port()
+    );
+
+
+	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+	{
+        Disconnect();
+	}
+
+	// #TODO Show log feed
+
+	ImGui::End();
+}
+
+void Tanks::TankGame::Disconnect()
+{
+	// Go back to the main menu when we disconnect
+	GameState = EGameState::MainMenu;
+    // Reset our network manager
+    ClientNetworkManager::ReleaseInstance();
+    
+    // Reset the scene (clears the known replicated objects)
+    sceneManager->GetActiveScene()->ResetScene();
+
+    // #TODO Load in a main menu scene or something like that
+    sceneManager->LoadScene( MainMenuSceneName );
+
+	LOG_TRACE( "This client has disconnect from the server!" );
 }

@@ -38,7 +38,7 @@ SceneManager::~SceneManager()
     // Remove any listeners to the scene management
 }
 
-void SceneManager::LoadScene( FileName & aSceneName )
+void SceneManager::LoadScene( const FileName & aSceneName )
 {
     // We need to make sure that we unload the current scene first
     UnloadCurrentScene();

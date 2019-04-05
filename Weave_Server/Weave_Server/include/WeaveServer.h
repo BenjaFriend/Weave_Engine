@@ -4,6 +4,7 @@
 #include <thread>
 #include <memory>
 #include <unordered_map>
+#include <boost/asio.hpp>
 
 #include "ServerNetworkManager.h"
 
@@ -78,7 +79,17 @@ private:
     /** The thread the user input will be checked on */
     std::thread userInputThread;
 
+    /** Pointer to the io_service for the network manager 
+    * This has to be here because otherwise there is an exception on exit
+    * in release mode when the netMan io_service goes out of context
+    */
+    std::shared_ptr < boost::asio::io_service > io_service;
 
+    /** Delta time of the server */
+    float DeltaTime;
+
+    /** Total time that the program has been running */
+    float TotalTime;
 
     /** Time between input updates */
     float TimeOfLastStateUpdate;
