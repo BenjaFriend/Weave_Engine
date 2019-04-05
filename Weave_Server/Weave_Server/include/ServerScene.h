@@ -14,7 +14,7 @@ public:
 
     virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
 
-    IEntityPtr AddEntity( const std::string & aName, UINT32 aID );
+    IEntityPtr AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
 
 private:
 

@@ -15,9 +15,6 @@ class IEntity
 {
 public:
 
-	static const UINT32 PLAYER_TANK_ID		= 'TANK';
-	static const UINT32 PLAYER_BULLET_ID	= 'BULT';
-
     enum EIEntityReplicationState
     {
         EIRS_POS        = 1 << 0,
@@ -140,6 +137,9 @@ public:
     FORCE_INLINE const EReplicationAction GetReplicationAction() { return ReplicationAction; }
     FORCE_INLINE void SetReplicationAction( const EReplicationAction aAct ) { ReplicationAction = aAct; }
 
+	FORCE_INLINE const EReplicatedClassType GetReplicationClassType() { return ReplicatedClassType; }
+	FORCE_INLINE void SetReplicationClassType( EReplicatedClassType aRepClass ) { ReplicatedClassType = aRepClass; }
+
 protected:
 
     virtual void WriteUpdateAction( OutputMemoryBitStream& inOutputStream, UINT32 inDirtyState ) const;
@@ -149,12 +149,6 @@ protected:
     static size_t EntityCount;
 
     INT32 NetworkID = -1;
-
-	/** 
-	* A class ID for the replication between the server and the client
-	* to be aware of what type of object this is 
-	*/
-	UINT32 NetworkRepClassID;
 
     /** handles the adding/removing of components for this entity */
     ECS::ComponentManager * componentManager = nullptr;
@@ -170,6 +164,9 @@ protected:
 
     /** The replication action for this entity to take */
     EReplicationAction ReplicationAction = EReplicationAction::ERA_Create;
+
+	/** The type of objectcale class that this entity is */
+	EReplicatedClassType ReplicatedClassType = EReplicatedClassType::EObstacle_Class;
 
     /** Flag for if this entity is active or not */
     UINT32 IsActive : 1;

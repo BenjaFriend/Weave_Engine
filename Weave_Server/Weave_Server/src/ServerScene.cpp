@@ -29,7 +29,7 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
     }
 }
 
-IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID )
+IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
     IEntityPtr newEnt = std::make_shared<IEntity>();
     newEnt->SetName( aName );
@@ -38,7 +38,7 @@ IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID )
     // Setup replication actions
     newEnt->SetReplicationAction( EReplicationAction::ERA_Create );
     newEnt->SetDirtyState( IEntity::EIEntityReplicationState::EIRS_AllState );
-
+    newEnt->SetReplicationClassType( aClassType ); 
     // Add this object to the replication map
     AddReplicatedObject( newEnt.get() );
 

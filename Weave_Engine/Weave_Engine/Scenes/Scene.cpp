@@ -42,7 +42,10 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         inInputStream.Read( networkID );
         EReplicationAction action = EReplicationAction::ERA_Update;
         inInputStream.Read( action, 2 );
-        
+
+		EReplicatedClassType aClassType = EReplicatedClassType::EObstacle_Class;
+		inInputStream.Read( aClassType, 2 );
+
         switch ( action )
         {
         case ERA_Create:
@@ -55,22 +58,44 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
             // Do we have this in our replicated map
             if ( !IsObjectReplicated( networkID ) )
             {
-                // If not, add it
-                Entity* ent = AddEntity( "Newly Added rep object" );
+				// If not, add it
+				Entity* ent = AddEntity("Newly Added rep object");
+				switch ( aClassType )
+				{
+				case ETank_Class:
+				{
+					LOG_WARN( "This is a tank!" );
+					ent->SetName("New Tank");
+					// #TODO Make entity creation and components replicated
+					ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+					PointLightData lightData = {};
+					lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
+					lightData.Range = 8.f;
+					lightData.Intensity = 10.f;
+					ent->AddComponent< PointLight >(lightData, glm::vec3(0.f, 5.f, 0.f));
+				}
+				break;
+				case EBullet_Class:
+				{
+                    LOG_WARN("This is a bullet!");
+					ent->SetName("New Bullet");
+					ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/sphere.obj" );
+				}
+				break;
+				case EObstacle_Class:
+                    LOG_WARN("This is an obstacle!");
 
-                // #TODO Make entity creation and components replicated
-                ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
-                PointLightData lightData = {};
-                lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
-                lightData.Range = 8.f;
-                lightData.Intensity = 10.f;
-                ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
+					break;
+				default:
+					break;
+				}
 
                 ent->SetNetworkID( networkID );
                 AddReplicatedObject( ent );
             }
             IEntity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
             assert( replicatedEnt != nullptr );
+			replicatedEnt->SetReplicationClassType( aClassType );
             // Have this entity read in it's update data
             replicatedEnt->Read( inInputStream );
         }

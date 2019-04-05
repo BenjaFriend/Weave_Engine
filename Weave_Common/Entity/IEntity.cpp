@@ -30,6 +30,7 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
     inOutputStream.Write( NetworkID );
     // Write our replication action and the dirty state
     inOutputStream.Write( ReplicationAction, 2 );
+    inOutputStream.Write( ReplicatedClassType, 2 );
     inOutputStream.Write( DirtyState );
 
     switch ( ReplicationAction )
@@ -55,7 +56,6 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
 
 void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const
 {
-
     if ( inDirtyState & EIEntityReplicationState::EIRS_POS )
     {
         const glm::vec3 pos = EntityTransform->GetPosition();
@@ -68,6 +68,7 @@ void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 
 
 void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 {
+	
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {

@@ -117,7 +117,11 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
 
         // Send welcome packet to them and tell them what their ID is
         SendWelcomePacket( newClient );
-        auto clientEnt = Scene.AddEntity( newClient->GetName(), NewPlayerID );
+        auto clientEnt = Scene.AddEntity( 
+            newClient->GetName(),
+            NewPlayerID,
+            EReplicatedClassType::ETank_Class
+        );
         newClient->SetClientEntity( clientEnt );
     }
     else
@@ -133,7 +137,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     inInputStream.Read( sizeOfMoveList );
 
     glm::vec3 inputMovement( 0.f );
-
+    glm::vec3 bulletSpawnPoint = aClient->GetClientEntity()->GetTransform()->GetPosition();
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
@@ -143,9 +147,18 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         {
         case Input::InputType::Fire:
         {
-            LOG_TRACE( "PLAYER FIRE MOVE!" );      
+            LOG_TRACE( "PLAYER FIRE MOVE!" );
             // Spawn a bullet on the server
-            Scene.AddEntity( "Bullet Boi", NewPlayerID++ );
+            IEntityPtr newBullet = Scene.AddEntity( 
+                "Bullet Boi",
+                NewPlayerID++, 
+                EReplicatedClassType::EBullet_Class 
+            );
+            // Add the forward vector to the bullet spawn point
+            glm::vec3 forward = aClient->GetClientEntity()->GetTransform()->GetForward();
+            bulletSpawnPoint += ( forward * 1.5f );
+            newBullet->GetTransform()->SetPosition( bulletSpawnPoint );
+            // Add to a bullet array and start moving them
         }
         break;
         case Input::InputType::Move_Left:
