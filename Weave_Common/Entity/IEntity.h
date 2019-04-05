@@ -15,6 +15,9 @@ class IEntity
 {
 public:
 
+	static const UINT32 PLAYER_TANK_ID		= 'TANK';
+	static const UINT32 PLAYER_BULLET_ID	= 'BULT';
+
     enum EIEntityReplicationState
     {
         EIRS_POS        = 1 << 0,
@@ -146,6 +149,12 @@ protected:
     static size_t EntityCount;
 
     INT32 NetworkID = -1;
+
+	/** 
+	* A class ID for the replication between the server and the client
+	* to be aware of what type of object this is 
+	*/
+	UINT32 NetworkRepClassID;
 
     /** handles the adding/removing of components for this entity */
     ECS::ComponentManager * componentManager = nullptr;

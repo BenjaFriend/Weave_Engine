@@ -27,6 +27,7 @@ void IScene::AddReplicatedObject( IEntity* aEntity )
     if ( it == NetworkIdToEntityMap.end( ) )
     {
         NetworkIdToEntityMap[ aEntity->GetNetworkID( ) ] = aEntity;
+		aEntity->SetReplicationAction( EReplicationAction::ERA_Create );
     }
 }
 
