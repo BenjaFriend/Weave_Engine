@@ -56,7 +56,7 @@ Game::~Game()
 {
     skyRastState->Release();
     skyDepthState->Release();
-    FlyingCamera = nullptr;
+    CurrentCam = nullptr;
 }
 
 // --------------------------------------------------------
@@ -65,8 +65,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    FlyingCamera = CameraMan->GetActiveCamera();
-    assert( FlyingCamera != nullptr );
+    CurrentCam = CameraMan->GetActiveCamera();
+    assert( CurrentCam != nullptr );
 
 #if defined( EDITOR_ON )
 
@@ -158,7 +158,7 @@ void Game::InitLights()
 // --------------------------------------------------------
 void Game::CreateMatrices()
 {
-    FlyingCamera->UpdateProjectionMatrix( ( float ) width, ( float ) height );
+    CurrentCam->UpdateProjectionMatrix( ( float ) width, ( float ) height );
 }
 
 // --------------------------------------------------------
@@ -167,7 +167,6 @@ void Game::CreateMatrices()
 void Game::CreateBasicGeometry()
 {
     // Load in the meshes that will be used by some other systems
-    PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
     CubeMesh = resourceMan->LoadMesh( L"Assets/Models/cube.obj" );
 
     // Create the basic sampler ---------------------------------------------
@@ -194,7 +193,7 @@ void Game::OnResize()
     // Handle base-level DX resize stuff
     DXCore::OnResize();
 
-    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    CurrentCam->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 }
 
 // --------------------------------------------------------
@@ -203,9 +202,9 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
-    FlyingCamera = CameraMan->GetActiveCamera();
+    CurrentCam = CameraMan->GetActiveCamera();
     // Update the camera
-    FlyingCamera->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
+    CurrentCam->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );
 
     ScriptMan->Update( dt );
 
@@ -231,8 +230,8 @@ void Game::Draw( float dt, float totalTime )
         1.0f,
         0 );
 
-    FlyingCamera = CameraMan->GetActiveCamera();
-    assert( FlyingCamera != nullptr );
+    CurrentCam = CameraMan->GetActiveCamera();
+    assert( CurrentCam != nullptr );
 
     // Set buffers in the input assembler
     //  - Do this ONCE PER OBJECT you're drawing, since each object might
@@ -267,12 +266,12 @@ void Game::Draw( float dt, float totalTime )
             // Send camera info ---------------------------------------------------------
             EnMat->GetPixelShader()->SetFloat3(
                 "CameraPosition",
-                FlyingCamera->GetEntity()->GetTransform()->GetPosition()
+                CurrentCam->GetEntity()->GetTransform()->GetPosition()
             );
 
             MeshRend->PrepareMaterial(
-                FlyingCamera->GetViewMatrix(),
-                FlyingCamera->GetProjectMatrix()
+                CurrentCam->GetViewMatrix(),
+                CurrentCam->GetProjectMatrix()
             );
 
             // Draw the entity ---------------------------------------------------------
@@ -314,8 +313,8 @@ void Game::Draw( float dt, float totalTime )
         context->IASetVertexBuffers( 0, 1, &skyVB, &stride, &offset );
         context->IASetIndexBuffer( skyIB, DXGI_FORMAT_R32_UINT, 0 );
 
-        SkyBoxVS->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
-        SkyBoxVS->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+        SkyBoxVS->SetMatrix4x4( "view", CurrentCam->GetViewMatrix() );
+        SkyBoxVS->SetMatrix4x4( "projection", CurrentCam->GetProjectMatrix() );
 
         SkyBoxVS->CopyAllBufferData();
         SkyBoxVS->SetShader();
@@ -334,12 +333,6 @@ void Game::Draw( float dt, float totalTime )
         context->RSSetState( 0 );
         context->OMSetDepthStencilState( 0, 0 );
     }
-
-    if ( DebugDrawColliders )
-        DrawColliders();
-
-    if ( DrawLightGizmos )
-        DrawLightSources();
 
 #if defined ( ENABLE_UI )
 
@@ -370,159 +363,9 @@ void Game::Draw( float dt, float totalTime )
     //swapChain->Present( 1, 0 );   // Present with vsync
 }
 
-// #Editor
-void Game::DrawLightSources()
-{
-    Mesh* lightMesh = PointLightMesh;
-    ID3D11Buffer * vb = lightMesh->GetVertexBuffer();
-    ID3D11Buffer * ib = lightMesh->GetIndexBuffer();
-    unsigned int indexCount = lightMesh->GetIndexCount();
-
-    // Turn on these shaders
-    vertexShader->SetShader();
-    UnlitPixelShader->SetShader();
-
-    // Set up vertex shader
-    vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
-    vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
-
-    // Set buffers in the input assembler
-    UINT stride = sizeof( Vertex );
-    UINT offset = 0;
-
-    auto PointLights = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetPointLights();
-
-    for ( size_t i = 0; i < PointLights.size(); ++i )
-    {
-        if ( !PointLights [ i ]->IsEnabled() ) continue;
-
-        PointLightData light = PointLights [ i ]->GetLightData();
-
-        context->IASetVertexBuffers( 0, 1, &vb, &stride, &offset );
-        context->IASetIndexBuffer( ib, DXGI_FORMAT_R32_UINT, 0 );
-
-        float scale = 0.5f;
-
-        XMMATRIX rotMat = XMMatrixIdentity();
-        XMMATRIX scaleMat = XMMatrixScaling( scale, scale, scale );
-        XMMATRIX transMat = XMMatrixTranslation( light.Position.x, light.Position.y, light.Position.z );
-
-        // Make the transform for this light
-        XMFLOAT4X4 world;
-        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
-
-        // Set up the world matrix for this light
-        vertexShader->SetMatrix4x4( "world", world );
-
-        // Set up the pixel shader data
-        glm::vec3 finalColor = light.Color;
-        finalColor.x *= light.Intensity;
-        finalColor.y *= light.Intensity;
-        finalColor.z *= light.Intensity;
-        UnlitPixelShader->SetFloat3( "Color", finalColor );
-
-        // Copy data
-        vertexShader->CopyAllBufferData();
-        UnlitPixelShader->CopyAllBufferData();
-        context->DrawIndexed( indexCount, 0, 0 );
-
-        // Wireframe mode ---------------------------------
-        if ( PointLights [ i ]->GetDrawRange() )
-        {
-            scaleMat = XMMatrixScaling( light.Range, light.Range, light.Range );
-
-            // Make the transform for this light
-            XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
-
-            // Draw the wireframe point light range
-            vertexShader->SetMatrix4x4( "world", world );
-
-            UnlitPixelShader->SetFloat3( "Color", finalColor );
-
-            // Copy data to the shaders
-            vertexShader->CopyAllBufferData();
-            UnlitPixelShader->CopyAllBufferData();
-
-            // Set the wireframe rasterizer state
-            context->RSSetState( WireFrame );
-            // Draw the wireframe
-            context->DrawIndexed( indexCount, 0, 0 );
-
-            // Reset the Rasterizer state
-            context->RSSetState( 0 );
-        }
-    }
-}
-
-void Game::DrawColliders()
-{
-    /*Mesh* cubeMesh = CubeMesh;
-    ID3D11Buffer * vb = cubeMesh->GetVertexBuffer();
-    ID3D11Buffer * ib = cubeMesh->GetIndexBuffer();
-    unsigned int indexCount = cubeMesh->GetIndexCount();
-
-    // Turn on these shaders
-    vertexShader->SetShader();
-    UnlitPixelShader->SetShader();
-
-    // Set up vertex shader
-    vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
-    vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
-
-    // Set buffers in the input assembler
-
-    auto colliders = PhysicsMan->GetColliders();
-    for ( Physics::BoxCollider* box : colliders )
-    {
-        const glm::vec3 & extents = box->GetExtents();
-        const glm::vec3 & pos = box->GetPosition();
-
-        XMMATRIX rotMat = XMMatrixIdentity();
-        XMMATRIX scaleMat = XMMatrixScaling( extents.x, extents.y, extents.z );
-        XMMATRIX transMat = XMMatrixTranslation( pos.x, pos.y, pos.z );
-
-        // Make the transform for this light
-        VEC4x4 world;
-
-        // Wireframe mode ---------------------------------
-        // Make the transform for this light
-        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
-
-        // Draw the wire frame point light range
-        vertexShader->SetMatrix4x4( "world", world );
-
-        UnlitPixelShader->SetFloat3( "Color", glm::vec3( 1.0f, 1.0f, 0.0f ) );
-
-        // Copy data to the shaders
-        vertexShader->CopyAllBufferData();
-        UnlitPixelShader->CopyAllBufferData();
-
-        // Set the wire frame Rasterizer state
-        context->RSSetState( WireFrame );
-
-        // Draw the wire frame
-        context->DrawIndexed( indexCount, 0, 0 );
-    }
-
-    // Reset the Rasterizer state
-    context->RSSetState( 0 );*/
-}
-
 void Game::DrawUI()
 {
 
-    // Options --------------------------
-    {
-        ImGui::Begin( "Demo Options" );
-
-        ImGui::Checkbox( "Draw Light Gizmos", &DrawLightGizmos );
-
-        ImGui::Checkbox( "Use SkyBox", &DrawSkyBox );
-
-        ImGui::Separator();
-
-        ImGui::End();   // If you want more than one window, then use ImGui::Beigin
-    }
 }
 
 #pragma region Mouse Input
@@ -535,7 +378,7 @@ void Game::DrawUI()
 void Game::OnMouseDown()
 {
     // Add any custom code here...
-    FlyingCamera->SetDoRotation( true );
+    CurrentCam->SetDoRotation( true );
 
     // Caputure the mouse so we keep getting mouse move
     // events even if the mouse leaves the window.  we'll be
@@ -550,7 +393,7 @@ void Game::OnMouseUp()
 {
     // Add any custom code here...
     // Reverse the camera direction
-    FlyingCamera->SetDoRotation( false );
+    CurrentCam->SetDoRotation( false );
 
     // We don't care about the tracking the cursor outside
     // the window anymore (we're not dragging if the mouse is up)
@@ -565,7 +408,7 @@ void Game::OnMouseUp()
 void Game::OnMouseMove( WPARAM buttonState, int x, int y )
 {
 
-    FlyingCamera->UpdateMouseInput( prevMousePos.x - x, prevMousePos.y - y );
+    CurrentCam->UpdateMouseInput( prevMousePos.x - x, prevMousePos.y - y );
 
     // Save the previous mouse position, so we have it for the future
     prevMousePos.x = x;

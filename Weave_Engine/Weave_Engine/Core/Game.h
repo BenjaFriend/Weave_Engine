@@ -56,10 +56,6 @@ private:
     void CreateBasicGeometry();
     void InitLights();
 
-    void DrawLightSources();
-    void DrawColliders();
-
-
     // Wrappers for DirectX shaders to provide simplified functionality
     SimpleVertexShader* vertexShader = nullptr;
     SimplePixelShader* pixelShader = nullptr;
@@ -80,8 +76,7 @@ private:
     float BackgroundColor [ 4 ] = { 0.45f, 0.55f, 0.60f, 1.00f };
 
     // Flying camera for initial testing
-	Camera* FlyingCamera = nullptr;
-    Mesh* PointLightMesh = nullptr;
+	Camera* CurrentCam = nullptr;
 
     // Keeps track of the old mouse position.  Useful for 
     // determining how far the mouse moved in a single frame.
