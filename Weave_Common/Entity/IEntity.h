@@ -4,6 +4,7 @@
 #include "MemoryBitStream.h"
 #include "Transform.h"
 #include "ECS/ComponentManager.h"
+#include "Utils/IPoolable.h"
 
 #include <memory>
 
@@ -11,7 +12,11 @@
 // Forward Declarations
 class Component;
 
-class IEntity
+/// <summary>
+/// Base class for an entity in the engine. Any game object. Inherit from this 
+/// class and create a 
+/// </summary>
+class IEntity : public IPoolable
 {
 public:
 
@@ -38,8 +43,6 @@ public:
     FORCE_INLINE const bool GetIsDestroyableOnLoad() const { return IsDestroyableOnLoad; }
 
     FORCE_INLINE void SetIsDestroyableOnLoad( const bool aVal ) { IsDestroyableOnLoad = aVal; }
-
-    FORCE_INLINE const bool GetIsValid() const { return IsValid; }
 
     /// <summary>
     /// Sets if this entity is active or not
@@ -127,7 +130,7 @@ public:
     /// <param name="inInputStream"></param>
     virtual void Read( InputMemoryBitStream & inInputStream );
 
-    FORCE_INLINE const INT32  GetNetworkID() const { return NetworkID; }
+    FORCE_INLINE const INT32 GetNetworkID() const { return NetworkID; }
     FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
 
     FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; ReplicationAction = ERA_Update; }
@@ -165,7 +168,8 @@ protected:
     /** The replication action for this entity to take */
     EReplicationAction ReplicationAction = EReplicationAction::ERA_Create;
 
-	/** The type of objectcale class that this entity is */
+    // #TODO Have a proper type checking replication manager and entity registry system, this is not scalable
+	/** The type of class that this entity is for replication */
 	EReplicatedClassType ReplicatedClassType = EReplicatedClassType::EObstacle_Class;
 
     /** Flag for if this entity is active or not */
@@ -173,9 +177,6 @@ protected:
 
     /** If true, then this entity will get destroyed when  */
     UINT32 IsDestroyableOnLoad : 1;
-
-    /** If true, then this entity has been initialized and is valid in the memory pool */
-    UINT32 IsValid : 1;
 
     /** The name of this object */
     std::string Name = "Default Entity";

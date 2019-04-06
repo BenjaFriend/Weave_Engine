@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "IPoolable.h"
 
 #include <deque>
 
@@ -54,6 +55,8 @@ template<typename T>
 inline ObjectPool<T>::ObjectPool( const size_t aSize )
     : MaxSize( aSize )
 {
+    static_assert( std::is_convertible< T*, IPoolable* >::value, "T must inherit IPoolable as public" );
+
     ObjectBuffer = new T [ MaxSize ];
 
     for ( size_t i = 0; i < MaxSize; ++i )
@@ -67,7 +70,7 @@ inline ObjectPool<T>::~ObjectPool()
 {
     if ( ObjectBuffer != nullptr )
     {
-        delete [] ObjectBuffer;
+        delete[] ObjectBuffer;
     }
 
     AvailableIndecies.clear();

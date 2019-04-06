@@ -32,7 +32,7 @@ public:
     void RemoveReplicatedObject( INT32 aID );
 
     FORCE_INLINE const bool IsObjectReplicated( const INT32 aNetworkID )
-    {        
+    {
         return ( NetworkIdToEntityMap.find( aNetworkID ) != NetworkIdToEntityMap.end() );
     }
 

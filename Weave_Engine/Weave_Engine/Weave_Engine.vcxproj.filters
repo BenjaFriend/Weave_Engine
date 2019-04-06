@@ -361,6 +361,9 @@
     <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h">
       <Filter>Weave_Common\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\IPoolable.h">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

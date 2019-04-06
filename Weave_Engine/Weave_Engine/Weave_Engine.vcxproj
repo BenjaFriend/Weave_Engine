@@ -520,6 +520,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
     <ClInclude Include="..\..\Weave_Common\Timing.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\IPoolable.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp" />
     <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp" />
