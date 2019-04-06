@@ -137,6 +137,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     inInputStream.Read( sizeOfMoveList );
 
     glm::vec3 inputMovement( 0.f );
+	glm::vec3 playerPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
     glm::vec3 bulletSpawnPoint = aClient->GetClientEntity()->GetTransform()->GetPosition();
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
@@ -158,6 +159,10 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
             glm::vec3 forward = aClient->GetClientEntity()->GetTransform()->GetForward();
             bulletSpawnPoint += ( forward * 1.5f );
             newBullet->GetTransform()->SetPosition( bulletSpawnPoint );
+			LOG_TRACE( "Spawn a bullet! Player pos: X:{} Y:{} Z:{} :: Bullet Pos:X:{} Y:{} Z:{}", 
+				playerPos.x, playerPos.y, playerPos.z , 
+				bulletSpawnPoint.x, bulletSpawnPoint.y, bulletSpawnPoint.z 
+			);
             // Add to a bullet array and start moving them
         }
         break;
