@@ -23,6 +23,12 @@ void Bullet::DrawEditorGUI()
 {
 }
 
+void Bullet::Update(float deltaTime)
+{
+	// Move the position of this bullet in the forward direction
+	
+}
+
 void Bullet::SaveComponentData( nlohmann::json & aCompData )
 {
 }

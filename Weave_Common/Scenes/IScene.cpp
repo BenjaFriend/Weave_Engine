@@ -12,7 +12,7 @@ IScene::~IScene( )
 
 void IScene::Update(float deltaTime, float totalTime)
 {
-
+	// Update all entities in the scene
 
 }
 

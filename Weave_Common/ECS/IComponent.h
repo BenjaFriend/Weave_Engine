@@ -82,6 +82,12 @@ namespace ECS
             ( void ) ( inInputStream );
         }
 
+		/// <summary>
+		/// Update this component's data if necessary, by default do nothing.
+		/// </summary>
+		/// <param name="deltaTime">Time between frames</param>
+		virtual void Update(float deltaTime) { ( void ) ( deltaTime ); }
+
         ////////////////////////////////////////////////////    
         // Operators 
 

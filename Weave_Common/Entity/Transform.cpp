@@ -10,13 +10,6 @@ COMPONENT_INIT( Transform )
 
 Transform::Transform()
 {
-    Position = glm::vec3( 0.f );
-    Scale = glm::vec3( 1.f );
-    Rotation = glm::vec3( 0.f );
-
-	Forward = DEFAULT_FORWARD;
-	Right = DEFAULT_RIGHT;
-	Up = DEFAULT_UP;
 }
 
 Transform::Transform( nlohmann::json const & aInitData )
