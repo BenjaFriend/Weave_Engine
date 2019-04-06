@@ -83,18 +83,3 @@ void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
         aJsonEntityArray.push_back( entity_data );
     }
 }
-
-void Entity::Reset()
-{
-    RemoveAllComponents();
-    IsValid = false;
-    IsDestroyableOnLoad = true;
-    componentManager = ECS::ComponentManager::GetInstance();
-    EntityTransform = nullptr;
-
-    // Give entity component a transform again
-    if ( EntityTransform == nullptr )
-    {
-        EntityTransform = this->AddComponent<Transform>();
-    }
-}

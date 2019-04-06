@@ -31,47 +31,6 @@ public:
 
     virtual ~IEntity();
 
-
-    /** Get the current transform of this object */
-    FORCE_INLINE Transform* GetTransform() const { return EntityTransform; }
-
-    /// <summary>
-    /// If an entity is destroyable on load, then it will be deleted during a 
-    /// scene change. If not, then it will remain persistent throughout scenes
-    /// </summary>
-    /// <returns>True if destroyable</returns>
-    FORCE_INLINE const bool GetIsDestroyableOnLoad() const { return IsDestroyableOnLoad; }
-
-    FORCE_INLINE void SetIsDestroyableOnLoad( const bool aVal ) { IsDestroyableOnLoad = aVal; }
-
-    /// <summary>
-    /// Sets if this entity is active or not
-    /// </summary>
-    /// <param name="aStatus">True if active, false if in-active</param>
-    FORCE_INLINE void SetIsActive( const bool aStatus ) { IsActive = aStatus; }
-
-    /// <summary>
-    /// Get if this entity is active or not
-    /// </summary>
-    /// <returns>True if active, false if in-active</returns>
-    FORCE_INLINE const bool GetIsActive() const { return IsActive; }
-
-    /// <summary>
-    /// Get this entity's name
-    /// </summary>
-    /// <returns>Reference to the name of this entity</returns>
-    FORCE_INLINE const std::string & GetName() const { return Name; }
-
-    /// <summary>
-    /// Set the name of this entity
-    /// </summary>
-    /// <param name="newName">The new name of this entity</param>
-    FORCE_INLINE void SetName( std::string newName ) { Name = newName; }
-
-    FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
-
-    FORCE_INLINE const size_t GetID() const { return this->entID; }
-
     // Components ------------------------------
 
     /// <summary>
@@ -117,6 +76,8 @@ public:
 
     FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( entID ); }
 
+    virtual void Reset() override;
+
     /// <summary>
     /// Write this component to a replicated bit stream
     /// </summary>
@@ -129,19 +90,6 @@ public:
     /// </summary>
     /// <param name="inInputStream"></param>
     virtual void Read( InputMemoryBitStream & inInputStream );
-
-    FORCE_INLINE const INT32 GetNetworkID() const { return NetworkID; }
-    FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
-
-    FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; ReplicationAction = ERA_Update; }
-    FORCE_INLINE UINT32 GetDirtyState() { return DirtyState; }
-    FORCE_INLINE bool HasDirtyState() { return ( DirtyState != 0 ); }
-
-    FORCE_INLINE const EReplicationAction GetReplicationAction() { return ReplicationAction; }
-    FORCE_INLINE void SetReplicationAction( const EReplicationAction aAct ) { ReplicationAction = aAct; }
-
-	FORCE_INLINE const EReplicatedClassType GetReplicationClassType() { return ReplicatedClassType; }
-	FORCE_INLINE void SetReplicationClassType( EReplicatedClassType aRepClass ) { ReplicatedClassType = aRepClass; }
 
 protected:
 
@@ -180,6 +128,66 @@ protected:
 
     /** The name of this object */
     std::string Name = "Default Entity";
+
+    /************************************************************************/
+    /* Accessors                                                            */
+    /************************************************************************/
+
+public:
+    /** Get the current transform of this object */
+    FORCE_INLINE Transform* GetTransform() const { return EntityTransform; }
+
+    /// <summary>
+    /// If an entity is destroyable on load, then it will be deleted during a 
+    /// scene change. If not, then it will remain persistent throughout scenes
+    /// </summary>
+    /// <returns>True if destroyable</returns>
+    FORCE_INLINE const bool GetIsDestroyableOnLoad() const { return IsDestroyableOnLoad; }
+
+    FORCE_INLINE void SetIsDestroyableOnLoad( const bool aVal ) { IsDestroyableOnLoad = aVal; }
+
+    /// <summary>
+    /// Sets if this entity is active or not
+    /// </summary>
+    /// <param name="aStatus">True if active, false if in-active</param>
+    FORCE_INLINE void SetIsActive( const bool aStatus ) { IsActive = aStatus; }
+
+    /// <summary>
+    /// Get if this entity is active or not
+    /// </summary>
+    /// <returns>True if active, false if in-active</returns>
+    FORCE_INLINE const bool GetIsActive() const { return IsActive; }
+
+    /// <summary>
+    /// Get this entity's name
+    /// </summary>
+    /// <returns>Reference to the name of this entity</returns>
+    FORCE_INLINE const std::string & GetName() const { return Name; }
+
+    /// <summary>
+    /// Set the name of this entity
+    /// </summary>
+    /// <param name="newName">The new name of this entity</param>
+    FORCE_INLINE void SetName( std::string newName ) { Name = newName; }
+
+    FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
+
+    FORCE_INLINE const size_t GetID() const { return this->entID; }
+
+    // Networked things things
+    FORCE_INLINE const INT32 GetNetworkID() const { return NetworkID; }
+    FORCE_INLINE void SetNetworkID( const INT32 aID ) { NetworkID = aID; }
+
+    FORCE_INLINE void SetDirtyState( const UINT32 aVal ) { DirtyState = aVal; ReplicationAction = ERA_Update; }
+    FORCE_INLINE UINT32 GetDirtyState() { return DirtyState; }
+    FORCE_INLINE bool HasDirtyState() { return ( DirtyState != 0 ); }
+
+    FORCE_INLINE const EReplicationAction GetReplicationAction() { return ReplicationAction; }
+    FORCE_INLINE void SetReplicationAction( const EReplicationAction aAct ) { ReplicationAction = aAct; }
+
+    FORCE_INLINE const EReplicatedClassType GetReplicationClassType() { return ReplicatedClassType; }
+    FORCE_INLINE void SetReplicationClassType( EReplicatedClassType aRepClass ) { ReplicatedClassType = aRepClass; }
+
 };
 
 // Use smart pointers for the client proxy to have safer exits

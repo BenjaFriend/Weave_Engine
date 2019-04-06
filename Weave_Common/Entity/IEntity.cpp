@@ -25,6 +25,21 @@ IEntity::~IEntity()
     --EntityCount;
 }
 
+void IEntity::Reset()
+{
+    RemoveAllComponents();
+    // Reset flags
+    IsValid = false;
+    IsDestroyableOnLoad = true;
+
+    // Ensure that we have a good instance of the component manager
+    componentManager = ECS::ComponentManager::GetInstance();
+
+    // Reset the transform
+    EntityTransform = nullptr;    
+    EntityTransform = this->AddComponent<Transform>();
+}
+
 void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
 {
     inOutputStream.Write( NetworkID );

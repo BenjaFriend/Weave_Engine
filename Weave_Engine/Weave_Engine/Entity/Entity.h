@@ -44,9 +44,4 @@ public:
     /// <param name="aJsonEntityArray">nlohmann::json::array of entities</param>
     void SaveObject( nlohmann::json& aJsonEntityArray );
 
-    /// <summary>
-    /// Reset this entity for re-use in the next scene.
-    /// </summary>
-    void Reset();
-
 };
