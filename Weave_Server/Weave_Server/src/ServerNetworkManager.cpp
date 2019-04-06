@@ -209,6 +209,11 @@ void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
     LOG_TRACE( "Sent  welcome packet to client {} ID {}", aClient->GetName(), aClient->GetPlayerID() );
 }
 
+void ServerNetworkManager::Update(float deltaTime, float TotalTime)
+{
+    Scene.Update( deltaTime, TotalTime );
+}
+
 void ServerNetworkManager::UpdateAllClients()
 {
     // #TODO: Make sure we only do this at a specific tick rate

@@ -13,6 +13,13 @@ public:
 
     virtual ~IScene();
 
+    /// <summary>
+    /// Update the scene(call update on all entities and their components if necessary)
+    /// </summary>
+    /// <param name="deltaTime">delta time</param>
+    /// <param name="totalTime">Total time of the program running</param>
+    virtual void Update( float deltaTime, float totalTime );
+
     virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const;
     virtual void Read( InputMemoryBitStream& inInputStream );
 

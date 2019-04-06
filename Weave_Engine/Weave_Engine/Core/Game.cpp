@@ -202,6 +202,10 @@ void Game::OnResize()
 void Game::Update( float dt, float totalTime )
 {
     inputManager->Update( dt );
+    
+    SceneManagement::Scene* CurScene = sceneManager->GetActiveScene();
+    CurScene->Update( dt, totalTime );
+
     CurrentCam = CameraMan->GetActiveCamera();
     // Update the camera
     CurrentCam->UpdateProjectionMatrix( static_cast< float >( width ), static_cast< float >( height ) );

@@ -10,6 +10,12 @@ IScene::~IScene( )
 {
 }
 
+void IScene::Update(float deltaTime, float totalTime)
+{
+
+
+}
+
 void IScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirtyState ) const
 {
     ( void ) inOutputStream;

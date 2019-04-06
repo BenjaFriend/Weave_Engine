@@ -16,6 +16,13 @@ public:
     virtual ~ServerNetworkManager();
 
     /// <summary>
+    /// Do any ticks on the objects that we may need to.
+    /// </summary>
+    /// <param name="deltaTime">Delta Time</param>
+    /// <param name="TotalTime">Total time of the running program</param>
+    void Update( float deltaTime, float TotalTime );
+
+    /// <summary>
     /// Update all clients that are connected with the proper state data
     /// </summary>
     void UpdateAllClients();

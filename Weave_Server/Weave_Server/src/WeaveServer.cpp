@@ -58,7 +58,10 @@ void WeaveServer::Run()
         DeltaTime = Timing::sInstance.GetDeltaTime();
         TotalTime = Timing::sInstance.GetTimef();
 
+
         // Update the network man
+        NetworkMan->Update( DeltaTime, TotalTime );
+
         NetworkMan->ProcessIncomingPackets();
 
         NetworkMan->CheckForDisconnects();
