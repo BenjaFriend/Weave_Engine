@@ -211,14 +211,15 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
 {
+    assert( aClient != nullptr );
+
     OutputMemoryBitStream welcPacket = {};
     welcPacket.Write( WelcomePacket );
     welcPacket.Write( aClient->GetPlayerID() );
     SendPacket( welcPacket, aClient->GetEndpoint() );
-    LOG_TRACE( "Sent  welcome packet to client {} ID {}", aClient->GetName(), aClient->GetPlayerID() );
 }
 
-void ServerNetworkManager::Update(float deltaTime, float TotalTime)
+void ServerNetworkManager::Update( float deltaTime, float TotalTime )
 {
     Scene.Update( deltaTime, TotalTime );
 }
@@ -235,6 +236,8 @@ void ServerNetworkManager::UpdateAllClients()
 
 void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 {
+    assert( aClient != nullptr );
+
     OutputMemoryBitStream packet = {};
     packet.Write( StatePacket );
 
@@ -248,7 +251,7 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 
 void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg )
 {
-    assert( aMsg != nullptr );
+    assert( aClient != nullptr && aMsg != nullptr );
     
     OutputMemoryBitStream packet = {};
     packet.Write( FeedMessagePacket );
