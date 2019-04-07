@@ -311,7 +311,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Game\TankGame.h" />
     <ClInclude Include="Networking\ClientNetworkManager.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Tank.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\Bullet.cpp" />
@@ -331,7 +330,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebugInfo|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weave_Engine\Weave_Engine.vcxproj">
