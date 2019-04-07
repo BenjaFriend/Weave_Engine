@@ -29,7 +29,7 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState
 {
     inOutputStream.Write( NetworkID );
 
-    const glm::vec3 pos = EntityTransform->GetPosition();
+	const glm::vec3 pos = EntityTransform->GetPosition();
     inOutputStream.Write( pos.x );
     inOutputStream.Write( pos.y );
     inOutputStream.Write( pos.z );
@@ -44,12 +44,14 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState
 
 void IEntity::Read( InputMemoryBitStream & inInputStream )
 {
-    glm::vec3 readPos( 0.f );
+    glm::vec3 readPos = {};
+	glm::vec3 curPos = EntityTransform->GetPosition();
     inInputStream.Read( readPos.x );
     inInputStream.Read( readPos.y );
     inInputStream.Read( readPos.z );
 
 	glm::vec3 readRot = {};
+	glm::vec3 curRot = EntityTransform->GetRotation();
 	inInputStream.Read(readRot.x);
 	inInputStream.Read(readRot.y);
 	inInputStream.Read(readRot.z);

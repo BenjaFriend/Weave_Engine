@@ -31,9 +31,3 @@ PlayerMoves::~PlayerMoves()
 {
 
 }
-
-void PlayerMoves::UpdateMoveQueue()
-{
-	MoveQueue.push_back(Input::InputType::Move_Up);
-	MoveQueue.push_back(Input::InputType::Move_Left);
-}

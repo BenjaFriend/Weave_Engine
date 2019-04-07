@@ -42,6 +42,9 @@
     <ClInclude Include="Game\PlayerMoves.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="Game\PlayerMoves.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
