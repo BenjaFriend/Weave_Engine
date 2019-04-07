@@ -132,12 +132,13 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
     }
 }
 
-void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
+void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemoryBitStream & inInputStream)
 {
     UINT32 sizeOfMoveList = 0;
     inInputStream.Read( sizeOfMoveList );
 
-    glm::vec3 inputMovement( 0.f );
+    float inputMovement( 0.f );
+    float inputRotation( 0.f );
 
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
@@ -170,41 +171,42 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         break;
         case Input::InputType::Move_Left:
         {
-            LOG_TRACE( "Move left!" );    
-            inputMovement.x += 1.0f;
+            LOG_TRACE( "Move left!" );
+            inputRotation += 5.0f;
         }
         break;
         case Input::InputType::Move_Right:
         {
             LOG_TRACE( "Move_Right" );
-            inputMovement.x -= 1.0f;
+            inputRotation -= 5.0f;
         }
         break;
         case Input::InputType::Move_Up:
         {
             LOG_TRACE( "Move_Up" );
-            inputMovement.z -= 1.0f;
+            inputMovement -= 0.25f;
         }
         break;
         case Input::InputType::Move_Down:
         {
             LOG_TRACE( "Move_Down!" );
-            inputMovement.z += 1.0f;
+            inputMovement += 0.25f;
         }
         break;
         default:
             break;
         }
     }
-
-    // Move the client based on their input to the server
-    glm::vec3 oldPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
-    aClient->GetClientEntity()->GetTransform()->SetPosition( oldPos + inputMovement );
     
+    // Move the client based on their input to the server
+    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement );
+    aClient->GetClientEntity()->GetTransform()->Rotate( glm::vec3( 0.f, inputRotation, 0.f ) );
+
     Scene.SetDirtyState(
         aClient->GetClientEntity()->GetNetworkID(),
-        IEntity::EIEntityReplicationState::EIRS_POS 
+        IEntity::EIEntityReplicationState::EIRS_AllState 
     );
+
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )

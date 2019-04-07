@@ -84,17 +84,23 @@ void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 
 {
     if ( inDirtyState & EIEntityReplicationState::EIRS_POS )
     {
-        const glm::vec3 pos = EntityTransform->GetPosition();
+        const glm::vec3 & pos = EntityTransform->GetPosition();
         inOutputStream.Write( pos.x );
         inOutputStream.Write( pos.y );
         inOutputStream.Write( pos.z );
     }
 
+    if ( inDirtyState & EIEntityReplicationState::EIRS_ROT )
+    {
+        const glm::vec3 & rot = EntityTransform->GetRotation();
+        inOutputStream.Write( rot.x );
+        inOutputStream.Write( rot.y );
+        inOutputStream.Write( rot.z );
+    }
 }
 
 void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 {
-	
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {
@@ -104,6 +110,15 @@ void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.z );
 
         EntityTransform->SetPosition( readPos );
+    }
+
+    if ( DirtyState & EIEntityReplicationState::EIRS_ROT )
+    {
+        glm::vec3 readRot( 0.0f );
+        inInputStream.Read( readRot.x );
+        inInputStream.Read( readRot.y );
+        inInputStream.Read( readRot.z );
+        EntityTransform->SetRotation( readRot );
     }
 }
 
