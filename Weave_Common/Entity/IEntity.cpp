@@ -40,6 +40,17 @@ void IEntity::Reset()
     EntityTransform = this->AddComponent<Transform>();
 }
 
+void IEntity::Update( float dt )
+{
+    // Update all this entities components
+    const auto & compMap = this->GetAllComponents();
+    for ( auto & compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+    {
+        if( compItr->second != nullptr )
+            compItr->second->Update( dt );
+    }
+}
+
 void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
 {
     inOutputStream.Write( NetworkID );

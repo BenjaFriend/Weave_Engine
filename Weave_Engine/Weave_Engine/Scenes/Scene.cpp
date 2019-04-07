@@ -148,16 +148,15 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
     // Delete each entity that has been added
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( &EntityArray_Raw [ i ] != nullptr )
+        assert( &EntityArray_Raw[ i ] != nullptr );
+
+        if ( EntityArray_Raw [ i ].GetIsValid() &&
+            ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
+                aOverrideDestroyOnLoad ) )
         {
-            if ( EntityArray_Raw [ i ].GetIsValid() &&
-                ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
-                    aOverrideDestroyOnLoad ) )
-            {
-                EntityArray_Raw [ i ].Reset();
-                EntityPool->ReturnResource( i );
-            }
-        }
+            EntityArray_Raw [ i ].Reset();
+            EntityPool->ReturnResource( i );
+        }        
     }
 }
 
@@ -170,6 +169,17 @@ void Scene::ResetScene()
     UnloadAllLights();
     SceneName = "DEFAULT_SCENE";
     LOG_TRACE( "Reset Scene!" );
+}
+
+void Scene::Update( float deltaTime, float totalTime )
+{
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        if ( EntityArray_Raw[ i ].GetIsValid() && EntityArray_Raw[ i ].GetIsActive() )
+        {
+            EntityArray_Raw[ i ].Update( deltaTime );
+        }
+    }
 }
 
 // Lighting ----------------------------------------------

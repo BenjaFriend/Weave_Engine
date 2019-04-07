@@ -29,6 +29,14 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
     }
 }
 
+void ServerScene::Update( float deltaTime, float totalTime )
+{
+    for ( const auto & ent : EntityArray )
+    {
+        ent->Update( deltaTime );
+    }
+}
+
 IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
     IEntityPtr newEnt = std::make_shared<IEntity>();

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "ServerNetworkManager.h"
+#include "Bullet.h"
 
 ServerNetworkManager::ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce )
     : NetworkManager( aServce )
@@ -137,8 +138,7 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
     inInputStream.Read( sizeOfMoveList );
 
     glm::vec3 inputMovement( 0.f );
-	glm::vec3 playerPos = aClient->GetClientEntity()->GetTransform()->GetPosition();
-    glm::vec3 bulletSpawnPoint = aClient->GetClientEntity()->GetTransform()->GetPosition();
+
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
@@ -148,22 +148,24 @@ void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemo
         {
         case Input::InputType::Fire:
         {
-            LOG_TRACE( "PLAYER FIRE MOVE!" );
+            // Get spawn pos info
+            glm::vec3 bulletSpawnPoint = aClient->GetClientEntity()->GetTransform()->GetPosition();
+            // Add the forward vector to the bullet spawn point
+            const glm::vec3 & forward = aClient->GetClientEntity()->GetTransform()->GetForward();
+            const glm::vec3 & rot = aClient->GetClientEntity()->GetTransform()->GetRotation();
+
             // Spawn a bullet on the server
             IEntityPtr newBullet = Scene.AddEntity( 
                 "Bullet Boi",
                 NewPlayerID++, 
                 EReplicatedClassType::EBullet_Class 
             );
-            // Add the forward vector to the bullet spawn point
-            glm::vec3 forward = aClient->GetClientEntity()->GetTransform()->GetForward();
+
             bulletSpawnPoint += ( forward * 1.5f );
             newBullet->GetTransform()->SetPosition( bulletSpawnPoint );
-			LOG_TRACE( "Spawn a bullet! Player pos: X:{} Y:{} Z:{} :: Bullet Pos:X:{} Y:{} Z:{}", 
-				playerPos.x, playerPos.y, playerPos.z , 
-				bulletSpawnPoint.x, bulletSpawnPoint.y, bulletSpawnPoint.z 
-			);
-            // Add to a bullet array and start moving them
+            newBullet->GetTransform()->SetRotation( rot );
+
+            newBullet->AddComponent<Bullet>();
         }
         break;
         case Input::InputType::Move_Left:

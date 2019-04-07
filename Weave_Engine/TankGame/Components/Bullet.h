@@ -11,18 +11,23 @@ public:
 
     Bullet();
 
+	Bullet( float aSpeed );
+
     Bullet( nlohmann::json const & aInitData );
 
     ~Bullet();
 
     virtual void DrawEditorGUI() override;
 
-
-	virtual void Update(float deltaTime) override;
-
+	virtual void Update( float deltaTime ) override;
 
 protected:
 
     virtual void SaveComponentData( nlohmann::json & aCompData ) override;
+
+private:
+
+    /** The speed at which this bullet will move forward */
+    float Speed = 10.0f;
 
 };

@@ -79,6 +79,12 @@ public:
     virtual void Reset() override;
 
     /// <summary>
+    /// Update this entity and it's components this frame
+    /// </summary>
+    /// <param name="dt">Delta time</param>
+    virtual void Update( float dt );
+
+    /// <summary>
     /// Write this component to a replicated bit stream
     /// </summary>
     /// <param name="inOutputStream"></param>

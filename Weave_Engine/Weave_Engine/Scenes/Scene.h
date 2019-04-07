@@ -74,6 +74,8 @@ namespace SceneManagement
         /// </summary>
         virtual void ResetScene() override;
 
+        virtual void Update( float deltaTime, float totalTime ) override;
+
         FORCE_INLINE Entity* GetEntityArray() const { return reinterpret_cast< Entity* > ( EntityArray_Raw ); }
 
         /// <summary>

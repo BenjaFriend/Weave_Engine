@@ -68,6 +68,7 @@ include_directories(
     src
     ${Boost_INCLUDE_DIR}
     ../../Weave_Common
+    ../../Weave_Engine/TankGame/Components
     ../../Weave_Engine/additional/spdlog/include
     ../../Weave_Engine/additional/glm
     ../../Weave_Engine/additional/json
@@ -103,6 +104,8 @@ file( GLOB_RECURSE _source_list
     src/*.cpp* src/*.h* src/*.hpp*
     include/*.cpp* include/*.h* include/*.hpp*
     ../../Weave_Common/*.cpp* ../../Weave_Common/*.h* ../../Weave_Common/*.hpp*
+    ../../Weave_Engine/TankGame/Components/*.cpp
+    ../../Weave_Engine/TankGame/Components/*.h
 )
 
 if( MSVC )
