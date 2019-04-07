@@ -44,7 +44,5 @@ namespace Tanks
         // Keep track of what buttons have been pressed
         std::deque<Input::InputType> MoveQueue;
 
-		std::unordered_map<Input::InputType, float> inputTime;
-
     };
 }   // namespace Tanks

@@ -44,13 +44,13 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState
 
 void IEntity::Read( InputMemoryBitStream & inInputStream )
 {
-    glm::vec3 readPos = {};
+    glm::vec3 readPos(0.0f);
 	glm::vec3 curPos = EntityTransform->GetPosition();
     inInputStream.Read( readPos.x );
     inInputStream.Read( readPos.y );
     inInputStream.Read( readPos.z );
 
-	glm::vec3 readRot = {};
+	glm::vec3 readRot(0.0f);
 	glm::vec3 curRot = EntityTransform->GetRotation();
 	inInputStream.Read(readRot.x);
 	inInputStream.Read(readRot.y);
