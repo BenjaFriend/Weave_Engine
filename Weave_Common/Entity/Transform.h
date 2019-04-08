@@ -112,7 +112,7 @@ public:
     /// <summary>
     /// Get the forward vector the entity is facing
     /// </summary>
-    FORCE_INLINE const glm::vec3 & GetForward() const { return Forward; }
+    FORCE_INLINE const glm::vec3 & GetForward() { UpdateDirectionalVectors();  return Forward; }
 
     /// <summary>
     /// Get the right vector relative to where the entity is facing

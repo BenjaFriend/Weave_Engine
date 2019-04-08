@@ -11,8 +11,8 @@ Bullet::Bullet()
     LOG_TRACE( "Create bullet!" );
 }
 
-Bullet::Bullet( float aSpeed )
-    : Speed( aSpeed )
+Bullet::Bullet( float aSpeed, float aLifetime )
+    : Speed( aSpeed ), Lifetime( aLifetime )
 {
 
 }
@@ -36,6 +36,15 @@ void Bullet::DrawEditorGUI()
 
 void Bullet::Update( float deltaTime )
 {
+    TimeSinceSpawn += deltaTime;
+    if ( TimeSinceSpawn >= Lifetime )
+    {
+        // Disable this bullet
+        OwningEntity->SetIsPendingReset( true );
+        LOG_TRACE( "RESET BULLET" );
+        return;
+    }
+
     // Move the position of this bullet in the forward direction
     const glm::vec3 & forward = this->OwningEntity->GetTransform()->GetForward();
     glm::vec3 newPos = this->OwningEntity->GetTransform()->GetPosition();

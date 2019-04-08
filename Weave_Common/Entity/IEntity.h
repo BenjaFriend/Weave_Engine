@@ -132,6 +132,9 @@ protected:
     /** If true, then this entity will get destroyed when  */
     UINT32 IsDestroyableOnLoad : 1;
 
+    /** If true, then this entity has been marked to be reset by one of it's components */
+    UINT32 IsPendingReset : 1;
+
     /** The name of this object */
     std::string Name = "Default Entity";
 
@@ -163,6 +166,9 @@ public:
     /// </summary>
     /// <returns>True if active, false if in-active</returns>
     FORCE_INLINE const bool GetIsActive() const { return IsActive; }
+
+    FORCE_INLINE const bool GetIsPendingReset() const { return IsPendingReset; }
+    FORCE_INLINE void SetIsPendingReset( const bool val ) { IsPendingReset = val; }
 
     /// <summary>
     /// Get this entity's name

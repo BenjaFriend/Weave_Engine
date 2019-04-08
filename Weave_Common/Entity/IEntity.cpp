@@ -8,6 +8,7 @@ IEntity::IEntity()
     IsActive = true;
     IsValid = false;
     IsDestroyableOnLoad = true;
+    IsPendingReset = false;
 
     entID = EntityCount++;
 
@@ -31,6 +32,7 @@ void IEntity::Reset()
     // Reset flags
     IsValid = false;
     IsDestroyableOnLoad = true;
+    IsPendingReset = false;
 
     // Ensure that we have a good instance of the component manager
     componentManager = ECS::ComponentManager::GetInstance();
@@ -44,10 +46,19 @@ void IEntity::Update( float dt )
 {
     // Update all this entities components
     const auto & compMap = this->GetAllComponents();
+
+    assert( compMap != nullptr );
+
     for ( auto && compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
     {
         if( compItr->second != nullptr )
             compItr->second->Update( dt );
+    }
+
+    // Check for if this entity has been marked for reset by one of it's components
+    if ( IsPendingReset )
+    {
+        Reset();
     }
 }
 

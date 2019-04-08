@@ -158,7 +158,7 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
             // Spawn a bullet on the server
             IEntityPtr newBullet = Scene.AddEntity( 
                 "Bullet Boi",
-                NewPlayerID++, 
+                ++NewPlayerID, 
                 EReplicatedClassType::EBullet_Class 
             );
 

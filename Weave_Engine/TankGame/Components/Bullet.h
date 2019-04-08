@@ -11,7 +11,7 @@ public:
 
     Bullet();
 
-	Bullet( float aSpeed );
+    Bullet( float aSpeed, float aLifetime );
 
     Bullet( nlohmann::json const & aInitData );
 
@@ -19,7 +19,7 @@ public:
 
     virtual void DrawEditorGUI() override;
 
-	virtual void Update( float deltaTime ) override;
+    virtual void Update( float deltaTime ) override;
 
 protected:
 
@@ -29,5 +29,10 @@ private:
 
     /** The speed at which this bullet will move forward */
     float Speed = 10.0f;
+
+    /** The lifetime of this bullet is how long it will be active in the world before reseting */
+    const float Lifetime = 4.0f;
+
+    float TimeSinceSpawn = 0.0f;
 
 };
