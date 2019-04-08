@@ -44,7 +44,7 @@ void IEntity::Update( float dt )
 {
     // Update all this entities components
     const auto & compMap = this->GetAllComponents();
-    for ( auto & compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+    for ( auto && compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
     {
         if( compItr->second != nullptr )
             compItr->second->Update( dt );
