@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "MeshRenderer.h"
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 
 #define MAT_SAVE_KEY    "Material"
 #define MESH_SAVE_KEY   "Mesh"

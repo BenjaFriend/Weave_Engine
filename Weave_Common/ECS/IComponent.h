@@ -29,7 +29,7 @@
     { OwningEntity->RemoveComponent< name > (); return; }               
     
 
-class IEntity;
+class Entity;
 
 namespace ECS
 {
@@ -113,7 +113,7 @@ namespace ECS
         /// <returns>Entity ID of the owning entity</returns>
         FORCE_INLINE const size_t& GetOwner() const { return this->owner; }
 
-        FORCE_INLINE IEntity* GetEntity() const { return OwningEntity; }
+        FORCE_INLINE Entity* GetEntity() const { return OwningEntity; }
 
         /// <summary>
         /// Get the human-readable name of this component
@@ -193,7 +193,7 @@ namespace ECS
         /** The owner of this component */
         size_t owner = 0;
 
-        IEntity* OwningEntity = nullptr;
+        Entity* OwningEntity = nullptr;
 
         virtual void OnEnable() {}
 

@@ -5,6 +5,8 @@
 #include "Transform.h"
 #include "ECS/ComponentManager.h"
 #include "Utils/IPoolable.h"
+#include "Utils/SaveFileDefs.h"
+#include "Resources/ISaveable.h"
 
 #include <memory>
 
@@ -16,7 +18,7 @@ class Component;
 /// Base class for an entity in the engine. Any game object. Inherit from this 
 /// class and create a 
 /// </summary>
-class IEntity : public IPoolable
+class Entity : public IPoolable< Entity >, public ISaveable
 {
 public:
 
@@ -27,9 +29,25 @@ public:
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 
-    IEntity();
+    Entity();
 
-    virtual ~IEntity();
+    Entity( const std::string & aName );
+
+    virtual ~Entity();
+
+    /// <summary>
+    /// Save this entity's data and components into a json array of 
+    /// entities
+    /// </summary>
+    /// <param name="aJsonEntityArray">nlohmann::json::array of entities</param>
+    void SaveObject( nlohmann::json& aJsonEntityArray );
+
+    /// <summary>
+    /// Create this entity based off of a scene file data set
+    /// </summary>
+    /// <param name="aFile">The set of data about this entity</param>
+    Entity* ConstructFromFile( nlohmann::json const & aFile );
+
 
     // Components ------------------------------
 
@@ -43,7 +61,7 @@ public:
     template<typename T>
     T* GetComponent()
     {
-        return this->componentManager->GetComponent<T>( this->entID );
+        return this->componentManager->GetComponent<T>( this->ID );
     }
 
     /// <summary>
@@ -55,7 +73,7 @@ public:
         return
             this->componentManager->AddComponent<T>(
                 this,
-                this->entID,
+                this->ID,
                 std::forward<P>( param )...
                 );
     }
@@ -66,15 +84,15 @@ public:
     template<typename T>
     void RemoveComponent()
     {
-        this->componentManager->RemoveComponent<T>( this->entID );
+        this->componentManager->RemoveComponent<T>( this->ID );
     }
 
     FORCE_INLINE const ECS::ComponentMap * GetAllComponents() const
     {
-        return componentManager->GetAllComponents( this->entID );
+        return componentManager->GetAllComponents( this->ID );
     }
 
-    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( entID ); }
+    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( ID ); }
 
     virtual void Reset() override;
 
@@ -112,9 +130,6 @@ protected:
 
     /** The transform of the entity */
     Transform* EntityTransform = nullptr;
-
-    /** The unique ID of this entity */
-    size_t entID;
 
     /** If this entity is dirty of not */
     UINT32 DirtyState = EIEntityReplicationState::EIRS_AllState;
@@ -184,7 +199,7 @@ public:
 
     FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
 
-    FORCE_INLINE const size_t GetID() const { return this->entID; }
+    FORCE_INLINE const size_t GetID() const { return this->ID; }
 
     // Networked things things
     FORCE_INLINE const INT32 GetNetworkID() const { return NetworkID; }
@@ -203,4 +218,4 @@ public:
 };
 
 // Use smart pointers for the client proxy to have safer exits
-typedef std::shared_ptr< IEntity >	IEntityPtr;
+typedef std::shared_ptr< Entity >	IEntityPtr;

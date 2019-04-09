@@ -32,7 +32,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
     UINT32 numEntities = 0;
     inInputStream.Read( numEntities );
 
-    std::unordered_map< INT32, IEntity* > entitiesToDestroy = NetworkIdToEntityMap;
+    std::unordered_map< INT32, Entity* > entitiesToDestroy = NetworkIdToEntityMap;
 
     LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
@@ -93,7 +93,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
                 ent->SetNetworkID( networkID );
                 AddReplicatedObject( ent );
             }
-            IEntity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
+            Entity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
             assert( replicatedEnt != nullptr );
 			replicatedEnt->SetReplicationClassType( aClassType );
             // Have this entity read in it's update data

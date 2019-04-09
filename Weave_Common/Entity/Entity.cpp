@@ -1,16 +1,16 @@
 #include "stdafx.h"
-#include "IEntity.h"
+#include "Entity.h"
 
-size_t IEntity::EntityCount = 0;
+size_t Entity::EntityCount = 0;
 
-IEntity::IEntity()
+Entity::Entity()
 {
     IsActive = true;
     IsValid = false;
     IsDestroyableOnLoad = true;
     IsPendingReset = false;
 
-    entID = EntityCount++;
+    ID = EntityCount++;
 
     componentManager = ECS::ComponentManager::GetInstance();
 
@@ -21,13 +21,85 @@ IEntity::IEntity()
     }
 }
 
-IEntity::~IEntity()
+Entity::Entity( const std::string & aName )
+    : Entity()
 {
-    --EntityCount;
+    Name = aName;
 }
 
-void IEntity::Reset()
+Entity::~Entity()
 {
+    --EntityCount;
+    // Remove my components
+    RemoveAllComponents();
+    EntityTransform = nullptr;
+    componentManager = nullptr;
+    IsActive = true;
+    IsValid = false;
+}
+
+void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
+{
+    LOG_TRACE( "Save Object: {}", this->Name );
+
+    // Save this entity's data
+    nlohmann::json entity_data = nlohmann::json::object();
+
+    entity_data[ NAME_SAVE_KEY ] = this->Name;
+    entity_data[ IS_ACTIVE_SAVE_KEY ] = ( bool ) this->IsActive;
+    entity_data[ IS_DESTROY_ON_LOAD ] = ( bool ) this->IsDestroyableOnLoad;
+    entity_data[ COMPONENT_ARRAY_SAVE_KEY ] = nlohmann::json::array();
+
+    // Save each component
+    const auto & compMap = this->GetAllComponents();
+
+    if ( compMap != nullptr )
+    {
+        for ( auto compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
+        {
+            ECS::IComponent* theComp = ( compItr->second );
+
+            if ( theComp != nullptr )
+            {
+                theComp->SaveObject( entity_data[ COMPONENT_ARRAY_SAVE_KEY ] );
+            }
+        }
+    }
+    // Append this entity to the given entity array
+    if ( aJsonEntityArray.is_array() )
+    {
+        aJsonEntityArray.push_back( entity_data );
+    }
+}
+
+Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
+{
+    RemoveAllComponents();
+
+    Name = aFile[ NAME_SAVE_KEY ];
+    IsActive = aFile[ IS_ACTIVE_SAVE_KEY ];
+    IsDestroyableOnLoad = aFile[ IS_DESTROY_ON_LOAD ];
+    nlohmann::json comp_data = aFile[ COMPONENT_ARRAY_SAVE_KEY ];
+
+    nlohmann::json::iterator compItr = comp_data.begin();
+
+    while ( compItr != comp_data.end() )
+    {
+        componentManager->AddComponent( this, *compItr );
+        ++compItr;
+    }
+    EntityTransform = this->GetComponent<Transform>();
+
+    LOG_TRACE( "Load Entity from file: {} \t Active: {}", Name, IsActive );
+
+    return this;
+}
+
+
+void Entity::Reset()
+{
+    IPoolable::Reset();
+
     RemoveAllComponents();
     // Reset flags
     IsValid = false;
@@ -42,7 +114,7 @@ void IEntity::Reset()
     EntityTransform = this->AddComponent<Transform>();
 }
 
-void IEntity::Update( float dt )
+void Entity::Update( float dt )
 {
     // Update all this entities components
     const auto & compMap = this->GetAllComponents();
@@ -62,7 +134,7 @@ void IEntity::Update( float dt )
     }
 }
 
-void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
+void Entity::Write( OutputMemoryBitStream & inOutputStream ) const
 {
     inOutputStream.Write( NetworkID );
     // Write our replication action and the dirty state
@@ -91,7 +163,7 @@ void IEntity::Write( OutputMemoryBitStream & inOutputStream ) const
     }
 }
 
-void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const
+void Entity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 inDirtyState ) const
 {
     if ( inDirtyState & EIEntityReplicationState::EIRS_POS )
     {
@@ -110,7 +182,7 @@ void IEntity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 
     }
 }
 
-void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
+void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 {
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
@@ -133,7 +205,7 @@ void IEntity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
     }
 }
 
-void IEntity::Read( InputMemoryBitStream & inInputStream )
+void Entity::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in dirty state of this entity
     inInputStream.Read( DirtyState );

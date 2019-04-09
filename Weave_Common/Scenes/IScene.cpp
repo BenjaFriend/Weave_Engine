@@ -27,7 +27,7 @@ void IScene::Read( InputMemoryBitStream & inInputStream )
     ( void ) inInputStream;
 }
 
-void IScene::AddReplicatedObject( IEntity* aEntity )
+void IScene::AddReplicatedObject( Entity* aEntity )
 {
     auto it = NetworkIdToEntityMap.find( aEntity->GetNetworkID( ) );
     if ( it == NetworkIdToEntityMap.end( ) )
@@ -37,7 +37,7 @@ void IScene::AddReplicatedObject( IEntity* aEntity )
     }
 }
 
-IEntity* IScene::GetReplicatedObject( INT32 aID )
+Entity* IScene::GetReplicatedObject( INT32 aID )
 {
     if ( IsObjectReplicated( aID ) )
     {
@@ -49,7 +49,7 @@ IEntity* IScene::GetReplicatedObject( INT32 aID )
     }
 }
 
-void IScene::RemoveReplicatedObject( IEntity* aEntity )
+void IScene::RemoveReplicatedObject( Entity* aEntity )
 {
     auto it = NetworkIdToEntityMap.find( aEntity->GetNetworkID( ) );
     if ( it != NetworkIdToEntityMap.end( ) )

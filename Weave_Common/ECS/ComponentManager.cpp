@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ComponentManager.h"
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
 
 // Singleton requirement
 ECS::ComponentManager* ECS::ComponentManager::instance = nullptr;
@@ -25,7 +25,7 @@ void ECS::ComponentManager::ReleaseInstance()
     }
 }
 
-bool ECS::ComponentManager::AddComponent( IEntity * aEntity, nlohmann::json & aCompData )
+bool ECS::ComponentManager::AddComponent( Entity * aEntity, nlohmann::json & aCompData )
 {
     assert( aEntity != nullptr );
     const ECS::EntityID aEntityID = aEntity->GetID();
@@ -48,7 +48,7 @@ bool ECS::ComponentManager::AddComponent( IEntity * aEntity, nlohmann::json & aC
     return true;
 }
 
-bool ECS::ComponentManager::AddComponentFromEditor( IEntity * aEntity, const std::string & aCompName )
+bool ECS::ComponentManager::AddComponentFromEditor( Entity * aEntity, const std::string & aCompName )
 {
     assert( aEntity != nullptr );
     const ECS::EntityID aEntityID = aEntity->GetID();

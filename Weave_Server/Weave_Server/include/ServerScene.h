@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scenes/IScene.h"
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
 
 #include <vector>
 
@@ -21,12 +21,10 @@ public:
     /// <param name="totalTime"></param>
     virtual void Update( float deltaTime, float totalTime ) override;
 
-    IEntity* AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
+    Entity* AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
 
 private:
 
-    std::vector< IEntityPtr > EntityArray;
-
-    ObjectPool< IEntity >* EntityPool = nullptr;
+    ObjectPool< Entity >* EntityPool = nullptr;
 
 };

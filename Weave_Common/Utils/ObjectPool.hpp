@@ -55,13 +55,13 @@ template<typename T>
 inline ObjectPool<T>::ObjectPool( const size_t aSize )
     : MaxSize( aSize )
 {
-    static_assert( std::is_convertible< T*, IPoolable* >::value, "T must inherit IPoolable as public" );
 
     ObjectBuffer = new T [ MaxSize ];
 
     for ( size_t i = 0; i < MaxSize; ++i )
     {
         AvailableIndecies.push_back( i );
+        ObjectBuffer[ i ].SetOwningPool( this );
     }
 }
 

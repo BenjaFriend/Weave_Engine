@@ -64,7 +64,7 @@ void ServerNetworkManager::HandleClientDisconnected( ClientProxyPtr aClient )
     // Tell the scene that they have left and we should remove their
     // game object!
     EndpointToClientMap.erase( aClient->GetEndpoint() );
-    Scene.RemoveReplicatedObject( aClient->GetClientEntity().get() );
+    Scene.RemoveReplicatedObject( aClient->GetClientEntity() );
     LOG_TRACE( "Client removed: {}", aClient->GetName() );
 }
 
@@ -156,7 +156,7 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
             const glm::vec3 & rot = aClient->GetClientEntity()->GetTransform()->GetRotation();
 
             // Spawn a bullet on the server
-            IEntityPtr newBullet = Scene.AddEntity( 
+            Entity* newBullet = Scene.AddEntity(
                 "Bullet Boi",
                 ++NewPlayerID, 
                 EReplicatedClassType::EBullet_Class 
@@ -204,7 +204,7 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
 
     Scene.SetDirtyState(
         aClient->GetClientEntity()->GetNetworkID(),
-        IEntity::EIEntityReplicationState::EIRS_AllState 
+        Entity::EIEntityReplicationState::EIRS_AllState 
     );
 
 }

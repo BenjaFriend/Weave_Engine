@@ -3,7 +3,7 @@
 #include <boost/asio.hpp>
 #include <string>
 #include <memory>
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
 
 class ClientProxy
 {
@@ -27,9 +27,9 @@ public:
     /// </summary>
     void UpdateLastPacketTime();
 
-    void SetClientEntity( IEntityPtr aEnt ) { ClientEntity = aEnt; }
+    void SetClientEntity( Entity* aEnt ) { ClientEntity = aEnt; }
 
-    IEntityPtr GetClientEntity() { return ClientEntity; }
+    Entity* GetClientEntity() { return ClientEntity; }
 
 private:
 
@@ -43,7 +43,7 @@ private:
     UINT32 PlayerId;
 
     /** pointer to this client's entity */
-    IEntityPtr ClientEntity;
+    Entity* ClientEntity = nullptr;
 
     /** The time that a packet was last received from this client */
     float LastPacketFromClientTime = 0.0f;

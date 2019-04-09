@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 #include "Entity/Transform.h"
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 #include "CameraManager.h"
 
 size_t Camera::CameraCount = 0;

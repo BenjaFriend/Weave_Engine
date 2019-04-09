@@ -4,7 +4,7 @@
 #include "../Resources/Vertex.h"
 #include "../Resources/Mesh.h"
 #include "../Resources/MeshRenderer.h"
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 #include "../Camera/Camera.h"
 #include "../Resources/Materials/Material.h"
 #include "../Scripting/ScriptComponent.h"

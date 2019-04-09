@@ -4,9 +4,9 @@
 ServerScene::ServerScene()
 {
     LOG_TRACE( "Create a server scene!" );
-    EntityPool = new ObjectPool< IEntity >( MAX_ENTITY_COUNT );
+    EntityPool = new ObjectPool< Entity >( MAX_ENTITY_COUNT );
 
-    IEntity* EntAray_Raw = EntityPool->GetRaw();
+    Entity* EntAray_Raw = EntityPool->GetRaw();
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
@@ -17,7 +17,6 @@ ServerScene::ServerScene()
 
 ServerScene::~ServerScene()
 {
-    EntityArray.clear();
     NetworkIdToEntityMap.clear();
 
     SAFE_DELETE( EntityPool );
@@ -42,7 +41,7 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 
 void ServerScene::Update( float deltaTime, float totalTime )
 {
-    IEntity* EntityArray_Raw = EntityPool->GetRaw();
+    Entity* EntityArray_Raw = EntityPool->GetRaw();
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
@@ -53,20 +52,20 @@ void ServerScene::Update( float deltaTime, float totalTime )
     }
 }
 
-IEntity* ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
+Entity* ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
-    IEntity* newEnt = EntityPool->GetResource();
+    Entity* newEnt = EntityPool->GetResource();
 
     assert( newEnt != nullptr );
 
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
-    
-    //EntityArray.push_back( newEnt );
-    
+    newEnt->SetIsActive( true );
+    newEnt->SetIsValid( true );
+
     // Setup replication actions
     newEnt->SetReplicationAction( EReplicationAction::ERA_Create );
-    newEnt->SetDirtyState( IEntity::EIEntityReplicationState::EIRS_AllState );
+    newEnt->SetDirtyState( Entity::EIEntityReplicationState::EIRS_AllState );
     newEnt->SetReplicationClassType( aClassType ); 
     
     // Add this object to the replication map

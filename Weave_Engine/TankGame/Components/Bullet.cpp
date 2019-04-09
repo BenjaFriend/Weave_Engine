@@ -1,7 +1,7 @@
 
 #include "Bullet.h"
 #include "Entity/Transform.h"
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
 
 COMPONENT_INIT( Bullet )
 
