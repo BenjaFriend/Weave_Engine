@@ -19,14 +19,14 @@ public:
     /// </summary>
     /// <param name="deltaTime"></param>
     /// <param name="totalTime"></param>
-    virtual void Update( float deltaTime, float totalTime );
+    virtual void Update( float deltaTime, float totalTime ) override;
 
-    IEntityPtr AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
+    IEntity* AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
 
 private:
 
     std::vector< IEntityPtr > EntityArray;
 
-    ObjectPool<IEntityPtr>* EntityPool = nullptr;
+    ObjectPool< IEntity >* EntityPool = nullptr;
 
 };

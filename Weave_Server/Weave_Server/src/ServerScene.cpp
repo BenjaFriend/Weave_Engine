@@ -4,13 +4,13 @@
 ServerScene::ServerScene()
 {
     LOG_TRACE( "Create a server scene!" );
-    EntityPool = new ObjectPool<IEntityPtr>( MAX_ENTITY_COUNT );
+    EntityPool = new ObjectPool< IEntity >( MAX_ENTITY_COUNT );
 
-    IEntityPtr* EntAray_Raw = EntityPool->GetRaw();
+    IEntity* EntAray_Raw = EntityPool->GetRaw();
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntAray_Raw[ i ]->SetIsValid( false );
+        EntAray_Raw[ i ].SetIsValid( false );
     }
 
 }
@@ -42,32 +42,35 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 
 void ServerScene::Update( float deltaTime, float totalTime )
 {
-    for ( const auto & ent : EntityArray )
+    IEntity* EntityArray_Raw = EntityPool->GetRaw();
+
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        ent->Update( deltaTime );
+        if ( EntityArray_Raw[ i ].GetIsValid() && EntityArray_Raw[ i ].GetIsActive() )
+        {
+            EntityArray_Raw[ i ].Update( deltaTime );
+        }
     }
 }
 
-IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
+IEntity* ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
-    IEntityPtr* unsafe_Ent = EntityPool->GetResource();
-    if ( unsafe_Ent == nullptr )
-    {
-        LOG_ERROR( "There are no more entities available in the server pool!" );
-        return nullptr;
-    }
+    IEntity* newEnt = EntityPool->GetResource();
 
-    IEntityPtr newEnt = *unsafe_Ent;
+    assert( newEnt != nullptr );
 
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
-    EntityArray.push_back( newEnt );
+    
+    //EntityArray.push_back( newEnt );
+    
     // Setup replication actions
     newEnt->SetReplicationAction( EReplicationAction::ERA_Create );
     newEnt->SetDirtyState( IEntity::EIEntityReplicationState::EIRS_AllState );
     newEnt->SetReplicationClassType( aClassType ); 
+    
     // Add this object to the replication map
-    AddReplicatedObject( newEnt.get() );
+    AddReplicatedObject( newEnt );
 
     return newEnt;
 }
