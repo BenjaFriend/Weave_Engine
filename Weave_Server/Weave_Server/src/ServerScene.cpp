@@ -4,12 +4,23 @@
 ServerScene::ServerScene()
 {
     LOG_TRACE( "Create a server scene!" );
+    EntityPool = new ObjectPool<IEntityPtr>( MAX_ENTITY_COUNT );
+
+    IEntityPtr* EntAray_Raw = EntityPool->GetRaw();
+
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        EntAray_Raw[ i ]->SetIsValid( false );
+    }
+
 }
 
 ServerScene::~ServerScene()
 {
     EntityArray.clear();
     NetworkIdToEntityMap.clear();
+
+    SAFE_DELETE( EntityPool );
     LOG_TRACE( "DELETE a server scene!" );
 }
 
@@ -39,7 +50,15 @@ void ServerScene::Update( float deltaTime, float totalTime )
 
 IEntityPtr ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
-    IEntityPtr newEnt = std::make_shared<IEntity>();
+    IEntityPtr* unsafe_Ent = EntityPool->GetResource();
+    if ( unsafe_Ent == nullptr )
+    {
+        LOG_ERROR( "There are no more entities available in the server pool!" );
+        return nullptr;
+    }
+
+    IEntityPtr newEnt = *unsafe_Ent;
+
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
     EntityArray.push_back( newEnt );

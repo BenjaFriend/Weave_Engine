@@ -27,4 +27,6 @@ private:
 
     std::vector< IEntityPtr > EntityArray;
 
+    ObjectPool<IEntityPtr>* EntityPool = nullptr;
+
 };
