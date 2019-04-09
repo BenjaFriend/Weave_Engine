@@ -26,7 +26,7 @@ public:
     virtual void Reset()
     {
         assert( owningPool != nullptr );
-        owningPool->ReturnResource( ID );
+        owningPool->ReturnResource( Pool_ID );
     }
 
     FORCE_INLINE const bool GetIsValid() const { return IsValid; }
@@ -41,6 +41,6 @@ protected:
     ObjectPool< T >* owningPool = nullptr;
 
     /** The unique ID of this pooled object */
-    size_t ID = 0;
+    size_t Pool_ID = 0;
 
 };

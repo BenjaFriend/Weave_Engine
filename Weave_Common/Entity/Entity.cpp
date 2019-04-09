@@ -10,7 +10,7 @@ Entity::Entity()
     IsDestroyableOnLoad = true;
     IsPendingReset = false;
 
-    ID = EntityCount++;
+    Pool_ID = EntityCount++;
 
     componentManager = ECS::ComponentManager::GetInstance();
 

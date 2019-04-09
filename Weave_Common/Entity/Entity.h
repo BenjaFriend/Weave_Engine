@@ -61,7 +61,7 @@ public:
     template<typename T>
     T* GetComponent()
     {
-        return this->componentManager->GetComponent<T>( this->ID );
+        return this->componentManager->GetComponent<T>( this->Pool_ID );
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public:
         return
             this->componentManager->AddComponent<T>(
                 this,
-                this->ID,
+                this->Pool_ID,
                 std::forward<P>( param )...
                 );
     }
@@ -84,15 +84,15 @@ public:
     template<typename T>
     void RemoveComponent()
     {
-        this->componentManager->RemoveComponent<T>( this->ID );
+        this->componentManager->RemoveComponent<T>( this->Pool_ID );
     }
 
     FORCE_INLINE const ECS::ComponentMap * GetAllComponents() const
     {
-        return componentManager->GetAllComponents( this->ID );
+        return componentManager->GetAllComponents( this->Pool_ID );
     }
 
-    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( ID ); }
+    FORCE_INLINE void RemoveAllComponents() { componentManager->RemoveAllEntityComponents( Pool_ID ); }
 
     virtual void Reset() override;
 
@@ -199,7 +199,7 @@ public:
 
     FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
 
-    FORCE_INLINE const size_t GetID() const { return this->ID; }
+    FORCE_INLINE const size_t GetID() const { return this->Pool_ID; }
 
     // Networked things things
     FORCE_INLINE const INT32 GetNetworkID() const { return NetworkID; }
