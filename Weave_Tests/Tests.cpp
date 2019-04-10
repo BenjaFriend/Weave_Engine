@@ -6,12 +6,9 @@
 
 #include "catch2/catch.hpp"
 #include "stdafx.h"
-
-#include "Utils/ObjectPool.hpp"
-
 #include "MemoryBitStream.h"
 
-TEST_CASE ( "OutputMemoryBitStream", "[OutputMemoryBitStream]" )
+TEST_CASE ( "InputMemoryBitStream", "[InputMemoryBitStream]" )
 {
     char buf [ 64 ] = {};
 
@@ -20,22 +17,3 @@ TEST_CASE ( "OutputMemoryBitStream", "[OutputMemoryBitStream]" )
     REQUIRE( stream.GetBufferPtr() != nullptr );
 }
 
-
-TEST_CASE ( "Object Pool Get", "[ObjectPool]" )
-{
-    const size_t size = 4;
-    /*
-    ObjectPool< int > pool( size );
-
-    SECTION( "Size checking" )
-    {
-        REQUIRE( pool.GetNumberAvailableResources() == size );
-        REQUIRE( pool.IsEmpty() == false );
-    }
-
-    SECTION( "Null checks" )
-    {
-        int* res = pool.GetResource();
-        REQUIRE( res != nullptr );
-    }*/
-}

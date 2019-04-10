@@ -40,7 +40,7 @@ public:
     /// entities
     /// </summary>
     /// <param name="aJsonEntityArray">nlohmann::json::array of entities</param>
-    void SaveObject( nlohmann::json& aJsonEntityArray );
+    void SaveObject( nlohmann::json& aJsonEntityArray ) override;
 
     /// <summary>
     /// Create this entity based off of a scene file data set
