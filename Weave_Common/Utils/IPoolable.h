@@ -27,15 +27,16 @@ public:
     {
         assert( owningPool != nullptr );
         owningPool->ReturnResource( Pool_ID );
+        IsInUse = false;
     }
 
-    FORCE_INLINE const bool GetIsValid() const { return IsValid; }
-    FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
+    FORCE_INLINE const bool GetIsInUse() const { return IsInUse; }
+    FORCE_INLINE void SetIsInUse( const bool aValid ) { IsInUse = aValid; }
 
 protected:
 
     /** If true, then this entity has been initialized and is valid in the memory pool */
-    UINT32 IsValid : 1;
+    UINT32 IsInUse : 1;
 
     /** Pointer to the object pool that owns this entity */
     ObjectPool< T >* owningPool = nullptr;

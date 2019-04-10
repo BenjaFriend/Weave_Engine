@@ -14,7 +14,7 @@ Scene::Scene()
     // Initalize the entity array
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntityArray_Raw [ i ].SetIsValid( false );
+        EntityArray_Raw [ i ].SetIsInUse( false );
     }
 }
 
@@ -122,7 +122,7 @@ Entity * Scene::AddEntity( std::string aName )
 
     newEnt->SetName( aName );
     newEnt->SetIsActive( true );
-    newEnt->SetIsValid( true );
+    newEnt->SetIsInUse( true );
 
     LOG_TRACE( "Add raw entity! {}", aName );
 
@@ -135,7 +135,7 @@ Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
 
     assert( newEnt != nullptr );
 
-    newEnt->SetIsValid( true );
+    newEnt->SetIsInUse( true );
     newEnt->ConstructFromFile( aFile );
 
     LOG_TRACE( "Add raw entity from file! {}", newEnt->GetName() );
@@ -150,7 +150,7 @@ void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
     {
         assert( &EntityArray_Raw[ i ] != nullptr );
 
-        if ( EntityArray_Raw [ i ].GetIsValid() &&
+        if ( EntityArray_Raw [ i ].GetIsInUse() &&
             ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
                 aOverrideDestroyOnLoad ) )
         {
@@ -175,7 +175,7 @@ void Scene::Update( float deltaTime, float totalTime )
 {
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( EntityArray_Raw[ i ].GetIsValid() && EntityArray_Raw[ i ].GetIsActive() )
+        if ( EntityArray_Raw[ i ].GetIsInUse() && EntityArray_Raw[ i ].GetIsActive() )
         {
             EntityArray_Raw[ i ].Update( deltaTime );
         }

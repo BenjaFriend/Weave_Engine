@@ -371,7 +371,7 @@ inline void EditorCore::DrawHierarchy()
         CurrentEntity = &entArray [ i ];
         assert( CurrentEntity != nullptr );
 
-        if ( !CurrentEntity->GetIsValid() ) continue;
+        if ( !CurrentEntity->GetIsInUse() ) continue;
 
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {

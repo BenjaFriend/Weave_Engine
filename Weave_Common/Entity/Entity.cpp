@@ -6,7 +6,7 @@ size_t Entity::EntityCount = 0;
 Entity::Entity()
 {
     IsActive = true;
-    IsValid = false;
+    IsInUse = false;
     IsDestroyableOnLoad = true;
     IsPendingReset = false;
 
@@ -35,7 +35,7 @@ Entity::~Entity()
     EntityTransform = nullptr;
     componentManager = nullptr;
     IsActive = true;
-    IsValid = false;
+    IsInUse = false;
 }
 
 void Entity::SaveObject( nlohmann::json & aJsonEntityArray )
@@ -95,14 +95,12 @@ Entity * Entity::ConstructFromFile( nlohmann::json const & aFile )
     return this;
 }
 
-
 void Entity::Reset()
 {
     IPoolable::Reset();
 
     RemoveAllComponents();
     // Reset flags
-    IsValid = false;
     IsDestroyableOnLoad = true;
     IsPendingReset = false;
 

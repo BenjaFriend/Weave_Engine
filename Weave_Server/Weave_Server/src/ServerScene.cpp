@@ -10,7 +10,7 @@ ServerScene::ServerScene()
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntAray_Raw[ i ].SetIsValid( false );
+        EntAray_Raw[ i ].SetIsInUse( false );
     }
 
 }
@@ -29,9 +29,12 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 
     // #TODO Have a replication manager to only write dirty states out
     // and what actions to take on the given object
-
     for ( const auto & entity : NetworkIdToEntityMap )
     {
+        if ( !entity.second->GetIsInUse() )
+        {
+            continue;
+        }
         // #TODO Read in the class ID for this object
         entity.second->Write( inOutputStream );
         // Reset our replication action
@@ -45,7 +48,7 @@ void ServerScene::Update( float deltaTime, float totalTime )
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        if ( EntityArray_Raw[ i ].GetIsValid() && EntityArray_Raw[ i ].GetIsActive() )
+        if ( EntityArray_Raw[ i ].GetIsInUse() && EntityArray_Raw[ i ].GetIsActive() )
         {
             EntityArray_Raw[ i ].Update( deltaTime );
         }
@@ -61,7 +64,7 @@ Entity* ServerScene::AddEntity( const std::string & aName, UINT32 aID, const ERe
     newEnt->SetName( aName );
     newEnt->SetNetworkID( aID );
     newEnt->SetIsActive( true );
-    newEnt->SetIsValid( true );
+    newEnt->SetIsInUse( true );
 
     // Setup replication actions
     newEnt->SetReplicationAction( EReplicationAction::ERA_Create );

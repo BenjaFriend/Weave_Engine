@@ -258,7 +258,7 @@ void Game::Draw( float dt, float totalTime )
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
         CurrentEntity = &entArray [ i ];
-        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsActive() || !CurrentEntity->GetIsValid() ) continue;
+        if ( CurrentEntity == nullptr || !CurrentEntity->GetIsActive() || !CurrentEntity->GetIsInUse() ) continue;
 
         MeshRend = CurrentEntity->GetComponent<MeshRenderer>();
         if ( MeshRend != nullptr && MeshRend->IsEnabled() )

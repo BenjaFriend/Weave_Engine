@@ -103,7 +103,7 @@ void SceneManager::SaveScene( FileName & aSceneFile )
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
         CurrentEntity = &entArray [ i ];
-        if ( CurrentEntity != nullptr && CurrentEntity->GetIsValid() )
+        if ( CurrentEntity != nullptr && CurrentEntity->GetIsInUse() )
         {
             CurrentEntity->SaveObject( njson [ ENTITY_ARRAY_SAVE_KEY ] );
         }

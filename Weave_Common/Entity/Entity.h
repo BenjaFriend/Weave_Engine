@@ -197,8 +197,6 @@ public:
     /// <param name="newName">The new name of this entity</param>
     FORCE_INLINE void SetName( std::string newName ) { Name = newName; }
 
-    FORCE_INLINE void SetIsValid( const bool aValid ) { IsValid = aValid; }
-
     FORCE_INLINE const size_t GetID() const { return this->Pool_ID; }
 
     // Networked things things
