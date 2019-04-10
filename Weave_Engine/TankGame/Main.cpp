@@ -1,3 +1,5 @@
+#define WEAVE_CLIENT
+
 #include "pch.h"
 
 #include "Game/TankGame.h"

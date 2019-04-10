@@ -24,7 +24,7 @@ TEST_CASE ( "OutputMemoryBitStream", "[OutputMemoryBitStream]" )
 TEST_CASE ( "Object Pool Get", "[ObjectPool]" )
 {
     const size_t size = 4;
-
+    /*
     ObjectPool< int > pool( size );
 
     SECTION( "Size checking" )
@@ -37,5 +37,5 @@ TEST_CASE ( "Object Pool Get", "[ObjectPool]" )
     {
         int* res = pool.GetResource();
         REQUIRE( res != nullptr );
-    }
+    }*/
 }

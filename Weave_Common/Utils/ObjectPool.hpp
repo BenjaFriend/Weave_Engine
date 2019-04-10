@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "IPoolable.h"
 
 #include <deque>
 
@@ -54,11 +55,13 @@ template<typename T>
 inline ObjectPool<T>::ObjectPool( const size_t aSize )
     : MaxSize( aSize )
 {
+
     ObjectBuffer = new T [ MaxSize ];
 
     for ( size_t i = 0; i < MaxSize; ++i )
     {
         AvailableIndecies.push_back( i );
+        ObjectBuffer[ i ].SetOwningPool( this );
     }
 }
 
@@ -67,7 +70,7 @@ inline ObjectPool<T>::~ObjectPool()
 {
     if ( ObjectBuffer != nullptr )
     {
-        delete [] ObjectBuffer;
+        delete[] ObjectBuffer;
     }
 
     AvailableIndecies.clear();

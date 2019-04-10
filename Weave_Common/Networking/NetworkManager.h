@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "Config.h"
 #include "MemoryBitStream.h"
 
 #include <queue>
@@ -14,7 +14,7 @@
 #include <boost/bind.hpp>
 #include <boost/asio/buffer.hpp>
 
-#define DEF_BUF_SIZE        512
+#define DEF_BUF_SIZE        1400
 
 /// <summary>
 /// Base network manager provides the ability to easily send and receive
@@ -28,11 +28,12 @@ class NetworkManager
 public:
 
     // Packet types
-    static const UINT32 HelloPacket = 'HELO';   // Hello packet from the client
-    static const UINT32 WelcomePacket = 'WELC';   // Welcome packet to initialize the client
-    static const UINT32 StatePacket = 'STAT';   // State update of the scene
-    static const UINT32	InputPacket = 'INPT';   // The client's input state
-    static const UINT32	FeedMessagePacket = 'FMSG';   // A message ment to give a feed update to all the client
+    static const UINT32 HelloPacket         = 'HELO';   // Hello packet from the client
+    static const UINT32 WelcomePacket       = 'WELC';   // Welcome packet to initialize the client
+    static const UINT32 StatePacket         = 'STAT';   // State update of the scene
+    static const UINT32	InputPacket         = 'INPT';   // The client's input state
+    static const UINT32	FeedMessagePacket   = 'FMSG';   // A message meant to give a feed update to all the client
+    static const UINT32	HeartbeatPacket     = 'HBET';   // A message meant to give a feed update to all the client
 
     NetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 

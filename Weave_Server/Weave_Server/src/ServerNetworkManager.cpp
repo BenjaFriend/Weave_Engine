@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "ServerNetworkManager.h"
+#include "Bullet.h"
 
 ServerNetworkManager::ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce )
     : NetworkManager( aServce )
@@ -20,6 +21,26 @@ void ServerNetworkManager::HandleConnectionReset( const boost::asio::ip::udp::en
     if ( it != EndpointToClientMap.end() )
     {
         HandleClientDisconnected( it->second );
+    }
+}
+
+void ServerNetworkManager::CheckForDisconnects()
+{
+    std::vector < ClientProxyPtr > ClientsToDC;
+
+    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - ClientDisconnectTimeout;
+
+    for ( const auto& pair : EndpointToClientMap )
+    {
+        if ( pair.second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime )
+        {
+            ClientsToDC.push_back( pair.second );
+        }
+    }
+
+    for ( ClientProxyPtr client : ClientsToDC )
+    {
+        HandleClientDisconnected( client );
     }
 }
 
@@ -43,13 +64,17 @@ void ServerNetworkManager::HandleClientDisconnected( ClientProxyPtr aClient )
     // Tell the scene that they have left and we should remove their
     // game object!
     EndpointToClientMap.erase( aClient->GetEndpoint() );
-    Scene.RemoveReplicatedObject( aClient->GetClientEntity().get() );
+    Scene.RemoveReplicatedObject( aClient->GetClientEntity() );
+    LOG_TRACE( "Client removed: {}", aClient->GetName() );
 }
 
 void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
 {
     UINT32 packetType;
     inInputStream.Read( packetType );
+
+    // Keep track of the last time we received a packet from this client
+    aClient->UpdateLastPacketTime();
 
     switch ( packetType )
     {
@@ -65,7 +90,6 @@ void ServerNetworkManager::ProcessExistingClientPacket( ClientProxyPtr aClient, 
         // Update this players input
     }
     break;
-    // TODO: Handle heartbeat
     default:
         break;
     }
@@ -84,16 +108,22 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
         std::string name;
         inInputStream.Read( name );
 
-        ClientProxyPtr newClient = std::make_shared< ClientProxy >( std::move( inFromAddress ), name, NewPlayerID++ );
+        ClientProxyPtr newClient = std::make_shared< ClientProxy >( 
+            std::move( inFromAddress ), 
+            name, 
+            NewPlayerID++ 
+        );
 
         EndpointToClientMap [ inFromAddress ] = newClient;
 
         // Send welcome packet to them and tell them what their ID is
         SendWelcomePacket( newClient );
-
-        newClient->SetClientEntity( Scene.AddEntity( newClient->GetName() ) );
-        newClient->GetClientEntity()->SetNetworkID( newClient->GetPlayerID() );
-        Scene.AddReplicatedObject( newClient->GetClientEntity().get() );
+        auto clientEnt = Scene.AddEntity( 
+            newClient->GetName(),
+            NewPlayerID,
+            EReplicatedClassType::ETank_Class
+        );
+        newClient->SetClientEntity( clientEnt );
     }
     else
     {
@@ -104,65 +134,94 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
 
 void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemoryBitStream & inInputStream)
 {
-	UINT32 sizeOfMoveList = 0;
-	inInputStream.Read(sizeOfMoveList);
+    UINT32 sizeOfMoveList = 0;
+    inInputStream.Read( sizeOfMoveList );
 
-	float inputMovement(0.f);
-	float inputRotation(0.f);
+    float inputMovement( 0.f );
+    float inputRotation( 0.f );
 
-	for (size_t i = 0; i < sizeOfMoveList; ++i)
-	{
-		UINT8 move = 0;
-		inInputStream.Read(move);
+    for ( size_t i = 0; i < sizeOfMoveList; ++i )
+    {
+        UINT8 move = 0;
+        inInputStream.Read( move );
 
-		switch (static_cast <Input::InputType> (move))
-		{
-		case Input::InputType::Fire:
-		{
-			LOG_TRACE("PLAYER FIRE MOVE!");
-		}
-		break;
-		case Input::InputType::Move_Left:
-		{
-			LOG_TRACE("Move left!");
-			inputRotation += 5.0f;
-		}
-		break;
-		case Input::InputType::Move_Right:
-		{
-			LOG_TRACE("Move_Right");
-			inputRotation -= 5.0f;
-		}
-		break;
-		case Input::InputType::Move_Up:
-		{
-			LOG_TRACE("Move_Up");
-			inputMovement -= 0.25f;
-		}
-		break;
-		case Input::InputType::Move_Down:
-		{
-			LOG_TRACE("Move_Down!");
-			inputMovement += 0.25f;
-		}
-		break;
-		default:
-			break;
-		}
-	}
+        switch ( static_cast < Input::InputType > ( move ) )
+        {
+        case Input::InputType::Fire:
+        {
+            // Get spawn pos info
+            glm::vec3 bulletSpawnPoint = aClient->GetClientEntity()->GetTransform()->GetPosition();
+            // Add the forward vector to the bullet spawn point
+            const glm::vec3 & forward = aClient->GetClientEntity()->GetTransform()->GetForward();
+            const glm::vec3 & rot = aClient->GetClientEntity()->GetTransform()->GetRotation();
 
-	// Move the client based on their input to the server
-	aClient->GetClientEntity()->GetTransform()->MoveRelative(0, 0, inputMovement);
-	aClient->GetClientEntity()->GetTransform()->Rotate(glm::vec3(0, inputRotation, 0));
+            // Spawn a bullet on the server
+            Entity* newBullet = Scene.AddEntity(
+                "Bullet Boi",
+                ++NewPlayerID, 
+                EReplicatedClassType::EBullet_Class 
+            );
+
+            bulletSpawnPoint += ( forward * 1.5f );
+            newBullet->GetTransform()->SetPosition( bulletSpawnPoint );
+            newBullet->GetTransform()->SetRotation( rot );
+
+            newBullet->AddComponent<Bullet>();
+        }
+        break;
+        case Input::InputType::Move_Left:
+        {
+            LOG_TRACE( "Move left!" );
+            inputRotation += 5.0f;
+        }
+        break;
+        case Input::InputType::Move_Right:
+        {
+            LOG_TRACE( "Move_Right" );
+            inputRotation -= 5.0f;
+        }
+        break;
+        case Input::InputType::Move_Up:
+        {
+            LOG_TRACE( "Move_Up" );
+            inputMovement -= 0.25f;
+        }
+        break;
+        case Input::InputType::Move_Down:
+        {
+            LOG_TRACE( "Move_Down!" );
+            inputMovement += 0.25f;
+        }
+        break;
+        default:
+            break;
+        }
+    }
+    
+    // Move the client based on their input to the server
+    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement );
+    aClient->GetClientEntity()->GetTransform()->Rotate( glm::vec3( 0.f, inputRotation, 0.f ) );
+
+    Scene.SetDirtyState(
+        aClient->GetClientEntity()->GetNetworkID(),
+        Entity::EIEntityReplicationState::EIRS_AllState 
+    );
+
 }
 
 void ServerNetworkManager::SendWelcomePacket( ClientProxyPtr aClient )
 {
+    assert( aClient != nullptr );
+
     OutputMemoryBitStream welcPacket = {};
     welcPacket.Write( WelcomePacket );
     welcPacket.Write( aClient->GetPlayerID() );
     SendPacket( welcPacket, aClient->GetEndpoint() );
-    LOG_TRACE( "Sent  welcome packet to client {} ID {}", aClient->GetName(), aClient->GetPlayerID() );
+}
+
+void ServerNetworkManager::Update( float deltaTime, float TotalTime )
+{
+    Scene.Update( deltaTime, TotalTime );
 }
 
 void ServerNetworkManager::UpdateAllClients()
@@ -177,10 +236,11 @@ void ServerNetworkManager::UpdateAllClients()
 
 void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 {
+    assert( aClient != nullptr );
+
     OutputMemoryBitStream packet = {};
     packet.Write( StatePacket );
 
-    // #TODO Write the scene data to this state packet
     // Write the number of connected clients
     packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
 
@@ -191,7 +251,7 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 
 void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg )
 {
-    assert( aMsg != nullptr );
+    assert( aClient != nullptr && aMsg != nullptr );
     
     OutputMemoryBitStream packet = {};
     packet.Write( FeedMessagePacket );

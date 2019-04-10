@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "BoxCollider.h"
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 
 #define EXTENTS_SAVE_KEY            "Extents"
 #define CENTER_OFFSET_SAVE_KEY      "CenterOffset"

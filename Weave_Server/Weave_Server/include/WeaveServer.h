@@ -94,6 +94,6 @@ private:
     /** Time between input updates */
     float TimeOfLastStateUpdate;
     /** The amount of time between sending hello packets */
-    const float TimeBetweenStateUpdates = 1.0f;
+    const float TimeBetweenStateUpdates = 0.2f;
 
 };

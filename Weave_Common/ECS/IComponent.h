@@ -29,7 +29,7 @@
     { OwningEntity->RemoveComponent< name > (); return; }               
     
 
-class IEntity;
+class Entity;
 
 namespace ECS
 {
@@ -82,6 +82,12 @@ namespace ECS
             ( void ) ( inInputStream );
         }
 
+		/// <summary>
+		/// Update this component's data if necessary, by default do nothing.
+		/// </summary>
+		/// <param name="deltaTime">Time between frames</param>
+		virtual void Update(float deltaTime) { ( void ) ( deltaTime ); }
+
         ////////////////////////////////////////////////////    
         // Operators 
 
@@ -107,7 +113,7 @@ namespace ECS
         /// <returns>Entity ID of the owning entity</returns>
         FORCE_INLINE const size_t& GetOwner() const { return this->owner; }
 
-        FORCE_INLINE IEntity* GetEntity() const { return OwningEntity; }
+        FORCE_INLINE Entity* GetEntity() const { return OwningEntity; }
 
         /// <summary>
         /// Get the human-readable name of this component
@@ -187,7 +193,7 @@ namespace ECS
         /** The owner of this component */
         size_t owner = 0;
 
-        IEntity* OwningEntity = nullptr;
+        Entity* OwningEntity = nullptr;
 
         virtual void OnEnable() {}
 

@@ -3,7 +3,11 @@
 #include <vector>
 #include <string>
 
+#include "stdafx.h"
+
 #include "Scenes/IScene.h"
+#include "Entity/Entity.h"
+#include "Utils/ObjectPool.hpp"
 
 #include "../Resources/Materials/Material.h"
 #include "../Resources/Mesh.h"
@@ -11,10 +15,6 @@
 #include "../Lighting/LightShaderDefs.h"
 #include "../Lighting/PointLight.h"
 #include "../Lighting/DirLight.h"
-#include "stdafx.h"
-#include "../Entity/Entity.h"
-
-#include "Utils/ObjectPool.hpp"
 
 namespace SceneManagement
 {
@@ -74,7 +74,9 @@ namespace SceneManagement
         /// </summary>
         virtual void ResetScene() override;
 
-        FORCE_INLINE Entity* GetEntityArray() const { return reinterpret_cast< Entity* > ( EntityArray_Raw ); }
+        virtual void Update( float deltaTime, float totalTime ) override;
+
+        FORCE_INLINE Entity* GetEntityArray() const { return EntityArray_Raw; }
 
         /// <summary>
         /// Get this scene's name
@@ -88,7 +90,7 @@ namespace SceneManagement
         {
             if ( aID < 0 || aID > MAX_ENTITY_COUNT ) return nullptr;
 
-            return reinterpret_cast< Entity* >( &EntityArray_Raw [ aID ] );
+            return &EntityArray_Raw [ aID ];
         }
 
         FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
@@ -118,10 +120,10 @@ namespace SceneManagement
         /** A raw array of entity data */
         Entity* EntityArray_Raw = nullptr;
 
-        ObjectPool<Entity>* EntityPool = nullptr;
+        ObjectPool< Entity >* EntityPool = nullptr;
 
-        std::vector<DirLight*> DirLights;
+        std::vector< DirLight* > DirLights;
 
-        std::vector<PointLight*> PointLights;
+        std::vector< PointLight* > PointLights;
     };
 }

@@ -13,18 +13,31 @@ public:
 
     ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
-    virtual ~ServerNetworkManager( );
+    virtual ~ServerNetworkManager();
+
+    /// <summary>
+    /// Do any ticks on the objects that we may need to.
+    /// </summary>
+    /// <param name="deltaTime">Delta Time</param>
+    /// <param name="TotalTime">Total time of the running program</param>
+    void Update( float deltaTime, float TotalTime );
 
     /// <summary>
     /// Update all clients that are connected with the proper state data
     /// </summary>
-    void UpdateAllClients( );
+    void UpdateAllClients();
 
     /// <summary>
     /// Handle a client resetting their connection to the server
     /// </summary>
     /// <param name="inFromAddress">the adddress to handle</param>
     virtual void HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress ) override;
+
+    /// <summary>
+    /// Check to see if there has been any client that should be disconnected
+    /// from this server, if so, remove them
+    /// </summary>
+    void CheckForDisconnects();
 
 protected:
 
@@ -78,6 +91,10 @@ private:
 
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
+
+    /** The amount of time it takes for a client to be removed from the server
+    after not receiving a packet from them*/
+    float ClientDisconnectTimeout = 5.f;
 
     /** The current scene that is loaded */
     ServerScene Scene;

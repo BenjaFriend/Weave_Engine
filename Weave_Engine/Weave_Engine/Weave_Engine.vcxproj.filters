@@ -7,9 +7,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{f1e760dd-f150-4e5a-bb30-9e412470ad35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entity">
-      <UniqueIdentifier>{d24c0910-37e0-49db-92d7-3bb40d235d2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{b77b57c2-28e1-4264-a38c-ac648e66751d}</UniqueIdentifier>
     </Filter>
@@ -80,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="Core\Main.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\Entity.cpp">
-      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Resources\Mesh.cpp">
       <Filter>Resources</Filter>
@@ -177,9 +171,6 @@
     <ClCompile Include="..\..\Weave_Common\Scenes\IScene.cpp">
       <Filter>Weave_Common\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp">
-      <Filter>Weave_Common\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp">
       <Filter>Weave_Common\ECS</Filter>
     </ClCompile>
@@ -192,6 +183,9 @@
     <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp">
       <Filter>Weave_Common\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Entity\Entity.cpp">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -199,9 +193,6 @@
     </ClInclude>
     <ClInclude Include="Core\Game.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Entity.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Mesh.h">
       <Filter>Resources</Filter>
@@ -335,9 +326,6 @@
     <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h">
       <Filter>Weave_Common\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h">
-      <Filter>Weave_Common\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h">
       <Filter>Weave_Common\ECS</Filter>
     </ClInclude>
@@ -358,8 +346,18 @@
       <Filter>Weave_Common\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Utils\IPoolable.h">
+      <Filter>Weave_Common\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Entity\Entity.h">
+      <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

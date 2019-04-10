@@ -38,6 +38,7 @@ void Editor::EditorCore::SetSceneFile( const FileName & aFileName )
 }
 
 EditorCore::EditorCore()
+    : DoGizmoDraw( true ), DrawSkyBox( true ), DebugDrawColliders( true ), DebugDrawLights( true )
 {
     sceneMan = SceneManagement::SceneManager::GetInstance();
     sceneMan->OnSceneUnload().BindListener( this, &Editor::EditorCore::ResetScene );
@@ -72,6 +73,8 @@ void EditorCore::LoadResources()
     UnlitShader = resourceMan->LoadShader<SimplePixelShader>(
         L"PixelShader_Unlit.cso" );
 
+    PointLightMesh = resourceMan->LoadMesh( L"Assets/Models/sphere.obj" );
+
     D3D11_RASTERIZER_DESC wireRS = {};
     wireRS.FillMode = D3D11_FILL_WIREFRAME;
     wireRS.CullMode = D3D11_CULL_NONE;
@@ -85,12 +88,18 @@ void EditorCore::Update( float dt )
 
 void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
 {
-    const Camera* CurrentCamera = CameraManager::GetInstance()->GetActiveCamera();
+    Camera* CurrentCamera = CameraManager::GetInstance()->GetActiveCamera();
     assert( VertexShader != nullptr && OutlineShader != nullptr );
     DrawUI();
 
     if ( DoGizmoDraw )
         DrawGizmos( aDevice, aContext );
+
+    if ( DebugDrawColliders )
+        DrawColliders( CurrentCamera, aDevice, aContext );
+
+    if ( DebugDrawLights )
+        DrawLightSources( CurrentCamera, aDevice, aContext );
 
     // Draw the selected object
     if ( SelectedEntity != nullptr )
@@ -139,6 +148,142 @@ void EditorCore::Draw( float dt, ID3D11Device * aDevice, ID3D11DeviceContext * a
 
         aContext->RSSetState( 0 );
     }
+}
+
+void EditorCore::DrawLightSources(Camera* aCam, ID3D11Device * aDevice, ID3D11DeviceContext * aContext)
+{
+    ID3D11Buffer * vb = PointLightMesh->GetVertexBuffer();
+    ID3D11Buffer * ib = PointLightMesh->GetIndexBuffer();
+    unsigned int indexCount = PointLightMesh->GetIndexCount();
+
+    // Turn on these shaders
+    VertexShader->SetShader();
+    UnlitShader->SetShader();
+
+    // Set up vertex shader
+    VertexShader->SetMatrix4x4("view", aCam->GetViewMatrix());
+    VertexShader->SetMatrix4x4("projection", aCam->GetProjectMatrix());
+
+    // Set buffers in the input assembler
+    UINT stride = sizeof(Vertex);
+    UINT offset = 0;
+
+    auto PointLights = SceneManagement::SceneManager::GetInstance()->GetActiveScene()->GetPointLights();
+
+    for ( size_t i = 0; i < PointLights.size(); ++i )
+    {
+        if ( !PointLights [ i ]->IsEnabled() ) continue;
+
+        PointLightData light = PointLights [ i ]->GetLightData();
+
+        aContext->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
+        aContext->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+
+        float scale = 0.5f;
+
+        DirectX::XMMATRIX rotMat = DirectX::XMMatrixIdentity();
+        DirectX::XMMATRIX scaleMat = DirectX::XMMatrixScaling(scale, scale, scale);
+        DirectX::XMMATRIX transMat = DirectX::XMMatrixTranslation(light.Position.x, light.Position.y, light.Position.z);
+
+        // Make the transform for this light
+        DirectX::XMFLOAT4X4 world;
+        XMStoreFloat4x4(&world, XMMatrixTranspose(scaleMat * rotMat * transMat));
+
+        // Set up the world matrix for this light
+        VertexShader->SetMatrix4x4("world", world);
+
+        // Set up the pixel shader data
+        glm::vec3 finalColor = light.Color;
+        finalColor.x *= light.Intensity;
+        finalColor.y *= light.Intensity;
+        finalColor.z *= light.Intensity;
+        UnlitShader->SetFloat3("Color", finalColor);
+
+        // Copy data
+        VertexShader->CopyAllBufferData();
+        UnlitShader->CopyAllBufferData();
+        aContext->DrawIndexed(indexCount, 0, 0);
+
+        // Wireframe mode ---------------------------------
+        if ( PointLights [ i ]->GetDrawRange() )
+        {
+            scaleMat = DirectX::XMMatrixScaling(light.Range, light.Range, light.Range);
+
+            // Make the transform for this light
+            XMStoreFloat4x4(&world, XMMatrixTranspose(scaleMat * rotMat * transMat));
+
+            // Draw the wireframe point light range
+            VertexShader->SetMatrix4x4("world", world);
+
+            UnlitShader->SetFloat3("Color", finalColor);
+
+            // Copy data to the shaders
+            VertexShader->CopyAllBufferData();
+            UnlitShader->CopyAllBufferData();
+
+            // Set the wireframe Rasterizer state
+            aContext->RSSetState(WireFrame);
+            // Draw the wireframe
+            aContext->DrawIndexed(indexCount, 0, 0);
+
+            // Reset the Rasterizer state
+            aContext->RSSetState(0);
+        }
+    }
+}
+
+void EditorCore::DrawColliders( Camera* aCam, ID3D11Device * aDevice, ID3D11DeviceContext * aContext )
+{
+    /*Mesh* cubeMesh = CubeMesh;
+    ID3D11Buffer * vb = cubeMesh->GetVertexBuffer();
+    ID3D11Buffer * ib = cubeMesh->GetIndexBuffer();
+    unsigned int indexCount = cubeMesh->GetIndexCount();
+
+    // Turn on these shaders
+    vertexShader->SetShader();
+    UnlitPixelShader->SetShader();
+
+    // Set up vertex shader
+    vertexShader->SetMatrix4x4( "view", FlyingCamera->GetViewMatrix() );
+    vertexShader->SetMatrix4x4( "projection", FlyingCamera->GetProjectMatrix() );
+
+    // Set buffers in the input assembler
+
+    auto colliders = PhysicsMan->GetColliders();
+    for ( Physics::BoxCollider* box : colliders )
+    {
+        const glm::vec3 & extents = box->GetExtents();
+        const glm::vec3 & pos = box->GetPosition();
+
+        XMMATRIX rotMat = XMMatrixIdentity();
+        XMMATRIX scaleMat = XMMatrixScaling( extents.x, extents.y, extents.z );
+        XMMATRIX transMat = XMMatrixTranslation( pos.x, pos.y, pos.z );
+
+        // Make the transform for this light
+        VEC4x4 world;
+
+        // Wireframe mode ---------------------------------
+        // Make the transform for this light
+        XMStoreFloat4x4( &world, XMMatrixTranspose( scaleMat * rotMat * transMat ) );
+
+        // Draw the wire frame point light range
+        vertexShader->SetMatrix4x4( "world", world );
+
+        UnlitPixelShader->SetFloat3( "Color", glm::vec3( 1.0f, 1.0f, 0.0f ) );
+
+        // Copy data to the shaders
+        vertexShader->CopyAllBufferData();
+        UnlitPixelShader->CopyAllBufferData();
+
+        // Set the wire frame Rasterizer state
+        context->RSSetState( WireFrame );
+
+        // Draw the wire frame
+        context->DrawIndexed( indexCount, 0, 0 );
+    }
+
+    // Reset the Rasterizer state
+    context->RSSetState( 0 );*/
 }
 
 void EditorCore::DrawUI()
@@ -226,7 +371,7 @@ inline void EditorCore::DrawHierarchy()
         CurrentEntity = &entArray [ i ];
         assert( CurrentEntity != nullptr );
 
-        if ( !CurrentEntity->GetIsValid() ) continue;
+        if ( !CurrentEntity->GetIsInUse() ) continue;
 
         if ( ImGui::Button( CurrentEntity->GetName().c_str(), ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
         {

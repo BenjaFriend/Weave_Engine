@@ -1,7 +1,7 @@
 
 FlyingCamera = {}
 cameraSpeed = 5.5;
-rotSpeed = 5.5;
+rotSpeed = 30;
 prevMousePos = VEC2:new( 0, 0 );
 movement = VEC3:new(0, 0, 0);
 rot = VEC2:new( 0, 0 );
