@@ -6,24 +6,14 @@
 
 using namespace SceneManagement;
 
-Scene::Scene()
+Scene::Scene() : IScene()
 {
-    EntityPool = new ObjectPool<Entity>( MAX_ENTITY_COUNT );
 
-    EntityArray_Raw = EntityPool->GetRaw();
-    // Initalize the entity array
-    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
-    {
-        EntityArray_Raw [ i ].SetIsInUse( false );
-    }
 }
 
 Scene::~Scene()
 {
-    UnloadAllEntities( true );
     UnloadAllLights();
-    EntityArray_Raw = nullptr;
-    SAFE_DELETE( EntityPool );
 }
 
 void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
@@ -129,37 +119,6 @@ Entity * Scene::AddEntity( std::string aName )
     return newEnt;
 }
 
-Entity * Scene::AddEntityFromfile( nlohmann::json const & aFile )
-{
-    Entity* newEnt = EntityPool->GetResource();
-
-    assert( newEnt != nullptr );
-
-    newEnt->SetIsInUse( true );
-    newEnt->ConstructFromFile( aFile );
-
-    LOG_TRACE( "Add raw entity from file! {}", newEnt->GetName() );
-
-    return newEnt;
-}
-
-void Scene::UnloadAllEntities( bool aOverrideDestroyOnLoad )
-{
-    // Delete each entity that has been added
-    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
-    {
-        assert( &EntityArray_Raw[ i ] != nullptr );
-
-        if ( EntityArray_Raw [ i ].GetIsInUse() &&
-            ( EntityArray_Raw [ i ].GetIsDestroyableOnLoad() ||
-                aOverrideDestroyOnLoad ) )
-        {
-            EntityArray_Raw [ i ].Reset();
-            EntityPool->ReturnResource( i );
-        }        
-    }
-}
-
 void Scene::ResetScene()
 {
     // Clears the known replicated objects
@@ -169,17 +128,6 @@ void Scene::ResetScene()
     UnloadAllLights();
     SceneName = "DEFAULT_SCENE";
     LOG_TRACE( "Reset Scene!" );
-}
-
-void Scene::Update( float deltaTime, float totalTime )
-{
-    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
-    {
-        if ( EntityArray_Raw[ i ].GetIsInUse() && EntityArray_Raw[ i ].GetIsActive() )
-        {
-            EntityArray_Raw[ i ].Update( deltaTime );
-        }
-    }
 }
 
 // Lighting ----------------------------------------------

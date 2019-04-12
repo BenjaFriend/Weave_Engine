@@ -10,16 +10,13 @@ ServerScene::ServerScene()
 
     for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
     {
-        EntAray_Raw[ i ].SetIsInUse( false );
+        EntAray_Raw[ i ].Reset();
     }
 
 }
 
 ServerScene::~ServerScene()
 {
-    NetworkIdToEntityMap.clear();
-
-    SAFE_DELETE( EntityPool );
     LOG_TRACE( "DELETE a server scene!" );
 }
 
@@ -39,19 +36,6 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
         entity.second->Write( inOutputStream );
         // Reset our replication action
         entity.second->SetReplicationAction( EReplicationAction::ERA_Update );
-    }
-}
-
-void ServerScene::Update( float deltaTime, float totalTime )
-{
-    Entity* EntityArray_Raw = EntityPool->GetRaw();
-
-    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
-    {
-        if ( EntityArray_Raw[ i ].GetIsInUse() && EntityArray_Raw[ i ].GetIsActive() )
-        {
-            EntityArray_Raw[ i ].Update( deltaTime );
-        }
     }
 }
 

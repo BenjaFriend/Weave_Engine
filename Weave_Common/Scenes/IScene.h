@@ -48,7 +48,41 @@ public:
     /// </summary>
     virtual void ResetScene();
 
+    /// <summary>
+    /// Load in an entity from some file information
+    /// </summary>
+    /// <param name="aFile"></param>
+    /// <returns></returns>
+    Entity* AddEntityFromfile( nlohmann::json const & aFile );
+
+    /// <summary>
+    /// Get this scene's name
+    /// </summary>
+    /// <returns>Reference to the current scene</returns>
+    FORCE_INLINE const std::string & GetSceneName() const { return SceneName; }
+
+    FORCE_INLINE void SetSceneName( std::string aName ) { SceneName = aName; }
+    
+    FORCE_INLINE Entity* GetEntity( size_t aID )
+    {
+        if ( aID < 0 || aID > MAX_ENTITY_COUNT ) return nullptr;
+
+        return &EntityPool->GetRaw()[ aID ];
+    }
+
+    FORCE_INLINE Entity* GetEntityArray() const { return EntityPool->GetRaw(); }
+
 protected:
+
+    /// <summary>
+    /// Removes all currently loaded entities from the array 
+    /// and deletes them
+    /// </summary>
+    /// <param name="aOverrideDestroyOnLoad"></param>
+    void UnloadAllEntities( bool aOverrideDestroyOnLoad = false );
+
+    /** Object pool of entities */
+    ObjectPool< Entity >* EntityPool = nullptr;
 
     /** This scene's name */
     std::string SceneName = "DEFAULT_SCENE";

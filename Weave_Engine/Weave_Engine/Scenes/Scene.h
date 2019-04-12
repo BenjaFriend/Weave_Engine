@@ -44,13 +44,6 @@ namespace SceneManagement
         Entity* AddEntity( std::string aName = "Default Entity" );
 
         /// <summary>
-        /// Load in an entity from some file information
-        /// </summary>
-        /// <param name="aFile"></param>
-        /// <returns></returns>
-        Entity* AddEntityFromfile( nlohmann::json const & aFile );
-
-        /// <summary>
         /// Set data about this 
         /// </summary>
         /// <param name="aVertShader">The vert shader to use</param>
@@ -74,37 +67,11 @@ namespace SceneManagement
         /// </summary>
         virtual void ResetScene() override;
 
-        virtual void Update( float deltaTime, float totalTime ) override;
-
-        FORCE_INLINE Entity* GetEntityArray() const { return EntityArray_Raw; }
-
-        /// <summary>
-        /// Get this scene's name
-        /// </summary>
-        /// <returns>Reference to the current scene</returns>
-        FORCE_INLINE const std::string & GetSceneName() const { return SceneName; }
-
-        FORCE_INLINE void SetSceneName( std::string aName ) { SceneName = aName; }
-
-        FORCE_INLINE Entity* GetEntity( Entity_ID aID )
-        {
-            if ( aID < 0 || aID > MAX_ENTITY_COUNT ) return nullptr;
-
-            return &EntityArray_Raw [ aID ];
-        }
-
         FORCE_INLINE const std::vector<DirLight*> & GetDirLights() const { return DirLights; }
 
         FORCE_INLINE const std::vector<PointLight*> & GetPointLights() const { return PointLights; }
 
     private:
-
-        /// <summary>
-        /// Removes all currently loaded entities from the array 
-        /// and deletes them
-        /// </summary>
-        /// <param name="aOverrideDestroyOnLoad"></param>
-        void UnloadAllEntities( bool aOverrideDestroyOnLoad = false );
 
         /// <summary>
         /// Remove all lights from this light system
@@ -116,11 +83,6 @@ namespace SceneManagement
         /// </summary>
         /// <param name="aPixShader">Pixel shader to send lighting info to</param>
         void SetLightData( SimplePixelShader* aPixShader );
-        
-        /** A raw array of entity data */
-        Entity* EntityArray_Raw = nullptr;
-
-        ObjectPool< Entity >* EntityPool = nullptr;
 
         std::vector< DirLight* > DirLights;
 
