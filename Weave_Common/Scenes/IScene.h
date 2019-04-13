@@ -5,6 +5,11 @@
 #include "Utils/ObjectPool.hpp"
 #include <unordered_map>
 
+/// <summary>
+/// Base scene class for a client and server. Can create entities
+/// through an object pool and has a map of which entities are currently 
+/// marked for replication. 
+/// </summary>
 class IScene
 {
 public:
@@ -88,7 +93,7 @@ protected:
     std::string SceneName = "DEFAULT_SCENE";
 
     /** A map of network ID's to entity pointers */
-    std::unordered_map<INT32, Entity*> NetworkIdToEntityMap;
+    std::unordered_map< INT32, Entity* > NetworkIdToEntityMap;
 
     /** The number of replicated objects in the scene */
     INT32 NumReplicatedObjects = 0;
