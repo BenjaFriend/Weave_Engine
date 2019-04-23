@@ -186,6 +186,12 @@
     <ClCompile Include="..\..\Weave_Common\Entity\Entity.cpp">
       <Filter>Weave_Common\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.cpp">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Networking\InFlightPacket.cpp">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\DXCore.h">
@@ -354,6 +360,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Weave_Common\Entity\Entity.h">
       <Filter>Weave_Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.h">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Networking\InFlightPacket.h">
+      <Filter>Weave_Common\Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

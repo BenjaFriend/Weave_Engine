@@ -8,8 +8,11 @@ using namespace Tanks;
 ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 
-ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService, const char * aServerAddr, const unsigned short aPort, const std::string& aName )
-    : NetworkManager( aService ), Name( aName )
+ClientNetworkManager::ClientNetworkManager(
+    std::shared_ptr< boost::asio::io_service > aService,
+    const char * aServerAddr, const unsigned short aPort, 
+    const std::string& aName )
+    : NetworkManager( aService ), Name( aName ), NotifManager( true, false )
 {
     ServerEndpoint =
         boost::asio::ip::udp::endpoint(
@@ -27,15 +30,15 @@ ClientNetworkManager::~ClientNetworkManager()
 
 }
 
-ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( 
+ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit(
     std::shared_ptr< boost::asio::io_service > aService,
     const char * aServerAddr,
     const unsigned short aPort,
     const std::string& aName )
 {
     // The client should be able to reconnect to a different server
-    ReleaseInstance( );
-    
+    ReleaseInstance();
+
     Instance = new ClientNetworkManager( aService, aServerAddr, aPort, aName );
     Instance->Init( 50000 );
 
@@ -113,13 +116,13 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
     case  StatePacket:
     {
         //  As long as we have been welcomed by the server
-        if ( ClientState == ClientNetworkManager::EClientState::Welcomed )
+        if ( NotifManager.ReadAndProcessState(inInputStream) )
         {
             // Update our local  world based on this new info
-            ProcessStatePacket( inInputStream );            
+            ProcessStatePacket( inInputStream );
         }
-		
-		//TimeOfLastStatePacket = TotalTime;
+
+        //TimeOfLastStatePacket = TotalTime;
     }
     break;
     default:

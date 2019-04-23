@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "Entity/Entity.h"
+#include "Networking/DeliveryNotificationManager.h"
 
 class ClientProxy
 {
@@ -22,6 +23,8 @@ public:
 
     FORCE_INLINE const float GetLastPacketFromClientTime() const { return LastPacketFromClientTime; }
 
+    DeliveryNotificationManager & GetDeliveryNotificationManager() { return NotifManager; }
+
     /// <summary>
     /// Update the time that this client knows it was last received from.
     /// </summary>
@@ -35,6 +38,9 @@ private:
 
     /** The remote endpoint of this client */
     boost::asio::ip::udp::endpoint Endpoint;
+
+    /** The notification manager for this client */
+    DeliveryNotificationManager NotifManager;
 
     /** Player's string name that they gave us */
     std::string Name;
