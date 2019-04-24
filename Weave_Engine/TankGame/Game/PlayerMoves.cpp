@@ -4,6 +4,7 @@
 using namespace Tanks;
 
 std::shared_ptr<PlayerMoves> PlayerMoves::Instance = nullptr;
+Input::InputManager* PlayerMoves::inMan;
 
 std::shared_ptr<PlayerMoves> Tanks::PlayerMoves::Init()
 {
@@ -12,7 +13,7 @@ std::shared_ptr<PlayerMoves> Tanks::PlayerMoves::Init()
     Instance = std::make_shared<PlayerMoves>();
 
     using namespace Input;
-    InputManager* inMan = InputManager::GetInstance();
+    inMan = InputManager::GetInstance();
     PlayerMoves* inst = Instance.get();
     inMan->BindAction( inst, &Tanks::PlayerMoves::MoveLeft, InputType::Move_Left );
     inMan->BindAction( inst, &Tanks::PlayerMoves::MoveRight, InputType::Move_Right );
@@ -30,4 +31,33 @@ PlayerMoves::PlayerMoves()
 PlayerMoves::~PlayerMoves()
 {
 
+}
+
+void PlayerMoves::QueueCurrentMoves()
+{
+	for (auto& move : currentMoves)
+	{
+		MoveQueue.push_back(move);
+		move.time = 0;
+	}
+}
+
+void PlayerMoves::Update(float deltaTime)
+{
+	std::vector<TimedMove>::iterator it = currentMoves.begin();
+
+	while (it != currentMoves.end())
+	{
+		if (inMan->IsInputTypeDown(it->inputType))
+		{
+			it->time += deltaTime;
+			++it;
+		}
+		else
+		{
+			it->time += deltaTime;
+			MoveQueue.push_back(*it);
+			it = currentMoves.erase(it);
+		}
+	}
 }

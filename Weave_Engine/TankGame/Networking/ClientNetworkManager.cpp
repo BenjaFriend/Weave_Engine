@@ -143,6 +143,8 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
 
 void Tanks::ClientNetworkManager::SendInputPacket()
 {
+	PlayerMoves::Instance->QueueCurrentMoves();
+
     if ( PlayerMoves::Instance->HasMoves() )
     {
         // If the client has hit any buttons
@@ -150,13 +152,14 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         output.Write( InputPacket );
 
         // For every move in the queue
-        const std::deque<Input::InputType> & moveQueue = PlayerMoves::Instance->GetMoveQueue();
+        const std::deque<PlayerMoves::TimedMove> & moveQueue = PlayerMoves::Instance->GetMoveQueue();
 
         // Write the size of how many moves there are
         output.Write( static_cast< UINT32 > ( moveQueue.size() ) );
         for ( const auto & move : moveQueue )
         {
-            output.Write( static_cast< UINT8 > ( move ) );
+			output.Write(static_cast<UINT8> (move.inputType));
+			output.Write( static_cast< float > ( move.time ) );
         }
 
         SendPacket( output, ServerEndpoint );

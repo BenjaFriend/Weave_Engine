@@ -117,6 +117,44 @@ public:
 
 protected:
 
+	struct Interpolation
+	{
+	public:
+		glm::vec3 finalPos;
+		glm::vec3 startPos;
+
+		glm::vec3 finalRot;
+		glm::vec3 startRot;
+
+		float packetTime;
+		float lerpTime;
+
+		void Update(float deltaTime, Transform& transform)
+		{
+			if (startPos == finalPos && startRot == finalRot)
+			{
+				return;
+			}
+
+			lerpTime += deltaTime;
+			float lerp = glm::clamp(lerpTime / packetTime, 0.0f, 1.0f);
+
+			if (lerp == 1)
+			{
+				startPos = finalPos;
+				startRot = finalRot;
+			}
+
+			glm::vec3 posLerp = glm::lerp(startPos, finalPos, lerp);
+			glm::vec3 rotLerp = glm::lerp(startRot, finalRot, lerp);
+
+			transform.SetRotation(rotLerp);
+			transform.SetPosition(posLerp);
+		}
+	};
+
+	Interpolation interpolate;
+
     virtual void WriteUpdateAction( OutputMemoryBitStream& inOutputStream, UINT32 inDirtyState ) const;
 
     virtual void ReadUpdateAction( InputMemoryBitStream& inInputStream );

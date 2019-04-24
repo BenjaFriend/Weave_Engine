@@ -143,7 +143,9 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
+		float time = 0;
         inInputStream.Read( move );
+		inInputStream.Read( time );
 
         switch ( static_cast < Input::InputType > ( move ) )
         {
@@ -172,25 +174,25 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
         case Input::InputType::Move_Left:
         {
             LOG_TRACE( "Move left!" );
-            inputRotation += 5.0f;
+            inputRotation += 45.0f * time;
         }
         break;
         case Input::InputType::Move_Right:
         {
             LOG_TRACE( "Move_Right" );
-            inputRotation -= 5.0f;
+            inputRotation -= 45.0f * time;
         }
         break;
         case Input::InputType::Move_Up:
         {
             LOG_TRACE( "Move_Up" );
-            inputMovement -= 0.25f;
+            inputMovement -= 5.0f * time;
         }
         break;
         case Input::InputType::Move_Down:
         {
             LOG_TRACE( "Move_Down!" );
-            inputMovement += 0.25f;
+            inputMovement += 5.0f * time;
         }
         break;
         default:
@@ -199,7 +201,7 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
     }
     
     // Move the client based on their input to the server
-    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement );
+    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement);
     aClient->GetClientEntity()->GetTransform()->Rotate( glm::vec3( 0.f, inputRotation, 0.f ) );
 
     Scene.SetDirtyState(

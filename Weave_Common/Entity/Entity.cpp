@@ -130,6 +130,8 @@ void Entity::Update( float dt )
     {
         Reset();
     }
+
+	interpolate.Update(dt, *EntityTransform);
 }
 
 void Entity::Write( OutputMemoryBitStream & inOutputStream ) const
@@ -190,7 +192,9 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
 
-        EntityTransform->SetPosition( readPos );
+		interpolate.startPos = EntityTransform->GetPosition();
+		interpolate.finalPos = readPos;
+        //EntityTransform->SetPosition( readPos );
     }
 
     if ( DirtyState & EIEntityReplicationState::EIRS_ROT )
@@ -199,8 +203,14 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readRot.x );
         inInputStream.Read( readRot.y );
         inInputStream.Read( readRot.z );
-        EntityTransform->SetRotation( readRot );
+
+		interpolate.startRot = EntityTransform->GetRotation();
+		interpolate.finalRot = readRot;
+        //EntityTransform->SetRotation( readRot );
     }
+
+	interpolate.lerpTime = 0;
+	interpolate.packetTime = .3f;
 }
 
 void Entity::Read( InputMemoryBitStream & inInputStream )

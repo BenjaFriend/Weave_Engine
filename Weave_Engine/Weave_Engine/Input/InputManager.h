@@ -83,6 +83,8 @@ namespace Input
 		/// <param name="vKey">Char value of the key</param>
 		/// <returns>True if the key is down</returns>
 		bool IsCKeyDown( char vKey );
+
+		bool IsInputTypeDown(InputType inputType);
         
         /// <summary>
         /// Check if a certain key is UP

@@ -102,6 +102,19 @@ bool InputManager::IsCKeyDown( char vKey )
     return GetAsyncKeyState( vKey ) & 0x80000;
 }
 
+bool Input::InputManager::IsInputTypeDown(InputType inputType)
+{
+	for (size_t i = 0; i < InputBinds.size(); ++i)
+	{
+		if (InputBinds[i].Type == inputType)
+		{
+			return IsKeyDown(InputBinds[i].InputValue);
+		}
+	}
+
+	return false;
+}
+
 bool Input::InputManager::IsKeyUp( int vKey )
 {
     return !IsKeyDown( vKey );
