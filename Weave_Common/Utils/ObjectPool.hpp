@@ -90,6 +90,6 @@ FORCE_INLINE T * ObjectPool<T>::GetResource()
 template<typename T>
 FORCE_INLINE void ObjectPool<T>::ReturnResource( size_t aIndex )
 {
-    assert( aIndex >= 0 && aIndex < MaxSize );
+    assert( aIndex >= 0 );
     AvailableIndecies.push_back( aIndex );
 }
