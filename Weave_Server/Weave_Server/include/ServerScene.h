@@ -1,23 +1,22 @@
 #pragma once
 
 #include "Scenes/IScene.h"
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
 
-#include <vector>
-
+/// <summary>
+/// Server scene controls the writing of replicated entities 
+/// to the state packer buffer. 
+/// </summary>
 class ServerScene : public IScene
 {
 public:
+
     ServerScene();
 
     virtual ~ServerScene();
 
     virtual void Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
 
-    IEntityPtr AddEntity( const std::string & aName );
-
-private:
-
-    std::vector< IEntityPtr > EntityArray;
+    Entity* AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType );
 
 };

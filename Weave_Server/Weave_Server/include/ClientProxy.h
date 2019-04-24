@@ -3,9 +3,10 @@
 #include <boost/asio.hpp>
 #include <string>
 #include <memory>
-#include "Entity/IEntity.h"
+#include "Entity/Entity.h"
+#include "Networking/DeliveryNotificationManager.h"
 
-class  ClientProxy
+class ClientProxy
 {
 
 public:
@@ -16,18 +17,30 @@ public:
 
     FORCE_INLINE const boost::asio::ip::udp::endpoint & GetEndpoint() const { return Endpoint; }
 
-    FORCE_INLINE const std::string & GetName() const { return Name; }
+    FORCE_INLINE const std::string & GetName() const { return Name; }   
 
     FORCE_INLINE const UINT32 GetPlayerID() const { return PlayerId; }
 
-    void SetClientEntity( IEntityPtr aEnt ) { ClientEntity = aEnt; }
+    FORCE_INLINE const float GetLastPacketFromClientTime() const { return LastPacketFromClientTime; }
 
-    IEntityPtr GetClientEntity() { return  ClientEntity; }
+    DeliveryNotificationManager & GetDeliveryNotificationManager() { return NotifManager; }
+
+    /// <summary>
+    /// Update the time that this client knows it was last received from.
+    /// </summary>
+    void UpdateLastPacketTime();
+
+    void SetClientEntity( Entity* aEnt ) { ClientEntity = aEnt; }
+
+    Entity* GetClientEntity() { return ClientEntity; }
 
 private:
 
     /** The remote endpoint of this client */
     boost::asio::ip::udp::endpoint Endpoint;
+
+    /** The notification manager for this client */
+    DeliveryNotificationManager NotifManager;
 
     /** Player's string name that they gave us */
     std::string Name;
@@ -36,7 +49,10 @@ private:
     UINT32 PlayerId;
 
     /** pointer to this client's entity */
-    IEntityPtr ClientEntity;
+    Entity* ClientEntity = nullptr;
+
+    /** The time that a packet was last received from this client */
+    float LastPacketFromClientTime = 0.0f;
 
 };
 

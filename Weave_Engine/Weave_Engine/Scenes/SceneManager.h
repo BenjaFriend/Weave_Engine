@@ -42,7 +42,7 @@ namespace SceneManagement
         /// appropriately. Unloads the current scene
         /// </summary>
         /// <param name="aSceneName">The scene file to load</param>
-        void LoadScene( FileName & aSceneName );
+        void LoadScene( const FileName & aSceneName );
 
         /// <summary>
         /// Unload all currently loaded scene entities

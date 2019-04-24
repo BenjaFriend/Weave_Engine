@@ -5,7 +5,6 @@
 
 #define DEF_LISTEN_PORT     50001
 #define DEF_RESPONSE_PORT   50000
-#define DEF_BUF_SIZE        512
 
 // Command line args
 #define HELP_FLAG              "-h"

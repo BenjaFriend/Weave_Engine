@@ -26,6 +26,7 @@
 #include "Logging/Logger.h"     // Logging definitions to only happen in debug
 #include "MathHelper.h"         // Math definitions and typedefs
 #include "Timing.h"
+#include "Networking/ReplicationActions.h"
 
 /**************************************************************/
 /* Runtime Options                                            */
@@ -34,7 +35,7 @@
                     // Should only turn off if you cannot use ImGui
 #define EDITOR_ON   // Flag for turning the editor on and off
 
-#define MAX_ENTITY_COUNT    32
+#define MAX_ENTITY_COUNT    256
 
 /**************************************************************/
 /* Platform specifications                                    */

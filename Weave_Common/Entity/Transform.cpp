@@ -10,9 +10,6 @@ COMPONENT_INIT( Transform )
 
 Transform::Transform()
 {
-    Position = glm::vec3( 0.f );
-    Scale = glm::vec3( 1.f );
-    Rotation = glm::vec3( 0.f );
 }
 
 Transform::Transform( nlohmann::json const & aInitData )
@@ -90,22 +87,20 @@ inline void Transform::SetScale( const float aX, const float aY, const float aZ 
     Scale.z = aZ;
 }
 
-
 void Transform::UpdateDirectionalVectors()
 {
-	glm::mat4 rotation = glm::eulerAngleYX(Rotation.y, Rotation.x);
+	glm::mat4 rotation = glm::eulerAngleYX(glm::radians(Rotation.y), glm::radians(Rotation.x));
 	Forward = rotation * DEFAULT_FORWARD;
 	Up = rotation * DEFAULT_UP;
 	Right = glm::cross(Forward, Up);
 }
-
 
 const glm::highp_mat4 Transform::GetWorldMatrix() const
 {
     // World = Scale * rot * pos
     glm::mat4 worldMat = glm::identity<glm::mat4>();
     worldMat = glm::translate( worldMat, Position );
-    worldMat = worldMat * glm::yawPitchRoll( Rotation.y, Rotation.x, Rotation.z );
+    worldMat = worldMat * glm::yawPitchRoll(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z) );
     worldMat = glm::scale( worldMat, Scale );
 
 

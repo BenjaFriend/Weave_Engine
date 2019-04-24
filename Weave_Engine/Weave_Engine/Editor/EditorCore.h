@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 #include "ECS/ComponentManager.h"
 #include "../Resources/ResourceManager.h"
 #include "../Scenes/SceneManager.h"
@@ -116,6 +116,19 @@ namespace Editor
         void LoadResources();
 
         /// <summary>
+        /// Will draw the point light circles if enabled
+        /// </summary>
+        void DrawLightSources( Camera* aCam, ID3D11Device * aDevice, ID3D11DeviceContext * aContext );
+
+        /// <summary>
+        /// Draw the colliders that may be on any of the objects
+        /// </summary>
+        /// <param name="aCam"></param>
+        /// <param name="aDevice"></param>
+        /// <param name="aContext"></param>
+        void DrawColliders( Camera* aCam, ID3D11Device * aDevice, ID3D11DeviceContext * aContext );
+
+        /// <summary>
         /// Draw the editor UI
         /// </summary>
         void DrawUI();
@@ -157,6 +170,9 @@ namespace Editor
         /** The entity component manager */
         ECS::ComponentManager* compMan = nullptr;
 
+        /** The mesh to use to draw a point light */
+        Mesh* PointLightMesh = nullptr;
+
         /** The outline shader that can be used for the selected object */
         SimplePixelShader* OutlineShader = nullptr;
 
@@ -170,13 +186,15 @@ namespace Editor
         ID3D11RasterizerState* WireFrame = nullptr;
 
         /** Flag to set lighting gizmos */
-        bool DoGizmoDraw = true;
+        UINT32 DoGizmoDraw : 1;
 
         /** Flag to draw the skybox */
-        bool DrawSkyBox = true;
+        UINT32 DrawSkyBox : 1;
 
         /** Flag to draw colliders or not */
-        bool DebugDrawColliders = true;
+        UINT32 DebugDrawColliders : 1;
+
+        UINT32 DebugDrawLights : 1;
 
         /** The entity that the user wants to change */
         Entity* SelectedEntity = nullptr;

@@ -4,12 +4,19 @@
 ServerScene::ServerScene()
 {
     LOG_TRACE( "Create a server scene!" );
+    EntityPool = new ObjectPool< Entity >( MAX_ENTITY_COUNT );
+
+    Entity* EntAray_Raw = EntityPool->GetRaw();
+
+    for ( size_t i = 0; i < MAX_ENTITY_COUNT; ++i )
+    {
+        EntAray_Raw[ i ].Reset();
+    }
+
 }
 
 ServerScene::~ServerScene()
 {
-    EntityArray.clear();
-    NetworkIdToEntityMap.clear();
     LOG_TRACE( "DELETE a server scene!" );
 }
 
@@ -17,18 +24,39 @@ void ServerScene::Write( OutputMemoryBitStream & inOutputStream, uint32_t inDirt
 {
     inOutputStream.Write( static_cast< UINT32 > ( NetworkIdToEntityMap.size() ) );
 
+    // #TODO Have a replication manager to only write dirty states out
+    // and what actions to take on the given object
     for ( const auto & entity : NetworkIdToEntityMap )
     {
-        entity.second->Write( inOutputStream, 0 );
+        if ( !entity.second->GetIsInUse() )
+        {
+            continue;
+        }
+        // #TODO Read in the class ID for this object
+        entity.second->Write( inOutputStream );
+        // Reset our replication action
+        entity.second->SetReplicationAction( EReplicationAction::ERA_Update );
     }
 }
 
-IEntityPtr ServerScene::AddEntity( const std::string & aName )
+Entity* ServerScene::AddEntity( const std::string & aName, UINT32 aID, const EReplicatedClassType aClassType)
 {
-    IEntityPtr newEnt = std::make_shared<IEntity>();
-    newEnt->SetName( aName );
+    Entity* newEnt = EntityPool->GetResource();
 
-    EntityArray.push_back( newEnt );
+    assert( newEnt != nullptr );
+
+    newEnt->SetName( aName );
+    newEnt->SetNetworkID( aID );
+    newEnt->SetIsActive( true );
+    newEnt->SetIsInUse( true );
+
+    // Setup replication actions
+    newEnt->SetReplicationAction( EReplicationAction::ERA_Create );
+    newEnt->SetDirtyState( Entity::EIEntityReplicationState::EIRS_AllState );
+    newEnt->SetReplicationClassType( aClassType ); 
+    
+    // Add this object to the replication map
+    AddReplicatedObject( newEnt );
 
     return newEnt;
 }

@@ -61,7 +61,7 @@ namespace Tanks
 		///<summary>
 		/// Callback that occurs when this client is disconnected
 		///</summary>
-		void OnDisconnected();
+		void Disconnect();
 
     private:
 
@@ -76,6 +76,10 @@ namespace Tanks
 
         /** The current game state of this client */
         EGameState GameState = EGameState::MainMenu;  
+
+        const FileName MainMenuSceneName = L"Assets/Scenes/MainMenu.json";
+        const FileName GameSceneName = L"Assets/Scenes/Scene_test.json";
+
     };
 
 }   // namespace Tanks

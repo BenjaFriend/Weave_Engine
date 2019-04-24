@@ -112,7 +112,7 @@ public:
     /// <summary>
     /// Get the forward vector the entity is facing
     /// </summary>
-    FORCE_INLINE const glm::vec3 & GetForward() const { return Forward; }
+    FORCE_INLINE const glm::vec3 & GetForward() { UpdateDirectionalVectors();  return Forward; }
 
     /// <summary>
     /// Get the right vector relative to where the entity is facing
@@ -145,22 +145,21 @@ private:
     const glm::vec4 DEFAULT_FORWARD = glm::vec4( 0.f, 0.f, -1.f, 0.f );
     const glm::vec4 DEFAULT_RIGHT = glm::vec4( 1.f, 0.f, 0.f, 0.f );
 
-
     /** The current position */
-    glm::vec3 Position;
+    glm::vec3 Position = glm::vec3(0.f);
 
     /** The current scale */
-    glm::vec3 Scale;
+    glm::vec3 Scale = glm::vec3(1.f);
 
     /** Euler rotation of this entity */
-    glm::vec3 Rotation;
+    glm::vec3 Rotation = glm::vec3(0.f);
 
     /** The forward vector of the enitity**/
-    glm::vec3 Forward;
+    glm::vec3 Forward = DEFAULT_FORWARD;
 
     /** The right vector of the enitity **/
-    glm::vec3 Right;
+    glm::vec3 Right = DEFAULT_RIGHT;
 
     /** The up vector of the enitity **/
-    glm::vec3 Up;
+    glm::vec3 Up = DEFAULT_UP;
 };

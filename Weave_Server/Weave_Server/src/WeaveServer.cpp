@@ -53,11 +53,19 @@ void WeaveServer::Run()
     {
         if ( ShouldQuit ) break;
 
+        // Update timing
         Timing::sInstance.Update();
         DeltaTime = Timing::sInstance.GetDeltaTime();
         TotalTime = Timing::sInstance.GetTimef();
 
+        // Update the world on the server
+        NetworkMan->Update( DeltaTime, TotalTime );
+
+        // Process any packets that clients send to the server
         NetworkMan->ProcessIncomingPackets();
+
+        // Disconnect anyone who hasn't communicated
+        NetworkMan->CheckForDisconnects();
 
         // If we have hit our tick rate, then update all clients
         if ( TotalTime > TimeOfLastStateUpdate + TimeBetweenStateUpdates )

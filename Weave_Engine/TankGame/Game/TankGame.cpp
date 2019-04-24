@@ -20,7 +20,7 @@ void TankGame::Init()
 
     PlayerMoves::Init();
 
-    //NetMan->GetDisconnectDispatcher().BindListener ( this, Tanks::TankGame::OnDisconnected );
+    sceneManager->LoadScene( MainMenuSceneName );
 }
 
 void TankGame::Update( float deltaTime, float totalTime )
@@ -59,7 +59,7 @@ void Tanks::TankGame::DrawUI()
         DrawMainMenu();
         break;
     case Tanks::EGameState::Playing:
-		DrawGameUI();
+        DrawGameUI();
         break;
     case Tanks::EGameState::Quitting:
         break;
@@ -70,25 +70,25 @@ void Tanks::TankGame::DrawUI()
     // Draw client state
     {
         ImGui::Begin( "Client State" );
-        std::string stateText = "Uninitalized";
+        static std::string stateText = "Uninitalized";
         if ( NetMan != nullptr )
         {
             switch ( NetMan->GetClientState() )
             {
             case ClientNetworkManager::EClientState::Uninitalized:
                 stateText = "Uninitalized";
-            break;
+                break;
             case ClientNetworkManager::EClientState::SayingHello:
                 stateText = "Saying Hello...";
-            break;
+                break;
             case ClientNetworkManager::EClientState::Welcomed:
                 stateText = "Welcomed!";
-            break;
+                break;
             default:
                 break;
             }
         }
-        
+
         ImGui::Text( "Client State: %s", stateText.c_str() );
 
         ImGui::End();
@@ -100,8 +100,8 @@ void Tanks::TankGame::DrawMainMenu()
 {
     ImGui::Begin( "Main Menu" );
 
-    static char namebuf [ 64 ] = "Player 1\0";
-    static char serverAddressBuf [ 64 ] = "127.0.0.1\0";
+    static char namebuf[ 64 ] = "Player 1\0";
+    static char serverAddressBuf[ 64 ] = "127.0.0.1\0";
     static unsigned short serverPortBuf = 50001;
     ImGui::InputText( "Player Name", namebuf, IM_ARRAYSIZE( namebuf ) );
     ImGui::InputText( "Address", serverAddressBuf, IM_ARRAYSIZE( serverAddressBuf ) );
@@ -110,9 +110,13 @@ void Tanks::TankGame::DrawMainMenu()
     if ( ImGui::Button( "Connect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
     {
         // Attempt to connect to the server
+        // The io_service object is what the network manager uses for async operations
         io_service.reset();
         io_service = std::make_shared< boost::asio::io_service >();
         NetMan = ClientNetworkManager::StaticInit( io_service, serverAddressBuf, serverPortBuf, namebuf );
+
+        // Load the game scene file locally and set our state to playing
+        sceneManager->LoadScene( GameSceneName );
         GameState = EGameState::Playing;
     }
 
@@ -127,28 +131,33 @@ void Tanks::TankGame::DrawMainMenu()
 
 void Tanks::TankGame::DrawGameUI()
 {
-	ImGui::Begin("Game Menu");
-    
-    ImGui::Text( "Currently Connected to:\n %s : %d", 
+    ImGui::Begin( "Game Menu" );
+
+    ImGui::Text( "Currently Connected to:\n %s : %d",
         NetMan->GetServerEndpoint().address().to_string().c_str(),
         NetMan->GetServerEndpoint().port()
     );
 
+    ImGui::Text( "Connected Players: %d", NetMan->GetNumConnectedPlayers() );
 
-	if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
-	{
-		NetMan->Disconnect();
-	}
+    if ( ImGui::Button( "Disconnect", ImVec2( ImGui::GetWindowWidth(), 0.f ) ) )
+    {
+        Disconnect();
+    }
 
-	// #TODO Show log feed
-
-	ImGui::End();
+    ImGui::End();
 }
 
-void Tanks::TankGame::OnDisconnected()
+void Tanks::TankGame::Disconnect()
 {
-	// Go back to the main menu when we disconnect
-	GameState = EGameState::MainMenu;
+    // Go back to the main menu when we disconnect
+    GameState = EGameState::MainMenu;
+    // Reset our network manager
+    ClientNetworkManager::ReleaseInstance();
 
-	LOG_TRACE( "This client has disconnect from the server!" );
+    // Reset the scene (clears the known replicated objects)
+    sceneManager->GetActiveScene()->ResetScene();
+    sceneManager->LoadScene( MainMenuSceneName );
+
+    LOG_TRACE( "This client has disconnect from the server!" );
 }

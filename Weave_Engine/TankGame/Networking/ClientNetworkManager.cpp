@@ -8,8 +8,11 @@ using namespace Tanks;
 ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 
-ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_service > aService, const char * aServerAddr, const unsigned short aPort, const std::string& aName )
-    : NetworkManager( aService )
+ClientNetworkManager::ClientNetworkManager(
+    std::shared_ptr< boost::asio::io_service > aService,
+    const char * aServerAddr, const unsigned short aPort, 
+    const std::string& aName )
+    : NetworkManager( aService ), Name( aName ), NotifManager( true, false )
 {
     ServerEndpoint =
         boost::asio::ip::udp::endpoint(
@@ -19,7 +22,7 @@ ClientNetworkManager::ClientNetworkManager( std::shared_ptr< boost::asio::io_ser
 
     ClientState = EClientState::SayingHello;
 
-    Name = aName;
+    TimeOfLastStatePacket = Timing::sInstance.GetTimef();
 }
 
 ClientNetworkManager::~ClientNetworkManager()
@@ -27,18 +30,19 @@ ClientNetworkManager::~ClientNetworkManager()
 
 }
 
-ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit( 
+ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit(
     std::shared_ptr< boost::asio::io_service > aService,
     const char * aServerAddr,
     const unsigned short aPort,
     const std::string& aName )
 {
-    assert( Instance == nullptr );
+    // The client should be able to reconnect to a different server
+    ReleaseInstance();
 
     Instance = new ClientNetworkManager( aService, aServerAddr, aPort, aName );
     Instance->Init( 50000 );
 
-    LOG_TRACE( "Client initalized!" );
+    LOG_TRACE( "Client initalized! " );
 
     return Instance;
 }
@@ -66,10 +70,17 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     // We have been welcomed into the game and we can start sending our input updates
     case Tanks::ClientNetworkManager::EClientState::Welcomed:
     {
+        // Send input state to the server
         if ( totalTime > TimeOfLastInputUpdate + TimeBetweenInputUpdate )
         {
             SendInputPacket();
             TimeOfLastInputUpdate = totalTime;
+        }
+        // Send heartbeat packet to the server
+        if ( totalTime > TimeOfLastHeartbeat + TimeBetweenHeartBeats )
+        {
+            SendHeartbeatPacket();
+            TimeOfLastHeartbeat = totalTime;
         }
     }
     break;
@@ -77,14 +88,11 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     default:
         break;
     }
-}
 
-void Tanks::ClientNetworkManager::Disconnect()
-{
-    if ( ClientState == EClientState::Welcomed )
+    // Check if we should disconnect
+    if ( totalTime > TimeOfLastStatePacket + TimeUntilTimeout )
     {
-        // Attempt to disconnect from the server
-        DisconnectedDispatcher.Dispatch ();
+        LOG_WARN( "We should disconnect from the server!" );
     }
 }
 
@@ -108,13 +116,13 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
     case  StatePacket:
     {
         //  As long as we have been welcomed by the server
-        if ( ClientState == ClientNetworkManager::EClientState::Welcomed )
+        if ( NotifManager.ReadAndProcessState(inInputStream) )
         {
             // Update our local  world based on this new info
-            ProcessStatePacket( inInputStream );            
+            ProcessStatePacket( inInputStream );
         }
-		
-		//TimeOfLastStatePacket = TotalTime;
+
+        //TimeOfLastStatePacket = TotalTime;
     }
     break;
     default:
@@ -161,17 +169,27 @@ void Tanks::ClientNetworkManager::SendInputPacket()
     }
 }
 
+void Tanks::ClientNetworkManager::SendHeartbeatPacket()
+{
+    // Create a test packet
+    OutputMemoryBitStream beatPacket;
+    beatPacket.Write( HeartbeatPacket );
+
+    // Send it
+    SendPacket( beatPacket, ServerEndpoint );
+}
+
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
 {
+    TimeOfLastStatePacket = Timing::sInstance.GetTimef();
+
+    // Keep track of how many connected players there are on the client
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );
-    using namespace SceneManagement;
+    NumConnectedPlayers = playerCount;
 
     // Read in the state of the scene
+    using namespace SceneManagement;
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
     scene->Read( inInputStream );
-
-    // Read in any messages that may be at the end of the scene packet
-
-    LOG_TRACE( "State update dude! Con players = {}", playerCount );
 }

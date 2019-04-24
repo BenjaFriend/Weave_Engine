@@ -6,6 +6,7 @@ node {
         // Get some code from a GitHub repository
         git 'https://github.com/BenjaFriend/Weave_Engine.git'
         sh "git submodule update --init --recursive;"
+        sh "git checkout staging; git pull;"
     }
 
     stage('Build Server GCC') {

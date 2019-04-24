@@ -13,18 +13,44 @@ public:
 
     ServerNetworkManager( std::shared_ptr< boost::asio::io_service > aServce );
 
-    virtual ~ServerNetworkManager( );
+    virtual ~ServerNetworkManager();
+
+    /// <summary>
+    /// Do any ticks on the objects that we may need to.
+    /// </summary>
+    /// <param name="deltaTime">Delta Time</param>
+    /// <param name="TotalTime">Total time of the running program</param>
+    void Update( float deltaTime, float TotalTime );
 
     /// <summary>
     /// Update all clients that are connected with the proper state data
+    /// Sends data to the connected clients about the current state of the game
     /// </summary>
-    void UpdateAllClients( );
+    void UpdateAllClients();
+
+    /// <summary>
+    /// Handle a client resetting their connection to the server
+    /// </summary>
+    /// <param name="inFromAddress">the adddress to handle</param>
+    virtual void HandleConnectionReset( const boost::asio::ip::udp::endpoint & inFromAddress ) override;
+
+    /// <summary>
+    /// Check to see if there has been any client that should be disconnected
+    /// from this server, if so, remove them
+    /// </summary>
+    void CheckForDisconnects();
 
 protected:
 
     virtual void ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress ) override;
 
 private:
+
+    /// <summary>
+    /// Handle a client leaving the server
+    /// </summary>
+    /// <param name="aClient">The client which has DC'd</param>
+    void HandleClientDisconnected( ClientProxyPtr aClient );
 
     // Handle new client packet
     void ProcessExistingClientPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
@@ -43,14 +69,6 @@ private:
     /// <param name="aClient"></param>
     /// <param name="inInputStream"></param>
     void ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
-
-    /// <summary>
-    /// Handle a packet from a currently connected client saying that they want 
-    /// to leave the match.
-    /// </summary>
-    /// <param name="aClient">The pointer to the client</param>
-    /// <param name="inInputStream">Input stream</param>
-    void ProcessLeavePacket( ClientProxyPtr aClient, InputMemoryBitStream& inInputStream );
 
     /// <summary>
     /// Send a welcome packet to the given client
@@ -74,6 +92,10 @@ private:
 
     /** The ID count to give to each player */
     UINT32 NewPlayerID = 0;
+
+    /** The amount of time it takes for a client to be removed from the server
+    after not receiving a packet from them*/
+    float ClientDisconnectTimeout = 5.f;
 
     /** The current scene that is loaded */
     ServerScene Scene;

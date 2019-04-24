@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "CameraManager.h"
-#include "../Entity/Entity.h"
+#include "Entity/Entity.h"
 #include "Camera.h"
 #include "../Scripting/ScriptComponent.h"
 

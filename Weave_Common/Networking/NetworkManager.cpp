@@ -26,17 +26,28 @@ NetworkManager::~NetworkManager()
 
 bool NetworkManager::Init( UINT16 aPort )
 {
-    ListenSocket = UDPSocketFactory( 
-        *io_service, 
-        boost::asio::ip::udp::endpoint( bai::udp::v4(), aPort ) 
-    );
+    try
+    {
+        ListenSocket = UDPSocketFactory(
+            *io_service,
+            boost::asio::ip::udp::endpoint( bai::udp::v4(), aPort )
+        );
 
-    LOG_TRACE( "Initalize Network manager at port {}", aPort );
+        LOG_TRACE( "Initalize Network manager at port {}", aPort );
 
+        // Start the running thread
+        runningThread = std::thread( &NetworkManager::Run, this );
+
+        return true;
+    }
+    catch ( const std::exception& e )
+    {
+        ( void ) ( e );
+        LOG_ERROR( "Error initalizing NetworkManager: {}", e.what() );
+        return false;
+    }
+   
     // Set non-blocking mode (if not using boost)
-
-    // Start the running thread
-    runningThread = std::thread( &NetworkManager::Run, this );
 
     return true;
 }
@@ -54,11 +65,20 @@ void NetworkManager::SendPacket( const OutputMemoryBitStream & inOutputStream, c
 {
     // Send the output stream to the given endpoint
     // returns the number of bytes send
-    ListenSocket->send_to(
-        boost::asio::buffer( inOutputStream.GetBufferPtr(), inOutputStream.GetBitLength() ),
-        inFromAddress
-    );
-    // #TODO Keep track of the number of bytes sent this frame
+    try 
+    {
+        ListenSocket->send_to(
+            boost::asio::buffer( inOutputStream.GetBufferPtr(), inOutputStream.GetBitLength() ),
+            inFromAddress
+        );
+
+        // #TODO Keep track of the number of bytes sent this frame
+    }
+    catch ( const std::exception& e )
+    {
+        ( void ) ( e );
+        LOG_ERROR( "Error sending packet : {}", e.what() );
+    }
 }
 
 void NetworkManager::Run()
@@ -74,6 +94,7 @@ void NetworkManager::Run()
         }
         catch ( const std::exception& e )
         {
+            ( void ) ( e );
             LOG_ERROR( "Server: Network exception: {}", e.what() );
         }
         catch ( ... )
@@ -99,13 +120,21 @@ void NetworkManager::StartRecieve()
     // Start listening ASYNCRONOUSLY for incoming data
     // Set HandleRemoteRecieved to be called when there is data received
     // The endpoint information will be stored in 'remote_endpoint'
-    ListenSocket->async_receive_from(
-        boost::asio::buffer( recv_buf, DEF_BUF_SIZE ),
-        remote_endpoint,
-        boost::bind( &NetworkManager::HandleRemoteRecieved, this,
-            boost::asio::placeholders::error,
-            boost::asio::placeholders::bytes_transferred )
-    );
+    try
+    {
+        ListenSocket->async_receive_from(
+            boost::asio::buffer( recv_buf, DEF_BUF_SIZE ),
+            remote_endpoint,
+            boost::bind( &NetworkManager::HandleRemoteRecieved, this,
+                boost::asio::placeholders::error,
+                boost::asio::placeholders::bytes_transferred )
+        );
+    }
+    catch ( const std::exception& e )
+    {
+        ( void ) ( e );
+        LOG_ERROR( "Error in StartRecieve: {}", e.what() );
+    }
 }
 
 void NetworkManager::HandleRemoteRecieved( const std::error_code & error, std::size_t msgSize )

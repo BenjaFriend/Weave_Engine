@@ -30,19 +30,19 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{EE668F6A-773C-44FD-ACEE-26F997AF51E2}</ProjectGuid>
     <RootNamespace>DX11Starter</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>llvm</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>llvm</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -56,13 +56,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>llvm</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>llvm</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -410,7 +410,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="..\..\Weave_Common\ECS\ComponentManager.cpp" />
     <ClCompile Include="..\..\Weave_Common\ECS\FamilyTypeID.cpp" />
     <ClCompile Include="..\..\Weave_Common\ECS\IComponent.cpp" />
-    <ClCompile Include="..\..\Weave_Common\Entity\IEntity.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Entity\Entity.cpp" />
     <ClCompile Include="..\..\Weave_Common\Entity\Transform.cpp" />
     <ClCompile Include="..\..\Weave_Common\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Weave_Common\MemoryBitStream.cpp">
@@ -418,6 +418,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebugInfo|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Networking\InFlightPacket.cpp" />
     <ClCompile Include="..\..\Weave_Common\Networking\NetworkManager.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Weave_Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Weave_Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -480,7 +482,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClCompile Include="Core\Main.cpp" />
     <ClCompile Include="Editor\EditorCore.cpp" />
     <ClCompile Include="Editor\Gizmo.cpp" />
-    <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Lighting\DirLight.cpp" />
     <ClCompile Include="Lighting\PointLight.cpp" />
@@ -507,18 +508,22 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\ECS\ComponentManager.h" />
     <ClInclude Include="..\..\Weave_Common\ECS\FamilyTypeID.h" />
     <ClInclude Include="..\..\Weave_Common\ECS\IComponent.h" />
-    <ClInclude Include="..\..\Weave_Common\Entity\IEntity.h" />
+    <ClInclude Include="..\..\Weave_Common\Entity\Entity.h" />
     <ClInclude Include="..\..\Weave_Common\Entity\Transform.h" />
     <ClInclude Include="..\..\Weave_Common\Input\InputBindings.h" />
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\InFlightPacket.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h" />
     <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h" />
     <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />
     <ClInclude Include="..\..\Weave_Common\Timing.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\Dispatcher.hpp" />
+    <ClInclude Include="..\..\Weave_Common\Utils\IPoolable.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\ObjectPool.hpp" />
     <ClInclude Include="..\..\Weave_Common\Utils\SaveFileDefs.h" />
     <ClInclude Include="..\..\Weave_Common\Utils\Singleton.hpp" />
@@ -537,7 +542,6 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Editor\EditorCore.h" />
     <ClInclude Include="Editor\Gizmo.h" />
-    <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Input\IInput_Impl.h" />
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Input\Input_Win.h" />
@@ -561,6 +565,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="UI_OPTIONS.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
