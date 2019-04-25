@@ -120,14 +120,14 @@ protected:
 	struct Interpolation
 	{
 	public:
-		glm::vec3 finalPos;
-		glm::vec3 startPos;
+		glm::vec3 finalPos = glm::vec3(0, 0, 0);
+		glm::vec3 startPos = glm::vec3(0, 0, 0);
 
-		glm::vec3 finalRot;
-		glm::vec3 startRot;
+		glm::vec3 finalRot = glm::vec3(0, 0, 0);
+		glm::vec3 startRot = glm::vec3(0, 0, 0);
 
-		float packetTime;
-		float lerpTime;
+		float packetTime = 0;
+		float lerpTime = .1f;
 
 		void Update(float deltaTime, Transform& transform)
 		{
@@ -137,9 +137,9 @@ protected:
 			}
 
 			lerpTime += deltaTime;
-			float lerp = glm::clamp(lerpTime / packetTime, 0.0f, 1.0f);
+			float lerp = glm::clamp(lerpTime / glm::clamp(packetTime, 0.1f, packetTime), 0.0f, 1.0001f);
 
-			if (lerp == 1)
+			if (lerp >= 1.0f)
 			{
 				startPos = finalPos;
 				startRot = finalRot;

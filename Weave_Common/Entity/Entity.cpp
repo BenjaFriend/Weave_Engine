@@ -125,13 +125,13 @@ void Entity::Update( float dt )
             compItr->second->Update( dt );
     }
 
+	interpolate.Update(dt, *EntityTransform);
+
     // Check for if this entity has been marked for reset by one of it's components
     if ( IsPendingReset )
     {
         Reset();
     }
-
-	interpolate.Update(dt, *EntityTransform);
 }
 
 void Entity::Write( OutputMemoryBitStream & inOutputStream ) const
@@ -192,9 +192,16 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
 
-		interpolate.startPos = EntityTransform->GetPosition();
-		interpolate.finalPos = readPos;
-        //EntityTransform->SetPosition( readPos );
+		if (ReplicationAction == EReplicationAction::ERA_Create)
+		{
+			EntityTransform->SetPosition( readPos );
+		}
+		else
+		{
+			interpolate.startPos = EntityTransform->GetPosition();
+			interpolate.finalPos = readPos;
+			interpolate.lerpTime = 0;
+		}
     }
 
     if ( DirtyState & EIEntityReplicationState::EIRS_ROT )
@@ -204,9 +211,16 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readRot.y );
         inInputStream.Read( readRot.z );
 
-		interpolate.startRot = EntityTransform->GetRotation();
-		interpolate.finalRot = readRot;
-        //EntityTransform->SetRotation( readRot );
+		if (ReplicationAction == EReplicationAction::ERA_Create)
+		{
+			EntityTransform->SetRotation(readRot);
+		}
+		else
+		{
+			interpolate.startRot = EntityTransform->GetRotation();
+			interpolate.finalRot = readRot;
+			interpolate.lerpTime = 0;
+		}
     }
 
 	interpolate.lerpTime = 0;

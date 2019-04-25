@@ -88,6 +88,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 			replicatedEnt->SetReplicationClassType( aClassType );
             // Have this entity read in it's update data
             replicatedEnt->Read( inInputStream );
+			replicatedEnt->SetDirtyState(action);
         }
         break;
         case ERA_Destroy:
