@@ -192,6 +192,7 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
 
+		// Set position interpolation values
 		interpolate.startPos = EntityTransform->GetPosition();
 		interpolate.finalPos = readPos;
     }
@@ -203,15 +204,18 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readRot.y );
         inInputStream.Read( readRot.z );
 
+		// Set rotation interpolation values
 		interpolate.startRot = EntityTransform->GetRotation();
 		interpolate.finalRot = readRot;
     }
 
+	// If the entity was created this frame set the position
 	if (ReplicationAction == EReplicationAction::ERA_Create)
 	{
 		interpolate.SetTransform(*EntityTransform);
 	}
 
+	// Reset lerp timing values
 	interpolate.lerpTime = 0;
 	interpolate.packetTime = packetTripTime;
 }

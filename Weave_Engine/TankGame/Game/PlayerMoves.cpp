@@ -48,11 +48,13 @@ void PlayerMoves::Update(float deltaTime)
 
 	while (it != currentMoves.end())
 	{
+		// Increase the amount of time that an input is held down
 		if (inMan->IsInputTypeDown(it->inputType))
 		{
 			it->time += deltaTime;
 			++it;
 		}
+		// Add the input to the move queue
 		else
 		{
 			it->time += deltaTime;

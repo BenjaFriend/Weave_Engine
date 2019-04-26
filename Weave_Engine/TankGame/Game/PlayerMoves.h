@@ -45,6 +45,8 @@ namespace Tanks
 
 		void OnFire() { MoveQueue.push_back({ Input::InputType::Fire, 0 }); }
 
+		/// Add the inputs that are currently being tracked
+		/// Called right before moves are sent to the server
 		void QueueCurrentMoves();
 
 		void Update(float deltaTime);

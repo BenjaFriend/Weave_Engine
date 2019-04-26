@@ -119,29 +119,38 @@ public:
 
 protected:
 
+	/// Ideally this would be moved to a networking transform/component
+	/// Since client side entities don't necessarily need to have
+	/// interpolation applied to changes with the transform
 	struct Interpolation
 	{
 	public:
+
+		/// Starting and ending position to lerp between
 		glm::vec3 finalPos = glm::vec3(0, 0, 0);
 		glm::vec3 startPos = glm::vec3(0, 0, 0);
 
+		/// Starting and ending rotations to lerp between
 		glm::vec3 finalRot = glm::vec3(0, 0, 0);
 		glm::vec3 startRot = glm::vec3(0, 0, 0);
 
-		bool setTransform = false;
-
+		/// Lerp times
 		float packetTime = 0;
 		float lerpTime = .1f;
 
+		/// Interpolate the transform between starting and finishing values
 		void Update(float deltaTime, Transform& transform)
 		{
+			// Return since the interpolation finished
 			if (lerpTime >= packetTime)
 			{
 				return;
 			}
 
+			// Calculate the lerp value based on the time
+			// between the packets to arrive
 			lerpTime += deltaTime;
-			float lerp = glm::clamp(lerpTime / glm::clamp(packetTime, 0.1f, packetTime), 0.0f, 1.0001f);
+			float lerp = glm::clamp(lerpTime / glm::clamp(packetTime, 0.1f, packetTime), 0.0f, 1.1f);
 
 			if (lerp >= 1.0f)
 			{
@@ -151,13 +160,14 @@ protected:
 				lerp = 1.0f;
 			}
 
+			// Calculate the lerp values and update the transform
 			glm::vec3 posLerp = glm::lerp(startPos, finalPos, lerp);
 			glm::vec3 rotLerp = glm::lerp(startRot, finalRot, lerp);
-
 			transform.SetRotation(rotLerp);
 			transform.SetPosition(posLerp);
 		}
 
+		/// Set the position of the transform and don't interpolate
 		void SetTransform(Transform& transform)
 		{
 			startPos = finalPos;
