@@ -232,7 +232,11 @@ void ServerNetworkManager::UpdateAllClients()
 
     for ( auto it = EndpointToClientMap.begin(), end = EndpointToClientMap.end(); it != end; ++it )
     {
-        SendStatePacket( it->second );
+        ClientProxyPtr clientProxy = it->second;
+
+        clientProxy->GetDeliveryNotificationManager().ProcessTimedOutPackets();
+
+        SendStatePacket( clientProxy );
     }
 }
 
@@ -242,6 +246,9 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 
     OutputMemoryBitStream packet = {};
     packet.Write( StatePacket );
+
+    // Write the delivery info needed (packet ACK id)
+    aClient->GetDeliveryNotificationManager().WriteState( packet );
 
     // Write the number of connected clients
     packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
