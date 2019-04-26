@@ -38,7 +38,7 @@ void PlayerMoves::QueueCurrentMoves()
 	for (auto& move : currentMoves)
 	{
 		MoveQueue.push_back(move);
-		move.time = 0;
+		move.time = 0.0f;
 	}
 }
 
