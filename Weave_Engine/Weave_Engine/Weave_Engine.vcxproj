@@ -418,6 +418,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebugInfo|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\Weave_Common\Networking\InFlightPacket.cpp" />
     <ClCompile Include="..\..\Weave_Common\Networking\NetworkManager.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Weave_Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Weave_Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -512,6 +514,8 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\Logging\Logger.h" />
     <ClInclude Include="..\..\Weave_Common\MathHelper.h" />
     <ClInclude Include="..\..\Weave_Common\MemoryBitStream.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\InFlightPacket.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h" />
     <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h" />

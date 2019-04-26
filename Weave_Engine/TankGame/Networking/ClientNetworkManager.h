@@ -2,6 +2,7 @@
 
 #include "Networking/NetworkManager.h"
 #include "../Game/PlayerMoves.h"
+#include "Networking/DeliveryNotificationManager.h"
 #include <deque>
 
 namespace Tanks
@@ -98,6 +99,9 @@ namespace Tanks
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;
 
+        /** The delivery notification manager for this client */
+        DeliveryNotificationManager NotifManager;
+
         /** Connection state of this client */
         EClientState ClientState = EClientState::Uninitalized;
 
@@ -119,7 +123,7 @@ namespace Tanks
         /** Time between input updates */
         float TimeOfLastInputUpdate;
         /** The amount of time between sending hello packets */
-        const float TimeBetweenInputUpdate = 0.1f;
+        const float TimeBetweenInputUpdate = 0.033f;
 
         /** Time between input updates */
         float TimeOfLastHeartbeat;

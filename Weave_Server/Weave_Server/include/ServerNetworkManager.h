@@ -24,6 +24,7 @@ public:
 
     /// <summary>
     /// Update all clients that are connected with the proper state data
+    /// Sends data to the connected clients about the current state of the game
     /// </summary>
     void UpdateAllClients();
 
