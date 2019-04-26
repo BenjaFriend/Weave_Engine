@@ -86,6 +86,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
             Entity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
             assert( replicatedEnt != nullptr );
 			replicatedEnt->SetReplicationClassType( aClassType );
+			replicatedEnt->packetTripTime = packetTripTime * 2;
             // Have this entity read in it's update data
             replicatedEnt->Read( inInputStream );
 			replicatedEnt->SetDirtyState(action);

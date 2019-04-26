@@ -29,6 +29,8 @@ public:
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 
+	float packetTripTime = 0;
+
     Entity();
 
     Entity( const std::string & aName );
@@ -126,12 +128,14 @@ protected:
 		glm::vec3 finalRot = glm::vec3(0, 0, 0);
 		glm::vec3 startRot = glm::vec3(0, 0, 0);
 
+		bool setTransform = false;
+
 		float packetTime = 0;
 		float lerpTime = .1f;
 
 		void Update(float deltaTime, Transform& transform)
 		{
-			if (startPos == finalPos && startRot == finalRot)
+			if (lerpTime >= packetTime)
 			{
 				return;
 			}
@@ -143,6 +147,8 @@ protected:
 			{
 				startPos = finalPos;
 				startRot = finalRot;
+
+				lerp = 1.0f;
 			}
 
 			glm::vec3 posLerp = glm::lerp(startPos, finalPos, lerp);
@@ -150,6 +156,15 @@ protected:
 
 			transform.SetRotation(rotLerp);
 			transform.SetPosition(posLerp);
+		}
+
+		void SetTransform(Transform& transform)
+		{
+			startPos = finalPos;
+			startRot = finalRot;
+
+			transform.SetRotation(finalPos);
+			transform.SetPosition(finalRot);
 		}
 	};
 

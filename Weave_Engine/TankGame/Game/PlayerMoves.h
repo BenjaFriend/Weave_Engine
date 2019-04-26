@@ -43,7 +43,7 @@ namespace Tanks
 
 		void MoveUp() { currentMoves.push_back({ Input::InputType::Move_Up, 0 }); }
 
-		void OnFire() { currentMoves.push_back({ Input::InputType::Fire, 0 }); }
+		void OnFire() { MoveQueue.push_back({ Input::InputType::Fire, 0 }); }
 
 		void QueueCurrentMoves();
 

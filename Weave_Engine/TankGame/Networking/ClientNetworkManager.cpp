@@ -181,7 +181,9 @@ void Tanks::ClientNetworkManager::SendHeartbeatPacket()
 
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
 {
+	float start = TimeOfLastStatePacket;
     TimeOfLastStatePacket = Timing::sInstance.GetTimef();
+	float packetTime = TimeOfLastStatePacket - start;
 
     // Keep track of how many connected players there are on the client
     UINT8 playerCount = 0;
@@ -191,5 +193,6 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     // Read in the state of the scene
     using namespace SceneManagement;
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
+	scene->packetTripTime = packetTime;
     scene->Read( inInputStream );
 }

@@ -192,16 +192,8 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
 
-		if (ReplicationAction == EReplicationAction::ERA_Create)
-		{
-			EntityTransform->SetPosition( readPos );
-		}
-		else
-		{
-			interpolate.startPos = EntityTransform->GetPosition();
-			interpolate.finalPos = readPos;
-			interpolate.lerpTime = 0;
-		}
+		interpolate.startPos = EntityTransform->GetPosition();
+		interpolate.finalPos = readPos;
     }
 
     if ( DirtyState & EIEntityReplicationState::EIRS_ROT )
@@ -211,20 +203,17 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readRot.y );
         inInputStream.Read( readRot.z );
 
-		if (ReplicationAction == EReplicationAction::ERA_Create)
-		{
-			EntityTransform->SetRotation(readRot);
-		}
-		else
-		{
-			interpolate.startRot = EntityTransform->GetRotation();
-			interpolate.finalRot = readRot;
-			interpolate.lerpTime = 0;
-		}
+		interpolate.startRot = EntityTransform->GetRotation();
+		interpolate.finalRot = readRot;
     }
 
+	if (ReplicationAction == EReplicationAction::ERA_Create)
+	{
+		interpolate.SetTransform(*EntityTransform);
+	}
+
 	interpolate.lerpTime = 0;
-	interpolate.packetTime = .3f;
+	interpolate.packetTime = packetTripTime;
 }
 
 void Entity::Read( InputMemoryBitStream & inInputStream )
