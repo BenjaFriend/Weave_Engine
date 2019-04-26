@@ -187,7 +187,7 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {
-        glm::vec3 readPos( 0.f );
+        glm::vec3 readPos( 0.0f );
         inInputStream.Read( readPos.x );
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
@@ -216,7 +216,7 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 	}
 
 	// Reset lerp timing values
-	interpolate.lerpTime = 0;
+	interpolate.lerpTime = 0.0f;
 	interpolate.packetTime = packetTripTime;
 }
 

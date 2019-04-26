@@ -143,7 +143,7 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
-		float time = 0;
+		float time = 0.0f;
         inInputStream.Read( move );
 		inInputStream.Read( time );
 

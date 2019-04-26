@@ -29,7 +29,7 @@ public:
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 
-	float packetTripTime = 0;
+	float packetTripTime = 0.0f;
 
     Entity();
 
@@ -127,16 +127,16 @@ protected:
 	public:
 
 		/// Starting and ending position to lerp between
-		glm::vec3 finalPos = glm::vec3(0, 0, 0);
-		glm::vec3 startPos = glm::vec3(0, 0, 0);
+		glm::vec3 finalPos = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 startPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		/// Starting and ending rotations to lerp between
-		glm::vec3 finalRot = glm::vec3(0, 0, 0);
-		glm::vec3 startRot = glm::vec3(0, 0, 0);
+		glm::vec3 finalRot = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 startRot = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		/// Lerp times
-		float packetTime = 0;
-		float lerpTime = .1f;
+		float packetTime = 0.0f;
+		float lerpTime = 0.1f;
 
 		/// Interpolate the transform between starting and finishing values
 		void Update(float deltaTime, Transform& transform)
