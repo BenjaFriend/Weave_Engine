@@ -33,7 +33,7 @@ void TankGame::Update( float deltaTime, float totalTime )
     {
         NetMan->ProcessIncomingPackets();
         NetMan->SendOutgoingPackets( totalTime );
-		PlayerMoves::Instance->Update(deltaTime);
+        PlayerMoves::Instance->Update( deltaTime );
     }
     break;
     default:

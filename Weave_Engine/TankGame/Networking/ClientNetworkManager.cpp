@@ -10,7 +10,7 @@ ClientNetworkManager* ClientNetworkManager::Instance = nullptr;
 
 ClientNetworkManager::ClientNetworkManager(
     std::shared_ptr< boost::asio::io_service > aService,
-    const char * aServerAddr, const unsigned short aPort, 
+    const char * aServerAddr, const unsigned short aPort,
     const std::string& aName )
     : NetworkManager( aService ), Name( aName ), NotifManager( true, false )
 {
@@ -116,7 +116,7 @@ void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, c
     case  StatePacket:
     {
         //  As long as we have been welcomed by the server
-        if ( NotifManager.ReadAndProcessState(inInputStream) )
+        if ( NotifManager.ReadAndProcessState( inInputStream ) )
         {
             // Update our local  world based on this new info
             ProcessStatePacket( inInputStream );
@@ -146,7 +146,7 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
 
 void Tanks::ClientNetworkManager::SendInputPacket()
 {
-	PlayerMoves::Instance->QueueCurrentMoves();
+    PlayerMoves::Instance->QueueCurrentMoves();
 
     if ( PlayerMoves::Instance->HasMoves() )
     {
@@ -161,8 +161,8 @@ void Tanks::ClientNetworkManager::SendInputPacket()
         output.Write( static_cast< UINT32 > ( moveQueue.size() ) );
         for ( const auto & move : moveQueue )
         {
-			output.Write(static_cast<UINT8> (move.inputType));
-			output.Write( static_cast< float > ( move.time ) );
+            output.Write( static_cast< UINT8 > ( move.inputType ) );
+            output.Write( static_cast< float > ( move.time ) );
         }
 
         SendPacket( output, ServerEndpoint );
@@ -184,9 +184,9 @@ void Tanks::ClientNetworkManager::SendHeartbeatPacket()
 
 void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inInputStream )
 {
-	float start = TimeOfLastStatePacket;
+    float start = TimeOfLastStatePacket;
     TimeOfLastStatePacket = Timing::sInstance.GetTimef();
-	float packetTime = TimeOfLastStatePacket - start;
+    float packetTime = TimeOfLastStatePacket - start;
 
     // Keep track of how many connected players there are on the client
     UINT8 playerCount = 0;
@@ -196,6 +196,6 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     // Read in the state of the scene
     using namespace SceneManagement;
     Scene* scene = SceneManager::GetInstance()->GetActiveScene();
-	scene->packetTripTime = packetTime;
+    scene->packetTripTime = packetTime;
     scene->Read( inInputStream );
 }

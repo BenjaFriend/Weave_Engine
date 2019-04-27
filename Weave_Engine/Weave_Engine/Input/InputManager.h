@@ -21,7 +21,7 @@ namespace Input
     public:
 
         template <typename T>
-        static InputManager* Initalize( )
+        static InputManager* Initalize()
         {
             assert( Instance == nullptr );
 
@@ -31,7 +31,7 @@ namespace Input
                 );
 
             IInput_Impl* impl = new T();
-            
+
             Instance = new InputManager( impl );
 
             return Instance;
@@ -47,7 +47,7 @@ namespace Input
         ///  Release the instance of the input manager
         /// </summary>
         static void ReleaseInstance();
-    
+
         /// <summary>
         /// Bind an action to an input type. A bound action will be called when 
         /// this type of input is detected by the input manager
@@ -58,7 +58,7 @@ namespace Input
         template<class T>
         void BindAction( T* parentObj, void ( T::*inputListenerFunc )( ), InputType inputType )
         {
-            actionListeners [ inputType ].BindListener( parentObj, inputListenerFunc );
+            actionListeners[ inputType ].BindListener( parentObj, inputListenerFunc );
         }
 
         /// <summary>
@@ -67,25 +67,25 @@ namespace Input
         /// <param name="dt">delta time of the frame</param>
         void Update( float dt );
 
-		/* The reason why there are two different 'IsKeyDown' functions */
-		/* Sol and Lua don't properly cast (int <--> char) values */
-		/* 'IsCKeyDown' only works with capital chars */
-		/// <summary>
-		/// Test if a key is down
-		/// </summary>
-		/// <param name="vKey">Int value of the key</param>
-		/// <returns>True if the key is down</returns>
-		bool IsKeyDown(int vKey);
+        /* The reason why there are two different 'IsKeyDown' functions */
+        /* Sol and Lua don't properly cast (int <--> char) values */
+        /* 'IsCKeyDown' only works with capital chars */
+        /// <summary>
+        /// Test if a key is down
+        /// </summary>
+        /// <param name="vKey">Int value of the key</param>
+        /// <returns>True if the key is down</returns>
+        bool IsKeyDown( int vKey );
 
-		/// <summary>
-		/// Test if a key is down
-		/// </summary>
-		/// <param name="vKey">Char value of the key</param>
-		/// <returns>True if the key is down</returns>
-		bool IsCKeyDown( char vKey );
+        /// <summary>
+        /// Test if a key is down
+        /// </summary>
+        /// <param name="vKey">Char value of the key</param>
+        /// <returns>True if the key is down</returns>
+        bool IsCKeyDown( char vKey );
 
-		bool IsInputTypeDown(InputType inputType);
-        
+        bool IsInputTypeDown( InputType inputType );
+
         /// <summary>
         /// Check if a certain key is UP
         /// </summary>
@@ -103,7 +103,7 @@ namespace Input
         void OnMouseUp( WPARAM buttonState, int x, int y );
         void OnMouseMove( WPARAM buttonState, int x, int y );
 
-		glm::vec2 GetMousePosition() const;
+        glm::vec2 GetMousePosition() const;
 
 #endif  // _WIN32 || _WIN64
 
@@ -111,7 +111,7 @@ namespace Input
 
         /** Vector of input bindings to keys/buttons */
         std::vector<InputBinding> InputBinds;
-        
+
         std::vector< bool > PreviousInputState;
 
     private:
@@ -126,7 +126,7 @@ namespace Input
         /// </summary>
         ~InputManager();
 
-		glm::vec2 curMousePos = glm::vec2(0, 0);
+        glm::vec2 curMousePos = glm::vec2( 0, 0 );
 
         /** The instance of the InputManager */
         static InputManager* Instance;

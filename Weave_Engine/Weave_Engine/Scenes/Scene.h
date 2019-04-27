@@ -35,7 +35,7 @@ namespace SceneManagement
 
         virtual void Read( InputMemoryBitStream& inInputStream ) override;
 
-		float packetTripTime = 0.0f;
+        float packetTripTime = 0.0f;
 
         /// <summary>
         /// Adds an entity to the game with no mesh. Adds this entity to the 

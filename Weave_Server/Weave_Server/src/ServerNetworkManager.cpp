@@ -108,17 +108,17 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
         std::string name;
         inInputStream.Read( name );
 
-        ClientProxyPtr newClient = std::make_shared< ClientProxy >( 
-            std::move( inFromAddress ), 
-            name, 
-            NewPlayerID++ 
-        );
+        ClientProxyPtr newClient = std::make_shared< ClientProxy >(
+            std::move( inFromAddress ),
+            name,
+            NewPlayerID++
+            );
 
-        EndpointToClientMap [ inFromAddress ] = newClient;
+        EndpointToClientMap[ inFromAddress ] = newClient;
 
         // Send welcome packet to them and tell them what their ID is
         SendWelcomePacket( newClient );
-        auto clientEnt = Scene.AddEntity( 
+        auto clientEnt = Scene.AddEntity(
             newClient->GetName(),
             NewPlayerID,
             EReplicatedClassType::ETank_Class
@@ -132,7 +132,7 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
     }
 }
 
-void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemoryBitStream & inInputStream)
+void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
 {
     UINT32 sizeOfMoveList = 0;
     inInputStream.Read( sizeOfMoveList );
@@ -143,9 +143,9 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
     for ( size_t i = 0; i < sizeOfMoveList; ++i )
     {
         UINT8 move = 0;
-		float time = 0.0f;
+        float time = 0.0f;
         inInputStream.Read( move );
-		inInputStream.Read( time );
+        inInputStream.Read( time );
 
         switch ( static_cast < Input::InputType > ( move ) )
         {
@@ -160,8 +160,8 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
             // Spawn a bullet on the server
             Entity* newBullet = Scene.AddEntity(
                 "Bullet Boi",
-                ++NewPlayerID, 
-                EReplicatedClassType::EBullet_Class 
+                ++NewPlayerID,
+                EReplicatedClassType::EBullet_Class
             );
 
             bulletSpawnPoint += ( forward * 1.5f );
@@ -199,14 +199,14 @@ void ServerNetworkManager::ProcessInputPacket(ClientProxyPtr aClient, InputMemor
             break;
         }
     }
-    
+
     // Move the client based on their input to the server
-    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement);
+    aClient->GetClientEntity()->GetTransform()->MoveRelative( 0.f, 0.f, inputMovement );
     aClient->GetClientEntity()->GetTransform()->Rotate( glm::vec3( 0.f, inputRotation, 0.f ) );
 
     Scene.SetDirtyState(
         aClient->GetClientEntity()->GetNetworkID(),
-        Entity::EIEntityReplicationState::EIRS_AllState 
+        Entity::EIEntityReplicationState::EIRS_AllState
     );
 
 }
@@ -261,7 +261,7 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 void ServerNetworkManager::SendFeedMessagePacket( ClientProxyPtr aClient, const char* aMsg )
 {
     assert( aClient != nullptr && aMsg != nullptr );
-    
+
     OutputMemoryBitStream packet = {};
     packet.Write( FeedMessagePacket );
 
