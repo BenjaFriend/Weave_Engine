@@ -24,10 +24,12 @@ public:
 
     enum EIEntityReplicationState
     {
-        EIRS_POS        = 1 << 0,
-        EIRS_ROT        = 1 << 1,
+        EIRS_POS = 1 << 0,
+        EIRS_ROT = 1 << 1,
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
+
+    float packetTripTime = 0.0f;
 
     Entity();
 
@@ -117,6 +119,71 @@ public:
 
 protected:
 
+    /// Ideally this would be moved to a networking transform/component
+    /// Since client side entities don't necessarily need to have
+    /// interpolation applied to changes with the transform
+    struct Interpolation
+    {
+    public:
+
+        /// Starting and ending position to lerp between
+        glm::vec3 finalPos = glm::vec3( 0.0f, 0.0f, 0.0f );
+        glm::vec3 startPos = glm::vec3( 0.0f, 0.0f, 0.0f );
+
+        /// Starting and ending rotations to lerp between
+        glm::vec3 finalRot = glm::vec3( 0.0f, 0.0f, 0.0f );
+        glm::vec3 startRot = glm::vec3( 0.0f, 0.0f, 0.0f );
+
+        /// Lerp times
+        float packetTime = 0.0f;
+        float lerpTime = 0.1f;
+
+        Interpolation()
+        {
+        }
+
+        /// Interpolate the transform between starting and finishing values
+        void Update( float deltaTime, Transform& transform )
+        {
+            // Return since the interpolation finished
+            if ( lerpTime >= packetTime )
+            {
+                return;
+            }
+
+            // Calculate the lerp value based on the time
+            // between the packets to arrive
+            lerpTime += deltaTime;
+            float lerp = glm::clamp( lerpTime / glm::clamp( packetTime, 0.1f, packetTime ), 0.0f, 1.1f );
+
+            if ( lerp >= 1.0f )
+            {
+                startPos = finalPos;
+                startRot = finalRot;
+
+                lerp = 1.0f;
+            }
+
+            // Calculate the lerp values and update the transform
+            glm::vec3 posLerp = glm::lerp( startPos, finalPos, lerp );
+            glm::vec3 rotLerp = glm::lerp( startRot, finalRot, lerp );
+            transform.SetRotation( rotLerp );
+            transform.SetPosition( posLerp );
+        }
+
+        /// Set the position of the transform and don't interpolate
+        void SetTransform( Transform& transform )
+        {
+            startPos = finalPos;
+            startRot = finalRot;
+
+            transform.SetRotation( finalPos );
+            transform.SetPosition( finalRot );
+        }
+    };
+
+    Interpolation interpolate;
+
     virtual void WriteUpdateAction( OutputMemoryBitStream& inOutputStream, UINT32 inDirtyState ) const;
 
     virtual void ReadUpdateAction( InputMemoryBitStream& inInputStream );
@@ -138,8 +205,8 @@ protected:
     EReplicationAction ReplicationAction = EReplicationAction::ERA_Create;
 
     // #TODO Have a proper type checking replication manager and entity registry system, this is not scalable
-	/** The type of class that this entity is for replication */
-	EReplicatedClassType ReplicatedClassType = EReplicatedClassType::EObstacle_Class;
+    /** The type of class that this entity is for replication */
+    EReplicatedClassType ReplicatedClassType = EReplicatedClassType::EObstacle_Class;
 
     /** Flag for if this entity is active or not */
     UINT32 IsActive : 1;

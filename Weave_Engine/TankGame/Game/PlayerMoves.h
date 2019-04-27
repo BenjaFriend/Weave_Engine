@@ -10,12 +10,19 @@ namespace Tanks
     {
     public:
 
+        struct TimedMove
+        {
+            Input::InputType inputType;
+            float time;
+        };
+
         static std::shared_ptr<PlayerMoves> Init();
 
         static std::shared_ptr<PlayerMoves> Instance;
         PlayerMoves();
 
         ~PlayerMoves();
+
         /// <summary>
         /// Clear all moves of the player
         /// </summary>
@@ -27,22 +34,31 @@ namespace Tanks
         /// <returns>True if the queue of moves is not empty</returns>
         bool HasMoves() { return !MoveQueue.empty(); }
 
-        const std::deque<Input::InputType> & GetMoveQueue() const { return MoveQueue; }
+        const std::deque<TimedMove> & GetMoveQueue() const { return MoveQueue; }
 
-        void MoveLeft() { MoveQueue.push_back( Input::InputType::Move_Left ); }
+        void MoveLeft() { currentMoves.push_back( { Input::InputType::Move_Left, 0 } ); }
 
-        void MoveRight() { MoveQueue.push_back( Input::InputType::Move_Right ); }
-        
-        void MoveDown() { MoveQueue.push_back( Input::InputType::Move_Down ); }
+        void MoveRight() { currentMoves.push_back( { Input::InputType::Move_Right, 0 } ); }
 
-        void MoveUp() { MoveQueue.push_back( Input::InputType::Move_Up ); }
+        void MoveDown() { currentMoves.push_back( { Input::InputType::Move_Down, 0 } ); }
 
-        void OnFire() { MoveQueue.push_back( Input::InputType::Fire ); }
+        void MoveUp() { currentMoves.push_back( { Input::InputType::Move_Up, 0 } ); }
+
+        void OnFire() { MoveQueue.push_back( { Input::InputType::Fire, 0 } ); }
+
+        /// Add the inputs that are currently being tracked
+        /// Called right before moves are sent to the server
+        void QueueCurrentMoves();
+
+        void Update( float deltaTime );
 
     private:
 
+        static Input::InputManager* inMan;
+
         // Keep track of what buttons have been pressed
-        std::deque<Input::InputType> MoveQueue;
+        std::deque<TimedMove> MoveQueue;
+        std::vector<TimedMove> currentMoves;
 
     };
 }   // namespace Tanks

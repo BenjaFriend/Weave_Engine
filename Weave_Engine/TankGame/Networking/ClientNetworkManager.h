@@ -122,12 +122,12 @@ namespace Tanks
 
         /** Time between input updates */
         float TimeOfLastInputUpdate;
-        /** The amount of time between sending hello packets */
+        /** The amount of time between sending input packets */
         const float TimeBetweenInputUpdate = 0.033f;
 
         /** Time between input updates */
         float TimeOfLastHeartbeat;
-        /** The amount of time between sending hello packets */
+        /** The amount of time between sending heartbeat packets */
         const float TimeBetweenHeartBeats = 0.5f;
 
         /** Keep track of the last time we received a state packet  */

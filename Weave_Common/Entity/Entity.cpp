@@ -108,7 +108,7 @@ void Entity::Reset()
     componentManager = ECS::ComponentManager::GetInstance();
 
     // Reset the transform
-    EntityTransform = nullptr;    
+    EntityTransform = nullptr;
     EntityTransform = this->AddComponent<Transform>();
 }
 
@@ -121,9 +121,11 @@ void Entity::Update( float dt )
 
     for ( auto && compItr = compMap->begin(); compItr != compMap->end(); ++compItr )
     {
-        if( compItr->second != nullptr )
+        if ( compItr->second != nullptr )
             compItr->second->Update( dt );
     }
+
+    interpolate.Update( dt, *EntityTransform );
 
     // Check for if this entity has been marked for reset by one of it's components
     if ( IsPendingReset )
@@ -185,12 +187,14 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {
-        glm::vec3 readPos( 0.f );
+        glm::vec3 readPos( 0.0f );
         inInputStream.Read( readPos.x );
         inInputStream.Read( readPos.y );
         inInputStream.Read( readPos.z );
 
-        EntityTransform->SetPosition( readPos );
+        // Set position interpolation values
+        interpolate.startPos = EntityTransform->GetPosition();
+        interpolate.finalPos = readPos;
     }
 
     if ( DirtyState & EIEntityReplicationState::EIRS_ROT )
@@ -199,8 +203,21 @@ void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
         inInputStream.Read( readRot.x );
         inInputStream.Read( readRot.y );
         inInputStream.Read( readRot.z );
-        EntityTransform->SetRotation( readRot );
+
+        // Set rotation interpolation values
+        interpolate.startRot = EntityTransform->GetRotation();
+        interpolate.finalRot = readRot;
     }
+
+    // If the entity was created this frame set the position
+    if ( ReplicationAction == EReplicationAction::ERA_Create )
+    {
+        interpolate.SetTransform( *EntityTransform );
+    }
+
+    // Reset lerp timing values
+    interpolate.lerpTime = 0.0f;
+    interpolate.packetTime = packetTripTime;
 }
 
 void Entity::Read( InputMemoryBitStream & inInputStream )

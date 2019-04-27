@@ -74,17 +74,17 @@ void Input::InputManager::Update( float dt )
 {
     for ( size_t i = 0; i < InputBinds.size(); ++i )
     {
-        if ( IsKeyDown( InputBinds [ i ].InputValue ) )
+        if ( IsKeyDown( InputBinds[ i ].InputValue ) )
         {
-            if ( !PreviousInputState [ i ] )
+            if ( !PreviousInputState[ i ] )
             {
-                SignalInput( InputBinds [ i ].Type );
-                PreviousInputState [ i ] = true;
+                SignalInput( InputBinds[ i ].Type );
+                PreviousInputState[ i ] = true;
             }
         }
         else
         {
-            PreviousInputState [ i ] = false;
+            PreviousInputState[ i ] = false;
         }
     }
 
@@ -100,6 +100,19 @@ bool InputManager::IsKeyDown( int vKey )
 bool InputManager::IsCKeyDown( char vKey )
 {
     return GetAsyncKeyState( vKey ) & 0x80000;
+}
+
+bool Input::InputManager::IsInputTypeDown( InputType inputType )
+{
+    for ( size_t i = 0; i < InputBinds.size(); ++i )
+    {
+        if ( InputBinds[ i ].Type == inputType )
+        {
+            return IsKeyDown( InputBinds[ i ].InputValue );
+        }
+    }
+
+    return false;
 }
 
 bool Input::InputManager::IsKeyUp( int vKey )

@@ -33,8 +33,8 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         EReplicationAction action = EReplicationAction::ERA_Update;
         inInputStream.Read( action, 2 );
 
-		EReplicatedClassType aClassType = EReplicatedClassType::EObstacle_Class;
-		inInputStream.Read( aClassType, 2 );
+        EReplicatedClassType aClassType = EReplicatedClassType::EObstacle_Class;
+        inInputStream.Read( aClassType, 2 );
 
         switch ( action )
         {
@@ -48,46 +48,48 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
             // Do we have this in our replicated map
             if ( !IsObjectReplicated( networkID ) )
             {
-				// If not, add it
-				Entity* ent = AddEntity("Newly Added rep object");
-				switch ( aClassType )
-				{
-				case ETank_Class:
-				{
-					LOG_WARN( "This is a tank!" );
-					ent->SetName("New Tank");
-					// #TODO Make entity creation and components replicated
-					ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
-					PointLightData lightData = {};
-					lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
-					lightData.Range = 8.f;
-					lightData.Intensity = 10.f;
-					ent->AddComponent< PointLight >(lightData, glm::vec3(0.f, 5.f, 0.f));
-				}
-				break;
-				case EBullet_Class:
-				{
-                    LOG_WARN("This is a bullet!");
-					ent->SetName("New Bullet");
-					ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/sphere.obj" );
-				}
-				break;
-				case EObstacle_Class:
-                    LOG_WARN("This is an obstacle!");
+                // If not, add it
+                Entity* ent = AddEntity( "Newly Added rep object" );
+                switch ( aClassType )
+                {
+                case ETank_Class:
+                {
+                    LOG_WARN( "This is a tank!" );
+                    ent->SetName( "New Tank" );
+                    // #TODO Make entity creation and components replicated
+                    ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/My_Tank.obj" );
+                    PointLightData lightData = {};
+                    lightData.Color = ( NetworkIdToEntityMap.size() ? glm::vec3( 1.f, 0.f, 0.f ) : glm::vec3( 0.f, 1.f, 0.f ) );
+                    lightData.Range = 8.f;
+                    lightData.Intensity = 10.f;
+                    ent->AddComponent< PointLight >( lightData, glm::vec3( 0.f, 5.f, 0.f ) );
+                }
+                break;
+                case EBullet_Class:
+                {
+                    LOG_WARN( "This is a bullet!" );
+                    ent->SetName( "New Bullet" );
+                    ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/sphere.obj" );
+                }
+                break;
+                case EObstacle_Class:
+                    LOG_WARN( "This is an obstacle!" );
 
-					break;
-				default:
-					break;
-				}
+                    break;
+                default:
+                    break;
+                }
 
                 ent->SetNetworkID( networkID );
                 AddReplicatedObject( ent );
             }
             Entity* replicatedEnt = NetworkIdToEntityMap[ networkID ];
             assert( replicatedEnt != nullptr );
-			replicatedEnt->SetReplicationClassType( aClassType );
+            replicatedEnt->SetReplicationClassType( aClassType );
+            replicatedEnt->packetTripTime = packetTripTime * 2;
             // Have this entity read in it's update data
             replicatedEnt->Read( inInputStream );
+            replicatedEnt->SetDirtyState( action );
         }
         break;
         case ERA_Destroy:
@@ -164,12 +166,12 @@ void Scene::SetLightData( SimplePixelShader* aPixShader )
     {
         // There needs to be a raw array to the dir light data that is continuous in memory
         // in order for the GPU to be able to read it
-        DirectionalLightData dirlightData [ MAX_DIR_LIGHTS ];
+        DirectionalLightData dirlightData[ MAX_DIR_LIGHTS ];
 
         for ( size_t i = 0; i < DirLights.size(); ++i )
         {
             // Skip if this component is disabled
-            if ( !DirLights [ i ]->IsEnabled() )
+            if ( !DirLights[ i ]->IsEnabled() )
             {
                 --dirLightCount;
                 continue;
@@ -177,12 +179,12 @@ void Scene::SetLightData( SimplePixelShader* aPixShader )
             // Copy the lighting data to the raw array of lighting data
             memcpy(
                 ( void* ) ( dirlightData + i ),
-                ( ( void* ) ( &DirLights [ i ]->GetLightData() ) ),
+                ( ( void* ) ( &DirLights[ i ]->GetLightData() ) ),
                 sizeof( DirectionalLightData )
             );
         }
         // Send data to the GPU
-        aPixShader->SetData( "DirLights", ( void* ) ( &dirlightData [ 0 ] ), sizeof( DirectionalLightData ) * MAX_DIR_LIGHTS );
+        aPixShader->SetData( "DirLights", ( void* ) ( &dirlightData[ 0 ] ), sizeof( DirectionalLightData ) * MAX_DIR_LIGHTS );
     }
     aPixShader->SetInt( "DirLightCount", static_cast< int >( dirLightCount ) );
 
@@ -191,12 +193,12 @@ void Scene::SetLightData( SimplePixelShader* aPixShader )
 
     if ( PointLights.size() > 0 )
     {
-        PointLightData pointLightData [ MAX_POINT_LIGHTS ];
+        PointLightData pointLightData[ MAX_POINT_LIGHTS ];
 
         for ( size_t i = 0; i < PointLights.size(); ++i )
         {
             // Skip if disabled
-            if ( !PointLights [ i ]->IsEnabled() )
+            if ( !PointLights[ i ]->IsEnabled() )
             {
                 --pointLightCount;
                 continue;
@@ -204,12 +206,12 @@ void Scene::SetLightData( SimplePixelShader* aPixShader )
             // Copy the point light data to the raw array 
             memcpy(
                 ( void* ) ( pointLightData + i ),
-                ( ( void* ) ( &PointLights [ i ]->GetLightData() ) ),
+                ( ( void* ) ( &PointLights[ i ]->GetLightData() ) ),
                 sizeof( PointLightData )
             );
         }
         // Send the raw data to the GPU
-        aPixShader->SetData( "PointLights", ( void* ) ( &pointLightData [ 0 ] ), sizeof( PointLightData ) * MAX_POINT_LIGHTS );
+        aPixShader->SetData( "PointLights", ( void* ) ( &pointLightData[ 0 ] ), sizeof( PointLightData ) * MAX_POINT_LIGHTS );
     }
     aPixShader->SetInt( "PointLightCount", static_cast< int >( pointLightCount ) );
 }
