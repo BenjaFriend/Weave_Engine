@@ -22,10 +22,10 @@ class Entity : public IPoolable< Entity >, public ISaveable
 {
 public:
 
-    enum EIEntityReplicationState
-    {
-        EIRS_POS = 1 << 0,
-        EIRS_ROT = 1 << 1,
+	enum EIEntityReplicationState
+	{
+		EIRS_POS = 1 << 0,
+		EIRS_ROT = 1 << 1,
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 
@@ -117,6 +117,9 @@ public:
     /// <param name="inInputStream"></param>
     virtual void Read( InputMemoryBitStream & inInputStream );
 
+	FORCE_INLINE UINT8 GetScore() { return score; }
+	FORCE_INLINE void SetScore(UINT8 score) { this->score = score; }
+
 protected:
 
     /// Ideally this would be moved to a networking transform/component
@@ -191,6 +194,8 @@ protected:
     static size_t EntityCount;
 
     INT32 NetworkID = -1;
+
+	UINT8 score = 0;
 
     /** handles the adding/removing of components for this entity */
     ECS::ComponentManager * componentManager = nullptr;

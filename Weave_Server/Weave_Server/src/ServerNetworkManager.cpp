@@ -134,6 +134,7 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
 
 void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
 {
+
     UINT32 sizeOfMoveList = 0;
     inInputStream.Read( sizeOfMoveList );
 

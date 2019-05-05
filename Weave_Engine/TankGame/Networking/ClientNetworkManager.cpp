@@ -20,6 +20,8 @@ ClientNetworkManager::ClientNetworkManager(
             aPort
         );
 
+	scoreboard = new Scoreboard();
+
     ClientState = EClientState::SayingHello;
 
     TimeOfLastStatePacket = Timing::sInstance.GetTimef();
@@ -27,7 +29,7 @@ ClientNetworkManager::ClientNetworkManager(
 
 ClientNetworkManager::~ClientNetworkManager()
 {
-
+	delete scoreboard;
 }
 
 ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit(
@@ -94,6 +96,16 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     {
         LOG_WARN( "We should disconnect from the server!" );
     }
+}
+
+void Tanks::ClientNetworkManager::DrawUI()
+{
+	if (this != nullptr && scoreboard != nullptr)
+	{
+		using namespace SceneManagement;
+		Scene* scene = SceneManager::GetInstance()->GetActiveScene();
+		scoreboard->DrawUI(scene->GetEntityArray());
+	}
 }
 
 void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )

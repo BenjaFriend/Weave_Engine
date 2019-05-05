@@ -95,6 +95,7 @@ void Tanks::TankGame::DrawUI()
         ImGui::End();
     }
 
+	ClientNetworkManager::Instance->DrawUI();
 }
 
 void Tanks::TankGame::DrawMainMenu()

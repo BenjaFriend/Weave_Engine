@@ -4,6 +4,7 @@
 #include "../Game/PlayerMoves.h"
 #include "Networking/DeliveryNotificationManager.h"
 #include <deque>
+#include "Scoreboard.h"
 
 namespace Tanks
 {
@@ -45,6 +46,8 @@ namespace Tanks
         /// Send outgoing packets based on the current state of the client
         /// </summary>
         void SendOutgoingPackets ( float totalTime );
+
+		void DrawUI();
 
         /// <summary>
         /// Get the current state of the client
@@ -95,6 +98,8 @@ namespace Tanks
         /// </summary>
         /// <param name="inInputStream">Input stream of data</param>
         void ProcessStatePacket ( InputMemoryBitStream & inInputStream );
+
+		Scoreboard* scoreboard = nullptr;
 
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;
