@@ -7,6 +7,7 @@ This is an expedited version of [this](https://www.boost.org/doc/libs/1_69_0/mor
 3. Naviagate to the boost install directory in PowerShell or CMD and run
 `./bootstrap.bat`
 4. Run `b2.exe` (this will take a while, as it is compiling boost)
+ - The following options are all we need: `./b2 --with-system --with-thread --with-date_time --with-regex --with-serialization`
 
 After `b2` has completed, there will be a new folder in your `boost_1_69_0`
 directory called `stage`. Inside of `stage` there is a folder called `lib`,
