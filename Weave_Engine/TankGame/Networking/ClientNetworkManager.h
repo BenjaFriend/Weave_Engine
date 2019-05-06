@@ -47,8 +47,6 @@ namespace Tanks
         /// </summary>
         void SendOutgoingPackets ( float totalTime );
 
-		void DrawUI();
-
         /// <summary>
         /// Get the current state of the client
         /// </summary>
@@ -59,6 +57,8 @@ namespace Tanks
         FORCE_INLINE const boost::asio::ip::udp::endpoint & GetServerEndpoint () { return ServerEndpoint; }
         FORCE_INLINE const UINT8 GetNumConnectedPlayers() const { return NumConnectedPlayers; }
         
+		Scoreboard* scoreboard = nullptr;
+
     protected:
 
         ClientNetworkManager ( std::shared_ptr< boost::asio::io_service > aService,
@@ -98,8 +98,6 @@ namespace Tanks
         /// </summary>
         /// <param name="inInputStream">Input stream of data</param>
         void ProcessStatePacket ( InputMemoryBitStream & inInputStream );
-
-		Scoreboard* scoreboard = nullptr;
 
         /** The endpoint of the game server */
         boost::asio::ip::udp::endpoint ServerEndpoint;

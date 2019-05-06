@@ -98,16 +98,6 @@ void Tanks::ClientNetworkManager::SendOutgoingPackets( float totalTime )
     }
 }
 
-void Tanks::ClientNetworkManager::DrawUI()
-{
-	if (this != nullptr && scoreboard != nullptr)
-	{
-		using namespace SceneManagement;
-		Scene* scene = SceneManager::GetInstance()->GetActiveScene();
-		scoreboard->DrawUI(scene->GetEntityArray());
-	}
-}
-
 void ClientNetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream, const boost::asio::ip::udp::endpoint & inFromAddress )
 {
     UINT32 packetType;
@@ -204,6 +194,8 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );
     NumConnectedPlayers = playerCount;
+
+	scoreboard->Read(inInputStream, playerCount);
 
     // Read in the state of the scene
     using namespace SceneManagement;

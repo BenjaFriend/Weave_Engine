@@ -4,6 +4,7 @@
 #include "ClientProxy.h"
 #include "Input/InputBindings.h"
 #include "ServerScene.h"
+#include "ServerScoreboard.h"
 
 #include <map>
 
@@ -99,6 +100,8 @@ private:
 
     /** The current scene that is loaded */
     ServerScene Scene;
+
+	ServerScoreboard scoreboard;
 
     /** Map of endpoints to clients */
     typedef std::map< boost::asio::ip::udp::endpoint, ClientProxyPtr >	AddressToClientMap;

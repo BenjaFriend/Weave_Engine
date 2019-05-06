@@ -518,6 +518,7 @@ xcopy /e /d /y "$(SolutionDir)additional\assimp\lib\assimp-vc140-mt.dll" "$(OutD
     <ClInclude Include="..\..\Weave_Common\Networking\InFlightPacket.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\NetworkManager.h" />
     <ClInclude Include="..\..\Weave_Common\Networking\ReplicationActions.h" />
+    <ClInclude Include="..\..\Weave_Common\Networking\IScoreboard.h" />
     <ClInclude Include="..\..\Weave_Common\Resources\ISaveable.h" />
     <ClInclude Include="..\..\Weave_Common\Scenes\IScene.h" />
     <ClInclude Include="..\..\Weave_Common\stdafx.h" />

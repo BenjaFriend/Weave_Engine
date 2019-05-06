@@ -95,7 +95,10 @@ void Tanks::TankGame::DrawUI()
         ImGui::End();
     }
 
-	ClientNetworkManager::Instance->DrawUI();
+	if (ClientNetworkManager::Instance != nullptr)
+	{
+		ClientNetworkManager::Instance->scoreboard->DrawUI();
+	}
 }
 
 void Tanks::TankGame::DrawMainMenu()

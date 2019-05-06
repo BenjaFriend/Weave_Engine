@@ -367,6 +367,9 @@
     <ClInclude Include="..\..\Weave_Common\Networking\InFlightPacket.h">
       <Filter>Weave_Common\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Weave_Common\Networking\IScoreboard.h">
+      <Filter>Weave_Common\Networking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -141,7 +141,6 @@ void Entity::Write( OutputMemoryBitStream & inOutputStream ) const
     inOutputStream.Write( ReplicationAction, 2 );
     inOutputStream.Write( ReplicatedClassType, 2 );
     inOutputStream.Write( DirtyState );
-	inOutputStream.Write(score);
 
     switch ( ReplicationAction )
     {
@@ -226,8 +225,6 @@ void Entity::Read( InputMemoryBitStream & inInputStream )
 {
     // Read in dirty state of this entity
     inInputStream.Read( DirtyState );
-
-	inInputStream.Read(score);
 
     ReadUpdateAction( inInputStream );
 

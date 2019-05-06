@@ -1,20 +1,21 @@
 #pragma once
-#include "MemoryBitStream.h"
-#include <basetsd.h>
-#include <imgui/imgui.h>
-#include <vector>
-#include "Entity/Entity.h"
+#include "../Weave_Common/Networking/IScoreboard.h"
 
-
-class Scoreboard
+class Scoreboard : public IScoreboard
 {
 public:
-
 	Scoreboard();
 	~Scoreboard();
 
-	void Read(UINT8 playerCount, InputMemoryBitStream& inInputStream);
 
-	void DrawUI(Entity* entityArray);
+	void Read(InputMemoryBitStream& inInputStream, UINT8 playerCount);
+
+	void Write(OutputMemoryBitStream& inOutputStream) const;
+
+	void DrawUI() const;
+
+private:
+
+	std::unordered_map<std::string, int> clientScores;
 };
 
