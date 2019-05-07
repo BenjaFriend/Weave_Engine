@@ -1,9 +1,9 @@
 # Weave Engine
 
-Weave Engine is a game engine that utilizes Boost ASIO to create a cross
+The Weave Engine is a game engine that utilizes Boost ASIO to create a cross
 platform server authoritative network stack written in C++. The engine
 aims to provide an interface for you to build a game on including Lua
-script bindings, an asset importing pipeline, and an etensible entity
+script bindings, an asset importing pipeline, and an extensible entity
 component system.
 
 The capabilities of the engine are demonstrated in a Tank shooter game,
