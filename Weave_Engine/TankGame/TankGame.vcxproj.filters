@@ -43,7 +43,7 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Scoreboard.h">
-      <Filter>Networking</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +66,7 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Scoreboard.cpp">
-      <Filter>Networking</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -195,6 +195,7 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     inInputStream.Read( playerCount );
     NumConnectedPlayers = playerCount;
 
+	// Read all of the scoreboard values
 	scoreboard->Read(inInputStream, playerCount);
 
     // Read in the state of the scene

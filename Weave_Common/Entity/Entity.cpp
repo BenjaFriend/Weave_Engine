@@ -184,7 +184,6 @@ void Entity::WriteUpdateAction( OutputMemoryBitStream & inOutputStream, UINT32 i
 
 void Entity::ReadUpdateAction( InputMemoryBitStream & inInputStream )
 {
-
     // Read in pos
     if ( DirtyState & EIEntityReplicationState::EIRS_POS )
     {

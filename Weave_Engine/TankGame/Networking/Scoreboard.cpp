@@ -25,10 +25,6 @@ void Scoreboard::Read(InputMemoryBitStream & inInputStream, UINT8 playerCount)
 	}
 }
 
-void Scoreboard::Write(OutputMemoryBitStream & inOutputStream) const
-{
-}
-
 void Scoreboard::DrawUI() const
 {
 	ImGui::Begin("Scoreboard");
