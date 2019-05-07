@@ -1,5 +1,14 @@
 # Weave Engine
 
+Weave Engine is a game engine that utilizes Boost ASIO to create a cross
+platform server authoritative network stack written in C++. The engine 
+aims to provide an interface for you to build a game on including Lua
+script bindings, an asset importing pipeline, and an etensible entity
+component system. 
+
+The capabilities of the engine are demonstrated in a Tank shooter game,
+where players can fire upon their enemies. 
+
 This engine aims to accomplish the following:
 
 * Server authoritative network architecture with a headless server
@@ -18,22 +27,21 @@ What do you need?
 
 __*__ _is an optional item that you can configure yourself_
 
-Init the submodules
 
-```
-git submodule update --init --recursive;
-```
-
-In order to use Boost, make sure you have defined the following environment variables:
-
-* `BOOST_ROOT`, the boost root path (Ex: `C:\Program Files\boost\boost_1_67_0`)
-* `BOOST_LIBRARYDIR`, the library path for boost (Ex: `C:\Program Files\boost\boost_1_67_0\stage\lib`)
-
-## Systems currently in place
-
-* Entity Component System
-* Editor Tools (ImGui)
-* Lua binding for gameplay scripting
+1. Download the most up to date release build from the `master` branch:
+ * [https://github.com/BenjaFriend/Weave_Engine/tree/master]
+2. Initalize the submodules
+ *  Run `git submodule update --init --recursive` at the root directory
+3. Install Boost
+ * Download the latest release at [https://www.boost.org/users/download/]
+ * Unzip to your desired location
+ * From PowerShell or command line run `bootstrap.bat`
+ * Run `./b2 --with-system --with-thread --with-date_time --with-regex --with-serialization --with-filesystem stage`
+ * This will take some time
+4. Set Enviornment variables
+ * Set `BOOST_ROOT` to your Boost root location (i.e. `C:/dev/boost_1_69_0`)
+ * Set `BOOST_LIBRARYDIR` to your compiled Boost library 
+   location (i.e. `C:/dev/boost_1_69_0/stage/lib`)
 
 ---
 ### Starter Code
@@ -53,13 +61,18 @@ The starter code included initial versions of:
 
 _Chris Cascioli, Course Syllabus_
 
+All of these items have since been heavily modified, but it is worth 
+noting for the begining architectural decisions that had to be made. 
 
-The reason that I am using this core framework for this project is because the focus is not on graphics, and it provided a good starting point to go off of.  
+The reason that I am using this core framework for this project is 
+because the focus is not on graphics, and it provided a good starting 
+point to go off of.  
 
 ---
 
 
-## Creating assets
+
+## Creating art assets
 
 If you want to create models, textures, or other art assets for the Weave Engine there are a couple of things you should be aware of.
 
