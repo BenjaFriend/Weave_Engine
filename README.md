@@ -1,13 +1,13 @@
 # Weave Engine
 
 Weave Engine is a game engine that utilizes Boost ASIO to create a cross
-platform server authoritative network stack written in C++. The engine 
+platform server authoritative network stack written in C++. The engine
 aims to provide an interface for you to build a game on including Lua
 script bindings, an asset importing pipeline, and an etensible entity
-component system. 
+component system.
 
 The capabilities of the engine are demonstrated in a Tank shooter game,
-where players can fire upon their enemies. 
+where players can fire upon their enemies.
 
 This engine aims to accomplish the following:
 
@@ -37,10 +37,12 @@ __*__ _is an optional item that you can configure yourself_
  * Unzip to your desired location
  * From PowerShell or command line run `bootstrap.bat`
  * Run `./b2 --with-system --with-thread --with-date_time --with-regex --with-serialization --with-filesystem stage`
+ * __NOTE__ That you may have to specify your toolset if you have multiple
+  MSVC installs. For Visual Studio 2017, append the argument `toolset=msvc-14.1`
  * This will take some time
 4. Set Enviornment variables
  * Set `BOOST_ROOT` to your Boost root location (i.e. `C:/dev/boost_1_69_0`)
- * Set `BOOST_LIBRARYDIR` to your compiled Boost library 
+ * Set `BOOST_LIBRARYDIR` to your compiled Boost library
    location (i.e. `C:/dev/boost_1_69_0/stage/lib`)
 
 ---
@@ -61,11 +63,11 @@ The starter code included initial versions of:
 
 _Chris Cascioli, Course Syllabus_
 
-All of these items have since been heavily modified, but it is worth 
-noting for the begining architectural decisions that had to be made. 
+All of these items have since been heavily modified, but it is worth
+noting for the begining architectural decisions that had to be made.
 
-The reason that I am using this core framework for this project is 
-because the focus is not on graphics, and it provided a good starting 
+The reason that I am using this core framework for this project is
+because the focus is not on graphics, and it provided a good starting
 point to go off of.  
 
 ---
