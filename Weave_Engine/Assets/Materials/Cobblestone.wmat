@@ -1,6 +1,6 @@
 {
 	"MaterialName" : "Cobble mat boi",
-    "VS" : "VertexShader.cso",
+  "VS" : "VertexShader.cso",
 	"PS" : "PixelShader.cso",
 	"albedo" : "Assets/Textures/cobblestone_albedo.png",
 	"norm" : "Assets/Textures/cobblestone_normals.png",

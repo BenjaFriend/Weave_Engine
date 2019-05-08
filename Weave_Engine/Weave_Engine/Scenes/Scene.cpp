@@ -24,7 +24,6 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
 
     std::unordered_map< INT32, Entity* > entitiesToDestroy = NetworkIdToEntityMap;
 
-    LOG_TRACE( "Num entities on server scene: {}", numEntities );
     for ( size_t i = 0; i < numEntities; ++i )
     {
         // Read in the ID and the action that this entity used
@@ -40,7 +39,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
         {
         case ERA_Create:
         {
-            LOG_ERROR( "CREATE THE ENTITY! " );
+            //LOG_ERROR( "CREATE THE ENTITY! " );
         }
         break;
         case ERA_Update:
@@ -69,7 +68,7 @@ void SceneManagement::Scene::Read( InputMemoryBitStream & inInputStream )
                 {
                     LOG_WARN( "This is a bullet!" );
                     ent->SetName( "New Bullet" );
-                    ent->AddComponent< MeshRenderer >( L"Assets/Materials/Cobblestone.wmat", L"Assets/Models/sphere.obj" );
+                    ent->AddComponent< MeshRenderer >( L"Assets/Materials/Bullet.wmat", L"Assets/Models/BULLET.obj" );
                 }
                 break;
                 case EObstacle_Class:

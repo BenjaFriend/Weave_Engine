@@ -1,0 +1,9 @@
+{
+  "MaterialName": "Bullet Material File",
+  "VS": "VertexShader.cso",
+  "PS": "PixelShader.cso",
+  "albedo": "Assets/Textures/bullet_albedo.png",
+  "norm": "Assets/Textures/bronze_normals.png",
+  "roughness": "Assets/Textures/bronze_roughness.png",
+  "metal": "Assets/Textures/cobblestone_metal.png"
+}

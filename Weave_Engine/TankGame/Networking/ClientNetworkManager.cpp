@@ -140,8 +140,6 @@ void Tanks::ClientNetworkManager::SendHelloPacket()
 
     // Send it
     SendPacket( welcomePacket, ServerEndpoint );
-
-    LOG_TRACE( "Sent hello packet!" );
 }
 
 void Tanks::ClientNetworkManager::SendInputPacket()

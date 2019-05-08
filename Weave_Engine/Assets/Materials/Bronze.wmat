@@ -1,6 +1,6 @@
 {
 	"MaterialName" : "Bronze Material File",
-    "VS" : "VertexShader.cso",
+  "VS" : "VertexShader.cso",
 	"PS" : "PixelShader.cso",
 	"albedo" : "Assets/Textures/bronze_albedo.png",
 	"norm" : "Assets/Textures/bronze_normals.png",
