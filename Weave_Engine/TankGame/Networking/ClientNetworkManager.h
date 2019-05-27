@@ -4,6 +4,7 @@
 #include "../Game/PlayerMoves.h"
 #include "Networking/DeliveryNotificationManager.h"
 #include <deque>
+#include "Scoreboard.h"
 
 namespace Tanks
 {
@@ -56,6 +57,8 @@ namespace Tanks
         FORCE_INLINE const boost::asio::ip::udp::endpoint & GetServerEndpoint () { return ServerEndpoint; }
         FORCE_INLINE const UINT8 GetNumConnectedPlayers() const { return NumConnectedPlayers; }
         
+		Scoreboard* scoreboard = nullptr;
+
     protected:
 
         ClientNetworkManager ( std::shared_ptr< boost::asio::io_service > aService,

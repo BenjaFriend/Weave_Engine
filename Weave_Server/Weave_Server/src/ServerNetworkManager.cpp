@@ -114,6 +114,8 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
             NewPlayerID++
             );
 
+		scoreboard.SetClientScore(newClient, 0);
+
         EndpointToClientMap[ inFromAddress ] = newClient;
 
         // Send welcome packet to them and tell them what their ID is
@@ -134,6 +136,7 @@ void ServerNetworkManager::ProcessNewClientPacket( InputMemoryBitStream & inInpu
 
 void ServerNetworkManager::ProcessInputPacket( ClientProxyPtr aClient, InputMemoryBitStream & inInputStream )
 {
+
     UINT32 sizeOfMoveList = 0;
     inInputStream.Read( sizeOfMoveList );
 
@@ -252,6 +255,8 @@ void ServerNetworkManager::SendStatePacket( ClientProxyPtr aClient )
 
     // Write the number of connected clients
     packet.Write( static_cast< UINT8 >( EndpointToClientMap.size() ) );
+
+	scoreboard.Write(packet);
 
     Scene.Write( packet, 0 );
 

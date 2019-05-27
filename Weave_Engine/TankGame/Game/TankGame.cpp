@@ -95,6 +95,11 @@ void Tanks::TankGame::DrawUI()
         ImGui::End();
     }
 
+	// Draw the scoreboard if the client is connected
+	if (ClientNetworkManager::Instance != nullptr)
+	{
+		ClientNetworkManager::Instance->scoreboard->DrawUI();
+	}
 }
 
 void Tanks::TankGame::DrawMainMenu()

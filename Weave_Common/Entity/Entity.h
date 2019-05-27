@@ -22,10 +22,10 @@ class Entity : public IPoolable< Entity >, public ISaveable
 {
 public:
 
-    enum EIEntityReplicationState
-    {
-        EIRS_POS = 1 << 0,
-        EIRS_ROT = 1 << 1,
+	enum EIEntityReplicationState
+	{
+		EIRS_POS = 1 << 0,
+		EIRS_ROT = 1 << 1,
         EIRS_AllState = EIRS_POS | EIRS_ROT
     };
 

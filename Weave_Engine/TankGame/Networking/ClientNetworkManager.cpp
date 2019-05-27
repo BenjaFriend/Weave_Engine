@@ -20,6 +20,8 @@ ClientNetworkManager::ClientNetworkManager(
             aPort
         );
 
+	scoreboard = new Scoreboard();
+
     ClientState = EClientState::SayingHello;
 
     TimeOfLastStatePacket = Timing::sInstance.GetTimef();
@@ -27,7 +29,7 @@ ClientNetworkManager::ClientNetworkManager(
 
 ClientNetworkManager::~ClientNetworkManager()
 {
-
+	delete scoreboard;
 }
 
 ClientNetworkManager* Tanks::ClientNetworkManager::StaticInit(
@@ -190,6 +192,9 @@ void Tanks::ClientNetworkManager::ProcessStatePacket( InputMemoryBitStream & inI
     UINT8 playerCount = 0;
     inInputStream.Read( playerCount );
     NumConnectedPlayers = playerCount;
+
+	// Read all of the scoreboard values
+	scoreboard->Read(inInputStream, playerCount);
 
     // Read in the state of the scene
     using namespace SceneManagement;

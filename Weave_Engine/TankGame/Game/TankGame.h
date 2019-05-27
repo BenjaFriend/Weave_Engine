@@ -3,6 +3,7 @@
 #include <Core/Game.h>
 #include "../Networking/ClientNetworkManager.h"
 #include "PlayerMoves.h"
+#include "../Weave_Common/Networking/IScoreboard.h"
 #include <boost/asio.hpp>
 #include <memory>
 
